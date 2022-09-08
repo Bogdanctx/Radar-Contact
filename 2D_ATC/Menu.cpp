@@ -17,19 +17,21 @@ void Menu::update()
 
 void Menu::render(sf::RenderTarget *window)
 {
-	window->draw(menuTitle);
+	window->draw(menuCardSprite);
 
 	return;
 }
 
 void Menu::initTextures()
 {
+	menuCardTexture.loadFromFile("../Resources/images/menu/menu1.png");
 
 	return;
 }
 
 void Menu::initSprites()
 {
+	menuCardSprite.setTexture(menuCardTexture);
 
 	return;
 }

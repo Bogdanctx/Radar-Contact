@@ -3,6 +3,7 @@
 Game::Game()
 {
 	gameWindow.create(sf::VideoMode(1200, 900), "2D - Air Traffic Controller");
+	gameWindow.setFramerateLimit(60);
 
 	initTextures();
 	initSprites();
@@ -34,8 +35,10 @@ void Game::render()
 {
 	gameWindow.clear();
 
-	menu.render(&gameWindow);
-	map.render(&gameWindow);
+	if (menu.drawMenu)
+	{
+		menu.render(&gameWindow);
+	}
 
 	gameWindow.display();
 

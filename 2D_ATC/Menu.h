@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Menu.h"
+
 class Menu
 {
 public:
@@ -20,5 +22,8 @@ private:
 
 	sf::Font comfortaa;
 	sf::Text menuTitle;
+
+	sf::Texture menuCardTexture;
+	sf::Sprite menuCardSprite;
 };
 

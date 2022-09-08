@@ -1,0 +1,4 @@
+﻿  Main.cpp
+Main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::RenderWindow::RenderWindow(void)" (__imp_??0RenderWindow@sf@@QEAA@XZ) referenced in function main
+Main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) public: virtual __cdecl sf::RenderWindow::~RenderWindow(void)" (__imp_??1RenderWindow@sf@@UEAA@XZ) referenced in function main
+C:\Users\bobot\Desktop\2D_ATC\x64\Debug\2D_ATC.exe : fatal error LNK1120: 2 unresolved externals

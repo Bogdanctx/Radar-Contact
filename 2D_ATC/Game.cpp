@@ -25,8 +25,9 @@ void Game::run()
 
 void Game::update()
 {
-	processEvents();
-	menu.update();
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(gameWindow);
+
+	menu.update(mousePosition);
 
 	return;
 }
@@ -66,6 +67,13 @@ void Game::processEvents()
 					gameWindow.close();
 				}
 				break;
+			}
+			case sf::Event::MouseButtonPressed:
+			{
+				if (windowEvent.mouseButton.button == sf::Mouse::Left)
+				{
+					menu.HandleClick();
+				}
 			}
 			default:
 				break;

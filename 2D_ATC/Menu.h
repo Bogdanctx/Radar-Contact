@@ -1,29 +1,48 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Menu.h"
+#include "Settings.h"
+#include "Career.h"
+
+#include "Button.h"
 
 class Menu
 {
 public:
 	Menu();
 
-	void update();
+	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
+
+	void HandleClick();
 
 	bool drawMenu = true;
 
 private:
+	void initSounds();
 	void initTextures();
 	void initSprites();
 	void initFonts();
-	void initText();
+	void initButtons();
+
+	sf::Vector2i mousePosition;
 
 	sf::Font comfortaa;
-	sf::Text menuTitle;
 
-	sf::Texture menuCardTexture;
-	sf::Sprite menuCardSprite;
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
+
+	sf::SoundBuffer buttonClickBuffer;
+	sf::Sound buttonClickSound;
+
+	Career career;
+	Settings settingsTab;
+
+	Button continueCareer;
+	Button newCareer;
+	Button settingsButton;
 };
 

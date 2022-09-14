@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Button.h"
+#include "Input.h"
 
 class Career
 {
@@ -19,17 +20,23 @@ public:
 
 	bool draw;
 
+	bool drawLoadCareer;
+	bool drawCreateCareer;
+
 private:
 	void initSounds();
 	void initButtons();
 	void initFonts();
+	void initInputs();
 
 	sf::Font comfortaa;
 
 	sf::SoundBuffer buttonClickBuffer;
 	sf::Sound buttonClickSound;
 
-	Button cancelButton;
 	sf::Vector2i mousePosition;
+
+	Input playerName;
+	Button cancelButton;
 };
 

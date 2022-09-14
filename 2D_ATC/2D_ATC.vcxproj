@@ -140,6 +140,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Career.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Career.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Settings.h" />

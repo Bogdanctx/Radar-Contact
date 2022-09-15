@@ -21,9 +21,14 @@ void Menu::update(sf::Vector2i mousePosition)
 	{
 		settingsTab.update(mousePosition);
 	}
-	else if (career.draw == true)
+	else if (career.drawLoadCareer || career.drawCreateCareer)
 	{
 		career.update(mousePosition);
+	}
+
+	if (career.isCareerCreated())
+	{
+		drawMenu = false;
 	}
 
 	return;
@@ -37,7 +42,7 @@ void Menu::render(sf::RenderTarget *window)
 	{
 		settingsTab.render(window);
 	}
-	else if (career.draw)
+	else if (career.drawLoadCareer || career.drawCreateCareer)
 	{
 		career.render(window);
 	}
@@ -57,7 +62,7 @@ void Menu::HandleClick()
 	{
 		settingsTab.HandleClick();
 	}
-	else if (career.draw == true)
+	else if (career.drawLoadCareer || career.drawCreateCareer)
 	{
 		career.HandleClick();
 	}
@@ -67,13 +72,13 @@ void Menu::HandleClick()
 		{
 			career.LoadCareer();
 			buttonClickSound.play();
-			career.draw = true;
+			career.drawLoadCareer = true;
 		}
 		else if (newCareer.isButtonClicked(mousePosition))
 		{
 			career.CreateCareer();
 			buttonClickSound.play();
-			career.draw = true;
+			career.drawCreateCareer = true;
 		}
 		else if (settingsButton.isButtonClicked(mousePosition))
 		{
@@ -83,6 +88,16 @@ void Menu::HandleClick()
 		}
 	}
 	
+
+	return;
+}
+
+void Menu::HandleInput(unsigned unicode)
+{
+	if (career.drawCreateCareer)
+	{
+		career.HandleInput(unicode);
+	}
 
 	return;
 }

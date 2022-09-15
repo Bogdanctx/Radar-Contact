@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 #include "Button.h"
 #include "Input.h"
+#include <fstream>
 
 class Career
 {
@@ -17,8 +18,9 @@ public:
 	void CreateCareer();
 
 	void HandleClick();
+	void HandleInput(unsigned unicode);
 
-	bool draw;
+	bool isCareerCreated();
 
 	bool drawLoadCareer;
 	bool drawCreateCareer;
@@ -29,14 +31,17 @@ private:
 	void initFonts();
 	void initInputs();
 
-	sf::Font comfortaa;
+	bool careerCreated;
 
+	sf::Font comfortaa;
 	sf::SoundBuffer buttonClickBuffer;
 	sf::Sound buttonClickSound;
-
 	sf::Vector2i mousePosition;
 
 	Input playerName;
 	Button cancelButton;
+	Button submitButton;
+
+	std::ofstream out;
 };
 

@@ -18,6 +18,7 @@ public:
 	void render(sf::RenderTarget* window);
 
 	void HandleClick();
+	void HandleInput(unsigned unicode);
 
 	bool drawMenu = true;
 

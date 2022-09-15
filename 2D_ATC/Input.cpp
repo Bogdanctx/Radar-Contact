@@ -17,6 +17,7 @@ void Input::render(sf::RenderTarget *window)
 {
 	window->draw(inputBody);
 	window->draw(inputDescription);
+	window->draw(inputDataText);
 
 	return;
 }
@@ -27,6 +28,7 @@ void Input::setPosition(sf::Vector2f position)
 
 	sf::Vector2f inputBodySize = inputBody.getSize();
 	inputDescription.setPosition(sf::Vector2f(position.x-inputBodySize.x/2, position.y - inputBodySize.y));
+	inputDataText.setPosition(sf::Vector2f(position.x - inputBodySize.x / 2 + 5, position.y-inputBodySize.y/2 + 5));
 
 	return;
 }
@@ -76,6 +78,29 @@ void Input::setCharactersSize(unsigned size)
 	return;
 }
 
+void Input::HandleInput(unsigned unicode)
+{
+	if (unicode >= 32 && unicode <= 126)
+	{
+		if (inputDataString.length() <= maxChars)
+		{
+			inputDataString += unicode;
+		}
+
+		inputDataText.setString(inputDataString);
+	}
+	else
+	{
+		if (unicode == 8 && inputDataString.length() > 0) // Backspace
+		{
+			inputDataString.pop_back();
+			inputDataText.setString(inputDataString);
+		}
+	}
+	
+	return;
+}
+
 void Input::setInputDescription(std::string text)
 {
 	inputDescription.setString(text);
@@ -93,7 +118,8 @@ void Input::initFonts()
 
 void Input::initTexts()
 {
-	
+	inputDataText.setFont(merriweather);
+	inputDataText.setCharacterSize(25);
 
 	return;
 }

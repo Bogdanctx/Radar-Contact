@@ -27,7 +27,10 @@ void Game::update()
 {
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(gameWindow);
 
-	menu.update(mousePosition);
+	if (menu.drawMenu)
+	{
+		menu.update(mousePosition);
+	}
 
 	return;
 }
@@ -68,11 +71,20 @@ void Game::processEvents()
 				}
 				break;
 			}
+			case sf::Event::TextEntered:
+			{
+				menu.HandleInput(windowEvent.text.unicode);
+
+				break;
+			}
 			case sf::Event::MouseButtonPressed:
 			{
-				if (windowEvent.mouseButton.button == sf::Mouse::Left)
+				if (menu.drawMenu)
 				{
-					menu.HandleClick();
+					if (windowEvent.mouseButton.button == sf::Mouse::Left)
+					{
+						menu.HandleClick();
+					}
 				}
 			}
 			default:

@@ -20,6 +20,9 @@ public:
 	void setInputDescription(std::string text);
 	void setCharactersSize(unsigned size);
 	
+	void HandleInput(unsigned unicode);
+
+	std::string inputDataString;
 
 private:
 	void initFonts();
@@ -30,6 +33,7 @@ private:
 	sf::Vector2i mousePosition;
 	sf::Font merriweather;
 	sf::Text inputDescription;
+	sf::Text inputDataText;
 	sf::RectangleShape inputBody;
 };
 

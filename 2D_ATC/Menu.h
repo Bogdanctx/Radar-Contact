@@ -22,6 +22,9 @@ public:
 
 	bool drawMenu = true;
 
+	Career career;
+	Settings settingsTab;
+
 private:
 	void initSounds();
 	void initTextures();
@@ -38,9 +41,6 @@ private:
 
 	sf::SoundBuffer buttonClickBuffer;
 	sf::Sound buttonClickSound;
-
-	Career career;
-	Settings settingsTab;
 
 	Button continueCareer;
 	Button newCareer;

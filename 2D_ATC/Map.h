@@ -8,9 +8,10 @@ class Map
 public:
 	Map();
 
-	void update();
+	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
-	void GenerateNewMap();
+	
+	void GenerateMap(std::string map);
 
 private:
 
@@ -18,5 +19,5 @@ private:
 
 	sf::Texture mapTexture;
 	sf::Sprite mapSprite;
+	sf::Vector2i mousePosition;
 };
-

@@ -8,7 +8,6 @@ Game::Game()
 	initTextures();
 	initSprites();
 
-	map.GenerateNewMap();
 }
 
 void Game::run()
@@ -30,6 +29,20 @@ void Game::update()
 	if (menu.drawMenu)
 	{
 		menu.update(mousePosition);
+	
+		if (menu.career.isCareerCreated() && menu.drawMenu == true)
+		{
+			playerName = menu.career.playerName.GetInputData();
+			careerMap = menu.career.selectedMap;
+
+			menu.drawMenu = false;
+
+			map.GenerateMap(careerMap);
+		}
+	}
+	else
+	{
+		map.update(mousePosition);
 	}
 
 	return;
@@ -42,6 +55,10 @@ void Game::render()
 	if (menu.drawMenu)
 	{
 		menu.render(&gameWindow);
+	}
+	else
+	{
+		map.render(&gameWindow);
 	}
 
 	gameWindow.display();
@@ -73,7 +90,10 @@ void Game::processEvents()
 			}
 			case sf::Event::TextEntered:
 			{
-				menu.HandleInput(windowEvent.text.unicode);
+				if (menu.drawMenu)
+				{
+					menu.HandleInput(windowEvent.text.unicode);
+				}
 
 				break;
 			}

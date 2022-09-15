@@ -6,10 +6,13 @@ Career::Career()
 	initFonts();
 	initButtons();
 	initInputs();
+	initFlags();
+	initText();
 
 	drawLoadCareer = false;
 	drawCreateCareer = false;
 	careerCreated = false;
+	flagIndex = -1;
 }
 
 void Career::update(sf::Vector2i mousePosition)
@@ -33,6 +36,13 @@ void Career::render(sf::RenderTarget* window)
 	if (drawCreateCareer)
 	{
 		playerName.render(window);
+
+		for (int i = 0; i < FLAGS; i++)
+		{
+			window->draw(flagsSprite[i]);
+		}
+
+		window->draw(countrySelectedInfo);
 
 		submitButton.render(window);
 	}
@@ -69,12 +79,38 @@ void Career::HandleClick()
 	else if(submitButton.isButtonClicked(mousePosition))
 	{
 		out = std::ofstream("../Resources/Career/careerData.txt");
-		if (playerName.inputDataString.length() == 0)
+		if (playerName.GetInputData().length() == 0)
+		{
 			out << "newCareer\n";
+		}
 		else
-			out << playerName.inputDataString<<'\n';
+		{
+			out << playerName.GetInputData() << '\n';
+		}
+		
+		if (flagIndex == -1)
+			flagIndex = rand() % FLAGS;
+
+		out << flags[flagIndex] << '\n';
+
 		out.close();
+
 		careerCreated = true;
+	}
+	else
+	{
+		for (int i = 0; i < FLAGS; i++)
+		{
+			if (flagsSprite[i].getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))
+			{
+				flagIndex = i;
+				std::string country = flags[i];
+				selectedMap = flags[i];
+				country[0] = std::toupper(country[0]);
+
+				countrySelectedInfo.setString(country + " has been selected.");
+			}
+		}
 	}
 
 
@@ -140,6 +176,44 @@ void Career::initInputs()
 	playerName.setInputDescription("YOUR NAME");
 	playerName.setMaxChars(45);
 	playerName.setCharactersSize(15);
+
+	return;
+}
+
+void Career::initFlags()
+{
+	for (int i = 0; i < 1; i++)
+	{
+		flagTexture.loadFromFile("../Resources/images/flags/"+ flags[i]+".png");
+		flagsSprite[i].setTexture(flagTexture);
+		setFlag(i);
+	}
+
+
+	return;
+}
+
+void Career::initText()
+{
+	countrySelectedInfo.setFont(comfortaa);
+	countrySelectedInfo.setCharacterSize(35);
+	countrySelectedInfo.setPosition(sf::Vector2f(100, 600));
+
+	return;
+}
+
+void Career::setFlag(unsigned flagId)
+{
+	flagsSprite[flagId].setScale(sf::Vector2f(0.1f, 0.1f));
+
+	if (flagId <= 15)
+	{
+		flagsSprite[flagId].setPosition(sf::Vector2f(flagId * 70 + 15, 370));
+	}
+	else
+	{
+
+	}
 
 	return;
 }

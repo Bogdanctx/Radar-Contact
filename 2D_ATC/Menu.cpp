@@ -26,11 +26,6 @@ void Menu::update(sf::Vector2i mousePosition)
 		career.update(mousePosition);
 	}
 
-	if (career.isCareerCreated())
-	{
-		drawMenu = false;
-	}
-
 	return;
 }
 

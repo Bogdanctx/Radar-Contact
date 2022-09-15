@@ -1,10 +1,12 @@
 #pragma once
 
+#include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Button.h"
 #include "Input.h"
-#include <fstream>
+
+#define FLAGS 1
 
 class Career
 {
@@ -25,20 +27,36 @@ public:
 	bool drawLoadCareer;
 	bool drawCreateCareer;
 
+	Input playerName;
+	std::string selectedMap;
+
 private:
 	void initSounds();
 	void initButtons();
 	void initFonts();
 	void initInputs();
+	void initFlags();
+	void initText();
+
+	void setFlag(unsigned flagId);
 
 	bool careerCreated;
+
+	short flagIndex;
+	std::string flags[FLAGS] = {
+		"romania"
+	};
 
 	sf::Font comfortaa;
 	sf::SoundBuffer buttonClickBuffer;
 	sf::Sound buttonClickSound;
 	sf::Vector2i mousePosition;
 
-	Input playerName;
+	sf::Text countrySelectedInfo;
+
+	sf::Sprite flagsSprite[10];
+	sf::Texture flagTexture;
+
 	Button cancelButton;
 	Button submitButton;
 

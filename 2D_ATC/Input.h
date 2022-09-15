@@ -22,7 +22,7 @@ public:
 	
 	void HandleInput(unsigned unicode);
 
-	std::string inputDataString;
+	std::string GetInputData();
 
 private:
 	void initFonts();
@@ -30,6 +30,7 @@ private:
 
 	unsigned maxChars;
 
+	std::string inputDataString;
 	sf::Vector2i mousePosition;
 	sf::Font merriweather;
 	sf::Text inputDescription;

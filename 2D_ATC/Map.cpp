@@ -5,8 +5,9 @@ Map::Map()
 	maps.push_back("romania");
 }
 
-void Map::update()
+void Map::update(sf::Vector2i mousePosition)
 {
+	this->mousePosition = mousePosition;
 
 	return;
 }
@@ -18,11 +19,9 @@ void Map::render(sf::RenderTarget* window)
 	return;
 }
 
-void Map::GenerateNewMap()
+void Map::GenerateMap(std::string map)
 {
-	std::string randomMap = maps[rand() % maps.size()];
-
-	mapTexture.loadFromFile("../Resources/images/maps/" + randomMap + ".png");
+	mapTexture.loadFromFile("../Resources/images/maps/" + map + ".png");
 	mapSprite.setTexture(mapTexture);
 
 	return;

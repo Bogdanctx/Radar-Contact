@@ -20,6 +20,9 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 
+	std::string playerName;
+	std::string careerMap;
+
 	void update();
 	void render();
 	void processEvents();

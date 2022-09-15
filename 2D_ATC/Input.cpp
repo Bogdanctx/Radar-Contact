@@ -101,6 +101,11 @@ void Input::HandleInput(unsigned unicode)
 	return;
 }
 
+std::string Input::GetInputData()
+{
+	return inputDataString;
+}
+
 void Input::setInputDescription(std::string text)
 {
 	inputDescription.setString(text);

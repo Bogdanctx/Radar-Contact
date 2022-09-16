@@ -21,7 +21,8 @@ private:
 	sf::Sprite sprite;
 
 	std::string playerName;
-	std::string careerMap;
+	std::string country;
+	std::string position;
 
 	void update();
 	void render();

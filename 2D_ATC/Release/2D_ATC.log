@@ -1,35 +1,10 @@
-﻿  Career.cpp
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Career.cpp(104,93): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Career.cpp(104,76): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Career.cpp(211,60): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Game.cpp
+﻿  Game.cpp
   Main.cpp
 C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Main.cpp(7,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Map.cpp
-  Menu.cpp
   Generating code
-  68 of 327 functions (20.8%) were compiled, the rest were copied from previous compilation.
-    4 functions were new in current compilation
-    21 functions had inline decision re-evaluated but remain unchanged
+  38 of 349 functions (10.9%) were compiled, the rest were copied from previous compilation.
+    3 functions were new in current compilation
+    27 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2D_ATC.vcxproj -> C:\Users\bobot\Desktop\2D_ATC\Release\2D_ATC.exe

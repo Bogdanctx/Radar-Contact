@@ -11,9 +11,11 @@ public:
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 	
-	void GenerateMap(std::string map);
+	void GenerateMap(std::string country, std::string position);
 
 private:
+
+
 
 	std::vector<std::string>maps;
 

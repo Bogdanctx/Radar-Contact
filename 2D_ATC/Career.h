@@ -17,18 +17,17 @@ public:
 	void render(sf::RenderTarget* window);
 
 	void LoadCareer();
-	void CreateCareer();
 
 	void HandleClick();
 	void HandleInput(unsigned unicode);
 
 	bool isCareerCreated();
 
-	bool drawLoadCareer;
 	bool drawCreateCareer;
 
-	Input playerName;
 	std::string selectedMap;
+	std::string _playerName;
+	std::string atcPosition;
 
 private:
 	void initSounds();
@@ -57,9 +56,11 @@ private:
 	sf::Sprite flagsSprite[10];
 	sf::Texture flagTexture;
 
+	Input playerName;
 	Button cancelButton;
 	Button submitButton;
 
 	std::ofstream out;
+	std::ifstream in;
 };
 

@@ -9,7 +9,6 @@ Career::Career()
 	initFlags();
 	initText();
 
-	drawLoadCareer = false;
 	drawCreateCareer = false;
 	careerCreated = false;
 	flagIndex = -1;
@@ -54,12 +53,14 @@ void Career::render(sf::RenderTarget* window)
 
 void Career::LoadCareer()
 {
+	in = std::ifstream("../Resources/Career/careerData.txt");
 
-	return;
-}
+	in >> _playerName;
+	in >> selectedMap;
+	in >> atcPosition;
 
-void Career::CreateCareer()
-{
+	in.close();
+	careerCreated = true;
 
 	return;
 }
@@ -70,9 +71,7 @@ void Career::HandleClick()
 	{
 		buttonClickSound.play();
 
-		if (drawLoadCareer)
-			drawLoadCareer = false;
-		else if (drawCreateCareer)
+		if (drawCreateCareer)
 			drawCreateCareer = false;
 
 	}
@@ -81,17 +80,19 @@ void Career::HandleClick()
 		out = std::ofstream("../Resources/Career/careerData.txt");
 		if (playerName.GetInputData().length() == 0)
 		{
-			out << "newCareer\n";
+			_playerName = "newCareer";
 		}
 		else
 		{
-			out << playerName.GetInputData() << '\n';
+			_playerName = playerName.GetInputData();
 		}
 		
 		if (flagIndex == -1)
 			flagIndex = rand() % FLAGS;
 
+		out << _playerName << '\n';
 		out << flags[flagIndex] << '\n';
+		out << "ground" << '\n';
 
 		out.close();
 

@@ -32,12 +32,13 @@ void Game::update()
 	
 		if (menu.career.isCareerCreated() && menu.drawMenu == true)
 		{
-			playerName = menu.career.playerName.GetInputData();
-			careerMap = menu.career.selectedMap;
+			playerName = menu.career._playerName;
+			country = menu.career.selectedMap;
+			position = menu.career.atcPosition;
 
 			menu.drawMenu = false;
 
-			map.GenerateMap(careerMap);
+			map.GenerateMap(country, position);
 		}
 	}
 	else

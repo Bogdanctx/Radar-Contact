@@ -21,7 +21,7 @@ void Menu::update(sf::Vector2i mousePosition)
 	{
 		settingsTab.update(mousePosition);
 	}
-	else if (career.drawLoadCareer || career.drawCreateCareer)
+	else if (career.drawCreateCareer)
 	{
 		career.update(mousePosition);
 	}
@@ -37,7 +37,7 @@ void Menu::render(sf::RenderTarget *window)
 	{
 		settingsTab.render(window);
 	}
-	else if (career.drawLoadCareer || career.drawCreateCareer)
+	else if (career.drawCreateCareer)
 	{
 		career.render(window);
 	}
@@ -57,7 +57,7 @@ void Menu::HandleClick()
 	{
 		settingsTab.HandleClick();
 	}
-	else if (career.drawLoadCareer || career.drawCreateCareer)
+	else if (career.drawCreateCareer)
 	{
 		career.HandleClick();
 	}
@@ -67,11 +67,9 @@ void Menu::HandleClick()
 		{
 			career.LoadCareer();
 			buttonClickSound.play();
-			career.drawLoadCareer = true;
 		}
 		else if (newCareer.isButtonClicked(mousePosition))
 		{
-			career.CreateCareer();
 			buttonClickSound.play();
 			career.drawCreateCareer = true;
 		}

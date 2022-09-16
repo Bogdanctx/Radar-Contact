@@ -19,9 +19,11 @@ void Map::render(sf::RenderTarget* window)
 	return;
 }
 
-void Map::GenerateMap(std::string map)
+void Map::GenerateMap(std::string country, std::string position)
 {
-	mapTexture.loadFromFile("../Resources/images/maps/" + map + ".png");
+	std::string airport = "lrop";
+
+	mapTexture.loadFromFile("../Resources/images/maps/" + country + "/" + position + "/" + airport + ".png");
 	mapSprite.setTexture(mapTexture);
 
 	return;

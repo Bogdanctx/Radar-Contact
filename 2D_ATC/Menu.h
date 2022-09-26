@@ -8,6 +8,7 @@
 #include "Career.h"
 
 #include "Button.h"
+#include "AssetsManager.h"
 
 class Menu
 {

@@ -5,6 +5,26 @@ Button::Button()
 
 }
 
+Button::Button(sf::Vector2f size, sf::Vector2f position)
+{
+	buttonBody.setSize(size);
+
+	// Putting origin in middle
+	sf::FloatRect buttonBounds = buttonBody.getGlobalBounds();
+	sf::Vector2f newOrigin(buttonBounds.left + buttonBounds.width / 2,
+						buttonBounds.top + buttonBounds.height / 2);
+	buttonBody.setOrigin(newOrigin);
+
+	buttonBody.setPosition(position);
+
+	return;
+}
+
+Button::~Button()
+{
+
+}
+
 void Button::update()
 {
 
@@ -18,48 +38,16 @@ void Button::render(sf::RenderTarget* window)
 	return;
 }
 
-void Button::setSize(sf::Vector2f size)
-{
-	buttonBody.setSize(size);
-
-	sf::FloatRect buttonBounds = buttonBody.getGlobalBounds();
-	buttonBody.setOrigin(sf::Vector2f(buttonBounds.left + buttonBounds.width / 2, buttonBounds.top + buttonBounds.height / 2));
-
-	return;
-}
-
-void Button::setText(sf::Font *font, sf::String string)
+void Button::SetText(sf::Font *font, sf::String string)
 {
 	buttonText.setFont(*font);
 	buttonText.setString(string);
-
-
-	return;
-}
-
-void Button::setTextInMiddle()
-{
-	sf::FloatRect textBounds = buttonText.getGlobalBounds();
-	sf::Vector2f buttonPosition = buttonBody.getPosition();
-
-	float originX = textBounds.left + textBounds.width / 2,
-		originY = textBounds.top + textBounds.height / 2;
-
-	buttonText.setOrigin(sf::Vector2f(originX, originY));
-
-	buttonText.setPosition(buttonPosition);
 	
 	return;
 }
 
-void Button::setPosition(sf::Vector2f position)
-{
-	buttonBody.setPosition(position);
 
-	return;
-}
-
-void Button::setDefaultColor(sf::Color color)
+void Button::SetDefaultColor(sf::Color color)
 {
 	defaultColor = color;
 
@@ -72,36 +60,21 @@ void Button::setDefaultColor(sf::Color color)
 	return;
 }
 
-void Button::setBackgroundColor(sf::Color color)
-{
-	buttonBody.setFillColor(color);
-
-	return;
-}
-
-void Button::setBorderColor(sf::Color color)
-{
-	buttonBody.setOutlineColor(color);
-
-	return;
-}
-
-void Button::setBorderThickness(float thickness)
+void Button::SetBorder(float thickness, sf::Color color)
 {
 	buttonBody.setOutlineThickness(thickness);
-
-	return;
+	buttonBody.setOutlineColor(color);
 }
 
 void Button::CheckMouseHover(sf::Vector2i mousePosition)
 {
 	if (buttonBody.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))
 	{
-		setBackgroundColor(hoverColor);
+		buttonBody.setFillColor(hoverColor);
 	}
 	else
 	{
-		setBackgroundColor(defaultColor);
+		buttonBody.setFillColor(defaultColor);
 	}
 
 	return;
@@ -115,4 +88,11 @@ bool Button::isButtonClicked(sf::Vector2i mousePosition)
 	}
 
 	return false;
+}
+
+void Button::CenterText()
+{
+
+
+	return;
 }

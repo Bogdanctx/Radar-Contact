@@ -141,22 +141,15 @@ void Career::initSounds()
 
 void Career::initButtons()
 {
-	cancelButton.setSize(sf::Vector2f(300, 90));
-	cancelButton.setPosition(sf::Vector2f(400, 750));
-	cancelButton.setDefaultColor(sf::Color(24, 25, 26, 255));
-	cancelButton.setBorderColor(sf::Color::White);
-	cancelButton.setBorderThickness(2);
-	cancelButton.setText(&comfortaa, "Cancel");
-	cancelButton.setTextInMiddle();
+	cancelButton = Button(sf::Vector2f(300, 90), sf::Vector2f(400, 750));
+	submitButton = Button(sf::Vector2f(300, 90), sf::Vector2f(800, 750));
 
-	submitButton.setSize(sf::Vector2f(300, 90));
-	submitButton.setPosition(sf::Vector2f(800, 750));
-	submitButton.setDefaultColor(sf::Color(24, 25, 26, 255));
-	submitButton.setBorderColor(sf::Color::White);
-	submitButton.setBorderThickness(2);
-	submitButton.setText(&comfortaa, "Submit");
-	submitButton.setTextInMiddle();
-
+	cancelButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
+	cancelButton.SetBorder(2, sf::Color::White);
+	
+	submitButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
+	submitButton.SetBorder(2, sf::Color::White);
+	
 	return;
 }
 

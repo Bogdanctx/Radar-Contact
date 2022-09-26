@@ -5,9 +5,7 @@ Game::Game()
 	gameWindow.create(sf::VideoMode(1200, 900), "2D - Air Traffic Controller");
 	gameWindow.setFramerateLimit(60);
 
-	initTextures();
-	initSprites();
-
+	initAssets();
 }
 
 void Game::run()
@@ -116,14 +114,10 @@ void Game::processEvents()
 	return;
 }
 
-void Game::initTextures()
+void Game::initAssets()
 {
-
-	return;
-}
-
-void Game::initSprites()
-{
+	AssetsManager::Instance()->LoadFont("comfortaa", "../Resources/fonts/Comfortaa-Regular.ttf");
+	AssetsManager::Instance()->LoadFont("merriweather", "../Resources/fonts/MerriweatherSans-Regular.ttf");
 
 	return;
 }

@@ -1,12 +1,14 @@
 #include "Menu.h"
+#include <iostream>
 
 Menu::Menu()
 {
 	initSounds();
 	initTextures();
 	initSprites();
-	initFonts();
 	initButtons();
+
+
 }
 
 void Menu::update(sf::Vector2i mousePosition)
@@ -118,38 +120,26 @@ void Menu::initSprites()
 	return;
 }
 
-void Menu::initFonts()
-{
-	comfortaa.loadFromFile("../Resources/fonts/Comfortaa-Regular.ttf");
-
-	return;
-}
-
 void Menu::initButtons()
 {
-	continueCareer.setSize(sf::Vector2f(300, 90));
-	continueCareer.setPosition(sf::Vector2f(600, 350));
-	continueCareer.setDefaultColor(sf::Color(24, 25, 26, 255));
-	continueCareer.setBorderColor(sf::Color::White);
-	continueCareer.setBorderThickness(2);
-	continueCareer.setText(&comfortaa, "Continue career");
-	continueCareer.setTextInMiddle();
+	continueCareer = Button(sf::Vector2f(300, 90), sf::Vector2f(600, 350));
+	newCareer = Button(sf::Vector2f(300, 90), sf::Vector2f(600, 480));
+	settingsButton = Button(sf::Vector2f(300, 90), sf::Vector2f(600, 610));
 
-	newCareer.setSize(sf::Vector2f(300, 90));
-	newCareer.setPosition(sf::Vector2f(600, 480));
-	newCareer.setDefaultColor(sf::Color(24, 25, 26, 255));
-	newCareer.setBorderColor(sf::Color::White);
-	newCareer.setBorderThickness(2);
-	newCareer.setText(&comfortaa, "New career");
-	newCareer.setTextInMiddle();
-
-	settingsButton.setSize(sf::Vector2f(300, 90));
-	settingsButton.setPosition(sf::Vector2f(600, 610));
-	settingsButton.setDefaultColor(sf::Color(24, 25, 26, 255));
-	settingsButton.setBorderColor(sf::Color::White);
-	settingsButton.setBorderThickness(2);
-	settingsButton.setText(&comfortaa, "Settings");
-	settingsButton.setTextInMiddle();
+	continueCareer.SetDefaultColor(sf::Color(24, 25, 26, 255));
+	continueCareer.SetBorder(2, sf::Color::White);
+	continueCareer.SetText(&AssetsManager::Instance()->getFont("comfortaa"), "Continue career");
+	continueCareer.CenterText();
+	
+	newCareer.SetDefaultColor(sf::Color(24, 25, 26, 255));
+	newCareer.SetBorder(2, sf::Color::White);
+	newCareer.SetText(&AssetsManager::Instance()->getFont("comfortaa"), "New career");
+	newCareer.CenterText();
+	
+	settingsButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
+	settingsButton.SetBorder(2, sf::Color::White);
+	settingsButton.SetText(&AssetsManager::Instance()->getFont("comfortaa"), "Settings");
+	settingsButton.CenterText();
 
 	return;
 }

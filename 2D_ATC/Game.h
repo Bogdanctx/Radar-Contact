@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Menu.h"
 #include "Map.h"
+#include "AssetsManager.h"
 
 class Game
 {
@@ -12,7 +13,14 @@ public:
 	void run();
 
 private:
+	void update();
+	void render();
+	void processEvents();
+
+	void initAssets();
+
 	Menu menu;
+
 	Map map;
 
 	sf::RenderWindow gameWindow;
@@ -23,12 +31,5 @@ private:
 	std::string playerName;
 	std::string country;
 	std::string position;
-
-	void update();
-	void render();
-	void processEvents();
-
-	void initTextures();
-	void initSprites();
 };
 

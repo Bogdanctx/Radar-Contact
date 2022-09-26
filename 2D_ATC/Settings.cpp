@@ -47,13 +47,10 @@ void Settings::initSounds()
 
 void Settings::initButtons()
 {
-	applyButton.setSize(sf::Vector2f(300, 90));
-	applyButton.setPosition(sf::Vector2f(600, 750));
-	applyButton.setDefaultColor(sf::Color(24, 25, 26, 255));
-	applyButton.setBorderColor(sf::Color::White);
-	applyButton.setBorderThickness(2);
-	applyButton.setText(&comfortaa, "Apply");
-	applyButton.setTextInMiddle();
+	applyButton = Button(sf::Vector2f(300, 90), sf::Vector2f(600, 750));
+
+	applyButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
+	applyButton.SetBorder(2, sf::Color::White);
 
 	return;
 }

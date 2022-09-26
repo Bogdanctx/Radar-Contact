@@ -1,10 +1,45 @@
-﻿  Game.cpp
-  Main.cpp
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Main.cpp(7,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Map.cpp
+﻿  Button.cpp
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Button.cpp(71,87): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Button.cpp(71,70): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Button.cpp(85,87): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Button.cpp(85,70): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Button.cpp(101,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'double'
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Button.cpp(101,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'double'
   Generating code
-  38 of 349 functions (10.9%) were compiled, the rest were copied from previous compilation.
-    3 functions were new in current compilation
-    27 functions had inline decision re-evaluated but remain unchanged
+  2 of 443 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2D_ATC.vcxproj -> C:\Users\bobot\Desktop\2D_ATC\Release\2D_ATC.exe

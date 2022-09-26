@@ -6,18 +6,17 @@ class Button
 {
 public:
 	Button();
+	Button(sf::Vector2f size, sf::Vector2f position);
+	~Button();
 
 	void update();
 	void render(sf::RenderTarget* window);
 
-	void setSize(sf::Vector2f size);
-	void setText(sf::Font *font, sf::String string);
-	void setTextInMiddle();
-	void setPosition(sf::Vector2f position);
-	void setDefaultColor(sf::Color color);
-	void setBackgroundColor(sf::Color color);
-	void setBorderColor(sf::Color color);
-	void setBorderThickness(float thickness);
+	void SetText(sf::Font *font, sf::String string);
+	void SetDefaultColor(sf::Color color);
+	void SetHoverColor();
+	void SetBorder(float thickness, sf::Color color = sf::Color::White);
+	void CenterText();
 
 	void CheckMouseHover(sf::Vector2i mousePosition);
 

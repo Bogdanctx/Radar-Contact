@@ -20,13 +20,10 @@ private:
 	void initAssets();
 
 	Menu menu;
-
+	AssetsManager assetsManager;
 	Map map;
 
 	sf::RenderWindow gameWindow;
-
-	sf::Texture texture;
-	sf::Sprite sprite;
 
 	std::string playerName;
 	std::string country;

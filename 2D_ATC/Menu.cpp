@@ -3,12 +3,17 @@
 
 Menu::Menu()
 {
+	
+}
+
+Menu::Menu(AssetsManager* assetsManager)
+{
+	this->assetsManager = assetsManager;
+
 	initSounds();
-	initTextures();
 	initSprites();
 	initButtons();
-
-
+	initObjects();
 }
 
 void Menu::update(sf::Vector2i mousePosition)
@@ -99,23 +104,14 @@ void Menu::HandleInput(unsigned unicode)
 
 void Menu::initSounds()
 {
-	buttonClickBuffer.loadFromFile("../Resources/sounds/buttonClick.wav");
-
-	buttonClickSound.setBuffer(buttonClickBuffer);
-
-	return;
-}
-
-void Menu::initTextures()
-{
-	backgroundTexture.loadFromFile("../Resources/images/menu/menu.png");
+	buttonClickSound.setBuffer(assetsManager->GetSoundBuffer("buttonClick.wav"));
 
 	return;
 }
 
 void Menu::initSprites()
 {
-	backgroundSprite.setTexture(backgroundTexture);
+	backgroundSprite.setTexture(assetsManager->GetTexture("menu.png"));
 
 	return;
 }
@@ -126,20 +122,30 @@ void Menu::initButtons()
 	newCareer = Button(sf::Vector2f(300, 90), sf::Vector2f(600, 480));
 	settingsButton = Button(sf::Vector2f(300, 90), sf::Vector2f(600, 610));
 
+
 	continueCareer.SetDefaultColor(sf::Color(24, 25, 26, 255));
 	continueCareer.SetBorder(2, sf::Color::White);
-	continueCareer.SetText(&AssetsManager::Instance()->getFont("comfortaa"), "Continue career");
+	continueCareer.SetText(&assetsManager->GetFont("Comfortaa-Regular.ttf"), "Continue career");
 	continueCareer.CenterText();
 	
 	newCareer.SetDefaultColor(sf::Color(24, 25, 26, 255));
 	newCareer.SetBorder(2, sf::Color::White);
-	newCareer.SetText(&AssetsManager::Instance()->getFont("comfortaa"), "New career");
+	newCareer.SetText(&assetsManager->GetFont("Comfortaa-Regular.ttf"), "New career");
 	newCareer.CenterText();
+
 	
 	settingsButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
 	settingsButton.SetBorder(2, sf::Color::White);
-	settingsButton.SetText(&AssetsManager::Instance()->getFont("comfortaa"), "Settings");
+	settingsButton.SetText(&assetsManager->GetFont("Comfortaa-Regular.ttf"), "Settings");
 	settingsButton.CenterText();
+
+	return;
+}
+
+void Menu::initObjects()
+{
+	settingsTab = Settings(assetsManager);
+	career = Career(assetsManager);
 
 	return;
 }

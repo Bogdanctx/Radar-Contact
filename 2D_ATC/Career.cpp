@@ -2,8 +2,14 @@
 
 Career::Career()
 {
+	
+}
+
+Career::Career(AssetsManager* assetsManager)
+{
+	this->assetsManager = assetsManager;
+
 	initSounds();
-	initFonts();
 	initButtons();
 	initInputs();
 	initFlags();
@@ -78,13 +84,13 @@ void Career::HandleClick()
 	else if(submitButton.isButtonClicked(mousePosition))
 	{
 		out = std::ofstream("../Resources/Career/careerData.txt");
-		if (playerName.GetInputData().length() == 0)
+		if (playerName.GetInput().length() == 0)
 		{
 			_playerName = "newCareer";
 		}
 		else
 		{
-			_playerName = playerName.GetInputData();
+			_playerName = playerName.GetInput();
 		}
 		
 		if (flagIndex == -1)
@@ -132,9 +138,7 @@ bool Career::isCareerCreated()
 
 void Career::initSounds()
 {
-	buttonClickBuffer.loadFromFile("../Resources/sounds/buttonClick.wav");
-
-	buttonClickSound.setBuffer(buttonClickBuffer);
+	buttonClickSound.setBuffer(assetsManager->GetSoundBuffer("buttonClick.wav"));
 
 	return;
 }
@@ -146,30 +150,26 @@ void Career::initButtons()
 
 	cancelButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
 	cancelButton.SetBorder(2, sf::Color::White);
+	cancelButton.SetText(&assetsManager->GetFont("Comfortaa-Regular.ttf"), "Cancel");
+	cancelButton.CenterText();
 	
 	submitButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
 	submitButton.SetBorder(2, sf::Color::White);
-	
-	return;
-}
-
-void Career::initFonts()
-{
-	comfortaa.loadFromFile("../Resources/fonts/Comfortaa-Regular.ttf");
+	submitButton.SetText(&assetsManager->GetFont("Comfortaa-Regular.ttf"), "Submit");
+	submitButton.CenterText();
 
 	return;
 }
 
 void Career::initInputs()
 {
-	playerName.setSize(sf::Vector2f(700, 50));
-	playerName.setBackgroundColor(sf::Color(29, 30, 31));
-	playerName.setPosition(sf::Vector2f(600, 300));
-	playerName.setBorderColor(sf::Color::White);
-	playerName.setBorderThickness(1);
-	playerName.setInputDescription("YOUR NAME");
-	playerName.setMaxChars(45);
-	playerName.setCharactersSize(15);
+	playerName = Input(assetsManager, sf::Vector2f(700, 50), sf::Vector2f(600, 300));
+
+	playerName.SetBackgroundColor(sf::Color(29, 30, 31));
+	playerName.SetBorder(1, sf::Color::White);
+	playerName.SetDescription("Your name");
+	playerName.SetMaxLength(45);
+	playerName.SetCharsSize(22);
 
 	return;
 }
@@ -189,7 +189,7 @@ void Career::initFlags()
 
 void Career::initText()
 {
-	countrySelectedInfo.setFont(comfortaa);
+	countrySelectedInfo.setFont(assetsManager->GetFont("Comfortaa-Regular.ttf"));
 	countrySelectedInfo.setCharacterSize(35);
 	countrySelectedInfo.setPosition(sf::Vector2f(100, 600));
 

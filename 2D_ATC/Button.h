@@ -22,10 +22,10 @@ public:
 
 	bool isButtonClicked(sf::Vector2i mousePosition);
 
+private:
 	sf::RectangleShape buttonBody;
 	sf::Text buttonText;
 
-private:
 	sf::Color defaultColor;
 	sf::Color hoverColor;
 };

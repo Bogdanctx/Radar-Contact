@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include "Button.h"
 #include "Input.h"
+#include "AssetsManager.h"
 
 #define FLAGS 1
 
@@ -12,6 +13,7 @@ class Career
 {
 public:
 	Career();
+	Career(AssetsManager* assetsManager);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -32,7 +34,6 @@ public:
 private:
 	void initSounds();
 	void initButtons();
-	void initFonts();
 	void initInputs();
 	void initFlags();
 	void initText();
@@ -46,8 +47,8 @@ private:
 		"romania"
 	};
 
-	sf::Font comfortaa;
-	sf::SoundBuffer buttonClickBuffer;
+	AssetsManager* assetsManager;
+
 	sf::Sound buttonClickSound;
 	sf::Vector2i mousePosition;
 
@@ -57,6 +58,7 @@ private:
 	sf::Texture flagTexture;
 
 	Input playerName;
+
 	Button cancelButton;
 	Button submitButton;
 

@@ -2,8 +2,14 @@
 
 Settings::Settings()
 {
+
+}
+
+Settings::Settings(AssetsManager* assetsManager)
+{
+	this->assetsManager = assetsManager;
+
 	initSounds();
-	initFonts();
 	initButtons();
 
 	draw = false;
@@ -38,9 +44,7 @@ void Settings::HandleClick()
 
 void Settings::initSounds()
 {
-	buttonClickBuffer.loadFromFile("../Resources/sounds/buttonClick.wav");
-
-	buttonClickSound.setBuffer(buttonClickBuffer);
+	buttonClickSound.setBuffer(assetsManager->GetSoundBuffer("buttonClick.wav"));
 
 	return;
 }
@@ -51,13 +55,8 @@ void Settings::initButtons()
 
 	applyButton.SetDefaultColor(sf::Color(24, 25, 26, 255));
 	applyButton.SetBorder(2, sf::Color::White);
-
-	return;
-}
-
-void Settings::initFonts()
-{
-	comfortaa.loadFromFile("../Resources/fonts/Comfortaa-Regular.ttf");
+	applyButton.SetText(&assetsManager->GetFont("Comfortaa-Regular.ttf"), "Apply");
+	applyButton.CenterText();
 
 	return;
 }

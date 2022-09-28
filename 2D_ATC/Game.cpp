@@ -116,8 +116,14 @@ void Game::processEvents()
 
 void Game::initAssets()
 {
-	AssetsManager::Instance()->LoadFont("comfortaa", "../Resources/fonts/Comfortaa-Regular.ttf");
-	AssetsManager::Instance()->LoadFont("merriweather", "../Resources/fonts/MerriweatherSans-Regular.ttf");
+	assetsManager.LoadFont("Comfortaa-Regular.ttf");
+	assetsManager.LoadFont("MerriweatherSans-Regular.ttf");
+
+	assetsManager.LoadTexture("menu.png", "../Resources/images/menu");
+
+	assetsManager.LoadSoundBuffer("buttonClick.wav");
+
+	menu = Menu(&assetsManager);
 
 	return;
 }

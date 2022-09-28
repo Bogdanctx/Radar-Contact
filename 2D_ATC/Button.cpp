@@ -42,7 +42,7 @@ void Button::SetText(sf::Font *font, sf::String string)
 {
 	buttonText.setFont(*font);
 	buttonText.setString(string);
-	
+
 	return;
 }
 
@@ -89,10 +89,16 @@ bool Button::isButtonClicked(sf::Vector2i mousePosition)
 
 	return false;
 }
-
+#include <iostream>
 void Button::CenterText()
 {
+	sf::FloatRect textBounds = buttonText.getGlobalBounds();
+	sf::Vector2f newOrigin(textBounds.left + textBounds.width / 2,
+		textBounds.top + textBounds.height / 2);
 
+	buttonText.setOrigin(newOrigin);
+
+	buttonText.setPosition(buttonBody.getPosition());
 
 	return;
 }

@@ -1,40 +1,35 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "AssetsManager.h"
 
 class Input
-{
+{ 
 public:
 	Input();
+	Input(AssetsManager* assetsManager, sf::Vector2f size, sf::Vector2f position);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
-
-	void setPosition(sf::Vector2f position);
-	void setSize(sf::Vector2f size);
-	void setBackgroundColor(sf::Color color);
-	void setBorderColor(sf::Color color);
-	void setBorderThickness(float thickness);
-	void setMaxChars(unsigned max);
-
-	void setInputDescription(std::string text);
-	void setCharactersSize(unsigned size);
-	
 	void HandleInput(unsigned unicode);
 
-	std::string GetInputData();
+	void SetBorder(float thickness, sf::Color color);
+	void SetDescription(const std::string text);
+	void SetMaxLength(const unsigned short max);
+	void SetCharsSize(const unsigned short size);
+	void SetBackgroundColor(sf::Color color);
+
+	std::string GetInput();
 
 private:
-	void initFonts();
-	void initTexts();
+	AssetsManager* assetsManager;
 
-	unsigned maxChars;
-
-	std::string inputDataString;
-	sf::Vector2i mousePosition;
-	sf::Font merriweather;
+	sf::RectangleShape inputBody;
 	sf::Text inputDescription;
 	sf::Text inputDataText;
-	sf::RectangleShape inputBody;
+	sf::Vector2i mousePosition;
+	std::string inputDataString;
+
+	unsigned short maxLength;
 };
 

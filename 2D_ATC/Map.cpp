@@ -2,7 +2,12 @@
 
 Map::Map()
 {
-	maps.push_back("romania");
+
+}
+
+Map::Map(AssetsManager* assetsManager)
+{
+	this->assetsManager = assetsManager;
 }
 
 void Map::update(sf::Vector2i mousePosition)

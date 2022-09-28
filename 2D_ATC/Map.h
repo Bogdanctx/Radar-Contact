@@ -1,12 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include "AssetsManager.h"
 
 class Map
 {
 public:
 	Map();
+	Map(AssetsManager* assetsManager);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -14,11 +15,8 @@ public:
 	void GenerateMap(std::string country, std::string position);
 
 private:
-
-
-
-	std::vector<std::string>maps;
-
+	AssetsManager* assetsManager;
+	
 	sf::Texture mapTexture;
 	sf::Sprite mapSprite;
 	sf::Vector2i mousePosition;

@@ -14,6 +14,7 @@ class Menu
 {
 public:
 	Menu();
+	Menu(AssetsManager *assetsManager);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -28,19 +29,16 @@ public:
 
 private:
 	void initSounds();
-	void initTextures();
 	void initSprites();
-	void initFonts();
 	void initButtons();
+	void initObjects();
+
+	AssetsManager *assetsManager;
 
 	sf::Vector2i mousePosition;
 
-	sf::Font comfortaa;
-
-	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 
-	sf::SoundBuffer buttonClickBuffer;
 	sf::Sound buttonClickSound;
 
 	Button continueCareer;

@@ -11,13 +11,13 @@ public:
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
-	
-	void GenerateMap(std::string country, std::string position);
+
+	void LoadMap(const std::string country, const std::string position);
+
 
 private:
 	AssetsManager* assetsManager;
 	
-	sf::Texture mapTexture;
 	sf::Sprite mapSprite;
 	sf::Vector2i mousePosition;
 };

@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "Map.h"
 #include "AssetsManager.h"
+#include "Airplane.h"
 
 class Game
 {
@@ -22,8 +23,10 @@ private:
 	Menu menu;
 	AssetsManager assetsManager;
 	Map map;
+	std::vector<Airplane>airplanes;
 
 	sf::RenderWindow gameWindow;
+	sf::Clock airplaneSpawner;
 
 	std::string playerName;
 	std::string country;

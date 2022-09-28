@@ -24,12 +24,16 @@ void Map::render(sf::RenderTarget* window)
 	return;
 }
 
-void Map::GenerateMap(std::string country, std::string position)
+void Map::LoadMap(const std::string country, const std::string position)
 {
-	std::string airport = "lrop";
-
-	mapTexture.loadFromFile("../Resources/images/maps/" + country + "/" + position + "/" + airport + ".png");
-	mapSprite.setTexture(mapTexture);
+	if (position == "ground")
+	{
+		mapSprite.setTexture(assetsManager->GetTexture(country + "Ground.png"));
+	}
+	else if (position == "radar")
+	{
+		mapSprite.setTexture(assetsManager->GetTexture(country + "Radar.png"));
+	}
 
 	return;
 }

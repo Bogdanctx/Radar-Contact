@@ -54,7 +54,7 @@ private:
 
 	sf::Text countrySelectedInfo;
 
-	sf::Sprite flagsSprite[10];
+	sf::Sprite flagsSprite[FLAGS];
 	sf::Texture flagTexture;
 
 	Input playerName;

@@ -36,12 +36,25 @@ void Game::update()
 
 			menu.drawMenu = false;
 
-			map.GenerateMap(country, position);
+			map.LoadMap(country, position);
 		}
 	}
 	else
 	{
 		map.update(mousePosition);
+
+		for (auto& it: airplanes ) {
+			it.update(mousePosition);
+		}
+
+		if (airplaneSpawner.getElapsedTime().asSeconds() >= 1)
+		{
+			if (rand() % 101 >= 80)
+			{ // creating a new airplane
+				airplanes.push_back(Airplane());
+				airplaneSpawner.restart();
+			}
+		}
 	}
 
 	return;
@@ -58,6 +71,11 @@ void Game::render()
 	else
 	{
 		map.render(&gameWindow);
+
+		for (auto it : airplanes)
+		{
+			it.render(&gameWindow);
+		}
 	}
 
 	gameWindow.display();
@@ -121,9 +139,15 @@ void Game::initAssets()
 
 	assetsManager.LoadTexture("menu.png", "../Resources/images/menu");
 
+	assetsManager.LoadTexture("romania.png", "../Resources/images/flags");
+
+	assetsManager.LoadTexture("romaniaGround.png", "../Resources/images/maps/romania");
+	assetsManager.LoadTexture("romaniaRadar.png", "../Resources/images/maps/romania");
+
 	assetsManager.LoadSoundBuffer("buttonClick.wav");
 
 	menu = Menu(&assetsManager);
+	map = Map(&assetsManager);
 
 	return;
 }

@@ -178,8 +178,7 @@ void Career::initFlags()
 {
 	for (int i = 0; i < 1; i++)
 	{
-		flagTexture.loadFromFile("../Resources/images/flags/"+ flags[i]+".png");
-		flagsSprite[i].setTexture(flagTexture);
+		flagsSprite[i].setTexture(assetsManager->GetTexture(flags[i]+".png"));
 		setFlag(i);
 	}
 

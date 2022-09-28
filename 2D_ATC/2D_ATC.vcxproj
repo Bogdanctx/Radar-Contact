@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Airplane.cpp" />
     <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Career.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Airplane.h" />
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Career.h" />

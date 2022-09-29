@@ -47,12 +47,27 @@ void Game::update()
 			it.update(mousePosition);
 		}
 
-		if (airplaneSpawner.getElapsedTime().asSeconds() >= 1)
+		SummonNewAirplane();
+	}
+
+	return;
+}
+
+void Game::SummonNewAirplane()
+{
+	if (menu.drawMenu == false)
+	{
+		if (airplanesSpawner.getElapsedTime().asSeconds() >= 5)
 		{
-			if (rand() % 101 >= 80)
-			{ // creating a new airplane
-				airplanes.push_back(Airplane());
-				airplaneSpawner.restart();
+			int chance = rand() % 101;
+
+			if (chance >= 70)
+			{
+				printf("ok\n");
+				Airplane airplane = Airplane(&assetsManager);
+
+				airplanes.push_back(airplane);
+				airplanesSpawner.restart();
 			}
 		}
 	}

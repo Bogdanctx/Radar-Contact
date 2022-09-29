@@ -20,13 +20,15 @@ private:
 
 	void initAssets();
 
+	void SummonNewAirplane();
+
 	Menu menu;
 	AssetsManager assetsManager;
 	Map map;
 	std::vector<Airplane>airplanes;
 
 	sf::RenderWindow gameWindow;
-	sf::Clock airplaneSpawner;
+	sf::Clock airplanesSpawner;
 
 	std::string playerName;
 	std::string country;

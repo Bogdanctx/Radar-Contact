@@ -1,17 +1,7 @@
-﻿  Airplane.cpp
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(14,10): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(13,10): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
+﻿  Game.cpp
   Generating code
-  2 of 599 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  0 of 620 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2D_ATC.vcxproj -> C:\Users\bobot\Desktop\2D_ATC\Release\2D_ATC.exe

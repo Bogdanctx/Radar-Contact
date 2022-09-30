@@ -64,7 +64,7 @@ void Game::SummonNewAirplane()
 			if (chance >= 70)
 			{
 				printf("ok\n");
-				Airplane airplane = Airplane(&assetsManager);
+				Airplane airplane = Airplane(&assetsManager, &map);
 
 				airplanes.push_back(airplane);
 				airplanesSpawner.restart();
@@ -136,6 +136,16 @@ void Game::processEvents()
 					if (windowEvent.mouseButton.button == sf::Mouse::Left)
 					{
 						menu.HandleClick();
+					}
+				}
+				else
+				{
+					if (windowEvent.mouseButton.button == sf::Mouse::Left)
+					{
+						for (auto &it : airplanes)
+						{
+							it.HandleClick();
+						}
 					}
 				}
 			}

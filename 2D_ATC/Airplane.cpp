@@ -7,12 +7,14 @@ Airplane::Airplane()
 {
 
 }
-
-Airplane::Airplane(AssetsManager* assetsManager)
+#include <iostream>
+Airplane::Airplane(AssetsManager* assetsManager, Map *map)
 {
 	this->assetsManager = assetsManager;
+	this->map = map;
 
 	std::string callsigns[CALLSIGNS] = { "ROT", "KLM", "AFR", "WZZ", "TAP" };
+	airplaneSelected = false;
 
 	velocity.x = velocity.y = 1.5f;
 
@@ -24,32 +26,30 @@ Airplane::Airplane(AssetsManager* assetsManager)
 	int cadran = cadrans[rand()%4];
 	sf::Vector2f spawnPosition;
 
+	spawnPosition.x = rand() % (map->airportData.cadran[cadran].x2 - map->airportData.cadran[cadran].x1) + map->airportData.cadran[cadran].x1;
+	spawnPosition.y = rand() % (map->airportData.cadran[cadran].y2 - map->airportData.cadran[cadran].y1) + map->airportData.cadran[cadran].y1;
+
+	std::cout << spawnPosition.x << ' '<< spawnPosition.y << '\n';
+
 	if (cadran == 0)
 	{
-		spawnPosition.x = rand() % (1200-1000) + 1000;
-		spawnPosition.y = rand() % (870 - 20) + 20;
-		heading = rand() % (270 - 90) + 90;
+		heading = rand() % (210 - 120) + 120 + 90;
 	}
 	else if (cadran == 1)
 	{
-		spawnPosition.x = rand() % (1180 - 20) + 20;
-		spawnPosition.y = rand() % (200 - 15) + 15;
-		heading = rand() % (360 - 180) + 180;
-		
+		heading = rand() % (330 - 210) + 180;
 	}
 	else if (cadran == 2)
 	{
-		spawnPosition.x = rand() % (125 - 5) + 5;
-		spawnPosition.y = rand() % (870 - 20) + 20;
-		heading = rand() % (270 - 90) + 180;
-		
+		heading = rand() % (300 - 60) + 60;
 	}
 	else if (cadran == 3)
 	{
-		spawnPosition.x = rand() % (1200 - 1000) + 1000;
-		spawnPosition.y = rand() % (880 - 730) + 730;
-		heading = rand() % 180;
+		heading = rand() % (150 - 30) - 30;
 	}
+
+	if (heading < 0)
+		heading = -heading;
 
 	airplane.setPosition(spawnPosition);
 
@@ -76,6 +76,14 @@ Airplane::Airplane(AssetsManager* assetsManager)
 	));
 	airplaneHeading.setCharacterSize(12);
 	airplaneHeading.setString(std::to_string(heading));
+
+	directionShape.setSize(sf::Vector2f(2, 30));
+	directionShape.setPosition(sf::Vector2f(
+		spawnPosition.x + 5,
+		spawnPosition.y + 5
+	));
+	directionShape.setFillColor(sf::Color::White);
+	directionShape.setRotation(heading - 180);
 }
 
 void Airplane::update(sf::Vector2i mousePosition)
@@ -85,8 +93,8 @@ void Airplane::update(sf::Vector2i mousePosition)
 	if (updateTimer.getElapsedTime().asMilliseconds() >= 700)
 	{
 		airplane.move(sf::Vector2f(
-			sin((PI/180) * (heading + 90)) * velocity.x,
-			cos((PI / 180) * (heading + 90)) * velocity.y
+			sin( (heading + 0) * PI / 180) * velocity.x,
+			cos( (heading + 180) * PI / 180) * velocity.y
 		));
 		sf::Vector2f airplanePosition = airplane.getPosition();
 
@@ -102,6 +110,11 @@ void Airplane::update(sf::Vector2i mousePosition)
 			airplanePosition.x + 10,
 			airplanePosition.y - 33
 		));
+		directionShape.setPosition(sf::Vector2f(
+			airplanePosition.x + 5,
+			airplanePosition.y + 5
+		));
+		directionShape.setRotation(heading - 180);
 
 		updateTimer.restart();
 
@@ -116,6 +129,25 @@ void Airplane::render(sf::RenderTarget* window)
 	window->draw(dataStick);
 	window->draw(airplaneCallsign);
 	window->draw(airplaneHeading);
+
+	if (airplaneSelected)
+	{
+		window->draw(directionShape);
+	}
+
+	return;
+}
+
+void Airplane::HandleClick()
+{
+	if (airplane.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))
+	{
+		airplaneSelected = true;
+	}
+	else
+	{
+		airplaneSelected = false;
+	}
 
 	return;
 }

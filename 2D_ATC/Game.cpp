@@ -63,7 +63,6 @@ void Game::SummonNewAirplane()
 
 			if (chance >= 70)
 			{
-				printf("ok\n");
 				Airplane airplane = Airplane(&assetsManager, &map);
 
 				airplanes.push_back(airplane);

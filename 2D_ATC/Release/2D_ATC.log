@@ -1,36 +1,27 @@
 ﻿  Airplane.cpp
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(29,103): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(31,103): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(30,103): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(32,103): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(86,37): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(97,37): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(55,31): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(96,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(115,38): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(96,35): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(114,36): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(117,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(143,85): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(143,68): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(176,85): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=int
@@ -39,12 +30,30 @@ C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(143,68): warning C4244: 'argum
           [
               T=float
           ]
-  Game.cpp
-  Main.cpp
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Main.cpp(7,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(176,68): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(218,31): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(220,31): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(223,47): warning C4244: '=': conversion from 'double' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(228,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  9 of 624 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+  1 of 624 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    54 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2D_ATC.vcxproj -> C:\Users\bobot\Desktop\2D_ATC\Release\2D_ATC.exe

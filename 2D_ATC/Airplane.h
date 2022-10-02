@@ -15,6 +15,8 @@ public:
 	void HandleClick();
 
 private:
+	void HandleInternEvents();
+
 	sf::RectangleShape airplane;
 	sf::RectangleShape dataStick;
 	sf::RectangleShape directionShape;
@@ -22,16 +24,19 @@ private:
 	sf::Clock updateTimer;
 
 	sf::Vector2f velocity;
-	unsigned short altitude;
-	short heading;
+	int _altitude;
+	short _heading, _newHeading;
 	unsigned short cadrans[4] = { 0, 1, 2, 3 };
 	bool airplaneSelected;
+	bool settingNewHeading;
 
 	AssetsManager* assetsManager;
 	Map* map;
 
-	sf::Text airplaneCallsign;
-	sf::Text airplaneHeading;
+	sf::Text callsign;
+	sf::Text heading, newHeading, altitude;
 	std::string s_callSign;
+
+	sf::Clock altitudeChangeTimer;
 };
 

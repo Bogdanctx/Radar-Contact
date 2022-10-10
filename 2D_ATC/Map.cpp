@@ -29,6 +29,8 @@ void Map::LoadMap(const std::string country, const std::string position)
 	if (position == "ground")
 	{
 		mapSprite.setTexture(assetsManager->GetTexture(country + "Ground.png"));
+		airportData.minAltitude = 1000;
+		airportData.maxAltitude = 10000;
 
 		read = std::ifstream("../Resources/airports/" + country + "/ground.txt");
 

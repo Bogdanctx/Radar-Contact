@@ -26,6 +26,8 @@ public:
 			int x, y; // position
 		} runways[15];
 		int numberOfRunways;
+		short minAltitude, maxAltitude;
+		bool tower;
 	};
 
 	AirportData airportData;

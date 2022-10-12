@@ -43,7 +43,7 @@ void Map::LoadMap(const std::string country, const std::string position)
 
 		for (int i = 0; i < airportData.numberOfRunways;i++)
 		{
-			read >> airportData.runways[i].direction;
+			read >> airportData.runways[i].direction; // left / right
 			read >> airportData.runways[i].heading;
 			read >> airportData.runways[i].x >> airportData.runways[i].y;
 		}

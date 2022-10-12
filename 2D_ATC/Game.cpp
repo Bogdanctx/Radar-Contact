@@ -63,7 +63,7 @@ void Game::SummonNewAirplane()
 
 			if (chance >= 70)
 			{
-				Airplane airplane = Airplane(&assetsManager, &map);
+				Airplane airplane = Airplane(&assetsManager, &map, airplanes.size());
 
 				airplanes.push_back(airplane);
 				airplanesSpawner.restart();

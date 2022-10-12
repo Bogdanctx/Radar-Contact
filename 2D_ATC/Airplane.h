@@ -8,13 +8,17 @@ class Airplane
 {
 public:
 	Airplane();
-	Airplane(AssetsManager* assetsManager, Map *map);
+	Airplane(AssetsManager* assetsManager, Map *map, unsigned id);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 	void HandleClick();
 
+	unsigned id;
+
 private:
+	void initText();
+
 	void HandleInternEvents();
 
 	void HandleHeadingChange();
@@ -22,6 +26,7 @@ private:
 	void HandleSpeedChange();
 
 	void UpdateData();
+	void CheckLanding();
 
 	sf::RectangleShape airplane;
 	sf::RectangleShape dataStick;
@@ -30,8 +35,8 @@ private:
 	sf::Clock updateTimer;
 
 	sf::Vector2f velocity;
-	int _altitude, _newAltitude, _newAltHelper;
-	int _speed, _newSpeed, _newSpeedHelper;
+	int _altitude, _newAltitude;
+	int _speed, _newSpeed;
 	short _heading, _newHeading;
 	unsigned short cadrans[4] = { 0, 1, 2, 3 };
 	bool airplaneSelected;
@@ -39,6 +44,8 @@ private:
 	bool settingNewAltitude;
 	bool settingNewSpeed;
 
+	bool altitudeUpdated;
+	bool speedUpdated;
 
 	AssetsManager* assetsManager;
 	Map* map;

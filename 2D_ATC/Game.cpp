@@ -43,8 +43,18 @@ void Game::update()
 	{
 		map.update(mousePosition);
 
-		for (auto& it: airplanes ) {
+		for (auto &it: airplanes) {
 			it.update(mousePosition);
+
+			if (it.destroyPlane)
+			{
+				airplanes.erase(
+					std::remove_if(airplanes.begin(), airplanes.end(),
+						[](const Airplane& airplane) {
+							return airplane.destroyPlane == 1;
+						}), airplanes.end()
+				);
+			}
 		}
 
 		SummonNewAirplane();
@@ -57,13 +67,13 @@ void Game::SummonNewAirplane()
 {
 	if (menu.drawMenu == false)
 	{
-		if (airplanesSpawner.getElapsedTime().asSeconds() >= 5)
+		if (airplanesSpawner.getElapsedTime().asSeconds() >= 5 && airplanes.size() < 1)
 		{
 			int chance = rand() % 101;
 
 			if (chance >= 70)
 			{
-				Airplane airplane = Airplane(&assetsManager, &map, airplanes.size());
+				Airplane airplane = Airplane(&assetsManager, &map);
 
 				airplanes.push_back(airplane);
 				airplanesSpawner.restart();

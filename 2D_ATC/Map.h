@@ -16,16 +16,20 @@ public:
 	void LoadMap(const std::string country, const std::string position);
 
 	struct AirportData {
-		struct Cadrans {
-			int x1, x2;
-			int y1, y2;
-		} cadran[4];
+		bool connection[50][50];
+		struct Nodes {
+			int x, y;
+			bool finalNode;
+		} nodes[50];
+		struct Spawns {
+			int x, y;
+		} spawns[50];
 		struct Runways {
 			bool direction; // 0 - left, 1 - right
 			int heading; // runway heading
 			int x, y; // position
 		} runways[15];
-		int numberOfRunways;
+		int numberOfRunways, numberOfNodes;
 		short minAltitude, maxAltitude;
 		bool tower;
 	};

@@ -8,13 +8,14 @@ class Airplane
 {
 public:
 	Airplane();
-	Airplane(AssetsManager* assetsManager, Map *map, unsigned id);
+	Airplane(AssetsManager* assetsManager, Map *map);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 	void HandleClick();
 
 	unsigned id;
+	bool destroyPlane;
 
 private:
 	void initText();
@@ -27,12 +28,18 @@ private:
 
 	void UpdateData();
 	void CheckLanding();
+	void CreateAirplane();
+	void GenerateRoute();
+	void CheckNode();
+	short HeadingToNode(int node);
 
 	sf::RectangleShape airplane;
 	sf::RectangleShape dataStick;
 	sf::RectangleShape directionShape;
 	sf::Vector2i mousePosition;
 	sf::Clock updateTimer;
+
+	sf::Vector2f spawnPosition;
 
 	sf::Vector2f velocity;
 	int _altitude, _newAltitude;
@@ -46,6 +53,10 @@ private:
 
 	bool altitudeUpdated;
 	bool speedUpdated;
+
+	int route[50];
+	int routeLength;
+	int currNode;
 
 	AssetsManager* assetsManager;
 	Map* map;

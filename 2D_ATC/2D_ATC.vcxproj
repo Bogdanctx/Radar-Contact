@@ -146,6 +146,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SideMenu.cpp" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SideMenu.h" />
   </ItemGroup>

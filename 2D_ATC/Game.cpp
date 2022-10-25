@@ -57,7 +57,10 @@ void Game::update()
 			}
 		}
 
-		SummonNewAirplane();
+		if (airplanes.size() == 0 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
+		{
+			SummonNewAirplane();
+		}
 	}
 
 	return;
@@ -65,21 +68,10 @@ void Game::update()
 
 void Game::SummonNewAirplane()
 {
-	if (menu.drawMenu == false)
-	{
-		if (airplanesSpawner.getElapsedTime().asSeconds() >= 5 && airplanes.size() < 1)
-		{
-			int chance = rand() % 101;
+	Airplane airplane = Airplane(&assetsManager, &map);
 
-			if (chance >= 70)
-			{
-				Airplane airplane = Airplane(&assetsManager, &map);
-
-				airplanes.push_back(airplane);
-				airplanesSpawner.restart();
-			}
-		}
-	}
+	airplanes.push_back(airplane);
+	airplanesSpawner.restart();
 
 	return;
 }

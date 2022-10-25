@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "AssetsManager.h"
 #include "Map.h"
+#include "Path.h"
 
 class Airplane
 {
@@ -16,7 +17,7 @@ public:
 
 	unsigned id;
 	bool destroyPlane;
-
+	sf::RectangleShape airplane;
 private:
 	void initText();
 
@@ -33,7 +34,7 @@ private:
 	void CheckNode();
 	short HeadingToNode(int node);
 
-	sf::RectangleShape airplane;
+	
 	sf::RectangleShape dataStick;
 	sf::RectangleShape directionShape;
 	sf::Vector2i mousePosition;
@@ -45,7 +46,7 @@ private:
 	int _altitude, _newAltitude;
 	int _speed, _newSpeed;
 	short _heading, _newHeading;
-	unsigned short cadrans[4] = { 0, 1, 2, 3 };
+
 	bool airplaneSelected;
 	bool settingNewHeading;
 	bool settingNewAltitude;
@@ -60,6 +61,7 @@ private:
 
 	AssetsManager* assetsManager;
 	Map* map;
+	Path path;
 
 	sf::Text callsign;
 	sf::Text heading, newHeading;

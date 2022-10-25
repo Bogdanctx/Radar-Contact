@@ -38,7 +38,7 @@ void Airplane::update(sf::Vector2i mousePosition)
 
 	HandleInternEvents();
 
-	if (updateTimer.getElapsedTime().asMilliseconds() >= 100)
+	if (updateTimer.getElapsedTime().asMilliseconds() >= 700)
 	{
 		UpdateData();
 
@@ -58,6 +58,8 @@ void Airplane::update(sf::Vector2i mousePosition)
 
 void Airplane::render(sf::RenderTarget* window)
 {
+	path.render(window);
+
 	window->draw(airplane);
 	window->draw(dataStick);
 	window->draw(callsign);
@@ -86,11 +88,13 @@ void Airplane::HandleClick()
 	{
 		directionShape.setFillColor(sf::Color::Cyan);
 		airplaneSelected = true;
+		path.DrawRoute();
 	}
 	else
 	{
 		directionShape.setFillColor(sf::Color::White);
 		airplaneSelected = false;
+		path.HideRoute();
 	}
 
 	return;
@@ -313,6 +317,12 @@ void Airplane::GenerateRoute()
 		if (map->airportData.connection[route[routeLength - 1]][j] == 1 && used[j] == 0)
 		{
 			route[routeLength++] = j;
+
+			path.AddPoint(sf::Vector2f(
+				map->airportData.nodes[j].x,
+				map->airportData.nodes[j].y
+			));
+
 			used[j] = 1;
 
 			if (map->airportData.nodes[j].finalNode == 1)
@@ -322,11 +332,6 @@ void Airplane::GenerateRoute()
 
 			j = 0;
 		}
-	}
-
-	for (int i = 0; i < routeLength; i++)
-	{
-		printf("%d ", route[i]);
 	}
 
 	return;
@@ -343,17 +348,16 @@ void Airplane::CheckNode()
 
 	int len = sqrt(distX * distX + distY * distY);
 
-	if (len <= 15)
+	if (len <= 3)
 	{
 		if (currNode + 1 < routeLength)
 		{
 			++currNode;
 			_heading = HeadingToNode(route[currNode]);
+			_newHeading = _heading;
+			heading.setString(std::to_string(_heading));
 
-			if (currNode + 1 == routeLength)
-			{
-				airplane.setFillColor(sf::Color::Blue);
-			}
+			airplane.setPosition(nodePosition);
 		}
 	}
 
@@ -378,9 +382,12 @@ void Airplane::CheckLanding()
 		{
 			int runwayHeading = map->airportData.runways[i].heading;
 
-			if (runwayHeading - 10 <= _heading && _heading <= runwayHeading + 10)
+			if (runwayHeading - 10 <= _heading && _heading <= runwayHeading + 10) // aici este conflict in caz de 360/0 grade
 			{
-				destroyPlane = 1;
+				if (_speed <= 180 && _altitude <= 1700);
+				{
+					destroyPlane = 1;
+				}
 			}
 		}
 	}
@@ -390,16 +397,27 @@ void Airplane::CheckLanding()
 
 short Airplane::HeadingToNode(int node)
 {
+	sf::Vector2f airplanePosition = airplane.getPosition();
+	sf::Vector2f nodePosition(map->airportData.nodes[node].x, map->airportData.nodes[node].y);
 
-	
+	float angle = atan2(airplanePosition.y- nodePosition.y, airplanePosition.x- nodePosition.x);
+	angle *= 180 / PI;
+	angle -= 90;
+	if (angle < 0)
+		angle += 360;
+
+	return angle;
 }
 
 void Airplane::CreateAirplane()
 {
 	int randPosition = rand() % map->airportData.numberOfNodes;
-	randPosition = 6;
-	
+
 	route[routeLength++] = randPosition;
+	path.AddPoint(sf::Vector2f(
+		map->airportData.nodes[randPosition].x,
+		map->airportData.nodes[randPosition].y
+	));
 
 	GenerateRoute();
 
@@ -407,7 +425,7 @@ void Airplane::CreateAirplane()
 	spawnPosition.y = map->airportData.spawns[randPosition].y;
 	airplane.setPosition(spawnPosition);
 
-	_heading = HeadingToNode(route[routeLength - 1]);
+	_heading = HeadingToNode(randPosition);
 
 	_newHeading = _heading;	
 

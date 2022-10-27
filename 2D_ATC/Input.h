@@ -7,7 +7,7 @@ class Input
 { 
 public:
 	Input();
-	Input(AssetsManager* assetsManager, sf::Vector2f size, sf::Vector2f position);
+	Input(AssetsManager assetsManager, sf::Vector2f size, sf::Vector2f position);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -22,7 +22,7 @@ public:
 	std::string GetInput();
 
 private:
-	AssetsManager* assetsManager;
+	AssetsManager assetsManager;
 
 	sf::RectangleShape inputBody;
 	sf::Text inputDescription;

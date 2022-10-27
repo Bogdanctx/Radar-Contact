@@ -1,14 +1,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "AssetsManager.h"
 #include <fstream>
+#include "Path.h"
 
 class Map
 {
 public:
 	Map();
-	Map(AssetsManager* assetsManager);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -31,16 +30,17 @@ public:
 		} runways[15];
 		int numberOfRunways, numberOfNodes;
 		short minAltitude, maxAltitude;
-		bool tower;
+
+		void GenerateRoute(Path &path, int startingNode);
 	};
 
 	AirportData airportData;
 
 private:
-	AssetsManager* assetsManager;
 	
 	std::ifstream read;
 
 	sf::Sprite mapSprite;
+	sf::Texture mapTexture;
 	sf::Vector2i mousePosition;
 };

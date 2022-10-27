@@ -140,28 +140,23 @@
     <ClCompile Include="Airplane.cpp" />
     <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Career.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Path.cpp" />
-    <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="SideMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airplane.h" />
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Career.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Path.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="SideMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

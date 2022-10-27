@@ -10,12 +10,17 @@ public:
 
 	void render(sf::RenderTarget* window);
 	void update();
+	void draw();
 
-	void AddPoint(sf::Vector2f position);
-	void DrawRoute();
-	void HideRoute();
+	sf::Vector2f GetPointPosition(int point);
+	
+	void AddPoint(sf::Vector2f position, int index);
+	void HidePath();
+
+	int length();
 
 private:
 	std::vector<sf::CircleShape>points;
+	std::vector<int>pointsIndex;
 };
 

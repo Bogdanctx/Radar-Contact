@@ -1,4 +1,5 @@
 #include "Airplane.h"
+#include "Math.h"
 
 #define PI 3.14159265
 #define CALLSIGNS 5
@@ -8,10 +9,10 @@ Airplane::Airplane()
 
 }
 
-Airplane::Airplane(AssetsManager* assetsManager, Map *map)
+Airplane::Airplane(AssetsManager assetsManager, Map::AirportData airportData)
 {
 	this->assetsManager = assetsManager;
-	this->map = map;
+	this->airportData = airportData;
 	
 	airplaneSelected = false;
 	settingNewHeading = false;
@@ -22,7 +23,6 @@ Airplane::Airplane(AssetsManager* assetsManager, Map *map)
 	airplane.setOutlineColor(sf::Color::White);
 	airplane.setOutlineThickness(3);
 
-	routeLength = 0;
 	currNode = 0;
 
 	CreateAirplane();
@@ -58,7 +58,7 @@ void Airplane::update(sf::Vector2i mousePosition)
 
 void Airplane::render(sf::RenderTarget* window)
 {
-	path.render(window);
+	route.render(window);
 
 	window->draw(airplane);
 	window->draw(dataStick);
@@ -88,13 +88,13 @@ void Airplane::HandleClick()
 	{
 		directionShape.setFillColor(sf::Color::Cyan);
 		airplaneSelected = true;
-		path.DrawRoute();
+		route.draw();
 	}
 	else
 	{
 		directionShape.setFillColor(sf::Color::White);
 		airplaneSelected = false;
-		path.HideRoute();
+		route.HidePath();
 	}
 
 	return;
@@ -154,7 +154,7 @@ void Airplane::HandleAltitudeChange()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				if (_newAltitude + 100 <= map->airportData.maxAltitude)
+				if (_newAltitude + 100 <= airportData.maxAltitude)
 				{
 					_newAltitude += 100;
 				}
@@ -162,7 +162,7 @@ void Airplane::HandleAltitudeChange()
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				if (_newAltitude - 100 >= map->airportData.minAltitude)
+				if (_newAltitude - 100 >= airportData.minAltitude)
 				{
 					_newAltitude -= 100;
 				}
@@ -307,57 +307,20 @@ void Airplane::UpdateData()
 	return;
 }
 
-void Airplane::GenerateRoute()
-{
-	bool used[50] = { 0 };
-	used[route[0]] = 1;
-
-	for (int j = 0; j < map->airportData.numberOfNodes; j++)
-	{
-		if (map->airportData.connection[route[routeLength - 1]][j] == 1 && used[j] == 0)
-		{
-			route[routeLength++] = j;
-
-			path.AddPoint(sf::Vector2f(
-				map->airportData.nodes[j].x,
-				map->airportData.nodes[j].y
-			));
-
-			used[j] = 1;
-
-			if (map->airportData.nodes[j].finalNode == 1)
-			{
-				break;
-			}
-
-			j = 0;
-		}
-	}
-
-	return;
-}
-
 void Airplane::CheckNode()
 {
-	sf::Vector2f airplanePosition = airplane.getPosition();
-	sf::Vector2f nodePosition(map->airportData.nodes[route[currNode]].x,
-								map->airportData.nodes[route[currNode]].y);
+	float dist = DistanceToPoint(airplane.getPosition(), route.GetPointPosition(currNode));
 
-	int distX = airplanePosition.x - nodePosition.x;
-	int distY = airplanePosition.y - nodePosition.y;
-
-	int len = sqrt(distX * distX + distY * distY);
-
-	if (len <= 3)
+	if (dist <= 3.f)
 	{
-		if (currNode + 1 < routeLength)
+		if (currNode + 1 < route.length())
 		{
-			++currNode;
-			_heading = HeadingToNode(route[currNode]);
-			_newHeading = _heading;
-			heading.setString(std::to_string(_heading));
+			airplane.setPosition(route.GetPointPosition(currNode));
 
-			airplane.setPosition(nodePosition);
+			++currNode;
+			_heading = _newHeading = static_cast<int>(DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
+
+			heading.setString(std::to_string(_heading));
 		}
 	}
 
@@ -368,23 +331,19 @@ void Airplane::CheckLanding()
 {
 	sf::Vector2f airplanePosition = airplane.getPosition();
 
-	for (int i = 0; i < map->airportData.numberOfRunways; i++)
+	for (int i = 0; i < airportData.numberOfRunways; i++)
 	{
-		sf::Vector2i runwayCoords(map->airportData.runways[i].x,
-			map->airportData.runways[i].y);
+		sf::Vector2f runwayPosition(airportData.runways[i].x, airportData.runways[i].y);
 
-		int distX = runwayCoords.x - airplanePosition.x;
-		int distY = runwayCoords.y - airplanePosition.y;
+		float dist = DistanceToPoint(airplanePosition, runwayPosition);
 
-		int len = sqrt(distX*distX + distY * distY);
-
-		if (len < 10)
+		if (dist < 10.f)
 		{
-			int runwayHeading = map->airportData.runways[i].heading;
+			int runwayHeading = airportData.runways[i].heading;
 
 			if (runwayHeading - 10 <= _heading && _heading <= runwayHeading + 10) // aici este conflict in caz de 360/0 grade
 			{
-				if (_speed <= 180 && _altitude <= 1700);
+				if (_speed <= 180 && _altitude <= 2000);
 				{
 					destroyPlane = 1;
 				}
@@ -395,46 +354,23 @@ void Airplane::CheckLanding()
 	return;
 }
 
-short Airplane::HeadingToNode(int node)
-{
-	sf::Vector2f airplanePosition = airplane.getPosition();
-	sf::Vector2f nodePosition(map->airportData.nodes[node].x, map->airportData.nodes[node].y);
-
-	float angle = atan2(airplanePosition.y- nodePosition.y, airplanePosition.x- nodePosition.x);
-	angle *= 180 / PI;
-	angle -= 90;
-	if (angle < 0)
-		angle += 360;
-
-	return angle;
-}
-
 void Airplane::CreateAirplane()
 {
-	int randPosition = rand() % map->airportData.numberOfNodes;
+	int firstNode = rand() % airportData.numberOfNodes;
 
-	route[routeLength++] = randPosition;
-	path.AddPoint(sf::Vector2f(
-		map->airportData.nodes[randPosition].x,
-		map->airportData.nodes[randPosition].y
-	));
+	airportData.GenerateRoute(route, firstNode);
 
-	GenerateRoute();
-
-	spawnPosition.x = map->airportData.spawns[randPosition].x;
-	spawnPosition.y = map->airportData.spawns[randPosition].y;
+	spawnPosition.x = airportData.spawns[firstNode].x;
+	spawnPosition.y = airportData.spawns[firstNode].y;
 	airplane.setPosition(spawnPosition);
 
-	_heading = HeadingToNode(randPosition);
+	_heading = _newHeading = DirectionToPoint(spawnPosition, route.GetPointPosition(0));
 
-	_newHeading = _heading;	
-
-	_altitude = rand() % (map->airportData.maxAltitude - map->airportData.minAltitude) + map->airportData.minAltitude;
+	_altitude = rand() % (airportData.maxAltitude - airportData.minAltitude) + airportData.minAltitude;
 	_altitude -= _altitude % 100;
 	_newAltitude = _altitude;
 
-	_speed = rand() % (320 - 140) + 140;
-	_newSpeed = _speed;
+	_speed = _newSpeed = rand() % (320 - 140) + 140;
 
 	velocity.x = velocity.y = (float)_speed / 100;
 
@@ -456,13 +392,13 @@ void Airplane::initText()
 	speed.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 19));
 	newSpeed.setPosition(sf::Vector2f(spawnPosition.x + 45, spawnPosition.y - 19));
 
-	callsign.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	heading.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	newHeading.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	altitude.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	newAltitude.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	speed.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	newSpeed.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
+	callsign.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	heading.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	newHeading.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	altitude.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	newAltitude.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	speed.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	newSpeed.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
 
 	heading.setCharacterSize(12);
 	speed.setCharacterSize(12);

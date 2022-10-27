@@ -10,9 +10,14 @@ void Path::update()
 
 }
 
+sf::Vector2f Path::GetPointPosition(int point)
+{
+	return points[point].getPosition();
+}
+
 void Path::render(sf::RenderTarget* window)
 {
-	for (auto& it : points)
+	for (auto it : points)
 	{
 		window->draw(it);
 	}
@@ -20,7 +25,7 @@ void Path::render(sf::RenderTarget* window)
 	return;
 }
 
-void Path::AddPoint(sf::Vector2f position)
+void Path::AddPoint(sf::Vector2f position, int index)
 {
 	sf::CircleShape point;
 
@@ -29,11 +34,12 @@ void Path::AddPoint(sf::Vector2f position)
 	point.setFillColor(sf::Color(255, 255, 255, 100));
 
 	points.push_back(point);
+	pointsIndex.push_back(index);
 
 	return;
 }
 
-void Path::DrawRoute()
+void Path::draw()
 {
 	for (auto &it : points)
 	{
@@ -43,7 +49,7 @@ void Path::DrawRoute()
 	return;
 }
 
-void Path::HideRoute()
+void Path::HidePath()
 {
 	for (auto &it : points)
 	{
@@ -51,4 +57,9 @@ void Path::HideRoute()
 	}
 
 	return;
+}
+
+int Path::length()
+{
+	return points.size();
 }

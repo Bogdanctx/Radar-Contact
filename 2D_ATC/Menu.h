@@ -4,8 +4,6 @@
 #include <SFML/Audio.hpp>
 
 #include "Menu.h"
-#include "Settings.h"
-#include "Career.h"
 
 #include "Button.h"
 #include "AssetsManager.h"
@@ -14,18 +12,15 @@ class Menu
 {
 public:
 	Menu();
-	Menu(AssetsManager *assetsManager);
+	Menu(AssetsManager assetsManager);
 
 	void update(sf::Vector2i mousePosition);
-	void render(sf::RenderTarget* window);
+	void render(sf::RenderTarget *window);
 
 	void HandleClick();
 	void HandleInput(unsigned unicode);
 
 	bool drawMenu = true;
-
-	Career career;
-	Settings settingsTab;
 
 private:
 	void initSounds();
@@ -33,7 +28,7 @@ private:
 	void initButtons();
 	void initObjects();
 
-	AssetsManager *assetsManager;
+	AssetsManager assetsManager;
 
 	sf::Vector2i mousePosition;
 
@@ -41,8 +36,6 @@ private:
 
 	sf::Sound buttonClickSound;
 
-	Button continueCareer;
-	Button newCareer;
-	Button settingsButton;
+	Button continueGame;
 };
 

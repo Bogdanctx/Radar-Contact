@@ -5,7 +5,7 @@ Input::Input()
 
 }
 
-Input::Input(AssetsManager* assetsManager, sf::Vector2f size, sf::Vector2f position)
+Input::Input(AssetsManager assetsManager, sf::Vector2f size, sf::Vector2f position)
 {
 	this->assetsManager = assetsManager;
 
@@ -29,8 +29,8 @@ Input::Input(AssetsManager* assetsManager, sf::Vector2f size, sf::Vector2f posit
 		position.y - size.y / 2 + 10
 	));
 
-	inputDescription.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
-	inputDataText.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
+	inputDescription.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	inputDataText.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
 }
 
 void Input::update(sf::Vector2i mousePosition)

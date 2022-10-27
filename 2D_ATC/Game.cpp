@@ -27,17 +27,6 @@ void Game::update()
 	if (menu.drawMenu)
 	{
 		menu.update(mousePosition);
-	
-		if (menu.career.isCareerCreated() && menu.drawMenu == true)
-		{
-			playerName = menu.career._playerName;
-			country = menu.career.selectedMap;
-			position = menu.career.atcPosition;
-
-			menu.drawMenu = false;
-
-			map.LoadMap(country, position);
-		}
 	}
 	else
 	{
@@ -68,9 +57,9 @@ void Game::update()
 
 void Game::SummonNewAirplane()
 {
-	Airplane airplane = Airplane(&assetsManager, &map);
-
-	airplanes.push_back(airplane);
+	airplanes.push_back(
+		Airplane(assetsManager, map.airportData)
+	);
 	airplanesSpawner.restart();
 
 	return;
@@ -137,6 +126,11 @@ void Game::processEvents()
 					if (windowEvent.mouseButton.button == sf::Mouse::Left)
 					{
 						menu.HandleClick();
+
+						if (menu.drawMenu == false)
+						{
+							map.LoadMap("romania", "ground");
+						}
 					}
 				}
 				else
@@ -165,15 +159,9 @@ void Game::initAssets()
 
 	assetsManager.LoadTexture("menu.png", "../Resources/images/menu");
 
-	assetsManager.LoadTexture("romania.png", "../Resources/images/flags");
-
-	assetsManager.LoadTexture("romaniaGround.png", "../Resources/images/maps/romania");
-	assetsManager.LoadTexture("romaniaRadar.png", "../Resources/images/maps/romania");
-
 	assetsManager.LoadSoundBuffer("buttonClick.wav");
 
-	menu = Menu(&assetsManager);
-	map = Map(&assetsManager);
+	menu = Menu(assetsManager);
 
 	return;
 }

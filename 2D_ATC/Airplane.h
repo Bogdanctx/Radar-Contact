@@ -9,7 +9,7 @@ class Airplane
 {
 public:
 	Airplane();
-	Airplane(AssetsManager* assetsManager, Map *map);
+	Airplane(AssetsManager assetsManager, Map::AirportData airportData);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -32,7 +32,6 @@ private:
 	void CreateAirplane();
 	void GenerateRoute();
 	void CheckNode();
-	short HeadingToNode(int node);
 
 	
 	sf::RectangleShape dataStick;
@@ -55,13 +54,11 @@ private:
 	bool altitudeUpdated;
 	bool speedUpdated;
 
-	int route[50];
-	int routeLength;
 	int currNode;
 
-	AssetsManager* assetsManager;
-	Map* map;
-	Path path;
+	AssetsManager assetsManager;
+	Map::AirportData airportData;
+	Path route;
 
 	sf::Text callsign;
 	sf::Text heading, newHeading;

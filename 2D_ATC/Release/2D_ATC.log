@@ -1,7 +1,97 @@
-﻿  Game.cpp
+﻿  Airplane.cpp
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Math.h(10,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Math.h(18,15): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(47,38): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(46,36): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(87,85): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(87,68): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(122,30): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(124,30): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(127,48): warning C4244: '=': conversion from 'double' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(132,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(336,79): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(336,53): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(346,44): warning C4390: ';': empty controlled statement found; is this the intent?
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(363,49): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(364,49): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(367,43): warning C4244: '=': conversion from 'float' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(425,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Game.cpp
+  Main.cpp
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Main.cpp(7,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Map.cpp
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Map.cpp(10,70): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Map.cpp(10,47): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Map.cpp(28,51): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Map.cpp(28,39): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Path.cpp
   Generating code
-  3 of 739 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  7 of 861 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2D_ATC.vcxproj -> C:\Users\bobot\Desktop\2D_ATC\Release\2D_ATC.exe

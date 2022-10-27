@@ -5,9 +5,38 @@ Map::Map()
 
 }
 
-Map::Map(AssetsManager* assetsManager)
+void Map::AirportData::GenerateRoute(Path &path, int startingNode)
 {
-	this->assetsManager = assetsManager;
+	sf::Vector2f nodePosition(nodes[startingNode].x, nodes[startingNode].y);
+
+	path.AddPoint(nodePosition, startingNode);
+
+	bool usedNode[50] = { 0 };
+	usedNode[startingNode] = 1;
+
+	std::vector<int>tempPath;
+	tempPath.push_back(startingNode);
+
+	for (int j = 0; j < numberOfNodes; j++)
+	{
+		int prevNode = tempPath[tempPath.size()-1];
+
+		if (connection[prevNode][j] == 1 && usedNode[j] == 0)
+		{
+			tempPath.push_back(j);
+			usedNode[j] = 1;
+			path.AddPoint(sf::Vector2f(nodes[j].x, nodes[j].y), j);
+
+			if (nodes[j].finalNode == 1)
+			{
+				break;
+			}
+
+			j = 0;
+		}
+	}
+
+	return;
 }
 
 void Map::update(sf::Vector2i mousePosition)
@@ -23,12 +52,14 @@ void Map::render(sf::RenderTarget* window)
 
 	return;
 }
-#include <iostream>
+
 void Map::LoadMap(const std::string country, const std::string position)
 {
+	mapTexture.loadFromFile("../Resources/images/maps/" + country + "/" + position + ".png");
+
 	if (position == "ground")
 	{
-		mapSprite.setTexture(assetsManager->GetTexture(country + "Ground.png"));
+		mapSprite.setTexture(mapTexture);
 		mapSprite.setPosition(sf::Vector2f(0, 0));
 
 		airportData.minAltitude = 1000;
@@ -67,7 +98,7 @@ void Map::LoadMap(const std::string country, const std::string position)
 	}
 	else if (position == "radar")
 	{
-		mapSprite.setTexture(assetsManager->GetTexture(country + "Radar.png"));
+		mapSprite.setTexture(mapTexture);
 	}
 
 	return;

@@ -1,0 +1,9 @@
+
+*.vsidx
+*.vsidx
+.vs/2D_ATC/v17/.suo
+*.db
+*.ipch
+*.ipch
+*.vcxproj
+*.obj

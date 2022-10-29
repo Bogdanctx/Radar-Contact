@@ -24,7 +24,7 @@ void Game::update()
 {
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(gameWindow);
 
-	if (menu.drawMenu)
+	if (menu.draw)
 	{
 		menu.update(mousePosition);
 	}
@@ -48,19 +48,13 @@ void Game::update()
 
 		if (airplanes.size() == 0 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
 		{
-			SummonNewAirplane();
+			Airplane airplane = Airplane(&assetsManager, map.airportData);
+
+			airplanes.push_back(airplane);
+
+			airplanesSpawner.restart();
 		}
 	}
-
-	return;
-}
-
-void Game::SummonNewAirplane()
-{
-	airplanes.push_back(
-		Airplane(assetsManager, map.airportData)
-	);
-	airplanesSpawner.restart();
 
 	return;
 }
@@ -69,7 +63,7 @@ void Game::render()
 {
 	gameWindow.clear();
 
-	if (menu.drawMenu)
+	if (menu.draw)
 	{
 		menu.render(&gameWindow);
 	}
@@ -81,7 +75,10 @@ void Game::render()
 		{
 			it.render(&gameWindow);
 		}
+
 	}
+
+	gameWindow.draw(creator);
 
 	gameWindow.display();
 
@@ -112,7 +109,7 @@ void Game::processEvents()
 			}
 			case sf::Event::TextEntered:
 			{
-				if (menu.drawMenu)
+				if (menu.draw)
 				{
 					menu.HandleInput(windowEvent.text.unicode);
 				}
@@ -121,15 +118,15 @@ void Game::processEvents()
 			}
 			case sf::Event::MouseButtonPressed:
 			{
-				if (menu.drawMenu)
+				if (menu.draw)
 				{
 					if (windowEvent.mouseButton.button == sf::Mouse::Left)
 					{
 						menu.HandleClick();
 
-						if (menu.drawMenu == false)
+						if (menu.draw == false)
 						{
-							map.LoadMap("romania", "ground");
+							map.LoadMap(menu.continueGame.option);
 						}
 					}
 				}
@@ -162,6 +159,11 @@ void Game::initAssets()
 	assetsManager.LoadSoundBuffer("buttonClick.wav");
 
 	menu = Menu(assetsManager);
+
+	creator.setString("© Made by Bogdan. (Bogdan#8334)");
+	creator.setPosition(sf::Vector2f(5, 880));
+	creator.setFont(assetsManager.GetFont("MerriweatherSans-Regular.ttf"));
+	creator.setCharacterSize(11);
 
 	return;
 }

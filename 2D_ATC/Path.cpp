@@ -12,6 +12,8 @@ void Path::update()
 
 sf::Vector2f Path::GetPointPosition(int point)
 {
+	if (point == points.size())
+		return sf::Vector2f(0, 0);
 	return points[point].getPosition();
 }
 

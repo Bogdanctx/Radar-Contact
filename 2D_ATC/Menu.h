@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Menu.h"
-
 #include "Button.h"
 #include "AssetsManager.h"
+#include "ContinueGame.h"
+#include "NewGame.h"
 
 class Menu
 {
@@ -20,7 +20,10 @@ public:
 	void HandleClick();
 	void HandleInput(unsigned unicode);
 
-	bool drawMenu = true;
+	bool draw;
+
+	ContinueGame continueGame;
+	NewGame newGame;
 
 private:
 	void initSounds();
@@ -36,6 +39,7 @@ private:
 
 	sf::Sound buttonClickSound;
 
-	Button continueGame;
+	Button b_continueGame;
+	Button b_newGame;
 };
 

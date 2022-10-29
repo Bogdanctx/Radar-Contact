@@ -9,15 +9,13 @@ class Airplane
 {
 public:
 	Airplane();
-	Airplane(AssetsManager assetsManager, Map::AirportData airportData);
+	Airplane(AssetsManager *assetsManager, Map::AirportData airportData);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 	void HandleClick();
 
-	unsigned id;
 	bool destroyPlane;
-	sf::RectangleShape airplane;
 private:
 	void initText();
 
@@ -33,7 +31,7 @@ private:
 	void GenerateRoute();
 	void CheckNode();
 
-	
+	sf::RectangleShape airplane;
 	sf::RectangleShape dataStick;
 	sf::RectangleShape directionShape;
 	sf::Vector2i mousePosition;
@@ -54,9 +52,11 @@ private:
 	bool altitudeUpdated;
 	bool speedUpdated;
 
+	bool headingFixed;
+
 	int currNode;
 
-	AssetsManager assetsManager;
+	AssetsManager *assetsManager;
 	Map::AirportData airportData;
 	Path route;
 

@@ -20,8 +20,6 @@ private:
 
 	void initAssets();
 
-	void SummonNewAirplane();
-
 	Menu menu;
 	AssetsManager assetsManager;
 	Map map;
@@ -33,5 +31,7 @@ private:
 	std::string playerName;
 	std::string country;
 	std::string position;
+
+	sf::Text creator;
 };
 

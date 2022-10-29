@@ -53,19 +53,24 @@ void Map::render(sf::RenderTarget* window)
 	return;
 }
 
-void Map::LoadMap(const std::string country, const std::string position)
+void Map::LoadMap(const int position)
 {
-	mapTexture.loadFromFile("../Resources/images/maps/" + country + "/" + position + ".png");
+	std::ifstream read;
 
-	if (position == "ground")
+	read.open("../Resources/game.txt");
+	std::string country;
+	read >> country;
+	read.close();
+
+	if (position == 1) // Tower
 	{
+		mapTexture.loadFromFile("../Resources/images/maps/"+country+"/tower.png");
 		mapSprite.setTexture(mapTexture);
-		mapSprite.setPosition(sf::Vector2f(0, 0));
 
 		airportData.minAltitude = 1000;
 		airportData.maxAltitude = 10000;
 
-		read = std::ifstream("../Resources/airports/" + country + "/ground.txt");
+		read.open("../Resources/airports/" + country + "/tower.txt");
 
 		read >> airportData.numberOfRunways;
 
@@ -78,7 +83,7 @@ void Map::LoadMap(const std::string country, const std::string position)
 		
 		read.close();
 
-		read = std::ifstream("../Resources/airports/" + country + "/arrivalRoutes.txt");
+		read.open("../Resources/airports/" + country + "/arrivalRoutes.txt");
 		read >> airportData.numberOfNodes;
 		for (int i = 0; i < airportData.numberOfNodes; i++)
 		{
@@ -96,10 +101,7 @@ void Map::LoadMap(const std::string country, const std::string position)
 			read >> airportData.spawns[i].x >> airportData.spawns[i].y;
 		}
 	}
-	else if (position == "radar")
-	{
-		mapSprite.setTexture(mapTexture);
-	}
+
 
 	return;
 }

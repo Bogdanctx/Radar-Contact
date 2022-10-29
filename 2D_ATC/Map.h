@@ -12,7 +12,7 @@ public:
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 
-	void LoadMap(const std::string country, const std::string position);
+	void LoadMap(const int position);
 
 	struct AirportData {
 		bool connection[50][50];
@@ -37,9 +37,6 @@ public:
 	AirportData airportData;
 
 private:
-	
-	std::ifstream read;
-
 	sf::Sprite mapSprite;
 	sf::Texture mapTexture;
 	sf::Vector2i mousePosition;

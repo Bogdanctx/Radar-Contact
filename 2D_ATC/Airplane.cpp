@@ -311,11 +311,11 @@ void Airplane::UpdateData()
 
 void Airplane::CheckNode()
 {
-	double dist = DistanceToPoint(airplane.getPosition(), route.GetPointPosition(currNode));
+	double dist = Math::DistanceToPoint(airplane.getPosition(), route.GetPointPosition(currNode));
 
 	if (dist <= 15.f && !headingFixed) // fixing headings error
 	{
-		_heading = _newHeading = static_cast<int>(DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
+		_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
 		headingFixed = true;
 	}
 
@@ -326,7 +326,7 @@ void Airplane::CheckNode()
 			airplane.setPosition(route.GetPointPosition(currNode));
 
 			++currNode;
-			_heading = _newHeading = static_cast<int>(DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
+			_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
 
 			heading.setString(std::to_string(_heading));
 			headingFixed = false;
@@ -344,7 +344,7 @@ void Airplane::CheckLanding()
 	{
 		sf::Vector2f runwayPosition(airportData.runways[i].x, airportData.runways[i].y);
 
-		double dist = DistanceToPoint(airplanePosition, runwayPosition);
+		double dist = Math::DistanceToPoint(airplanePosition, runwayPosition);
 
 		if (dist < 10.f)
 		{
@@ -380,7 +380,7 @@ void Airplane::CreateAirplane()
 	spawnPosition.y = airportData.spawns[firstNode].y;
 	airplane.setPosition(spawnPosition);
 
-	_heading = _newHeading = static_cast<int>(DirectionToPoint(spawnPosition, route.GetPointPosition(0)));
+	_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(spawnPosition, route.GetPointPosition(0)));
 
 	_altitude = rand() % (airportData.maxAltitude - airportData.minAltitude) + airportData.minAltitude;
 	_altitude -= _altitude % 100;
@@ -395,6 +395,23 @@ void Airplane::CreateAirplane()
 	};
 
 	s_callSign = callsigns[rand() % callsigns.size()] + std::to_string(rand() % 9999);
+
+	return;
+}
+
+sf::RectangleShape Airplane::GetAirplane()
+{
+	return airplane;
+}
+
+void Airplane::SetTCAS(int level)
+{
+	if(level == 0)
+		airplane.setOutlineColor(sf::Color::White);
+	else if (level == 1)
+		airplane.setOutlineColor(sf::Color(189, 143, 19));
+	else
+		airplane.setOutlineColor(sf::Color(171, 12, 12));
 
 	return;
 }

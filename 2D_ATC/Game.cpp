@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Math.h"
 
 Game::Game()
 {
@@ -6,6 +7,8 @@ Game::Game()
 	gameWindow.setFramerateLimit(60);
 
 	initAssets();
+
+	planeIds = 0;
 }
 
 void Game::run()
@@ -19,7 +22,7 @@ void Game::run()
 
 	return;
 }
-
+#include <iostream>
 void Game::update()
 {
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(gameWindow);
@@ -35,6 +38,23 @@ void Game::update()
 		for (auto &it: airplanes) {
 			it.update(mousePosition);
 
+			for (auto& _it : airplanes)
+			{
+				if (_it._altitude-200 <= it._altitude && it._altitude <= _it._altitude + 200 && it.id != _it.id)
+				{
+					double distance = Math::DistanceToPoint(it.GetAirplane().getPosition(), _it.GetAirplane().getPosition());
+
+					if (distance > 50.f)
+						it.SetTCAS(0), _it.SetTCAS(0);
+					if (distance >= 30.f && distance <= 50.f)
+						it.SetTCAS(1), _it.SetTCAS(1);
+					else if (distance >= 10.f && distance < 30.f)
+						it.SetTCAS(2), _it.SetTCAS(2);
+					else if(distance < 10.f)
+						it.destroyPlane = _it.destroyPlane = 1;
+				}
+			}
+
 			if (it.destroyPlane)
 			{
 				airplanes.erase(
@@ -46,9 +66,10 @@ void Game::update()
 			}
 		}
 
-		if (airplanes.size() == 0 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
+		if (airplanes.size() <=1 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
 		{
 			Airplane airplane = Airplane(&assetsManager, map.airportData);
+			airplane.id = planeIds++;
 
 			airplanes.push_back(airplane);
 

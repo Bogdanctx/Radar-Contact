@@ -58,10 +58,13 @@ C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(380,49): warning C4244: '=': c
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(444,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(461,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Game.cpp
+  Main.cpp
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Main.cpp(7,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Generating code
-  1 of 1437 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  44 of 1439 functions ( 3.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    65 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   2D_ATC.vcxproj -> C:\Users\bobot\Desktop\2D_ATC\Release\2D_ATC.exe

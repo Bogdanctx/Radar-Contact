@@ -20,6 +20,8 @@ private:
 
 	void initAssets();
 
+	void CheckCollision(Airplane planeA, Airplane planeB);
+
 	Menu menu;
 	AssetsManager assetsManager;
 	Map map;
@@ -33,5 +35,7 @@ private:
 	std::string position;
 
 	sf::Text creator;
+
+	unsigned long long planeIds;
 };
 

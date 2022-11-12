@@ -15,7 +15,14 @@ public:
 	void render(sf::RenderTarget* window);
 	void HandleClick();
 
+	int _altitude;
+	unsigned long long id;
 	bool destroyPlane;
+
+	void SetTCAS(int level);
+
+	sf::RectangleShape GetAirplane();
+
 private:
 	void initText();
 
@@ -40,7 +47,8 @@ private:
 	sf::Vector2f spawnPosition;
 
 	sf::Vector2f velocity;
-	int _altitude, _newAltitude;
+	
+	int _newAltitude;
 	int _speed, _newSpeed;
 	short _heading, _newHeading;
 

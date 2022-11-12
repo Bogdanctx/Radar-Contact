@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "AssetsManager.h"
 #include "Airplane.h"
+#include "Path.h"
 
 class Game
 {
@@ -35,6 +36,8 @@ private:
 	std::string position;
 
 	sf::Text creator;
+
+	Path qwe;
 
 	unsigned long long planeIds;
 };

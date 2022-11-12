@@ -22,7 +22,7 @@ void Game::run()
 
 	return;
 }
-#include <iostream>
+
 void Game::update()
 {
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(gameWindow);
@@ -66,7 +66,7 @@ void Game::update()
 			}
 		}
 
-		if (airplanes.size() <=1 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
+		if (airplanes.size() == 0 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
 		{
 			Airplane airplane = Airplane(&assetsManager, map.airportData);
 			airplane.id = planeIds++;
@@ -96,7 +96,7 @@ void Game::render()
 		{
 			it.render(&gameWindow);
 		}
-
+		qwe.render(&gameWindow);
 	}
 
 	gameWindow.draw(creator);

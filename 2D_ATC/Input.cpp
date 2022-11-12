@@ -47,7 +47,7 @@ void Input::render(sf::RenderTarget* window)
 	return;
 }
 
-void Input::HandleInput(unsigned unicode)
+void Input::HandleInput(unsigned short unicode)
 {
 	if (unicode >= 32 && unicode <= 126)
 	{

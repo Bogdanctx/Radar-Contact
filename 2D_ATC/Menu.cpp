@@ -101,7 +101,7 @@ void Menu::HandleClick()
 	return;
 }
 
-void Menu::HandleInput(unsigned unicode)
+void Menu::HandleInput(unsigned short unicode)
 {
 	
 

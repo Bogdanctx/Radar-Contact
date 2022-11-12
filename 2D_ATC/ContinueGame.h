@@ -16,7 +16,7 @@ public:
 	void HandleClick();
 
 	bool draw;
-	short option; // 1->tower, 2->radar
+	unsigned short option; // 1->tower, 2->radar
 private:
 	void initButtons();
 	void initSounds();

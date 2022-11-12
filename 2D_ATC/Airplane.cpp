@@ -260,7 +260,7 @@ void Airplane::UpdateData()
 				_speed--;
 			speed.setString(std::to_string(_speed));
 
-			velocity.x = velocity.y = (float)_speed / 100;
+			velocity.x = velocity.y = static_cast<float>(_speed / 100);
 		}
 		speedChangeTimer.restart();
 	}
@@ -319,7 +319,7 @@ void Airplane::CheckNode()
 		headingFixed = true;
 	}
 
-	if (dist <= 3.f)
+	if (dist <= 4.f)
 	{
 		if (currNode + 1 < route.length())
 		{
@@ -340,7 +340,7 @@ void Airplane::CheckLanding()
 {
 	sf::Vector2f airplanePosition = airplane.getPosition();
 
-	for (int i = 0; i < airportData.numberOfRunways; i++)
+	for (unsigned short i = 0; i < airportData.numberOfRunways; i++)
 	{
 		sf::Vector2f runwayPosition(airportData.runways[i].x, airportData.runways[i].y);
 
@@ -348,10 +348,10 @@ void Airplane::CheckLanding()
 
 		if (dist < 10.f)
 		{
-			int runwayHeading = airportData.runways[i].heading;
+			short runwayHeading = airportData.runways[i].heading;
 
-			int leftError;
-			int rightError;
+			short leftError;
+			short rightError;
 
 			leftError = runwayHeading - 10 + 360 * (runwayHeading - 10 < 0);
 			rightError = runwayHeading + 10 - 360 * (runwayHeading + 10 > 360);
@@ -372,15 +372,43 @@ void Airplane::CheckLanding()
 
 void Airplane::CreateAirplane()
 {
-	int firstNode = rand() % airportData.numberOfNodes;
+	unsigned short randomRunway = rand() % airportData.numberOfRunways;
+	unsigned short _t = rand() % 4;
 
-	airportData.GenerateRoute(route, firstNode);
+	/*
+		_t values:
+		0 -> right screen
+		1 -> top screen
+		2 -> left screen
+		3 -> bottom screen
+	*/
 
-	spawnPosition.x = airportData.spawns[firstNode].x;
-	spawnPosition.y = airportData.spawns[firstNode].y;
+	if (_t == 0)
+	{
+		spawnPosition.x = 1200-5;
+		spawnPosition.y = rand() % 900;
+	}
+	else if (_t == 1)
+	{
+		spawnPosition.x = rand() % 1200;
+		spawnPosition.y = 5;
+	}
+	else if (_t == 2)
+	{
+		spawnPosition.x = 5;
+		spawnPosition.y = rand() % 900;
+	}
+	else
+	{
+		spawnPosition.x = rand() % 1200;
+		spawnPosition.y = 900-5;
+	}
+
+	airportData.GenerateRoute(route, spawnPosition, sf::Vector2f(airportData.nodes[randomRunway].x, airportData.nodes[randomRunway].y));
+	
 	airplane.setPosition(spawnPosition);
 
-	_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(spawnPosition, route.GetPointPosition(0)));
+	_heading = _newHeading = static_cast<short>(Math::DirectionToPoint(spawnPosition, route.GetPointPosition(0)));
 
 	_altitude = rand() % (airportData.maxAltitude - airportData.minAltitude) + airportData.minAltitude;
 	_altitude -= _altitude % 100;
@@ -388,7 +416,7 @@ void Airplane::CreateAirplane()
 
 	_speed = _newSpeed = rand() % (320 - 140) + 140;
 
-	velocity.x = velocity.y = (float)_speed / 100;
+	velocity.x = velocity.y = static_cast<float>(_speed / 100);
 
 	std::vector<std::string>callsigns {
 		"ROT", "KLM", "AFR", "WZZ", "TAP"
@@ -404,7 +432,7 @@ sf::RectangleShape Airplane::GetAirplane()
 	return airplane;
 }
 
-void Airplane::SetTCAS(int level)
+void Airplane::SetTCAS(unsigned short level)
 {
 	if(level == 0)
 		airplane.setOutlineColor(sf::Color::White);

@@ -12,26 +12,25 @@ public:
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 
-	void LoadMap(const int position);
+	void LoadMap(const unsigned short position);
 
 	struct AirportData {
-		bool connection[50][50];
 		struct Nodes {
-			int x, y;
-			bool finalNode;
-		} nodes[50];
-		struct Spawns {
-			int x, y;
-		} spawns[50];
-		struct Runways {
-			bool direction; // 0 - left, 1 - right
-			int heading; // runway heading
-			int x, y; // position
-		} runways[15];
-		int numberOfRunways, numberOfNodes;
-		short minAltitude, maxAltitude;
+			unsigned short x, y;
+		} nodes[15];
 
-		void GenerateRoute(Path &path, int startingNode);
+		struct Runways {
+			unsigned short heading; // runway heading
+			unsigned short x, y; // position
+		} runways[15];
+
+		unsigned short numberOfRunways, numberOfNodes;
+		unsigned short minAltitude, maxAltitude;
+		sf::Vector2i airportsBoundsTopLeft, airportBoundsBottomRight;
+
+		std::vector<std::vector<short>>map;
+
+		void GenerateRoute(Path &path, sf::Vector2f pointA, sf::Vector2f pointB);
 	};
 
 	AirportData airportData;

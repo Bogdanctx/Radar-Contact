@@ -15,11 +15,11 @@ public:
 	void render(sf::RenderTarget* window);
 	void HandleClick();
 
-	int _altitude;
+	unsigned short _altitude;
 	unsigned long long id;
 	bool destroyPlane;
 
-	void SetTCAS(int level);
+	void SetTCAS(unsigned short level);
 
 	sf::RectangleShape GetAirplane();
 
@@ -48,8 +48,8 @@ private:
 
 	sf::Vector2f velocity;
 	
-	int _newAltitude;
-	int _speed, _newSpeed;
+	unsigned short _newAltitude;
+	unsigned short _speed, _newSpeed;
 	short _heading, _newHeading;
 
 	bool airplaneSelected;
@@ -62,7 +62,7 @@ private:
 
 	bool headingFixed;
 
-	int currNode;
+	unsigned short currNode;
 
 	AssetsManager *assetsManager;
 	Map::AirportData airportData;

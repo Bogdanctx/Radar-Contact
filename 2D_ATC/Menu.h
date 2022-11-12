@@ -18,7 +18,7 @@ public:
 	void render(sf::RenderTarget *window);
 
 	void HandleClick();
-	void HandleInput(unsigned unicode);
+	void HandleInput(unsigned short unicode);
 
 	bool draw;
 

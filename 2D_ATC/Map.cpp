@@ -5,34 +5,65 @@ Map::Map()
 
 }
 
-void Map::AirportData::GenerateRoute(Path &path, int startingNode)
+void Map::AirportData::GenerateRoute(Path& path, sf::Vector2f pointA, sf::Vector2f pointB)
 {
-	sf::Vector2f nodePosition(nodes[startingNode].x, nodes[startingNode].y);
+	const short dx[] = { -1, 0, 1, 0 },
+				dy[] = { 0, 1, 0,-1 };
 
-	path.AddPoint(nodePosition, startingNode);
+	unsigned short xstart, ystart;
+	xstart = pointA.x;
+	ystart = pointA.y;
 
-	bool usedNode[50] = { 0 };
-	usedNode[startingNode] = 1;
+	std::queue<std::pair<unsigned short, unsigned short>>q;
+	q.push(std::make_pair(xstart, ystart));
+	map[xstart][ystart] = 1;
 
-	std::vector<int>tempPath;
-	tempPath.push_back(startingNode);
-
-	for (int j = 0; j < numberOfNodes; j++)
+	while (!q.empty())
 	{
-		int prevNode = tempPath[tempPath.size()-1];
+		short x = q.front().first;
+		short y = q.front().second;
 
-		if (connection[prevNode][j] == 1 && usedNode[j] == 0)
+		for (unsigned short d = 0; d < 4; d++)
 		{
-			tempPath.push_back(j);
-			usedNode[j] = 1;
-			path.AddPoint(sf::Vector2f(nodes[j].x, nodes[j].y), j);
+			short newx = x + dx[d];
+			short newy = y + dy[d];
 
-			if (nodes[j].finalNode == 1)
+			if (newx >= 1 && newx <= 1200 && newy >= 1 && newy <= 900 && map[newx][newy] == 0)
 			{
-				break;
+				map[newx][newy] = map[x][y] + 1;
+				q.push(std::make_pair(newx, newy));
 			}
+		}
+		q.pop();
+	}
 
-			j = 0;
+	std::vector<std::pair<short, short>>v;
+	short x = pointB.x, y = pointB.y;
+	v.push_back(std::make_pair(x, y));
+	do
+	{
+		short p = -1;
+		for (unsigned short d = 0; d < 4&&p==-1; d++)
+		{
+			if (x + dx[d] <= 1200 && y + dy[d] <= 900)
+			{
+				if (map[x][y] == map[x + dx[d]][y + dy[d]] + 1)
+				{
+					p = d;
+				}
+			}
+		}
+		x += dx[p];
+		y += dy[p];
+		v.push_back(std::make_pair(x, y));
+	} while (map[x][y] != 1);
+
+	unsigned short pointsAdded = 0;
+	for (std::vector<std::pair<short, short>>::reverse_iterator I = v.rbegin(); I != v.rend(); I++, pointsAdded++)
+	{
+		if (pointsAdded % 50 == 0)
+		{
+			path.AddPoint(sf::Vector2f(I->first, I->second), path.length());
 		}
 	}
 
@@ -53,7 +84,7 @@ void Map::render(sf::RenderTarget* window)
 	return;
 }
 
-void Map::LoadMap(const int position)
+void Map::LoadMap(const unsigned short position)
 {
 	std::ifstream read;
 
@@ -74,32 +105,26 @@ void Map::LoadMap(const int position)
 
 		read >> airportData.numberOfRunways;
 
-		for (int i = 0; i < airportData.numberOfRunways;i++)
+		for (unsigned short i = 0; i < airportData.numberOfRunways;i++)
 		{
-			read >> airportData.runways[i].direction; // left / right
-			read >> airportData.runways[i].heading;
-			read >> airportData.runways[i].x >> airportData.runways[i].y;
+			read >> airportData.runways[i].heading >> airportData.runways[i].x >> airportData.runways[i].y >> airportData.nodes[i].x >> airportData.nodes[i].y;
 		}
-		
-		read.close();
 
-		read.open("../Resources/airports/" + country + "/arrivalRoutes.txt");
-		read >> airportData.numberOfNodes;
-		for (int i = 0; i < airportData.numberOfNodes; i++)
+		read >> airportData.airportsBoundsTopLeft.x >> airportData.airportsBoundsTopLeft.y >> airportData.airportBoundsBottomRight.x >> airportData.airportBoundsBottomRight.y;
+
+		airportData.map = std::vector<std::vector<short>>(1201, std::vector<short>(901));
+
+		for (unsigned short j = airportData.airportsBoundsTopLeft.x; j <= airportData.airportBoundsBottomRight.x; j++)
 		{
-			for (int j = 0; j < airportData.numberOfNodes; j++)
-			{
-				read >> airportData.connection[i][j];
-			}
+			airportData.map[j][airportData.airportsBoundsTopLeft.y] = 1;
+			airportData.map[j][airportData.airportBoundsBottomRight.y] = 1;
 		}
-		for (int i = 0; i < airportData.numberOfNodes; i++)
+		for (unsigned short i = airportData.airportsBoundsTopLeft.y; i <= airportData.airportBoundsBottomRight.y; i++)
 		{
-			read >> airportData.nodes[i].x >> airportData.nodes[i].y >> airportData.nodes[i].finalNode;
+			airportData.map[airportData.airportsBoundsTopLeft.x][i] = 1;
+			airportData.map[airportData.airportBoundsBottomRight.x][i] = 1;
 		}
-		for (int i = 0; i < airportData.numberOfNodes; i++)
-		{
-			read >> airportData.spawns[i].x >> airportData.spawns[i].y;
-		}
+
 	}
 
 

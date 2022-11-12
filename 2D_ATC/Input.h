@@ -11,7 +11,7 @@ public:
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
-	void HandleInput(unsigned unicode);
+	void HandleInput(unsigned short unicode);
 
 	void SetBorder(float thickness, sf::Color color);
 	void SetDescription(const std::string text);

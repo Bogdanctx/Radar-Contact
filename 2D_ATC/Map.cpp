@@ -58,12 +58,12 @@ void Map::AirportData::GenerateRoute(Path& path, sf::Vector2f pointA, sf::Vector
 		v.push_back(std::make_pair(x, y));
 	} while (map[x][y] != 1);
 
-	unsigned short pointsAdded = 0;
+	unsigned short pointsAdded = 1;
 	for (std::vector<std::pair<short, short>>::reverse_iterator I = v.rbegin(); I != v.rend(); I++, pointsAdded++)
 	{
 		if (pointsAdded % 50 == 0)
 		{
-			path.AddPoint(sf::Vector2f(I->first, I->second), path.length());
+			path.AddPoint(sf::Vector2f(I->first, I->second));
 		}
 	}
 
@@ -112,7 +112,7 @@ void Map::LoadMap(const unsigned short position)
 
 		read >> airportData.airportsBoundsTopLeft.x >> airportData.airportsBoundsTopLeft.y >> airportData.airportBoundsBottomRight.x >> airportData.airportBoundsBottomRight.y;
 
-		airportData.map = std::vector<std::vector<short>>(1201, std::vector<short>(901));
+		airportData.map = std::vector<std::vector<unsigned short>>(1201, std::vector<unsigned short>(901));
 
 		for (unsigned short j = airportData.airportsBoundsTopLeft.x; j <= airportData.airportBoundsBottomRight.x; j++)
 		{

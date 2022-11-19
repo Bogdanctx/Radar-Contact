@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "Path.h"
+#include <queue>
 
 class Map
 {
@@ -28,7 +29,7 @@ public:
 		unsigned short minAltitude, maxAltitude;
 		sf::Vector2i airportsBoundsTopLeft, airportBoundsBottomRight;
 
-		std::vector<std::vector<short>>map;
+		std::vector<std::vector<unsigned short>>map;
 
 		void GenerateRoute(Path &path, sf::Vector2f pointA, sf::Vector2f pointB);
 	};

@@ -23,8 +23,6 @@ Airplane::Airplane(AssetsManager *assetsManager, Map::AirportData airportData)
 	airplane.setOutlineColor(sf::Color::White);
 	airplane.setOutlineThickness(3);
 
-	currNode = 0;
-
 	CreateAirplane();
 	initText();
 }
@@ -35,6 +33,11 @@ void Airplane::update(sf::Vector2i mousePosition)
 		return;
 
 	this->mousePosition = mousePosition;
+
+	if (route.directLine.second == 1)
+	{
+		route.update(mousePosition);
+	}
 
 	HandleInternEvents();
 
@@ -100,6 +103,19 @@ void Airplane::HandleClick()
 	return;
 }
 
+void Airplane::HandleButtonPressed(sf::Keyboard::Key key)
+{
+	if (key == sf::Keyboard::R) // back to course
+	{
+		if (route.length() && airplaneSelected == true)
+		{
+			_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
+		}
+	}
+
+	return;
+}
+
 void Airplane::HandleInternEvents()
 {
 	if (airplaneSelected == true)
@@ -107,6 +123,21 @@ void Airplane::HandleInternEvents()
 		HandleHeadingChange();
 		HandleAltitudeChange();
 		HandleSpeedChange();
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		{
+			route.CalculateDirectToPoint(airplane.getPosition());
+		}
+		else
+		{
+			if (route.directLine.second)
+			{
+				route.PerformDirectToPoint();
+				_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
+				directionShape.setRotation(-_heading);
+			}
+		}
+
 	}
 
 	return;
@@ -311,22 +342,23 @@ void Airplane::UpdateData()
 
 void Airplane::CheckNode()
 {
-	double dist = Math::DistanceToPoint(airplane.getPosition(), route.GetPointPosition(currNode));
+	double dist = Math::DistanceToPoint(airplane.getPosition(), route.NextPointPosition());
 
 	if (dist <= 15.f && !headingFixed) // fixing headings error
 	{
-		_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
+		_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
 		headingFixed = true;
 	}
 
 	if (dist <= 4.f)
 	{
-		if (currNode + 1 < route.length())
+		if (route.length() > 1)
 		{
-			airplane.setPosition(route.GetPointPosition(currNode));
+			airplane.setPosition(route.NextPointPosition());
 
-			++currNode;
-			_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.GetPointPosition(currNode)));
+			route.RemoveFirstPoint();
+
+			_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
 
 			heading.setString(std::to_string(_heading));
 			headingFixed = false;
@@ -405,10 +437,10 @@ void Airplane::CreateAirplane()
 	}
 
 	airportData.GenerateRoute(route, spawnPosition, sf::Vector2f(airportData.nodes[randomRunway].x, airportData.nodes[randomRunway].y));
-	
+
 	airplane.setPosition(spawnPosition);
 
-	_heading = _newHeading = static_cast<short>(Math::DirectionToPoint(spawnPosition, route.GetPointPosition(0)));
+	_heading = _newHeading = static_cast<short>(Math::DirectionToPoint(spawnPosition, route.NextPointPosition()));
 
 	_altitude = rand() % (airportData.maxAltitude - airportData.minAltitude) + airportData.minAltitude;
 	_altitude -= _altitude % 100;

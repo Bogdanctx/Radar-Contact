@@ -14,6 +14,7 @@ public:
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 	void HandleClick();
+	void HandleButtonPressed(sf::Keyboard::Key key);
 
 	unsigned short _altitude;
 	unsigned long long id;
@@ -61,8 +62,6 @@ private:
 	bool speedUpdated;
 
 	bool headingFixed;
-
-	unsigned short currNode;
 
 	AssetsManager *assetsManager;
 	Map::AirportData airportData;

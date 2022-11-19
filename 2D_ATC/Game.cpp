@@ -40,7 +40,7 @@ void Game::update()
 
 			for (auto& _it : airplanes)
 			{
-				if (_it._altitude-200 <= it._altitude && it._altitude <= _it._altitude + 200 && it.id != _it.id)
+				if (abs(it._altitude - _it._altitude) <= 300 && it.id != _it.id)
 				{
 					double distance = Math::DistanceToPoint(it.GetAirplane().getPosition(), _it.GetAirplane().getPosition());
 
@@ -126,6 +126,19 @@ void Game::processEvents()
 				{
 					gameWindow.close();
 				}
+
+				if (menu.draw)
+				{
+
+				}
+				else
+				{
+					for (auto& it : airplanes)
+					{
+						it.HandleButtonPressed(windowEvent.key.code);
+					}
+				}
+
 				break;
 			}
 			case sf::Event::TextEntered:

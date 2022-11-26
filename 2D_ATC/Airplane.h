@@ -9,7 +9,7 @@ class Airplane
 {
 public:
 	Airplane();
-	Airplane(AssetsManager *assetsManager, Map::AirportData airportData);
+	Airplane(AssetsManager *assetsManager, Map::MapData mapData, unsigned short gamemode);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
@@ -22,7 +22,7 @@ public:
 
 	void SetTCAS(unsigned short level);
 
-	sf::RectangleShape GetAirplane();
+	sf::RectangleShape airplane;
 
 private:
 	void initText();
@@ -39,7 +39,6 @@ private:
 	void GenerateRoute();
 	void CheckNode();
 
-	sf::RectangleShape airplane;
 	sf::RectangleShape dataStick;
 	sf::RectangleShape directionShape;
 	sf::Vector2i mousePosition;
@@ -49,6 +48,8 @@ private:
 
 	sf::Vector2f velocity;
 	
+	unsigned short gamemode;
+
 	unsigned short _newAltitude;
 	unsigned short _speed, _newSpeed;
 	short _heading, _newHeading;
@@ -63,8 +64,10 @@ private:
 
 	bool headingFixed;
 
+	unsigned short randomChoice;
+
 	AssetsManager *assetsManager;
-	Map::AirportData airportData;
+	Map::MapData mapData;
 	Path route;
 
 	sf::Text callsign;

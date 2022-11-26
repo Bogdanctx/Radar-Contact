@@ -37,8 +37,6 @@ private:
 
 	sf::Text creator;
 
-	Path qwe;
-
 	unsigned long long planeIds;
 };
 

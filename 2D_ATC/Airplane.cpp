@@ -3,16 +3,21 @@
 
 #define PI 3.14159265
 
+#define GAMEMODE_TOWER 1
+#define GAMEMODE_RADAR 2
+
 Airplane::Airplane()
 {
 
 }
 
-Airplane::Airplane(AssetsManager *assetsManager, Map::AirportData airportData)
+Airplane::Airplane(AssetsManager *assetsManager, Map::MapData mapData, unsigned short gamemode)
 {
 	this->assetsManager = assetsManager;
-	this->airportData = airportData;
-	
+	this->mapData = mapData;
+
+	(gamemode == 1 ? this->gamemode = GAMEMODE_TOWER : this->gamemode = GAMEMODE_RADAR);
+
 	airplaneSelected = false;
 	settingNewHeading = false;
 	destroyPlane = false;
@@ -51,7 +56,15 @@ void Airplane::update(sf::Vector2i mousePosition)
 		));
 		
 		CheckNode();
-		CheckLanding();
+		
+		if (gamemode == GAMEMODE_TOWER)
+		{
+			CheckLanding();
+		}
+		else if(gamemode == GAMEMODE_RADAR && _altitude <= 11000 && _speed <= 250 && Math::DistanceToPoint(airplane.getPosition(), mapData.airportsPin[randomChoice].position) <= 2.f) // Plane has reached its final point
+		{
+			destroyPlane = 1;
+		}
 
 		updateTimer.restart();
 	}
@@ -155,7 +168,7 @@ void Airplane::HandleHeadingChange()
 		y1 = airplane.getPosition().y;
 		y2 = mousePosition.y;
 
-		_newHeading = static_cast<int>(-atan2(x2 - x1, y2 - y1) * 180 / PI);
+		_newHeading = (int)(-atan2(x2 - x1, y2 - y1) * 180 / PI);
 
 		if (_newHeading < 0)
 			_newHeading += 360;
@@ -181,11 +194,11 @@ void Airplane::HandleAltitudeChange()
 	{
 		settingNewAltitude = true;
 
-		if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 150)
+		if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 110)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				if (_newAltitude + 100 <= airportData.maxAltitude)
+				if (_newAltitude + 100 <= mapData.maxAltitude)
 				{
 					_newAltitude += 100;
 				}
@@ -193,7 +206,7 @@ void Airplane::HandleAltitudeChange()
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				if (_newAltitude - 100 >= airportData.minAltitude)
+				if (_newAltitude - 100 >= mapData.minAltitude)
 				{
 					_newAltitude -= 100;
 				}
@@ -224,7 +237,7 @@ void Airplane::HandleSpeedChange()
 	{
 		settingNewSpeed = true;
 
-		if (speedChangeTimer.getElapsedTime().asMilliseconds() >= 100)
+		if (speedChangeTimer.getElapsedTime().asMilliseconds() >= 80)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
@@ -262,7 +275,7 @@ void Airplane::HandleSpeedChange()
 
 void Airplane::UpdateData()
 {
-	if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 1000)
+	if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 200)
 	{
 		if (altitudeUpdated)
 		{
@@ -289,9 +302,10 @@ void Airplane::UpdateData()
 				_speed++;
 			if (_newSpeed < _speed)
 				_speed--;
-			speed.setString(std::to_string(_speed));
 
-			velocity.x = velocity.y = static_cast<float>(_speed / 100);
+			speed.setString(std::to_string(_speed));
+			velocity.x = velocity.y = (float)_speed / 100;
+
 		}
 		speedChangeTimer.restart();
 	}
@@ -342,7 +356,11 @@ void Airplane::UpdateData()
 
 void Airplane::CheckNode()
 {
-	double dist = Math::DistanceToPoint(airplane.getPosition(), route.NextPointPosition());
+	double dist;
+	if (route.length() > 0)
+	{
+		dist = Math::DistanceToPoint(airplane.getPosition(), route.NextPointPosition());
+	}
 
 	if (dist <= 15.f && !headingFixed) // fixing headings error
 	{
@@ -363,6 +381,10 @@ void Airplane::CheckNode()
 			heading.setString(std::to_string(_heading));
 			headingFixed = false;
 		}
+		else
+		{
+			route.RemoveFirstPoint();
+		}
 	}
 
 	return;
@@ -372,15 +394,15 @@ void Airplane::CheckLanding()
 {
 	sf::Vector2f airplanePosition = airplane.getPosition();
 
-	for (unsigned short i = 0; i < airportData.numberOfRunways; i++)
+	for (unsigned short i = 0; i < mapData.numberOfRunways; i++)
 	{
-		sf::Vector2f runwayPosition(airportData.runways[i].x, airportData.runways[i].y);
+		sf::Vector2f runwayPosition(mapData.runways[i].x, mapData.runways[i].y);
 
 		double dist = Math::DistanceToPoint(airplanePosition, runwayPosition);
 
 		if (dist < 10.f)
 		{
-			short runwayHeading = airportData.runways[i].heading;
+			short runwayHeading = mapData.runways[i].heading;
 
 			short leftError;
 			short rightError;
@@ -404,9 +426,7 @@ void Airplane::CheckLanding()
 
 void Airplane::CreateAirplane()
 {
-	unsigned short randomRunway = rand() % airportData.numberOfRunways;
 	unsigned short _t = rand() % 4;
-
 	/*
 		_t values:
 		0 -> right screen
@@ -417,32 +437,44 @@ void Airplane::CreateAirplane()
 
 	if (_t == 0)
 	{
-		spawnPosition.x = 1200-5;
-		spawnPosition.y = rand() % 900;
+		spawnPosition.x = 1200 - 10;
+		spawnPosition.y = rand() % (900 - 10);
 	}
 	else if (_t == 1)
 	{
-		spawnPosition.x = rand() % 1200;
-		spawnPosition.y = 5;
+		spawnPosition.x = rand() % (1200 - 10);
+		spawnPosition.y = 10;
 	}
 	else if (_t == 2)
 	{
-		spawnPosition.x = 5;
-		spawnPosition.y = rand() % 900;
+		spawnPosition.x = 10;
+		spawnPosition.y = rand() % (900 - 10);
 	}
 	else
 	{
-		spawnPosition.x = rand() % 1200;
-		spawnPosition.y = 900-5;
+		spawnPosition.x = rand() % (1200 - 10);
+		spawnPosition.y = 900 - 10;
 	}
 
-	airportData.GenerateRoute(route, spawnPosition, sf::Vector2f(airportData.nodes[randomRunway].x, airportData.nodes[randomRunway].y));
+	if (gamemode == 1) // playing as tower
+	{
+		randomChoice = rand() % mapData.numberOfRunways;
+
+		mapData.GenerateRoute(route, spawnPosition, mapData.runways[randomChoice].coordsTowardsRunway);
+	}
+	else // playing as radar
+	{
+		randomChoice = rand() % mapData.numberOfAirports;
+
+		mapData.GenerateRoute(route, spawnPosition, mapData.airportsPin[randomChoice].position);
+	}
 
 	airplane.setPosition(spawnPosition);
 
 	_heading = _newHeading = static_cast<short>(Math::DirectionToPoint(spawnPosition, route.NextPointPosition()));
 
-	_altitude = rand() % (airportData.maxAltitude - airportData.minAltitude) + airportData.minAltitude;
+	_altitude = rand() % (mapData.maxAltitude - mapData.minAltitude) + mapData.minAltitude;
+	_altitude = 10500;
 	_altitude -= _altitude % 100;
 	_newAltitude = _altitude;
 
@@ -457,11 +489,6 @@ void Airplane::CreateAirplane()
 	s_callSign = callsigns[rand() % callsigns.size()] + std::to_string(rand() % 9999);
 
 	return;
-}
-
-sf::RectangleShape Airplane::GetAirplane()
-{
-	return airplane;
 }
 
 void Airplane::SetTCAS(unsigned short level)

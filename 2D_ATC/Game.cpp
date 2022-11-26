@@ -1,6 +1,9 @@
 #include "Game.h"
 #include "Math.h"
 
+#define GAMEMODE_TOWER 1
+#define GAMEMODE_RADAR 2
+
 Game::Game()
 {
 	gameWindow.create(sf::VideoMode(1200, 900), "2D - Air Traffic Controller");
@@ -42,7 +45,7 @@ void Game::update()
 			{
 				if (abs(it._altitude - _it._altitude) <= 300 && it.id != _it.id)
 				{
-					double distance = Math::DistanceToPoint(it.GetAirplane().getPosition(), _it.GetAirplane().getPosition());
+					double distance = Math::DistanceToPoint(it.airplane.getPosition(), _it.airplane.getPosition());
 
 					if (distance > 50.f)
 						it.SetTCAS(0), _it.SetTCAS(0);
@@ -68,7 +71,7 @@ void Game::update()
 
 		if (airplanes.size() == 0 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
 		{
-			Airplane airplane = Airplane(&assetsManager, map.airportData);
+			Airplane airplane = Airplane(&assetsManager, map.mapData, menu.continueGame.option);
 			airplane.id = planeIds++;
 
 			airplanes.push_back(airplane);
@@ -96,7 +99,6 @@ void Game::render()
 		{
 			it.render(&gameWindow);
 		}
-		qwe.render(&gameWindow);
 	}
 
 	gameWindow.draw(creator);
@@ -193,6 +195,7 @@ void Game::initAssets()
 	assetsManager.LoadSoundBuffer("buttonClick.wav");
 
 	menu = Menu(assetsManager);
+	map = Map(assetsManager);
 
 	creator.setString("© Made by Bogdan. (Bogdan#8334)");
 	creator.setPosition(sf::Vector2f(5, 880));

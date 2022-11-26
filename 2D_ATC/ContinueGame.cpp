@@ -1,5 +1,8 @@
 #include "ContinueGame.h"
 
+#define GAMEMODE_TOWER 1
+#define GAMEMODE_RADAR 2
+
 ContinueGame::ContinueGame()
 {
 
@@ -30,12 +33,12 @@ void ContinueGame::HandleClick()
 {
 	if (playTower.isButtonClicked(mousePosition))
 	{
-		option = 1;
+		option = GAMEMODE_TOWER;
 		buttonClickSound.play();
 	}
 	else if (playRadar.isButtonClicked(mousePosition))
 	{
-		option = 2;
+		option = GAMEMODE_RADAR;
 		buttonClickSound.play();
 	}
 	else if(cancel.isButtonClicked(mousePosition))

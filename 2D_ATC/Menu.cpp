@@ -1,6 +1,9 @@
 #include "Menu.h"
 #include <iostream>
 
+#define GAMEMODE_TOWER 1
+#define GAMEMODE_RADAR 2
+
 Menu::Menu()
 {
 	
@@ -66,7 +69,7 @@ void Menu::HandleClick()
 	{
 		continueGame.HandleClick();
 
-		if (continueGame.option == 1 || continueGame.option == 2)
+		if (continueGame.option == GAMEMODE_TOWER || continueGame.option == GAMEMODE_RADAR)
 		{
 			draw = false;
 		}
@@ -77,7 +80,7 @@ void Menu::HandleClick()
 
 		if (newGame.applyGame == true)
 		{
-			continueGame.draw = 1;
+			continueGame.draw = GAMEMODE_TOWER;
 			newGame.draw = newGame.applyGame = false;
 		}
 	}
@@ -93,10 +96,7 @@ void Menu::HandleClick()
 		newGame.draw = true;
 
 		buttonClickSound.play();
-	}
-
-
-	
+	}	
 
 	return;
 }

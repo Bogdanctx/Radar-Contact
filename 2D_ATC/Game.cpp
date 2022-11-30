@@ -57,17 +57,13 @@ void Game::update()
 						it.destroyPlane = _it.destroyPlane = 1;
 				}
 			}
-
-			if (it.destroyPlane)
-			{
-				airplanes.erase(
-					std::remove_if(airplanes.begin(), airplanes.end(),
-						[](const Airplane& airplane) {
-							return airplane.destroyPlane == 1;
-						}), airplanes.end()
-				);
-			}
 		}
+
+		airplanes.remove_if(
+			[](Airplane airplane) {
+				return airplane.destroyPlane == 1; 
+			}
+		);
 
 		if (airplanes.size() == 0 || (airplanesSpawner.getElapsedTime().asSeconds() >= 40 && airplanes.size() <= 10))
 		{

@@ -23,7 +23,7 @@ public:
 	void SetTCAS(unsigned short level);
 
 	sf::RectangleShape airplane;
-
+	sf::Text callsign;
 private:
 	void initText();
 
@@ -70,10 +70,12 @@ private:
 	Map::MapData mapData;
 	Path route;
 
-	sf::Text callsign;
+	
 	sf::Text heading, newHeading;
 	sf::Text altitude, newAltitude;
 	sf::Text speed, newSpeed;
+	sf::Text arrivalAirport;
+
 	std::string s_callSign;
 
 	sf::Clock altitudeChangeTimer;

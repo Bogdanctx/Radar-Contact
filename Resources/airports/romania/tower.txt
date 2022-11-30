@@ -1,9 +1,9 @@
 4
-80 375 315 176 334
-80 290 510 176 521
-260 780 458 955 439
-260 865 262 955 252
-177 203 954 692
+80 410 300 202 321
+80 327 510 202 524
+260 880 247 973 234
+260 793 456 973 434
+203 195 972 702
 
 First line (T): Number of runways
 Next T lines: (Runway Heading) (Runway Position X) (Runway Position Y) (Final Node X) (Final Node Y)

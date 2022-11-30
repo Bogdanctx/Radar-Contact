@@ -6,6 +6,7 @@
 #include "AssetsManager.h"
 #include "Airplane.h"
 #include "Path.h"
+#include <list>
 
 class Game
 {
@@ -26,7 +27,7 @@ private:
 	Menu menu;
 	AssetsManager assetsManager;
 	Map map;
-	std::vector<Airplane>airplanes;
+	std::list<Airplane>airplanes;
 
 	sf::RenderWindow gameWindow;
 	sf::Clock airplanesSpawner;

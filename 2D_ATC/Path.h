@@ -26,10 +26,11 @@ public:
 
 private:
 	struct Point {
-		unsigned short id;
+		short id;
 		sf::CircleShape shape;
+		bool remove = false;
 	};
-	short directToPoint;
+	
 
 	std::deque<Point>points;
 

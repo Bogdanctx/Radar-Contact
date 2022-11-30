@@ -151,6 +151,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Microburst.cpp" />
     <ClCompile Include="NewGame.cpp" />
     <ClCompile Include="Path.cpp" />
   </ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Microburst.h" />
     <ClInclude Include="NewGame.h" />
     <ClInclude Include="Path.h" />
   </ItemGroup>

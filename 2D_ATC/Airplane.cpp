@@ -6,6 +6,17 @@
 #define GAMEMODE_TOWER 1
 #define GAMEMODE_RADAR 2
 
+#define CALLSIGN_Y 67
+#define ALTITUDE_Y 55
+#define SPEED_Y 43
+#define HEADING_Y 31
+#define ARRIVAL_AIRPORT_Y 19
+
+#define DATASTICK_Y_OFF 40
+#define DATASTICK_Y_ON 60
+
+#define DATASTICK_Y_OFF_ERR 25
+
 Airplane::Airplane()
 {
 
@@ -46,10 +57,10 @@ void Airplane::update(sf::Vector2i mousePosition)
 
 	HandleInternEvents();
 
+	UpdateData();
+
 	if (updateTimer.getElapsedTime().asMilliseconds() >= 700)
 	{
-		UpdateData();
-
 		airplane.move(sf::Vector2f(
 			sin( (_heading + 0) * PI / 180) * velocity.x,
 			cos( (_heading + 180) * PI / 180) * velocity.y
@@ -61,7 +72,7 @@ void Airplane::update(sf::Vector2i mousePosition)
 		{
 			CheckLanding();
 		}
-		else if(gamemode == GAMEMODE_RADAR && _altitude <= 11000 && _speed <= 250 && Math::DistanceToPoint(airplane.getPosition(), mapData.airportsPin[randomChoice].position) <= 2.f) // Plane has reached its final point
+		else if(gamemode == GAMEMODE_RADAR && _altitude <= 11000 && _speed <= 250 && Math::DistanceToPoint(airplane.getPosition(), mapData.airportsPin[randomChoice].position) <= 5.f) // Plane has reached its final point
 		{
 			destroyPlane = 1;
 		}
@@ -79,7 +90,6 @@ void Airplane::render(sf::RenderTarget* window)
 	window->draw(airplane);
 	window->draw(dataStick);
 	window->draw(callsign);
-	window->draw(heading);
 	window->draw(altitude);
 	window->draw(speed);
 
@@ -93,6 +103,9 @@ void Airplane::render(sf::RenderTarget* window)
 			window->draw(newAltitude);
 		if (settingNewSpeed)
 			window->draw(newSpeed);
+
+		window->draw(heading);
+		window->draw(arrivalAirport);
 	}
 
 	return;
@@ -139,16 +152,11 @@ void Airplane::HandleInternEvents()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
 		{
-			route.CalculateDirectToPoint(airplane.getPosition());
+			
 		}
 		else
 		{
-			if (route.directLine.second)
-			{
-				route.PerformDirectToPoint();
-				_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
-				directionShape.setRotation(-_heading);
-			}
+			
 		}
 
 	}
@@ -194,7 +202,7 @@ void Airplane::HandleAltitudeChange()
 	{
 		settingNewAltitude = true;
 
-		if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 110)
+		if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 40)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
@@ -237,7 +245,7 @@ void Airplane::HandleSpeedChange()
 	{
 		settingNewSpeed = true;
 
-		if (speedChangeTimer.getElapsedTime().asMilliseconds() >= 80)
+		if (speedChangeTimer.getElapsedTime().asMilliseconds() >= 50)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
@@ -275,7 +283,7 @@ void Airplane::HandleSpeedChange()
 
 void Airplane::UpdateData()
 {
-	if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 200)
+	if (altitudeChangeTimer.getElapsedTime().asMilliseconds() >= 600)
 	{
 		if (altitudeUpdated)
 		{
@@ -294,7 +302,7 @@ void Airplane::UpdateData()
 		altitudeChangeTimer.restart();
 	}
 
-	if (speedChangeTimer.getElapsedTime().asMilliseconds() >= 200)
+	if (speedChangeTimer.getElapsedTime().asMilliseconds() >= 700)
 	{
 		if (_newSpeed != _speed)
 		{
@@ -312,38 +320,69 @@ void Airplane::UpdateData()
 
 	sf::Vector2f airplanePosition = airplane.getPosition();
 
-	dataStick.setPosition(sf::Vector2f(
-		airplanePosition.x + 5,
-		airplanePosition.y - 50
-	));
-	callsign.setPosition(sf::Vector2f(
-		airplanePosition.x + 10,
-		airplanePosition.y - 55
-	));
+	if (airplaneSelected)
+	{
+		dataStick.setPosition(sf::Vector2f(airplanePosition.x + 5, airplanePosition.y - DATASTICK_Y_ON));
+		dataStick.setSize(sf::Vector2f(2, DATASTICK_Y_ON));
+
+		callsign.setPosition(sf::Vector2f(
+			airplanePosition.x + 10,
+			airplanePosition.y - CALLSIGN_Y
+		));
+
+		altitude.setPosition(sf::Vector2f(
+			airplanePosition.x + 10,
+			airplanePosition.y - ALTITUDE_Y
+		));
+
+		speed.setPosition(sf::Vector2f(
+			airplanePosition.x + 10,
+			airplanePosition.y - SPEED_Y
+		));
+	}
+	else
+	{
+		dataStick.setPosition(sf::Vector2f(airplanePosition.x + 5, airplanePosition.y - DATASTICK_Y_OFF));
+		dataStick.setSize(sf::Vector2f(2, DATASTICK_Y_OFF));
+
+		callsign.setPosition(sf::Vector2f(
+			airplanePosition.x + 10,
+			airplanePosition.y - CALLSIGN_Y + DATASTICK_Y_OFF_ERR
+		));
+		
+		altitude.setPosition(sf::Vector2f(
+			airplanePosition.x + 10,
+			airplanePosition.y - ALTITUDE_Y + DATASTICK_Y_OFF_ERR
+		));
+
+		speed.setPosition(sf::Vector2f(
+			airplanePosition.x + 10,
+			airplanePosition.y - SPEED_Y + DATASTICK_Y_OFF_ERR
+		));
+	}
 
 	heading.setPosition(sf::Vector2f(
 		airplanePosition.x + 10,
-		airplanePosition.y - 43
+		airplanePosition.y - HEADING_Y
 	));
 	newHeading.setPosition(sf::Vector2f(
 		airplanePosition.x + heading.getLocalBounds().width + 13,
-		airplanePosition.y - 43
+		airplanePosition.y - HEADING_Y
 	));
-	altitude.setPosition(sf::Vector2f(
-		airplanePosition.x + 10,
-		airplanePosition.y - 31
-	));
+
 	newAltitude.setPosition(sf::Vector2f(
 		airplanePosition.x + altitude.getLocalBounds().width + 13,
-		airplanePosition.y - 31
+		airplanePosition.y - ALTITUDE_Y
 	));
-	speed.setPosition(sf::Vector2f(
-		airplanePosition.x + 10,
-		airplanePosition.y - 19
-	));
+
 	newSpeed.setPosition(sf::Vector2f(
 		airplanePosition.x + speed.getLocalBounds().width + 13,
-		airplanePosition.y - 19
+		airplanePosition.y - SPEED_Y
+	));
+
+	arrivalAirport.setPosition(sf::Vector2f(
+		airplanePosition.x + 10,
+		airplanePosition.y - ARRIVAL_AIRPORT_Y
 	));
 
 	directionShape.setPosition(sf::Vector2f(
@@ -357,33 +396,30 @@ void Airplane::UpdateData()
 void Airplane::CheckNode()
 {
 	double dist;
-	if (route.length() > 0)
+
+	if (route.length())
 	{
 		dist = Math::DistanceToPoint(airplane.getPosition(), route.NextPointPosition());
-	}
 
-	if (dist <= 15.f && !headingFixed) // fixing headings error
-	{
-		_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
-		headingFixed = true;
-	}
+		if (dist <= 15.f && !headingFixed) // fix heading error
+		{
+			_heading = _newHeading = (int)Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition());
+			headingFixed = true;
+		}
 
-	if (dist <= 4.f)
-	{
-		if (route.length() > 1)
+		if (dist <= 4.f)
 		{
 			airplane.setPosition(route.NextPointPosition());
 
 			route.RemoveFirstPoint();
 
-			_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
+			if (route.length() > 1)
+			{
+				_heading = _newHeading = (int) Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition());
 
-			heading.setString(std::to_string(_heading));
-			headingFixed = false;
-		}
-		else
-		{
-			route.RemoveFirstPoint();
+				heading.setString(std::to_string(_heading));
+				headingFixed = false;
+			}
 		}
 	}
 
@@ -471,16 +507,18 @@ void Airplane::CreateAirplane()
 
 	airplane.setPosition(spawnPosition);
 
-	_heading = _newHeading = static_cast<short>(Math::DirectionToPoint(spawnPosition, route.NextPointPosition()));
+	_heading = _newHeading = (short) Math::DirectionToPoint(spawnPosition, route.NextPointPosition()) ;
 
 	_altitude = rand() % (mapData.maxAltitude - mapData.minAltitude) + mapData.minAltitude;
-	_altitude = 10500;
 	_altitude -= _altitude % 100;
 	_newAltitude = _altitude;
 
-	_speed = _newSpeed = rand() % (320 - 140) + 140;
+	_speed = _newSpeed = rand() % (320 - 230) + 230;
 
-	velocity.x = velocity.y = static_cast<float>(_speed / 100);
+	if(gamemode == GAMEMODE_RADAR)
+		arrivalAirport.setString(mapData.airportsPin[randomChoice].icao);
+
+	velocity.x = velocity.y = (float)_speed / 100;
 
 	std::vector<std::string>callsigns {
 		"ROT", "KLM", "AFR", "WZZ", "TAP"
@@ -505,14 +543,17 @@ void Airplane::SetTCAS(unsigned short level)
 
 void Airplane::initText()
 {
-	dataStick.setPosition(sf::Vector2f(spawnPosition.x + 5, spawnPosition.y - 50));
-	callsign.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 55));
-	heading.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 43));
+	dataStick.setPosition(sf::Vector2f(spawnPosition.x + 5, spawnPosition.y - DATASTICK_Y_OFF));
 	newHeading.setPosition(sf::Vector2f(spawnPosition.x + 35, spawnPosition.y - 43));
 	directionShape.setPosition(sf::Vector2f(spawnPosition.x + 5, spawnPosition.y + 5));
-	altitude.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 31));
+
+	callsign.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 67));
+	heading.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 55));
+	altitude.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 43));
+	speed.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 31));
+	arrivalAirport.setPosition(sf::Vector2f(spawnPosition.x, spawnPosition.y - 19));
+
 	newAltitude.setPosition(sf::Vector2f(spawnPosition.x + 45, spawnPosition.y - 31));
-	speed.setPosition(sf::Vector2f(spawnPosition.x + 10, spawnPosition.y - 19));
 	newSpeed.setPosition(sf::Vector2f(spawnPosition.x + 45, spawnPosition.y - 19));
 
 	callsign.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
@@ -522,6 +563,7 @@ void Airplane::initText()
 	newAltitude.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	speed.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	newSpeed.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
+	arrivalAirport.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 
 	heading.setCharacterSize(12);
 	speed.setCharacterSize(12);
@@ -530,6 +572,7 @@ void Airplane::initText()
 	newHeading.setCharacterSize(12);
 	newAltitude.setCharacterSize(12);
 	newSpeed.setCharacterSize(12);
+	arrivalAirport.setCharacterSize(12);
 
 	heading.setString(std::to_string(_heading));
 	callsign.setString(s_callSign);
@@ -539,15 +582,13 @@ void Airplane::initText()
 	newAltitude.setString(std::to_string(_newAltitude));
 	newSpeed.setString(std::to_string(_newSpeed));
 
-	directionShape.setFillColor(sf::Color::White);
-	speed.setFillColor(sf::Color::White);
 	newHeading.setFillColor(sf::Color::Cyan);
 	newAltitude.setFillColor(sf::Color::Cyan);
 	newSpeed.setFillColor(sf::Color::Cyan);
 
 	directionShape.setRotation(_heading - 180);
 
-	dataStick.setSize(sf::Vector2f(2, 50));
+	dataStick.setSize(sf::Vector2f(2, DATASTICK_Y_OFF));
 	directionShape.setSize(sf::Vector2f(2, 30));
 
 	return;

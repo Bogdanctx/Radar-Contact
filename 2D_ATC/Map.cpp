@@ -67,9 +67,9 @@ void Map::MapData::GenerateRoute(Path& path, sf::Vector2f pointA, sf::Vector2f p
 	} while (map[x][y] != 1);
 
 	unsigned short pointsAdded = 1;
-	for (std::vector<std::pair<short, short>>::reverse_iterator I = v.rbegin(); I != v.rend(); I++, pointsAdded++)
+	for (std::vector<std::pair<short, short>>::iterator I = v.begin(); I != v.end(); I++, pointsAdded++)
 	{
-		if (pointsAdded % 50 == 0)
+		if (pointsAdded % 40 == 0)
 		{
 			path.AddPoint(sf::Vector2f(I->first, I->second));
 		}
@@ -123,7 +123,7 @@ void Map::LoadMap(const unsigned short gamemode)
 
 	if (gamemode == GAMEMODE_TOWER) // Tower
 	{
-		mapTexture.loadFromFile("../Resources/images/maps/"+country+"/tower.png");
+		mapTexture.loadFromFile("../Resources/airports/"+country+"/tower.png");
 		mapSprite.setTexture(mapTexture);
 
 		mapData.minAltitude = 1000;
@@ -158,7 +158,7 @@ void Map::LoadMap(const unsigned short gamemode)
 	}
 	else // Radar
 	{
-		mapTexture.loadFromFile("../Resources/images/maps/" + country + "/radar.png");
+		mapTexture.loadFromFile("../Resources/airports/" + country + "/radar.png");
 		mapSprite.setTexture(mapTexture);
 
 		mapData.minAltitude = 10000;

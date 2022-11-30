@@ -4,7 +4,7 @@
 Path::Path()
 {
 	directLine.first.setFillColor(sf::Color::Green);
-	directToPoint = -1;
+
 }
 
 void Path::update(sf::Vector2i mousePosition)
@@ -41,7 +41,7 @@ void Path::AddPoint(sf::Vector2f position)
 	point.shape.setFillColor(sf::Color(255, 255, 255, 30));
 	point.id = points.size();
 
-	points.push_back(point);
+	points.push_front(point);
 
 	return;
 }
@@ -92,7 +92,7 @@ void Path::CalculateDirectToPoint(sf::Vector2f linePos)
 		{
 			if (it.id != points.front().id)
 			{
-				directToPoint = it.id;
+				it.remove = 1;
 			}
 
 		}
@@ -103,12 +103,13 @@ void Path::CalculateDirectToPoint(sf::Vector2f linePos)
 
 void Path::PerformDirectToPoint()
 {
-	if (directToPoint != -1)
-	{
-		points.erase(points.begin(), points.begin() + directToPoint - points.begin()->id);
-	}
+
+	std::remove_if(points.begin(), points.end(), [](Point point) {
+		return point.remove == 0;
+		});
+	
+
 	directLine.second = false;
-	directToPoint = -1;
 
 	return;
 }

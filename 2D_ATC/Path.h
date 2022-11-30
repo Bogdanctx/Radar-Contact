@@ -17,10 +17,9 @@ public:
 	void AddPoint(sf::Vector2f position);
 	void HidePath();
 	void RemoveFirstPoint();
-	void CalculateDirectToPoint(sf::Vector2f linePos);
-	void PerformDirectToPoint();
 
-	std::pair<sf::RectangleShape, bool>directLine;
+	short PointHovered();
+	void RemoveUntilPoint(short &pointId);
 
 	int length();
 

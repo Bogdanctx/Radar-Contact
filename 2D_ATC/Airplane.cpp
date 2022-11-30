@@ -12,6 +12,8 @@
 #define HEADING_Y 31
 #define ARRIVAL_AIRPORT_Y 19
 
+#define HEADING_STICK_LENGTH 30
+
 #define DATASTICK_Y_OFF 40
 #define DATASTICK_Y_ON 60
 
@@ -27,7 +29,7 @@ Airplane::Airplane(AssetsManager *assetsManager, Map::MapData mapData, unsigned 
 	this->assetsManager = assetsManager;
 	this->mapData = mapData;
 
-	(gamemode == 1 ? this->gamemode = GAMEMODE_TOWER : this->gamemode = GAMEMODE_RADAR);
+	this->gamemode = gamemode;
 
 	airplaneSelected = false;
 	settingNewHeading = false;
@@ -50,10 +52,7 @@ void Airplane::update(sf::Vector2i mousePosition)
 
 	this->mousePosition = mousePosition;
 
-	if (route.directLine.second == 1)
-	{
-		route.update(mousePosition);
-	}
+	route.update(mousePosition);
 
 	HandleInternEvents();
 
@@ -149,16 +148,6 @@ void Airplane::HandleInternEvents()
 		HandleHeadingChange();
 		HandleAltitudeChange();
 		HandleSpeedChange();
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-		{
-			
-		}
-		else
-		{
-			
-		}
-
 	}
 
 	return;
@@ -186,11 +175,38 @@ void Airplane::HandleHeadingChange()
 
 		settingNewHeading = true;
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+	{
+		directionShape.setSize(sf::Vector2f(
+			2, Math::DistanceToPoint(
+				airplane.getPosition(), 
+				sf::Vector2f(mousePosition.x, mousePosition.y)
+			)
+		));
+		directionShape.setRotation(Math::DirectionToPoint(
+			sf::Vector2f(mousePosition.x, mousePosition.y),
+			airplane.getPosition()
+		));
+
+		directPoint = route.PointHovered();
+	}
 	else
 	{
+		if (directPoint != -1)
+		{
+			route.RemoveUntilPoint(directPoint);
+			_newHeading = Math::DirectionToPoint(
+				airplane.getPosition(),
+				route.NextPointPosition()
+			);
+		}
+
 		_heading = _newHeading;
 		heading.setString(std::to_string(_heading));
 		settingNewHeading = false;
+
+		directionShape.setSize(sf::Vector2f(2, HEADING_STICK_LENGTH));
+		directionShape.setRotation(_heading-180);
 	}
 
 	return;
@@ -589,7 +605,7 @@ void Airplane::initText()
 	directionShape.setRotation(_heading - 180);
 
 	dataStick.setSize(sf::Vector2f(2, DATASTICK_Y_OFF));
-	directionShape.setSize(sf::Vector2f(2, 30));
+	directionShape.setSize(sf::Vector2f(2, HEADING_STICK_LENGTH));
 
 	return;
 }

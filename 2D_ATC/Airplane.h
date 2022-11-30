@@ -66,6 +66,8 @@ private:
 
 	unsigned short randomChoice;
 
+	short directPoint = -1;
+
 	AssetsManager *assetsManager;
 	Map::MapData mapData;
 	Path route;

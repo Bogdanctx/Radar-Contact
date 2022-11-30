@@ -3,7 +3,6 @@
 
 Path::Path()
 {
-	directLine.first.setFillColor(sf::Color::Green);
 
 }
 
@@ -25,9 +24,6 @@ void Path::render(sf::RenderTarget* window)
 	{
 		window->draw(it.shape);
 	}
-
-	if (directLine.second)
-		window->draw(directLine.first);
 
 	return;
 }
@@ -69,47 +65,6 @@ void Path::HidePath()
 void Path::RemoveFirstPoint()
 {
 	points.pop_front();
-
-	return;
-}
-
-void Path::CalculateDirectToPoint(sf::Vector2f linePos)
-{
-	directLine.second = 1;
-
-	directLine.first.setSize(sf::Vector2f(1.8, Math::DistanceToPoint(
-		directLine.first.getPosition(), sf::Vector2f(mousePosition.x, mousePosition.y)
-	)));
-	directLine.first.setRotation(Math::DirectionToPoint(
-		sf::Vector2f(mousePosition.x, mousePosition.y),
-		directLine.first.getPosition()
-	));
-	directLine.first.setPosition(linePos);
-
-	for (auto it : points)
-	{
-		if (it.shape.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))
-		{
-			if (it.id != points.front().id)
-			{
-				it.remove = 1;
-			}
-
-		}
-	}
-
-	return;
-}
-
-void Path::PerformDirectToPoint()
-{
-
-	std::remove_if(points.begin(), points.end(), [](Point point) {
-		return point.remove == 0;
-		});
-	
-
-	directLine.second = false;
 
 	return;
 }

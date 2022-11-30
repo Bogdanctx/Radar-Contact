@@ -17,10 +17,6 @@ public:
 	void AddPoint(sf::Vector2f position);
 	void HidePath();
 	void RemoveFirstPoint();
-	void CalculateDirectToPoint(sf::Vector2f linePos);
-	void PerformDirectToPoint();
-
-	std::pair<sf::RectangleShape, bool>directLine;
 
 	int length();
 
@@ -28,9 +24,7 @@ private:
 	struct Point {
 		short id;
 		sf::CircleShape shape;
-		bool remove = false;
 	};
-	
 
 	std::deque<Point>points;
 

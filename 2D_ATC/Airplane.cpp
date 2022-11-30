@@ -27,7 +27,7 @@ Airplane::Airplane(AssetsManager *assetsManager, Map::MapData mapData, unsigned 
 	this->assetsManager = assetsManager;
 	this->mapData = mapData;
 
-	(gamemode == 1 ? this->gamemode = GAMEMODE_TOWER : this->gamemode = GAMEMODE_RADAR);
+	this->gamemode = gamemode;
 
 	airplaneSelected = false;
 	settingNewHeading = false;
@@ -49,11 +49,6 @@ void Airplane::update(sf::Vector2i mousePosition)
 		return;
 
 	this->mousePosition = mousePosition;
-
-	if (route.directLine.second == 1)
-	{
-		route.update(mousePosition);
-	}
 
 	HandleInternEvents();
 
@@ -150,14 +145,7 @@ void Airplane::HandleInternEvents()
 		HandleAltitudeChange();
 		HandleSpeedChange();
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-		{
-			
-		}
-		else
-		{
-			
-		}
+
 
 	}
 

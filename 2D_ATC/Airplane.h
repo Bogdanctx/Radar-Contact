@@ -5,19 +5,6 @@
 #include "Map.h"
 #include "Path.h"
 
-#include <unordered_map>
-
-enum Text {
-	CALLSIGN,
-	HEADING,
-	NEW_HEADING,
-	ALTITUDE,
-	NEW_ALTITUDE,
-	SPEED,
-	NEW_SPEED,
-	ARRIVAL_AIRPORT,
-};
-
 class Airplane
 {
 public:
@@ -54,7 +41,6 @@ private:
 
 	void UpdateText();
 
-	sf::RectangleShape dataStick;
 	sf::RectangleShape directionShape;
 	sf::Vector2i mousePosition;
 	sf::Clock updateTimer;
@@ -80,6 +66,8 @@ private:
 	bool headingFixed;
 
 	unsigned short randomChoice;
+
+	short directPoint = -1;
 
 	AssetsManager *assetsManager;
 	Map::MapData mapData;

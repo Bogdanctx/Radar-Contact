@@ -45,6 +45,8 @@ public:
 		unsigned short minAltitude, maxAltitude;
 		sf::Vector2i airportsBoundsTopLeft, airportBoundsBottomRight;
 
+		std::string arrivalAirportIcao;
+
 		std::vector<std::vector<unsigned short>>map;
 		void GenerateRoute(Path& path, sf::Vector2f pointA, sf::Vector2f pointB);
 	};

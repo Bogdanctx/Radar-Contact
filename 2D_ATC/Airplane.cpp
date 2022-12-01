@@ -2,13 +2,6 @@
 #include "Math.h"
 #include "Constants.h"
 
-#define PI 3.14159265
-
-#define GAMEMODE_TOWER 1
-#define GAMEMODE_RADAR 2
-
-
-
 Airplane::Airplane()
 {
 
@@ -41,6 +34,8 @@ void Airplane::update(sf::Vector2i mousePosition)
 		return;
 
 	this->mousePosition = mousePosition;
+
+	route.update(mousePosition);
 
 	HandleInternEvents();
 
@@ -76,12 +71,7 @@ void Airplane::render(sf::RenderTarget* window)
 	route.render(window);
 
 	window->draw(airplane);
-	window->draw(dataStick);
 	window->draw(callsign);
-	window->draw(altitude);
-	window->draw(speed);
-	window->draw(heading);
-	window->draw(arrivalAirport);
 
 	if (airplaneSelected)
 	{
@@ -93,6 +83,11 @@ void Airplane::render(sf::RenderTarget* window)
 			window->draw(newAltitude);
 		if (settingNewSpeed)
 			window->draw(newSpeed);
+
+		window->draw(altitude);
+		window->draw(speed);
+		window->draw(heading);
+		window->draw(arrivalAirport);
 	}
 
 	return;
@@ -105,6 +100,7 @@ void Airplane::HandleClick()
 		directionShape.setFillColor(sf::Color::Cyan);
 		airplaneSelected = true;
 		route.draw();
+
 	}
 	else
 	{
@@ -122,7 +118,7 @@ void Airplane::HandleButtonPressed(sf::Keyboard::Key key)
 	{
 		if (route.length() && airplaneSelected == true)
 		{
-			_heading = _newHeading = static_cast<int>(Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition()));
+			_heading = _newHeading = Math::DirectionToPoint(airplane.getPosition(), route.NextPointPosition());
 		}
 	}
 
@@ -163,11 +159,38 @@ void Airplane::HandleHeadingChange()
 
 		settingNewHeading = true;
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+	{
+		directionShape.setSize(sf::Vector2f(
+			2, Math::DistanceToPoint(
+				airplane.getPosition(), 
+				sf::Vector2f(mousePosition.x, mousePosition.y)
+			)
+		));
+		directionShape.setRotation(Math::DirectionToPoint(
+			sf::Vector2f(mousePosition.x, mousePosition.y),
+			airplane.getPosition()
+		));
+
+		directPoint = route.PointHovered();
+	}
 	else
 	{
+		if (directPoint != -1)
+		{
+			route.RemoveUntilPoint(directPoint);
+			_newHeading = Math::DirectionToPoint(
+				airplane.getPosition(),
+				route.NextPointPosition()
+			);
+		}
+
 		_heading = _newHeading;
 		heading.setString(std::to_string(_heading));
 		settingNewHeading = false;
+
+		directionShape.setSize(sf::Vector2f(DIRECTION_SHAPE_WIDTH, DIRECTION_SHAPE_HEIGHT));
+		directionShape.setRotation(_heading-180);
 	}
 
 	return;
@@ -420,8 +443,10 @@ void Airplane::CreateAirplane()
 
 	_speed = _newSpeed = rand() % (320 - 230) + 230;
 
-	if(gamemode == GAMEMODE_RADAR)
+	if (gamemode == GAMEMODE_RADAR)
 		arrivalAirport.setString(mapData.airportsPin[randomChoice].icao);
+	else
+		arrivalAirport.setString(mapData.arrivalAirportIcao);
 
 	velocity.x = velocity.y = (float)_speed / 100;
 
@@ -448,70 +473,75 @@ void Airplane::SetTCAS(unsigned short level)
 
 void Airplane::UpdateText()
 {
+	sf::FloatRect bounds = airplane.getGlobalBounds();
 	sf::Vector2f airplanePosition = airplane.getPosition();
 
-	callsign.setPosition(sf::Vector2f(CALLSIGN_POSITION_X(airplanePosition.x), CALLSIGN_POSITION_Y(airplanePosition.y)));
-	altitude.setPosition(sf::Vector2f(ALTITUDE_POSITION_X(airplanePosition.x), ALTITUDE_POSITION_Y(airplanePosition.y)));
-	newAltitude.setPosition(sf::Vector2f(NEW_ALTITUDE_POSITION_X(airplanePosition.x), NEW_ALTITUDE_POSITON_Y(airplanePosition.y)));
-	speed.setPosition(sf::Vector2f(SPEED_POSITION_X(airplanePosition.x), SPEED_POSITION_Y(airplanePosition.y)));
-	newSpeed.setPosition(sf::Vector2f(NEW_SPEED_POSITION_X(airplanePosition.x), NEW_SPEED_POSITION_Y(airplanePosition.y)));
-	heading.setPosition(sf::Vector2f(HEADING_POSITION_X(airplanePosition.x), HEADING_POSITION_Y(airplanePosition.y)));
-	newHeading.setPosition(sf::Vector2f(NEW_HEADING_POSITION_X(airplanePosition.x), NEW_HEADING_POSITION_Y(airplanePosition.y)));
-	arrivalAirport.setPosition(sf::Vector2f(ARRIVAL_AIRPORT_POSITION_X(airplanePosition.x), ARRIVAL_AIRPORT_POSITION_Y(airplanePosition.y)));
-	dataStick.setPosition(sf::Vector2f(DATA_STICK_POSITION_X(airplanePosition.x), DATA_STICK_POSITION_Y(airplanePosition.y)));
-	directionShape.setPosition(sf::Vector2f(DIRECTION_SHAPE_POSITION_X(airplanePosition.x), DIRECTION_SHAPE_POSITION_Y(airplanePosition.y)));
+	callsign.setPosition(sf::Vector2f(airplanePosition.x, CALLSIGN_POSITION_Y(airplanePosition.y, !airplaneSelected)));
+
+	altitude.setPosition(sf::Vector2f(airplanePosition.x, ALTITUDE_POSITION_Y(airplanePosition.y, !airplaneSelected)));
+
+	newAltitude.setPosition(sf::Vector2f(altitude.getGlobalBounds().left+altitude.getLocalBounds().width+3, NEW_ALTITUDE_POSITON_Y(airplanePosition.y)));
+
+	speed.setPosition(sf::Vector2f(airplanePosition.x, SPEED_POSITION_Y(airplanePosition.y, !airplaneSelected)));
+
+	newSpeed.setPosition(sf::Vector2f(speed.getGlobalBounds().left+speed.getLocalBounds().width+3, NEW_SPEED_POSITION_Y(airplanePosition.y)));
+
+	heading.setPosition(sf::Vector2f(airplanePosition.x, HEADING_POSITION_Y(airplanePosition.y)));
+
+	newHeading.setPosition(sf::Vector2f(heading.getGlobalBounds().left+heading.getLocalBounds().width+3, NEW_HEADING_POSITION_Y(airplanePosition.y)));
+
+	arrivalAirport.setPosition(sf::Vector2f(airplanePosition.x, ARRIVAL_AIRPORT_POSITION_Y(airplanePosition.y)));
+
+	directionShape.setPosition(sf::Vector2f(airplanePosition.x+5, DIRECTION_SHAPE_POSITION_Y(airplanePosition.y)));
 
 	return;
 }
 
 void Airplane::initText()
 {
-	callsign.setPosition(sf::Vector2f(CALLSIGN_POSITION_X(spawnPosition.x), CALLSIGN_POSITION_Y(spawnPosition.y)));
+	callsign.setPosition(sf::Vector2f(spawnPosition.x, CALLSIGN_POSITION_Y(spawnPosition.y, !airplaneSelected)));
 	callsign.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	callsign.setString(s_callSign);
 	callsign.setCharacterSize(AIRPLANE_TEXT_SIZE);
 
-	altitude.setPosition(sf::Vector2f(ALTITUDE_POSITION_X(spawnPosition.x), ALTITUDE_POSITION_Y(spawnPosition.y)));
+	altitude.setPosition(sf::Vector2f(spawnPosition.x, ALTITUDE_POSITION_Y(spawnPosition.y, !airplaneSelected)));
 	altitude.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	altitude.setString(std::to_string(_altitude));
 	altitude.setCharacterSize(AIRPLANE_TEXT_SIZE);
 
-	newAltitude.setPosition(sf::Vector2f(NEW_ALTITUDE_POSITION_X(spawnPosition.x), NEW_ALTITUDE_POSITON_Y(spawnPosition.y)));
+	newAltitude.setPosition(sf::Vector2f(spawnPosition.x, NEW_ALTITUDE_POSITON_Y(spawnPosition.y)));
 	newAltitude.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	newAltitude.setString(std::to_string(_newAltitude));
 	newAltitude.setCharacterSize(AIRPLANE_TEXT_SIZE);
 	newAltitude.setFillColor(sf::Color::Cyan);
 
-	speed.setPosition(sf::Vector2f(SPEED_POSITION_X(spawnPosition.x),SPEED_POSITION_Y(spawnPosition.y)));
+	speed.setPosition(sf::Vector2f(spawnPosition.x, SPEED_POSITION_Y(spawnPosition.y, !airplaneSelected)));
 	speed.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	speed.setString(std::to_string(_speed));
 	speed.setCharacterSize(AIRPLANE_TEXT_SIZE);
 
-	newSpeed.setPosition(sf::Vector2f(NEW_SPEED_POSITION_X(spawnPosition.x),NEW_SPEED_POSITION_Y(spawnPosition.y)));
+	newSpeed.setPosition(sf::Vector2f(spawnPosition.x, NEW_SPEED_POSITION_Y(spawnPosition.y)));
 	newSpeed.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	newSpeed.setString(std::to_string(_newSpeed));
 	newSpeed.setCharacterSize(AIRPLANE_TEXT_SIZE);
 	newSpeed.setFillColor(sf::Color::Cyan);
 
-	heading.setPosition(sf::Vector2f(HEADING_POSITION_X(spawnPosition.x),HEADING_POSITION_Y(spawnPosition.y)));
+	heading.setPosition(sf::Vector2f(spawnPosition.x, HEADING_POSITION_Y(spawnPosition.y)));
 	heading.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	heading.setString(std::to_string(_heading));
 	heading.setCharacterSize(AIRPLANE_TEXT_SIZE);
 
-	newHeading.setPosition(sf::Vector2f(NEW_HEADING_POSITION_X(spawnPosition.x),NEW_HEADING_POSITION_Y(spawnPosition.y)));
+	newHeading.setPosition(sf::Vector2f(spawnPosition.x, NEW_HEADING_POSITION_Y(spawnPosition.y)));
 	newHeading.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	newHeading.setString(std::to_string(_heading));
 	newHeading.setCharacterSize(AIRPLANE_TEXT_SIZE);
 	newHeading.setFillColor(sf::Color::Cyan);
 
-	arrivalAirport.setPosition(sf::Vector2f(ARRIVAL_AIRPORT_POSITION_X(spawnPosition.x),ARRIVAL_AIRPORT_POSITION_Y(spawnPosition.y)));
+	arrivalAirport.setPosition(sf::Vector2f(spawnPosition.x, ARRIVAL_AIRPORT_POSITION_Y(spawnPosition.y)));
 	arrivalAirport.setFont(assetsManager->GetFont("MerriweatherSans-Regular.ttf"));
 	arrivalAirport.setCharacterSize(AIRPLANE_TEXT_SIZE);
 
-	dataStick.setPosition(sf::Vector2f(DATA_STICK_POSITION_X(spawnPosition.x), DATA_STICK_POSITION_Y(spawnPosition.y)));
-	dataStick.setSize(sf::Vector2f(DATA_STICK_WIDTH, DATA_STICK_HEIGHT));
-
-	directionShape.setPosition(sf::Vector2f(DIRECTION_SHAPE_POSITION_X(spawnPosition.x),DIRECTION_SHAPE_POSITION_Y(spawnPosition.y)));
+	directionShape.setPosition(sf::Vector2f(spawnPosition.x+5, DIRECTION_SHAPE_POSITION_Y(spawnPosition.y)));
 	directionShape.setRotation(_heading - 180);
 	directionShape.setSize(sf::Vector2f(DIRECTION_SHAPE_WIDTH, DIRECTION_SHAPE_HEIGHT));
 

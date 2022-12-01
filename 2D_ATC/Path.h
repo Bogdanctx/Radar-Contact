@@ -18,13 +18,18 @@ public:
 	void HidePath();
 	void RemoveFirstPoint();
 
+	short PointHovered();
+	void RemoveUntilPoint(short &pointId);
+
 	int length();
 
 private:
 	struct Point {
 		short id;
 		sf::CircleShape shape;
+		bool remove = false;
 	};
+	
 
 	std::deque<Point>points;
 

@@ -1,24 +1,15 @@
 ﻿  Airplane.cpp
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(54,38): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(49,38): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(53,36): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(48,36): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(103,85): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(103,68): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(98,85): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=int
@@ -27,40 +18,94 @@ C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(103,68): warning C4244: 'argum
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(151,30): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(98,68): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(121,51): warning C4244: '=': conversion from 'double' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(147,30): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(153,30): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(149,30): warning C4244: '=': conversion from 'const T' to 'short', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(161,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(382,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(157,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(167,48): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(167,31): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(165,28): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(386,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(171,47): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(171,30): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(170,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(182,40): warning C4244: '=': conversion from 'double' to 'short', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(193,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(405,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(392,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(409,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(396,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(415,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(515,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(419,28): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\bobot\Desktop\2D_ATC\2D_ATC\Airplane.cpp(545,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  0 of 2103 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  0 of 2123 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

@@ -123,11 +123,30 @@ void Map::LoadMap(const unsigned short gamemode)
 
 	if (gamemode == GAMEMODE_TOWER) // Tower
 	{
-		mapTexture.loadFromFile("../Resources/airports/"+country+"/tower.png");
-		mapSprite.setTexture(mapTexture);
-
 		mapData.minAltitude = 1000;
 		mapData.maxAltitude = 10000;
+
+		unsigned short numberOfAirports;
+		std::vector<std::string>airportsIcao;
+
+		read.open("../Resources/airports/" + country + "/airports_list.txt");
+		read >> numberOfAirports;
+		std::vector<std::string>icao;
+		for(unsigned short i=0;i<numberOfAirports;i++)
+		{
+			std::string t;
+			read >> t;
+			icao.push_back(t);
+		}
+
+		read.close();
+
+		unsigned short randAirport = rand() % numberOfAirports;
+
+		mapTexture.loadFromFile("../Resources/airports/" + country +"/"+icao[randAirport] + ".png");
+		mapSprite.setTexture(mapTexture);
+
+		mapData.arrivalAirportIcao = icao[randAirport];
 
 		read.open("../Resources/airports/" + country + "/tower.txt");
 

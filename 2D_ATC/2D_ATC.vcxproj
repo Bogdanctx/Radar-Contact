@@ -159,6 +159,7 @@
     <ClInclude Include="Airplane.h" />
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="ContinueGame.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Input.h" />

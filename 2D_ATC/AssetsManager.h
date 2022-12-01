@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <map>
+#include <unordered_map>
 
 class AssetsManager
 {
@@ -20,8 +20,8 @@ public:
 
 private:
 
-	std::map<std::string, sf::Font>m_Fonts;
-	std::map<std::string, sf::Texture>m_Textures;
-	std::map<std::string, sf::SoundBuffer>m_SoundBuffers;
+	std::unordered_map<std::string, sf::Font>m_Fonts;
+	std::unordered_map<std::string, sf::Texture>m_Textures;
+	std::unordered_map<std::string, sf::SoundBuffer>m_SoundBuffers;
 
 };

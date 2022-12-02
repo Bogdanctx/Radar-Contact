@@ -1,0 +1,5 @@
+﻿  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 2123 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  radar-contact.vcxproj -> C:\Users\bobot\Desktop\radar-contact\Release\radar-contact.exe

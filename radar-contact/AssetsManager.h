@@ -9,14 +9,14 @@ class AssetsManager
 public:
 	AssetsManager();
 
-	void LoadFont(const std::string key);
-	sf::Font &GetFont(const std::string key);
+	void loadFont(const std::string key);
+	sf::Font &getFont(const std::string key);
 
-	void LoadTexture(const std::string key, const std::string path);
-	sf::Texture& GetTexture(const std::string key);
+	void loadTexture(const std::string key, const std::string path);
+	sf::Texture& getTexture(const std::string key);
 
-	void LoadSoundBuffer(const std::string key);
-	sf::SoundBuffer& GetSoundBuffer(const std::string key);
+	void loadSoundBuffer(const std::string key);
+	sf::SoundBuffer& getSoundBuffer(const std::string key);
 
 private:
 

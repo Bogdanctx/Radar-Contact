@@ -1,12 +1,12 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include <vector>
 
-#include "Button.h"
 #include "AssetsManager.h"
-#include "ContinueGame.h"
-#include "NewGame.h"
+#include "Button.h"
+#include "Constants.h"
+#include "Settings.h"
 
 class Menu
 {
@@ -17,29 +17,28 @@ public:
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget *window);
 
-	void HandleClick();
-	void HandleInput(unsigned short unicode);
+	void processEvents(sf::Event event);
 
-	bool draw;
-
-	ContinueGame continueGame;
-	NewGame newGame;
+	bool isActive;
 
 private:
-	void initSounds();
 	void initSprites();
+	void initTexts();
+	void initShapes();
 	void initButtons();
 	void initObjects();
 
 	AssetsManager assetsManager;
 
+	Button play;
+	Button settings;
+
+	Settings __settings;
+
+	sf::Sprite background;
+	sf::RectangleShape leftCard;
+	sf::Text gameTitle;
+
 	sf::Vector2i mousePosition;
-
-	sf::Sprite backgroundSprite;
-
-	sf::Sound buttonClickSound;
-
-	Button b_continueGame;
-	Button b_newGame;
 };
 

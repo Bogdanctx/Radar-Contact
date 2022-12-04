@@ -7,22 +7,25 @@ class Button
 public:
 	Button();
 	Button(sf::Vector2f size, sf::Vector2f position);
-	~Button();
 
-	void update();
+	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 
-	void SetText(sf::Font *font, sf::String string);
-	void SetDefaultColor(sf::Color color);
-	void SetHoverColor();
-	void SetBorder(float thickness, sf::Color color = sf::Color::White);
-	void CenterText();
+	void setText(sf::Font* font, sf::String string);
+	void setDefaultColor(sf::Color color);
+	void setHoverColor(sf::Color color);
+	void setBorder(float thickness, sf::Color color = sf::Color::White);
+	void centerText();
 
-	void CheckMouseHover(sf::Vector2i mousePosition);
+	void setCharSize(unsigned short size);
+
+	void checkMouseHover();
 
 	bool isButtonClicked(sf::Vector2i mousePosition);
 
 private:
+	sf::Vector2i mousePosition;
+
 	sf::RectangleShape buttonBody;
 	sf::Text buttonText;
 

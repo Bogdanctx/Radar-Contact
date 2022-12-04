@@ -1,6 +1,7 @@
-#include "Game.h"
 #include <random>
 #include <ctime>
+
+#include "Game.h"
 
 int main()
 {

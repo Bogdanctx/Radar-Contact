@@ -1,7 +1,7 @@
-#include "Math.h"
 #include <cmath>
 
-#define PI 3.14159265
+#include "Math.h"
+#include "Constants.h"
 
 double Math::DistanceToPoint(sf::Vector2f pointA, sf::Vector2f pointB)
 {

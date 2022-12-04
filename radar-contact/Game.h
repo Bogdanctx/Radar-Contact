@@ -1,12 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Menu.h"
-#include "Map.h"
-#include "AssetsManager.h"
-#include "Airplane.h"
-#include "Path.h"
 #include <list>
+
+#include "AssetsManager.h"
+#include "Menu.h"
 
 class Game
 {
@@ -22,22 +20,11 @@ private:
 
 	void initAssets();
 
-	void CheckCollision(Airplane planeA, Airplane planeB);
-
-	Menu menu;
 	AssetsManager assetsManager;
-	Map map;
-	std::list<Airplane>airplanes;
+	Menu menu;
 
 	sf::RenderWindow gameWindow;
-	sf::Clock airplanesSpawner;
-
-	std::string playerName;
-	std::string country;
-	std::string position;
 
 	sf::Text creator;
-
-	unsigned long long planeIds;
 };
 

@@ -18,6 +18,30 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Airport.cpp" />
+    <ClCompile Include="AssetsManager.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Runway.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="Slider.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Airport.h" />
+    <ClInclude Include="AssetsManager.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Runway.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Slider.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -132,36 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Airplane.cpp" />
-    <ClCompile Include="AssetsManager.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="ContinueGame.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Math.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Microburst.cpp" />
-    <ClCompile Include="NewGame.cpp" />
-    <ClCompile Include="Path.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Airplane.h" />
-    <ClInclude Include="AssetsManager.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="ContinueGame.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="Microburst.h" />
-    <ClInclude Include="NewGame.h" />
-    <ClInclude Include="Path.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

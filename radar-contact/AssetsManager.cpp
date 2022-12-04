@@ -5,7 +5,7 @@ AssetsManager::AssetsManager()
 
 }
 
-void AssetsManager::LoadFont(const std::string key)
+void AssetsManager::loadFont(const std::string key)
 {
 	sf::Font f;
 	
@@ -17,12 +17,12 @@ void AssetsManager::LoadFont(const std::string key)
 	return;
 }
 
-sf::Font &AssetsManager::GetFont(const std::string key)
+sf::Font &AssetsManager::getFont(const std::string key)
 {
 	return m_Fonts.at(key);
 }
 
-void AssetsManager::LoadTexture(const std::string key, const std::string path)
+void AssetsManager::loadTexture(const std::string key, const std::string path)
 {
 	sf::Texture t;
 
@@ -34,12 +34,12 @@ void AssetsManager::LoadTexture(const std::string key, const std::string path)
 	return;
 }
 
-sf::Texture& AssetsManager::GetTexture(const std::string key)
+sf::Texture& AssetsManager::getTexture(const std::string key)
 {
 	return m_Textures.at(key);
 }
 
-void AssetsManager::LoadSoundBuffer(const std::string key)
+void AssetsManager::loadSoundBuffer(const std::string key)
 {
 	sf::SoundBuffer s;
 
@@ -51,7 +51,7 @@ void AssetsManager::LoadSoundBuffer(const std::string key)
 	return;
 }
 
-sf::SoundBuffer& AssetsManager::GetSoundBuffer(const std::string key)
+sf::SoundBuffer& AssetsManager::getSoundBuffer(const std::string key)
 {
 	return m_SoundBuffers.at(key);
 }

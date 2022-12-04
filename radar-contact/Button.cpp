@@ -10,24 +10,21 @@ Button::Button(sf::Vector2f size, sf::Vector2f position)
 	buttonBody.setSize(size);
 
 	// Putting origin in middle
-	sf::FloatRect buttonBounds = buttonBody.getGlobalBounds();
+	/*sf::FloatRect buttonBounds = buttonBody.getGlobalBounds();
 	sf::Vector2f newOrigin(buttonBounds.left + buttonBounds.width / 2,
-						buttonBounds.top + buttonBounds.height / 2);
+		buttonBounds.top + buttonBounds.height / 2);
 	buttonBody.setOrigin(newOrigin);
-
+	*/
 	buttonBody.setPosition(position);
 
 	return;
 }
 
-Button::~Button()
+void Button::update(sf::Vector2i mousePosition)
 {
+	this->mousePosition = mousePosition;
 
-}
-
-void Button::update()
-{
-
+	checkMouseHover();
 }
 
 void Button::render(sf::RenderTarget* window)
@@ -38,7 +35,7 @@ void Button::render(sf::RenderTarget* window)
 	return;
 }
 
-void Button::SetText(sf::Font *font, sf::String string)
+void Button::setText(sf::Font* font, sf::String string)
 {
 	buttonText.setFont(*font);
 	buttonText.setString(string);
@@ -47,7 +44,7 @@ void Button::SetText(sf::Font *font, sf::String string)
 }
 
 
-void Button::SetDefaultColor(sf::Color color)
+void Button::setDefaultColor(sf::Color color)
 {
 	defaultColor = color;
 
@@ -60,13 +57,18 @@ void Button::SetDefaultColor(sf::Color color)
 	return;
 }
 
-void Button::SetBorder(float thickness, sf::Color color)
+void Button::setHoverColor(sf::Color color)
+{
+	hoverColor = color;
+}
+
+void Button::setBorder(float thickness, sf::Color color)
 {
 	buttonBody.setOutlineThickness(thickness);
 	buttonBody.setOutlineColor(color);
 }
 
-void Button::CheckMouseHover(sf::Vector2i mousePosition)
+void Button::checkMouseHover()
 {
 	if (buttonBody.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))
 	{
@@ -82,23 +84,27 @@ void Button::CheckMouseHover(sf::Vector2i mousePosition)
 
 bool Button::isButtonClicked(sf::Vector2i mousePosition)
 {
-	if (buttonBody.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))
-	{
-		return true;	
-	}
-
-	return false;
+	return buttonBody.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y));
 }
-#include <iostream>
-void Button::CenterText()
+
+void Button::centerText()
 {
-	sf::FloatRect textBounds = buttonText.getGlobalBounds();
-	sf::Vector2f newOrigin(textBounds.left + textBounds.width / 2,
-		textBounds.top + textBounds.height / 2);
+	sf::FloatRect bounds = buttonText.getGlobalBounds();
+	sf::Vector2f newOrigin(bounds.left + bounds.width / 2,
+		bounds.top + bounds.height / 2);
+	
+	bounds = buttonBody.getGlobalBounds();
 
 	buttonText.setOrigin(newOrigin);
-
-	buttonText.setPosition(buttonBody.getPosition());
+	buttonText.setPosition(sf::Vector2f(
+		bounds.left + bounds.width / 2, bounds.top + bounds.height / 2
+	));
+	
 
 	return;
+}
+
+void Button::setCharSize(unsigned short size)
+{
+	buttonText.setCharacterSize(size);
 }

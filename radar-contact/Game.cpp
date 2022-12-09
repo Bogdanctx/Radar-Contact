@@ -62,6 +62,17 @@ void Game::processEvents()
 				gameWindow.close();
 				break;
 			}
+			case sf::Event::MouseButtonPressed:
+			{
+				if (windowEvent.mouseButton.button == sf::Mouse::Left)
+				{
+					if (menu.__settings.settingsApplied == true)
+					{
+						gameWindow.setFramerateLimit(menu.__settings.fps.sliderValue);
+					}
+				}
+			}
+			
 			default:
 				break;
 		}

@@ -82,6 +82,7 @@ void Menu::initObjects()
 	settings.centerText();
 
 	__settings = Settings(assetsManager);
+	__play = Play(assetsManager);
 }
 
 void Menu::processEvents(sf::Event event)
@@ -90,6 +91,11 @@ void Menu::processEvents(sf::Event event)
 	{
 		case sf::Event::MouseButtonPressed:
 		{
+			if (__settings.isActive)
+			{
+				__settings.processEvents(event);
+			}
+
 			if (play.isButtonClicked(mousePosition))
 			{
 				

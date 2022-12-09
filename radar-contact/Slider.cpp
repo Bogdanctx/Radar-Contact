@@ -2,7 +2,7 @@
 
 Slider::Slider()
 {
-
+	sliderValue=min = max = 1;
 }
 
 void Slider::update(sf::Vector2i mousePosition)
@@ -13,10 +13,11 @@ void Slider::update(sf::Vector2i mousePosition)
 	{
 		short distFromOrigin = Math::DistanceToPoint(line.getPosition(), sf::Vector2f(mousePosition.x, mousePosition.y));
 
-		if (circle.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)) && line.getPosition().x <= mousePosition.x && mousePosition.x <= line.getPosition().x + sliderLength)
+		if (circle.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)) && sliderValue - min <= max - min && line.getPosition().x <= mousePosition.x && mousePosition.x <= line.getPosition().x + sliderLength)
 		{
 			circle.setPosition(mousePosition.x, circle.getPosition().y);
-			int sliderValue = distFromOrigin / (line.getSize().x / max);
+			sliderValue = distFromOrigin / (line.getSize().x  / (max-min));
+			sliderValue += min;
 			value.setString(std::to_string(sliderValue));
 		}
 	}
@@ -73,6 +74,8 @@ void Slider::setBounds(int min, int max)
 {
 	this->max = max;
 	this->min = min;
+
+	sliderValue = min;
 }
 
 void Slider::processEvents(sf::Event event)

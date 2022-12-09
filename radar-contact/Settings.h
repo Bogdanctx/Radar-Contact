@@ -18,12 +18,15 @@ public:
 	void render(sf::RenderTarget* window);
 
 	bool isActive;
+	bool settingsApplied;
+
+	Slider fps;
 
 private:
 	void initObjects();
 
 	AssetsManager assetsManager;
-	Slider fps;
+	
 	Button apply;
 
 	

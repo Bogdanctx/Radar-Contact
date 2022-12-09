@@ -1,60 +1,7 @@
-﻿  Slider.cpp
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(14,111): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(14,94): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(14,24): warning C4244: 'initializing': conversion from 'double' to 'short', possible loss of data
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(16,84): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(16,67): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(18,36): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=int
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(19,20): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(44,28): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Slider.cpp(83,2): warning C4060: switch statement contains no 'case' or 'default' labels
+﻿  Menu.cpp
   Generating code
-  8 of 814 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+  24 of 820 functions ( 2.9%) were compiled, the rest were copied from previous compilation.
+    4 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   radar-contact.vcxproj -> C:\Users\bobot\Desktop\radar-contact\Release\radar-contact.exe

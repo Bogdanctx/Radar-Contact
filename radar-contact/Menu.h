@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Constants.h"
 #include "Settings.h"
+#include "Play.h"
 
 class Menu
 {
@@ -21,6 +22,9 @@ public:
 
 	bool isActive;
 
+	Settings __settings;
+	Play __play;
+
 private:
 	void initSprites();
 	void initTexts();
@@ -32,8 +36,6 @@ private:
 
 	Button play;
 	Button settings;
-
-	Settings __settings;
 
 	sf::Sprite background;
 	sf::RectangleShape leftCard;

@@ -26,6 +26,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Play.cpp" />
     <ClCompile Include="Runway.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Slider.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Play.h" />
     <ClInclude Include="Runway.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Slider.h" />

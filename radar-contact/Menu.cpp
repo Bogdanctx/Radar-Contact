@@ -28,6 +28,10 @@ void Menu::update(sf::Vector2i mousePosition)
 	{
 		__settings.update(mousePosition);
 	}
+	else if (__play.isActive)
+	{
+		__play.update(mousePosition);
+	}
 
 }
 
@@ -44,6 +48,10 @@ void Menu::render(sf::RenderTarget* window)
 	if (__settings.isActive)
 	{
 		__settings.render(window);
+	}
+	else if (__play.isActive)
+	{
+		__play.render(window);
 	}
 }
 
@@ -95,10 +103,14 @@ void Menu::processEvents(sf::Event event)
 			{
 				__settings.processEvents(event);
 			}
+			else if (__play.isActive)
+			{
+				__play.processEvents(event);
+			}
 
 			if (play.isButtonClicked(mousePosition))
 			{
-				
+				__play.isActive = true;
 			}
 
 			if (settings.isButtonClicked(mousePosition))

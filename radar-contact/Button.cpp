@@ -15,6 +15,7 @@ Button::Button(sf::Vector2f size, sf::Vector2f position)
 		buttonBounds.top + buttonBounds.height / 2);
 	buttonBody.setOrigin(newOrigin);
 	*/
+
 	buttonBody.setPosition(position);
 
 	return;
@@ -66,6 +67,16 @@ void Button::setBorder(float thickness, sf::Color color)
 {
 	buttonBody.setOutlineThickness(thickness);
 	buttonBody.setOutlineColor(color);
+}
+
+void Button::setSize(sf::Vector2f size)
+{
+	buttonBody.setSize(size);
+}
+
+void Button::setPosition(sf::Vector2f position)
+{
+	buttonBody.setPosition(position);
 }
 
 void Button::checkMouseHover()

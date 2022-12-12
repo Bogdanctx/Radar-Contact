@@ -15,6 +15,9 @@ public:
 	void setDefaultColor(sf::Color color);
 	void setHoverColor(sf::Color color);
 	void setBorder(float thickness, sf::Color color = sf::Color::White);
+	void setSize(sf::Vector2f size);
+	void setPosition(sf::Vector2f position);
+	
 	void centerText();
 
 	void setCharSize(unsigned short size);

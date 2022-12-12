@@ -1,6 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <cstring>
+#include <filesystem>
+#include <fstream>
 
 #include "SFML/Graphics.hpp"
 #include "AssetsManager.h"
@@ -24,7 +27,7 @@ private:
 
 	AssetsManager assetsManager; 
 
-	std::vector<Button>airportsList;
+	std::vector<std::pair<Button, std::string>> airportsList;
 
 	sf::Vector2i mousePosition;
 };

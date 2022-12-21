@@ -1,15 +1,15 @@
 #include <random>
 #include <ctime>
 
-#include "Game.h"
+#include "Engine.h"
 
 int main()
 {
 	srand(time(0));
 
-	Game game;
+	Engine engine;
 
-	game.run();
+	engine.run();
 
 	return 0;
 }

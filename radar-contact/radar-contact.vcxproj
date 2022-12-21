@@ -22,8 +22,10 @@
     <ClCompile Include="Airport.cpp" />
     <ClCompile Include="AssetsManager.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Play.cpp" />
@@ -36,7 +38,9 @@
     <ClInclude Include="AssetsManager.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Play.h" />

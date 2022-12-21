@@ -1,30 +1,28 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <list>
 
 #include "AssetsManager.h"
-#include "Menu.h"
+#include "Map.h"
 
 class Game
 {
 public:
 	Game();
+	Game(AssetsManager assetsManager);
 
-	void run();
+	void update(sf::Vector2i mousePosition);
+	void render(sf::RenderTarget* window);
+
+	void processEvents(sf::Event event);
+
+	bool isActive;
+
+	Map map;
 
 private:
-	void update();
-	void render();
-	void processEvents();
-
-	void initAssets();
+	sf::Vector2i mousePosition;
 
 	AssetsManager assetsManager;
-	Menu menu;
-
-	sf::RenderWindow gameWindow;
-
-	sf::Text creator;
 };
 

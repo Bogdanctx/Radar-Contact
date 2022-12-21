@@ -22,6 +22,8 @@ public:
 
 	bool isActive;
 
+	std::pair<bool, std::string>handler;
+
 private:
 	void initObjects();
 

@@ -10,6 +10,7 @@ Play::Play(AssetsManager assetsManager)
 	this->assetsManager = assetsManager;
 
 	isActive = false;
+	handler.first = false;
 
 	initObjects();
 }
@@ -18,7 +19,23 @@ void Play::processEvents(sf::Event event)
 {
 	switch (event.type)
 	{
+		case sf::Event::MouseButtonPressed:
+		{
+			if (event.mouseButton.button == sf::Mouse::Left)
+			{
+				for (auto it : airportsList)
+				{
+					if (it.first.isButtonClicked(mousePosition))
+					{
+						handler.first = 1;
+						handler.second = it.second;
+						isActive = false;
+						break;
+					}
+				}
+			}
 
+		}
 	}
 }
 
@@ -47,21 +64,22 @@ void Play::initObjects()
 	for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
 	{
 		std::ifstream in(entry.path());
-		std::string airportName;
+		std::string airportIcao, airportName;
 
+		std::getline(in, airportIcao);
 		std::getline(in, airportName);
 
 		std::pair<Button, std::string>t;
 
 		t.first = Button(sf::Vector2f(280, 60), sf::Vector2f(380, 60 * (airportsList.size()+1)));
 
-		t.first.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), airportName);
+		t.first.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), airportIcao+" ("+airportName+")");
 		t.first.setCharSize(28);
 		t.first.centerText();
 		t.first.setDefaultColor(sf::Color(42, 42, 42));
 		t.first.setHoverColor(sf::Color(93, 95, 97, 100));
 
-		t.second = airportName;
+		t.second = airportIcao;
 
 		airportsList.push_back(t);
 

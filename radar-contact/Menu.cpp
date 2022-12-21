@@ -99,25 +99,29 @@ void Menu::processEvents(sf::Event event)
 	{
 		case sf::Event::MouseButtonPressed:
 		{
-			if (__settings.isActive)
+			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				__settings.processEvents(event);
-			}
-			else if (__play.isActive)
-			{
-				__play.processEvents(event);
+				if (__settings.isActive)
+				{
+					__settings.processEvents(event);
+				}
+				else if (__play.isActive)
+				{
+					__play.processEvents(event);
+				}
+
+				if (play.isButtonClicked(mousePosition))
+				{
+					__play.isActive = true;
+				}
+
+				if (settings.isButtonClicked(mousePosition))
+				{
+					__settings.isActive = true;
+				}
 			}
 
-			if (play.isButtonClicked(mousePosition))
-			{
-				__play.isActive = true;
-			}
-
-			if (settings.isButtonClicked(mousePosition))
-			{
-				__settings.isActive = true;
-			}
-
+			break;
 		}
 		default:
 			break;

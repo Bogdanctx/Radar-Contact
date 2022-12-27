@@ -1,8 +1,0 @@
-﻿  Game.cpp
-C:\Users\bobot\Desktop\radar-contact\radar-contact\Game.cpp(30,2): warning C4060: switch statement contains no 'case' or 'default' labels
-  Generating code
-  5 of 1366 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  radar-contact.vcxproj -> C:\Users\bobot\Desktop\radar-contact\Release\radar-contact.exe

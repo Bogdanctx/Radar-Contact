@@ -4,10 +4,17 @@
 
 Engine::Engine()
 {
+<<<<<<< Updated upstream
 	window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D - Air Traffic Controller");
 	window.setFramerateLimit(60);
 
 	initAssets();
+=======
+	initAssets();
+
+	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height), "2D - Air Traffic Controller");
+	window.setFramerateLimit(60);
+>>>>>>> Stashed changes
 }
 
 void Engine::run()
@@ -81,7 +88,20 @@ void Engine::processEvents()
 					}
 				}
 			}
+<<<<<<< Updated upstream
 			
+=======
+
+			case sf::Event::KeyPressed:
+            {
+                if(windowEvent.key.code == sf::Keyboard::Escape)
+                {
+                    window.close();
+                }
+                break;
+            }
+
+>>>>>>> Stashed changes
 			default:
 				break;
 		}
@@ -118,11 +138,20 @@ void Engine::initAssets()
 
 	assetsManager.loadSoundBuffer("buttonClick.wav");
 
+<<<<<<< Updated upstream
+=======
+    assetsManager.setResolution(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+
+>>>>>>> Stashed changes
 	menu = Menu(assetsManager);
 	game = Game(assetsManager);
 
 	creator.setString("© Made by Bogdan. (Bogdan#8334)");
+<<<<<<< Updated upstream
 	creator.setPosition(sf::Vector2f(5, WINDOW_HEIGHT-20));
+=======
+	creator.setPosition(sf::Vector2f(5, assetsManager.getResolution().height-20));
+>>>>>>> Stashed changes
 	creator.setFont(assetsManager.getFont("MerriweatherSans-Regular.ttf"));
 	creator.setCharacterSize(11);
 

@@ -27,7 +27,11 @@ public:
 private:
 	void initObjects();
 
+<<<<<<< Updated upstream
 	AssetsManager assetsManager; 
+=======
+	AssetsManager assetsManager;
+>>>>>>> Stashed changes
 
 	std::vector<std::pair<Button, std::string>> airportsList;
 

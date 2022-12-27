@@ -71,7 +71,11 @@ void Play::initObjects()
 
 		std::pair<Button, std::string>t;
 
+<<<<<<< Updated upstream
 		t.first = Button(sf::Vector2f(280, 60), sf::Vector2f(380, 60 * (airportsList.size()+1)));
+=======
+		t.first = Button(sf::Vector2f(280, 60), sf::Vector2f(assetsManager.getResolution().width*0.30, 60 * (airportsList.size()+1)));
+>>>>>>> Stashed changes
 
 		t.first.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), airportIcao+" ("+airportName+")");
 		t.first.setCharSize(28);
@@ -82,6 +86,11 @@ void Play::initObjects()
 		t.second = airportIcao;
 
 		airportsList.push_back(t);
+<<<<<<< Updated upstream
 
 	}
 }
+=======
+	}
+}
+>>>>>>> Stashed changes

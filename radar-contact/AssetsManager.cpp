@@ -8,7 +8,7 @@ AssetsManager::AssetsManager()
 void AssetsManager::loadFont(const std::string key)
 {
 	sf::Font f;
-	
+
 	if (f.loadFromFile("../Resources/fonts/" + key))
 	{
 		m_Fonts[key] = f;
@@ -56,4 +56,13 @@ sf::SoundBuffer& AssetsManager::getSoundBuffer(const std::string key)
 	return m_SoundBuffers.at(key);
 }
 
+void AssetsManager::setResolution(unsigned short width, unsigned short height)
+{
+    resolution.width=width;
+    resolution.height=height;
+}
 
+AssetsManager::Resolution AssetsManager::getResolution()
+{
+    return resolution;
+}

@@ -34,7 +34,12 @@ private:
 
 	AssetsManager assetsManager;
 
-	std::vector<std::pair<Button, std::string>> airportsList;
+	struct Airport {
+        Button button;
+        std::string airportName;
+	};
+
+	std::vector<Airport> airportsList;
 
 	sf::Vector2i mousePosition;
 };

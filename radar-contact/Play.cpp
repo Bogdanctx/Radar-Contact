@@ -24,10 +24,10 @@ void Play::processEvents(sf::Event event)
 			{
 				for (auto it : airportsList)
 				{
-					if (it.first.isButtonClicked(mousePosition))
+					if (it.button.isButtonClicked(mousePosition))
 					{
 						handler.airportSelected = true;
-						handler.airportIcao = it.second;
+						handler.airportIcao = it.airportName;
 						isActive = false;
 						break;
 					}
@@ -44,7 +44,7 @@ void Play::update(sf::Vector2i mousePosition)
 
 	for (auto &it : airportsList)
 	{
-		it.first.update(mousePosition);
+		it.button.update(mousePosition);
 	}
 }
 
@@ -52,7 +52,7 @@ void Play::render(sf::RenderTarget* window)
 {
 	for (auto it : airportsList)
 	{
-		it.first.render(window);
+		it.button.render(window);
 	}
 }
 
@@ -68,18 +68,18 @@ void Play::initObjects()
 		std::getline(in, airportIcao);
 		std::getline(in, airportName);
 
-		std::pair<Button, std::string>t;
+		Airport airport;
 
-		t.first = Button(sf::Vector2f(280, 60), sf::Vector2f(assetsManager.getResolution().width*0.30, 60 * (airportsList.size()+1)));
+		airport.button = Button(sf::Vector2f(280, 60), sf::Vector2f(assetsManager.getResolution().width*0.30, 60 * (airportsList.size()+1)));
 
-		t.first.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), airportIcao+" ("+airportName+")");
-		t.first.setCharSize(28);
-		t.first.centerText();
-		t.first.setDefaultColor(sf::Color(42, 42, 42));
-		t.first.setHoverColor(sf::Color(93, 95, 97, 100));
+		airport.button.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), airportIcao+" ("+airportName+")");
+		airport.button.setCharSize(28);
+		airport.button.centerText();
+		airport.button.setDefaultColor(sf::Color(42, 42, 42));
+		airport.button.setHoverColor(sf::Color(93, 95, 97, 100));
 
-		t.second = airportIcao;
+		airport.airportName = airportIcao;
 
-		airportsList.push_back(t);
+		airportsList.push_back(airport);
 	}
 }

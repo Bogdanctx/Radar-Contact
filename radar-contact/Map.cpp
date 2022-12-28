@@ -1,4 +1,4 @@
-#include "Map.h"
+    #include "Map.h"
 
 /*
 
@@ -29,7 +29,7 @@ void Map::processEvents(sf::Event event)
 {
 	switch(event.type)
 	{
-	
+
 	}
 }
 

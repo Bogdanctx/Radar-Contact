@@ -21,7 +21,7 @@ private:
 	void initAssets();
 
 	AssetsManager assetsManager;
-	
+
 	Game game;
 	Menu menu;
 
@@ -29,4 +29,3 @@ private:
 
 	sf::Text creator;
 };
-

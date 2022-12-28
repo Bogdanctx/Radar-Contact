@@ -1,7 +1,9 @@
 *.cbp
 *.depend
 *.layout
+*.sln
+*.vcxproj
+*.filters
+*.user
 Libraries
-obj
-bin
 .vs

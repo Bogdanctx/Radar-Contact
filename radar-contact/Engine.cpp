@@ -6,7 +6,10 @@ Engine::Engine()
 {
 	initAssets();
 
-	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height), "2D - Air Traffic Controller");
+	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height), 
+				"2D - Air Traffic Controller", 
+				sf::Style::Titlebar | sf::Style::Close);
+	
 	window.setFramerateLimit(60);
 }
 

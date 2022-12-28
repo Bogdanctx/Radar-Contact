@@ -59,6 +59,11 @@ void Menu::render(sf::RenderTarget* window)
 void Menu::initSprites()
 {
 	background.setTexture(assetsManager.getTexture("menuBackground.png"));
+
+	background.setScale(sf::Vector2f(
+		(float) assetsManager.getResolution().width / assetsManager.getTexture("menuBackground.png").getSize().x,
+		(float) assetsManager.getResolution().height / assetsManager.getTexture("menuBackground.png").getSize().y
+	));
 }
 
 void Menu::initTexts()
@@ -66,7 +71,7 @@ void Menu::initTexts()
 	gameTitle.setString("RADAR CONTACT");
 	gameTitle.setFont(assetsManager.getFont("Rajdhani-Regular.ttf"));
 	gameTitle.setCharacterSize(38);
-	gameTitle.setPosition(sf::Vector2f(50, 20));
+	gameTitle.setPosition(sf::Vector2f(assetsManager.getResolution().width*0.06, 20));
 }
 
 void Menu::initShapes()

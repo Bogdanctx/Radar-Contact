@@ -1,32 +1,25 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
 #include "AssetsManager.h"
-#include "Map.h"
-#include "ControlArea.h"
 
-class Game
+class ControlArea
 {
 public:
-	Game();
-	Game(AssetsManager assetsManager);
+	ControlArea();
+	ControlArea(AssetsManager assetsManager);
 
 	void update(sf::Vector2i mousePosition);
 	void render(sf::RenderTarget* window);
 
 	void processEvents(sf::Event event);
 
-	void initObjects();
-
-	bool isActive;
-
-	Map map;
-
 private:
-	sf::Vector2i mousePosition;
+	void initShapes();
 
 	AssetsManager assetsManager;
-	ControlArea controlArea;
+	sf::Vector2i mousePosition;
+
+	sf::RectangleShape area;
 };
 

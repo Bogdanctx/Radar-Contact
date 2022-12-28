@@ -1,9 +1,7 @@
-*.cbp
-*.depend
-*.layout
 *.sln
 *.vcxproj
 *.filters
 *.user
-Libraries
 .vs
+Libraries
+Release

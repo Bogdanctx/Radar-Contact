@@ -2,6 +2,9 @@
 *.vcxproj
 *.filters
 *.user
+*.cbp
+*.depend
+*.layout
 .vs
 Libraries
 Release

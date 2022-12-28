@@ -25,19 +25,11 @@ void Menu::update(sf::Vector2i mousePosition)
 	settings.update(mousePosition);
 
 	if (__settings.isActive)
-<<<<<<< Updated upstream
 	{
 		__settings.update(mousePosition);
 	}
 	else if (__play.isActive)
 	{
-=======
-	{
-		__settings.update(mousePosition);
-	}
-	else if (__play.isActive)
-	{
->>>>>>> Stashed changes
 		__play.update(mousePosition);
 	}
 
@@ -49,11 +41,7 @@ void Menu::render(sf::RenderTarget* window)
 
 	window->draw(leftCard);
 	window->draw(gameTitle);
-<<<<<<< Updated upstream
-	
-=======
 
->>>>>>> Stashed changes
 	play.render(window);
 	settings.render(window);
 
@@ -84,31 +72,19 @@ void Menu::initTexts()
 void Menu::initShapes()
 {
 	leftCard.setFillColor(sf::Color(30, 30, 30, 180));
-<<<<<<< Updated upstream
-	leftCard.setSize(sf::Vector2f(350, WINDOW_HEIGHT));
-=======
 	leftCard.setSize(sf::Vector2f(0.25*assetsManager.getResolution().width,
                                assetsManager.getResolution().height));
->>>>>>> Stashed changes
 }
 
 void Menu::initObjects()
 {
-<<<<<<< Updated upstream
-	play = Button(sf::Vector2f(350, 80), sf::Vector2f(0, 200));
-=======
 	play = Button(sf::Vector2f(0.25*assetsManager.getResolution().width, 80), sf::Vector2f(0, 200));
->>>>>>> Stashed changes
 	play.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), "Play");
 	play.setDefaultColor(sf::Color::Transparent);
 	play.setHoverColor(sf::Color(93, 95, 97, 100));
 	play.centerText();
 
-<<<<<<< Updated upstream
-	settings = Button(sf::Vector2f(350, 80), sf::Vector2f(0, 280));
-=======
 	settings = Button(sf::Vector2f(0.25*assetsManager.getResolution().width, 80), sf::Vector2f(0, 280));
->>>>>>> Stashed changes
 	settings.setText(&assetsManager.getFont("Rajdhani-Regular.ttf"), "Setting");
 	settings.setDefaultColor(sf::Color::Transparent);
 	settings.setHoverColor(sf::Color(93, 95, 97, 100));
@@ -151,8 +127,4 @@ void Menu::processEvents(sf::Event event)
 		default:
 			break;
 	}
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

@@ -1,2 +1,6 @@
-
-*.ipch
+*.cbp
+*.depend
+*.layout
+Libraries
+obj
+bin

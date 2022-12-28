@@ -22,16 +22,17 @@ public:
 
 	bool isActive;
 
-	std::pair<bool, std::string>handler;
+	struct Handler {
+        bool airportSelected = false;
+        std::string airportIcao;
+	};
+
+	Handler handler;
 
 private:
 	void initObjects();
 
-<<<<<<< Updated upstream
-	AssetsManager assetsManager; 
-=======
 	AssetsManager assetsManager;
->>>>>>> Stashed changes
 
 	std::vector<std::pair<Button, std::string>> airportsList;
 

@@ -8,10 +8,7 @@
 #include "Constants.h"
 #include "Settings.h"
 #include "Play.h"
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 
 class Menu
 {
@@ -40,19 +37,11 @@ private:
 
 	Button play;
 	Button settings;
-<<<<<<< Updated upstream
 
 	sf::Sprite background;
 	sf::RectangleShape leftCard;
 	sf::Text gameTitle;
 
-=======
-
-	sf::Sprite background;
-	sf::RectangleShape leftCard;
-	sf::Text gameTitle;
-
->>>>>>> Stashed changes
 	sf::Vector2i mousePosition;
 };
 

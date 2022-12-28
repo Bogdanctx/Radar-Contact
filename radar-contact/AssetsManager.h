@@ -10,16 +10,6 @@ class AssetsManager
 public:
 	AssetsManager();
 
-<<<<<<< Updated upstream
-	void loadFont(const std::string key);
-	sf::Font &getFont(const std::string key);
-
-	void loadTexture(const std::string key, const std::string path);
-	sf::Texture& getTexture(const std::string key);
-
-	void loadSoundBuffer(const std::string key);
-	sf::SoundBuffer& getSoundBuffer(const std::string key);
-=======
 	struct Resolution {
         unsigned short width, height;
 	};
@@ -29,7 +19,6 @@ public:
 
 	void loadTexture(const std::string key, const std::string path);
 	sf::Texture& getTexture(const std::string key);
->>>>>>> Stashed changes
 
 	void loadSoundBuffer(const std::string key);
 	sf::SoundBuffer& getSoundBuffer(const std::string key);

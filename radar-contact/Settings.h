@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include <SFML/Graphics.hpp>
 
 #include "AssetsManager.h"
@@ -21,15 +23,16 @@ public:
 	bool settingsApplied;
 
 	Slider fps;
+	Slider antialiasing;
 
 private:
 	void initObjects();
 
 	AssetsManager assetsManager;
-	
+
 	Button apply;
 
-	
+
 	sf::Vector2i mousePosition;
 };
 

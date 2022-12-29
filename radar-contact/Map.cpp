@@ -23,11 +23,21 @@ Map::Map(AssetsManager assetsManager)
 void Map::update(sf::Vector2i mousePosition)
 {
 	this->mousePosition = mousePosition;
+
+    for(auto &it: runways)
+    {
+        it.update(mousePosition);
+    }
 }
 
 void Map::render(sf::RenderTarget* window)
 {
 	window->draw(map);
+
+	for(auto it: runways)
+    {
+        it.render(window);
+    }
 }
 
 void Map::processEvents(sf::Event event)
@@ -48,4 +58,19 @@ void Map::load(const std::string icao)
 		(float)assetsManager.getResolution().width / texture.getSize().x,
 		(float)assetsManager.getResolution().height / texture.getSize().y
 	));
+
+    std::ifstream in("../Resources/airports/" + icao + ".airport");
+
+    std::getline(in, airportIcao);
+    std::getline(in, airportName);
+
+    in>>airportRunways;
+
+    for(int unsigned short i=0;i<airportRunways;i++)
+    {
+        unsigned short x, y, heading;
+        in>>x>>y>>heading;
+        Runway runway = Runway(assetsManager, sf::Vector2f(x, y), heading);
+        runways.push_back(runway);
+    }
 }

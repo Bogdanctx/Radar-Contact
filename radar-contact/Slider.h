@@ -33,7 +33,6 @@ private:
 	sf::Text name;
 	sf::Text value;
 
-	int min, max;
-	int sliderLength;
+	int min=1, max=1, sliderLength=1;
 };
 

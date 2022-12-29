@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include <SFML/Graphics.hpp>
 
 #include "AssetsManager.h"

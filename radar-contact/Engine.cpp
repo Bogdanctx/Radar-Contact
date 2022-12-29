@@ -6,11 +6,25 @@ Engine::Engine()
 {
 	initAssets();
 
-	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height), 
-				"2D - Air Traffic Controller", 
-				sf::Style::Titlebar | sf::Style::Close);
-	
-	window.setFramerateLimit(60);
+    sf::ContextSettings settings;
+
+
+	if(std::filesystem::exists("../Resources/settings.txt"))
+    {
+        std::ifstream in("../Resources/settings.txt");
+
+        unsigned short fps, antialiasing;
+        in>>fps>>antialiasing;
+        in.close();
+
+        settings.antialiasingLevel = antialiasing;
+        window.setFramerateLimit(60);
+    }
+
+	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height),
+				"2D - Air Traffic Controller",
+				sf::Style::Titlebar | sf::Style::Close,
+				settings);
 }
 
 void Engine::run()
@@ -79,8 +93,16 @@ void Engine::processEvents()
 				{
 					if (menu.__settings.settingsApplied == true)
 					{
-						window.setFramerateLimit(menu.__settings.fps.sliderValue);
+					    window.close();
 
+					    sf::ContextSettings settings;
+					    settings.antialiasingLevel = menu.__settings.antialiasing.sliderValue;
+
+					    window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height),
+                                        "2D - Air Traffic Controller",
+                                        sf::Style::Titlebar | sf::Style::Close,
+                                        settings);
+						window.setFramerateLimit(menu.__settings.fps.sliderValue);
 					}
 				}
 			}

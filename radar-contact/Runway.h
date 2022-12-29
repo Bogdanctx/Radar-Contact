@@ -8,9 +8,17 @@ class Runway
 {
 public:
 	Runway();
-	Runway(AssetsManager assetsManager);
+	Runway(AssetsManager assetsManager, sf::Vector2f position, unsigned short rotation);
+
+	void update(sf::Vector2i mousePosition);
+	void render(sf::RenderTarget *window);
+	void processEvents(sf::Event event);
+
+	sf::RectangleShape runway;
 
 private:
-	
+    AssetsManager assetsManager;
+
+    sf::Vector2i mousePosition;
 };
 

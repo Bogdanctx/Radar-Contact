@@ -1,8 +1,11 @@
 #pragma once
 
+#include <fstream>
+
 #include <SFML/Graphics.hpp>
 
 #include "AssetsManager.h"
+#include "Runway.h"
 
 class Map
 {
@@ -17,6 +20,8 @@ public:
 
 	void load(const std::string icao);
 
+	std::vector<Runway> runways;
+
 private:
 	sf::Texture texture;
 	sf::Sprite map;
@@ -24,5 +29,7 @@ private:
 	sf::Vector2i mousePosition;
 
 	AssetsManager assetsManager;
-};
 
+	std::string airportIcao, airportName;
+    unsigned short airportRunways;
+};

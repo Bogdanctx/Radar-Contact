@@ -81,5 +81,6 @@ void Play::initObjects()
 		airport.airportName = airportIcao;
 
 		airportsList.push_back(airport);
+		in.close();
 	}
 }

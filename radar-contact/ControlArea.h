@@ -14,6 +14,8 @@ public:
 
 	void processEvents(sf::Event event);
 
+	bool isInArea(sf::Vector2f position);
+
 private:
 	void initShapes();
 

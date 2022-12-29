@@ -19,6 +19,18 @@ void Game::update(sf::Vector2i mousePosition)
 	this->mousePosition = mousePosition;
 
 	controlArea.update(mousePosition);
+
+	if(t_airplaneSpawn.getElapsedTime().asSeconds() >= 10)
+    {
+        CreateAirplane();
+        t_airplaneSpawn.restart();
+    }
+}
+
+void Game::CreateAirplane()
+{
+    Airplane airplane = Airplane(assetsManager);
+    airplanes.push_back(airplane);
 }
 
 void Game::render(sf::RenderTarget* window)
@@ -31,7 +43,7 @@ void Game::processEvents(sf::Event event)
 {
 	switch (event.type)
 	{
-		
+
 	}
 }
 

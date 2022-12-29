@@ -15,7 +15,6 @@ ControlArea::ControlArea(AssetsManager assetsManager)
 void ControlArea::update(sf::Vector2i mousePosition)
 {
 	this->mousePosition = mousePosition;
-
 }
 
 void ControlArea::render(sf::RenderTarget* window)
@@ -48,4 +47,9 @@ void ControlArea::initShapes()
 		assetsManager.getResolution().width / 2,
 		assetsManager.getResolution().height / 2
 	));
+}
+
+bool ControlArea::isInArea(sf::Vector2f position)
+{
+    return area.getGlobalBounds().contains(position) == true;
 }

@@ -19,6 +19,7 @@ void Game::update(sf::Vector2i mousePosition)
 	this->mousePosition = mousePosition;
 
 	controlArea.update(mousePosition);
+	map.update(mousePosition);
 
 	if(t_airplaneSpawn.getElapsedTime().asSeconds() >= 4)
     {

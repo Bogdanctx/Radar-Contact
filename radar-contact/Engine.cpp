@@ -25,6 +25,7 @@ Engine::Engine()
 				"2D - Air Traffic Controller",
 				sf::Style::Titlebar | sf::Style::Close,
 				settings);
+	
 }
 
 void Engine::run()
@@ -68,6 +69,8 @@ void Engine::render()
 		game.render(&window);
 	}
 
+	window.draw(creator);
+
 	window.display();
 
 	return;
@@ -95,13 +98,6 @@ void Engine::processEvents()
 					{
 					    window.close();
 
-					    sf::ContextSettings settings;
-					    settings.antialiasingLevel = menu.__settings.antialiasing.sliderValue;
-
-					    window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height),
-                                        "2D - Air Traffic Controller",
-                                        sf::Style::Titlebar | sf::Style::Close,
-                                        settings);
 						window.setFramerateLimit(menu.__settings.fps.sliderValue);
 					}
 				}
@@ -152,7 +148,7 @@ void Engine::initAssets()
 
 	assetsManager.loadSoundBuffer("buttonClick.wav");
 
-    assetsManager.setResolution(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
+    assetsManager.setResolution(sf::VideoMode::getDesktopMode().width - 100, sf::VideoMode::getDesktopMode().height - 100);
 
 	menu = Menu(assetsManager);
 	game = Game(assetsManager);

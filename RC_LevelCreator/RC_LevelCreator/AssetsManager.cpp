@@ -9,7 +9,7 @@ void AssetsManager::loadFont(const std::string key)
 {
 	sf::Font f;
 
-	if (f.loadFromFile("../../Resources/fonts/" + key))
+	if (f.loadFromFile("../Resources/fonts/" + key))
 	{
 		m_Fonts[key] = f;
 	}
@@ -43,7 +43,7 @@ void AssetsManager::loadSoundBuffer(const std::string key)
 {
 	sf::SoundBuffer s;
 
-	if (s.loadFromFile("../../Resources/sounds/" + key))
+	if (s.loadFromFile("../Resources/sounds/" + key))
 	{
 		m_SoundBuffers[key] = s;
 	}

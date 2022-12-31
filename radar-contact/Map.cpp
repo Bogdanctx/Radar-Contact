@@ -68,9 +68,10 @@ void Map::load(const std::string icao)
 
     for(int unsigned short i=0;i<airportRunways;i++)
     {
-        unsigned short x, y, heading;
+        float x, y;
+        unsigned short heading;
         in>>x>>y>>heading;
-        Runway runway = Runway(assetsManager, sf::Vector2f(x, y), heading);
+        Runway runway = Runway(assetsManager, sf::Vector2f(x, y), heading-90);
         runways.push_back(runway);
     }
 }

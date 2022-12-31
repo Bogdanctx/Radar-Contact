@@ -5,6 +5,10 @@
 *.cbp
 *.depend
 *.layout
+*.obs
+*.tlog
+*.log
+*.pdb
 .vs
 Libraries
 Release

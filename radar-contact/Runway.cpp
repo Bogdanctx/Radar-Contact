@@ -5,20 +5,20 @@ Runway::Runway()
 
 }
 
-Runway::Runway(AssetsManager assetsManager, sf::Vector2f topLeftProcentage, unsigned short rotation)
+Runway::Runway(AssetsManager assetsManager, sf::Vector2f positionFactor, unsigned short rotation)
 {
     this->assetsManager = assetsManager;
 
     runway.setSize(sf::Vector2f(30, 2.7));
     runway.setFillColor(sf::Color::White);
-    runway.setRotation(rotation);
+    runway.setRotation(rotation+90);
 
     sf::FloatRect bounds = runway.getGlobalBounds();
     runway.setOrigin(sf::Vector2f(bounds.left+bounds.width/2, bounds.top + bounds.height/2));
 
     runway.setPosition(sf::Vector2f(
-        assetsManager.getResolution().width * topLeftProcentage.x,
-        assetsManager.getResolution().height * topLeftProcentage.y
+        assetsManager.getResolution().width * positionFactor.x,
+        assetsManager.getResolution().height * positionFactor.y
     ));
 }
 

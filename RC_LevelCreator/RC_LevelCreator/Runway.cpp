@@ -28,15 +28,15 @@ void Runway::update(sf::Vector2i mousePosition)
 	if (isSelected)
 	{
 		setPosition(sf::Vector2f(mousePosition.x, mousePosition.y));
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		setRotation(-1);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		setRotation(1);
+	
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			setRotation(-1);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			setRotation(1);
+		}
 	}
 }
 
@@ -62,6 +62,8 @@ void Runway::processEvent(sf::Event event)
 			if (event.mouseButton.button == sf::Mouse::Right)
 			{
 				isSelected = false;
+				factor.x = runway.getPosition().x / assetsManager->getResolution().width;
+				factor.y = runway.getPosition().y / assetsManager->getResolution().height;
 			}
 
 			break;
@@ -81,5 +83,9 @@ void Runway::setRotation(int rotation)
 {
 	runway.setRotation(runway.getRotation() + rotation);
 
-	heading_text.setString(std::to_string((int)runway.getRotation()+90)+"°");
+	heading = runway.getRotation() - 90;
+	if (heading < 0)
+		heading += 360;
+
+	heading_text.setString(std::to_string(heading)+"°");
 }

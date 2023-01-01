@@ -38,7 +38,7 @@ void Engine::load(std::string icao, std::string airportName)
 			(float)assetsManager.getResolution().height / texture.getSize().y
 		));
 
-		std::ofstream out("../../Resources/airports/"+icao + ".airport");
+		out = std::ofstream("../../Resources/airports/"+icao + ".airport");
 		out << icao << std::endl;
 		out << airportName << std::endl;
 	}
@@ -98,6 +98,12 @@ void Engine::processEvents()
 			{
 				if (windowEvent.key.code == sf::Keyboard::Escape)
 				{
+					out << runways.size() << std::endl;
+					for (auto it : runways)
+					{
+						out << it.factor.x << ' ' << it.factor.y << ' ' << it.heading << std::endl;
+					}
+
 					window.close();
 				}
 				else if (windowEvent.key.code == sf::Keyboard::R)

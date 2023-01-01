@@ -31,4 +31,6 @@ private:
 	AssetsManager assetsManager;
 	std::vector<Runway>runways;
 
+	std::ofstream out;
+
 };

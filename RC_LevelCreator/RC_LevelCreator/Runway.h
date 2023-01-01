@@ -19,6 +19,9 @@ public:
 
 	bool isSelected = true;
 
+	sf::Vector2f factor;
+	int heading;
+
 private:
 	AssetsManager *assetsManager;
 	sf::Vector2i mousePosition;

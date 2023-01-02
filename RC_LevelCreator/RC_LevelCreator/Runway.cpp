@@ -9,7 +9,7 @@ Runway::Runway(AssetsManager *assetsManager)
 {
 	this->assetsManager = assetsManager;
 
-	runway.setSize(sf::Vector2f(30, 2.7));
+	runway.setSize(sf::Vector2f(50, 4));
 	runway.setFillColor(sf::Color::White);
 
 	sf::FloatRect bounds = runway.getGlobalBounds();

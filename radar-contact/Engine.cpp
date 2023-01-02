@@ -81,6 +81,8 @@ void Engine::processEvents()
 {
 	sf::Event windowEvent;
 
+	sf::Vector2i mousepos = sf::Mouse::getPosition(window);
+
 	while (window.pollEvent(windowEvent))
 	{
 		switch (windowEvent.type)
@@ -109,6 +111,8 @@ void Engine::processEvents()
                 {
                     window.close();
                 }
+
+
                 break;
             }
 

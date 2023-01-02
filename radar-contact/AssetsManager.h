@@ -12,6 +12,7 @@ public:
 
 	struct Resolution {
         unsigned short width, height;
+        float scale;
 	};
 
 	void loadFont(const std::string key);

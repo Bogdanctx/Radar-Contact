@@ -60,6 +60,7 @@ void AssetsManager::setResolution(unsigned short width, unsigned short height)
 {
     resolution.width=width;
     resolution.height=height;
+    resolution.scale = width / height;
 }
 
 AssetsManager::Resolution AssetsManager::getResolution()

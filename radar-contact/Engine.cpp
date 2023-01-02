@@ -25,7 +25,7 @@ Engine::Engine()
 				"2D - Air Traffic Controller",
 				sf::Style::Titlebar | sf::Style::Close,
 				settings);
-	
+
 }
 
 void Engine::run()
@@ -75,7 +75,7 @@ void Engine::render()
 
 	return;
 }
-
+#include <iostream>
 
 void Engine::processEvents()
 {
@@ -96,6 +96,7 @@ void Engine::processEvents()
 			{
 				if (windowEvent.mouseButton.button == sf::Mouse::Left)
 				{
+                    std::cout<<(float)mousepos.x / assetsManager.getResolution().width<<' '<<(float)mousepos.y / assetsManager.getResolution().height<<'\n';
 					if (menu.__settings.settingsApplied == true)
 					{
 					    window.close();
@@ -153,7 +154,7 @@ void Engine::initAssets()
 	assetsManager.loadSoundBuffer("buttonClick.wav");
 
     //assetsManager.setResolution(sf::VideoMode::getDesktopMode().width - 100, sf::VideoMode::getDesktopMode().height - 100);
-	assetsManager.setResolution(800, 600);
+	assetsManager.setResolution(1280, 720);
 
 	menu = Menu(assetsManager);
 	game = Game(assetsManager);

@@ -9,7 +9,7 @@ Runway::Runway(AssetsManager assetsManager, sf::Vector2f positionFactor, unsigne
 {
     this->assetsManager = assetsManager;
 
-    runway.setSize(sf::Vector2f(100, 6));
+    runway.setSize(sf::Vector2f(100, ));
     runway.setFillColor(sf::Color::White);
     runway.setRotation(rotation+90);
 
@@ -17,8 +17,8 @@ Runway::Runway(AssetsManager assetsManager, sf::Vector2f positionFactor, unsigne
     runway.setOrigin(sf::Vector2f(bounds.left+bounds.width/2, bounds.top + bounds.height/2));
 
     runway.setPosition(sf::Vector2f(
-        assetsManager.getResolution().width * positionFactor.x,
-        assetsManager.getResolution().height * positionFactor.y
+        positionFactor.x,
+        positionFactor.y
     ));
 }
 

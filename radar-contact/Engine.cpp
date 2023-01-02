@@ -152,7 +152,8 @@ void Engine::initAssets()
 
 	assetsManager.loadSoundBuffer("buttonClick.wav");
 
-    assetsManager.setResolution(sf::VideoMode::getDesktopMode().width - 100, sf::VideoMode::getDesktopMode().height - 100);
+    //assetsManager.setResolution(sf::VideoMode::getDesktopMode().width - 100, sf::VideoMode::getDesktopMode().height - 100);
+	assetsManager.setResolution(800, 600);
 
 	menu = Menu(assetsManager);
 	game = Game(assetsManager);

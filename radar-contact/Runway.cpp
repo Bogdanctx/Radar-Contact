@@ -5,11 +5,11 @@ Runway::Runway()
 
 }
 
-Runway::Runway(AssetsManager assetsManager, sf::Vector2f positionScale, unsigned short rotation)
+Runway::Runway(AssetsManager assetsManager, sf::Vector2f positionScale, unsigned short rotation, float length)
 {
     this->assetsManager = assetsManager;
 
-    runway.setSize(sf::Vector2f(80 * assetsManager.getResolution().scale, 4*assetsManager.getResolution().scale));
+    runway.setSize(sf::Vector2f(length, 4));
     runway.setFillColor(sf::Color::White);
 
     sf::FloatRect bounds = runway.getGlobalBounds();

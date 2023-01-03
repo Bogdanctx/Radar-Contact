@@ -6,6 +6,7 @@
 
 #include "AssetsManager.h"
 #include "Runway.h"
+#include "Point.h"
 
 class Map
 {
@@ -21,6 +22,7 @@ public:
 	void load(const std::string icao);
 
 	std::vector<Runway> runways;
+	std::vector<Point> points;
 
 private:
 	sf::Texture texture;
@@ -32,4 +34,6 @@ private:
 
 	std::string airportIcao, airportName;
     unsigned short airportRunways;
+
+	unsigned short numberOfPoints;
 };

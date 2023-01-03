@@ -7,25 +7,27 @@ Engine::Engine()
 	initAssets();
 
     sf::ContextSettings settings;
+	unsigned short fps, antialiasing;
+	fps = 60;
+	antialiasing = 8;
 
 
 	if(std::filesystem::exists("../Resources/settings.txt"))
     {
         std::ifstream in("../Resources/settings.txt");
 
-        unsigned short fps, antialiasing;
         in>>fps>>antialiasing;
         in.close();
 
         settings.antialiasingLevel = antialiasing;
-        window.setFramerateLimit(60);
     }
 
 	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height),
 				"2D - Air Traffic Controller",
-				sf::Style::Titlebar | sf::Style::Close,
+				sf::Style::Close,
 				settings);
 
+	window.setFramerateLimit(fps);
 }
 
 void Engine::run()
@@ -76,7 +78,6 @@ void Engine::render()
 	return;
 }
 #include <iostream>
-
 void Engine::processEvents()
 {
 	sf::Event windowEvent;
@@ -94,9 +95,11 @@ void Engine::processEvents()
 			}
 			case sf::Event::MouseButtonPressed:
 			{
+				std::cout << (float)mousepos.x / assetsManager.getResolution().width << ' ' << (float)mousepos.y / assetsManager.getResolution().height << '\n';
 				if (windowEvent.mouseButton.button == sf::Mouse::Left)
 				{
-                    std::cout<<(float)mousepos.x / assetsManager.getResolution().width<<' '<<(float)mousepos.y / assetsManager.getResolution().height<<'\n';
+
+
 					if (menu.__settings.settingsApplied == true)
 					{
 					    window.close();
@@ -112,6 +115,10 @@ void Engine::processEvents()
                 {
                     window.close();
                 }
+				if (windowEvent.key.code == sf::Keyboard::T)
+				{
+					std::cout << "Point: "<< (float)mousepos.x / assetsManager.getResolution().width << ' ' << (float)mousepos.y / assetsManager.getResolution().height << '\n';
+				}
 
 
                 break;

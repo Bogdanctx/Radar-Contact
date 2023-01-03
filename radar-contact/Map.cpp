@@ -28,6 +28,10 @@ void Map::update(sf::Vector2i mousePosition)
     {
         it.update(mousePosition);
     }
+    for (auto& it : points)
+    {
+        it.update(mousePosition);
+    }
 }
 
 void Map::render(sf::RenderTarget* window)
@@ -35,6 +39,10 @@ void Map::render(sf::RenderTarget* window)
 	window->draw(map);
 
 	for(auto it: runways)
+    {
+        it.render(window);
+    }
+    for (auto it : points)
     {
         it.render(window);
     }
@@ -74,4 +82,16 @@ void Map::load(const std::string icao)
         Runway runway = Runway(assetsManager, sf::Vector2f(x, y), heading, length);
         runways.push_back(runway);
     }
+    in >> numberOfPoints;
+    for (unsigned short i = 0; i < numberOfPoints; i++)
+    {
+        std::string name;
+        float x, y;
+        in >> name >> x >> y;
+        Point point = Point(&assetsManager, name, sf::Vector2f(x, y));
+        
+        points.push_back(point);
+    }
+
+    in.close();
 }

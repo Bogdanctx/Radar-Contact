@@ -10,6 +10,8 @@
 
 #include "Runway.h"
 
+#include <cstring>
+
 class Engine
 {
 public:
@@ -21,6 +23,8 @@ private:
 	void update();
 	void render();
 	void processEvents();
+
+	void createWindow();
 
 	void initAssets();
 

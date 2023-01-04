@@ -20,19 +20,20 @@ public:
 	void render(sf::RenderTarget* window);
 
 	bool isActive;
-	bool settingsApplied;
 
-	Slider fps;
-	Slider antialiasing;
-
+	Button apply;
 private:
 	void initObjects();
 
 	AssetsManager assetsManager;
 
-	Button apply;
-
+	Slider fps;
+	Slider antialiasing;
 
 	sf::Vector2i mousePosition;
+
+	std::string resolutionSelected;
+	std::vector<std::string>str_resolutions = { "1024x576", "1280x720", "1366x768", "1600x900", "1920x1080" };
+	std::vector<Button>resolutions;
 };
 

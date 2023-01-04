@@ -79,6 +79,11 @@ void Button::setPosition(sf::Vector2f position)
 	buttonBody.setPosition(position);
 }
 
+std::string Button::getText()
+{
+	return buttonText.getString();
+}
+
 void Button::checkMouseHover()
 {
 	if (buttonBody.getGlobalBounds().contains(sf::Vector2f(mousePosition.x, mousePosition.y)))

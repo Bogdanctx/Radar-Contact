@@ -17,6 +17,8 @@ public:
 	void setBorder(float thickness, sf::Color color = sf::Color::White);
 	void setSize(sf::Vector2f size);
 	void setPosition(sf::Vector2f position);
+
+	std::string getText();
 	
 	void centerText();
 

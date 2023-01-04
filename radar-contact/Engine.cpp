@@ -4,30 +4,9 @@
 
 Engine::Engine()
 {
+	createWindow();
+
 	initAssets();
-
-    sf::ContextSettings settings;
-	unsigned short fps, antialiasing;
-	fps = 60;
-	antialiasing = 8;
-
-
-	if(std::filesystem::exists("../Resources/settings.txt"))
-    {
-        std::ifstream in("../Resources/settings.txt");
-
-        in>>fps>>antialiasing;
-        in.close();
-
-        settings.antialiasingLevel = antialiasing;
-    }
-
-	window.create(sf::VideoMode(assetsManager.getResolution().width, assetsManager.getResolution().height),
-				"2D - Air Traffic Controller",
-				sf::Style::Close,
-				settings);
-
-	window.setFramerateLimit(fps);
 }
 
 void Engine::run()
@@ -40,6 +19,43 @@ void Engine::run()
 	}
 
 	return;
+}
+
+void Engine::createWindow()
+{
+	sf::ContextSettings settings;
+	unsigned short fps, antialiasing;
+	unsigned short width, height;
+
+	fps = 60;
+	antialiasing = 8;
+	width = 1600;
+	height = 900;
+
+
+	if (std::filesystem::exists("../Resources/settings.txt"))
+	{
+		std::ifstream in("../Resources/settings.txt");
+
+		in >> fps;
+		in>>antialiasing;
+		in >> width >> height;
+
+		in.close();
+
+		settings.antialiasingLevel = antialiasing;
+	}
+
+	assetsManager.setResolution(width, height);
+
+	window.create(sf::VideoMode(width, height),
+		"Radar Contact",
+		sf::Style::Close,
+		settings);
+
+	window.setFramerateLimit(fps);
+
+	initAssets();
 }
 
 void Engine::update()
@@ -77,7 +93,7 @@ void Engine::render()
 
 	return;
 }
-#include <iostream>
+
 void Engine::processEvents()
 {
 	sf::Event windowEvent;
@@ -86,48 +102,6 @@ void Engine::processEvents()
 
 	while (window.pollEvent(windowEvent))
 	{
-		switch (windowEvent.type)
-		{
-			case sf::Event::Closed:
-			{
-				window.close();
-				break;
-			}
-			case sf::Event::MouseButtonPressed:
-			{
-				std::cout << (float)mousepos.x / assetsManager.getResolution().width << ' ' << (float)mousepos.y / assetsManager.getResolution().height << '\n';
-				if (windowEvent.mouseButton.button == sf::Mouse::Left)
-				{
-
-
-					if (menu.__settings.settingsApplied == true)
-					{
-					    window.close();
-
-						window.setFramerateLimit(menu.__settings.fps.sliderValue);
-					}
-				}
-			}
-
-			case sf::Event::KeyPressed:
-            {
-                if(windowEvent.key.code == sf::Keyboard::Escape)
-                {
-                    window.close();
-                }
-				if (windowEvent.key.code == sf::Keyboard::T)
-				{
-					std::cout << "Point: "<< (float)mousepos.x / assetsManager.getResolution().width << ' ' << (float)mousepos.y / assetsManager.getResolution().height << '\n';
-				}
-
-
-                break;
-            }
-
-			default:
-				break;
-		}
-
 		if (menu.isActive)
 		{
 			menu.processEvents(windowEvent);
@@ -139,12 +113,33 @@ void Engine::processEvents()
 
 				game.map.load(menu.__play.handler.airportIcao);
 			}
+
+			if (windowEvent.mouseButton.button == sf::Mouse::Left)
+			{
+				if (menu.__settings.apply.isButtonClicked(mousepos))
+				{
+					window.close();
+
+					createWindow();
+				}
+			}
 		}
 		else if (game.isActive)
 		{
 			game.processEvents(windowEvent);
 		}
 
+		switch (windowEvent.type)
+		{
+			case sf::Event::Closed:
+			{
+				window.close();
+				break;
+			}
+
+			default:
+				break;
+		}
 	}
 
 	return;
@@ -159,8 +154,6 @@ void Engine::initAssets()
 	assetsManager.loadTexture("menuBackground.png", "../Resources/images");
 
 	assetsManager.loadSoundBuffer("buttonClick.wav");
-
-	assetsManager.setResolution(1600, 900);
 
 	menu = Menu(assetsManager);
 	game = Game(assetsManager);

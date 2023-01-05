@@ -89,6 +89,7 @@ void Map::load(const std::string icao)
         float x, y;
         in >> name >> x >> y;
         Point point = Point(&assetsManager, name, sf::Vector2f(x, y));
+        point.index = i;
         
         points.push_back(point);
     }

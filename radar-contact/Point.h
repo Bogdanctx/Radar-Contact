@@ -13,6 +13,8 @@ public:
 	void render(sf::RenderTarget* window);
 	void update(sf::Vector2i mousePosition);
 
+	unsigned short index;
+
 private:
 	sf::Vector2i mousePosition;
 

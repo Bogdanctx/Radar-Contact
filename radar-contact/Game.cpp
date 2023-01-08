@@ -21,33 +21,24 @@ void Game::update(sf::Vector2i mousePosition)
 	controlArea.update(mousePosition);
 	map.update(mousePosition);
 
-	if(t_airplaneSpawn.getElapsedTime().asSeconds() >= 4)
+	if (airplanes.size() == 0)
+		CreateAirplane();
+
+	/*if (t_airplaneSpawn.getElapsedTime().asSeconds() >= 4)
     {
         CreateAirplane();
         t_airplaneSpawn.restart();
-    }
+    }*/
 
     for(auto &it: airplanes)
     {
         it.update(mousePosition);
-
-        if(controlArea.isInArea(it.airplane.getPosition()))
-        {
-            it.isInControlArea = true;
-        }
-        else
-        {
-            if(it.isInControlArea == true)
-            {
-
-            }
-        }
     }
 }
 
 void Game::CreateAirplane()
 {
-    Airplane airplane = Airplane(assetsManager);
+    Airplane airplane = Airplane(&assetsManager, controlArea);
     airplanes.push_back(airplane);
 }
 
@@ -56,15 +47,23 @@ void Game::render(sf::RenderTarget* window)
 	map.render(window);
 	controlArea.render(window);
 
-    for(auto it: airplanes)
-        it.render(window);
+	for (auto it : airplanes)
+	{
+		it.render(window);
+	}
 }
 
 void Game::processEvents(sf::Event event)
 {
+	for (auto &it : airplanes)
+	{
+		it.processEvents(event);
+	}
+
 	switch (event.type)
 	{
-
+		default:
+			break;
 	}
 }
 

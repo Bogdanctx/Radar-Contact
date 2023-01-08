@@ -6,12 +6,13 @@
 #include "Math.h"
 #include "Constants.h"
 #include "AssetsManager.h"
+#include "ControlArea.h"
 
 class Airplane
 {
 public:
     Airplane();
-    Airplane(AssetsManager assetsManager);
+    Airplane(AssetsManager *assetsManager, ControlArea controlArea);
 
     void render(sf::RenderTarget *window);
     void update(sf::Vector2i mousePosition);
@@ -24,8 +25,15 @@ public:
     bool isSelected = false;
 private:
     void initShapes();
+    void initData();
 
-    AssetsManager assetsManager;
+    AssetsManager *assetsManager;
+    ControlArea controlArea;
+
+    std::pair<short, sf::Text>airspeed;
+    std::pair<short, sf::Text>altitude;
+    sf::Text callsign;
+
 
     sf::Vector2i mousePosition;
     sf::Clock radarMovement;

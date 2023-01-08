@@ -23,8 +23,8 @@ public:
 	bool isActive;
 
 	struct Handler {
-        bool airportSelected = false;
-        std::string airportIcao;
+        bool airportSelected = true;
+        std::string airportIcao = "EHAM";
 	};
 
 	Handler handler;

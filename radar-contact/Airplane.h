@@ -27,6 +27,11 @@ private:
     void initShapes();
     void initData();
 
+    void HandleAltitudeChange();
+    void HandleAirspeedChange();
+    void HandleHeadingChange();
+    void UpdateData();
+
     AssetsManager *assetsManager;
     ControlArea controlArea;
 
@@ -34,10 +39,19 @@ private:
     std::pair<short, sf::Text>altitude;
     sf::Text callsign;
 
+    std::pair<short, sf::Text>newAirspeed;
+    std::pair<short, sf::Text>newAltitude;
+    std::pair<float, sf::Text>newHeading;
+
+    std::tuple<float, sf::Text, sf::RectangleShape>heading;
 
     sf::Vector2i mousePosition;
-    sf::Clock radarMovement;
+    sf::Clock radarMovement,
+                dataUpdate,
+                altitudeChanged,
+                airspeedChanged;
 
     float velocity;
-    float heading;
+
+    bool settingNewData = false;
 };

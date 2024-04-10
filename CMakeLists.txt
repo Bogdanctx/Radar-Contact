@@ -131,6 +131,10 @@ add_executable(${PROJECT_NAME}
     env_fixes.h
         source/Game.cpp
         header/Game.h
+        source/Menu.cpp
+        header/Menu.h
+        source/Window.cpp
+        header/Window.h
 )
 
 ###############################################################################

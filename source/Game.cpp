@@ -26,8 +26,6 @@ void Game::update() {
 void Game::render() {
     m_window.clear();
 
-
-
     m_window.display();
 }
 
@@ -40,7 +38,7 @@ void Game::handleEvents() {
         {
             case sf::Event::KeyPressed:
             {
-                const auto key_code = game_event.key.code;
+                const sf::Keyboard::Key key_code = game_event.key.code;
 
                 if(key_code == sf::Keyboard::Escape)
                 {

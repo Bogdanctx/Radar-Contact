@@ -4,10 +4,10 @@
 
 #include "../header/Menu.h"
 
-Menu::Menu(std::pair<int, int> *game_resolution) : Window(500, 400, "Radar Contact - Menu"),
-                m_game_resolution{game_resolution},
+Menu::Menu(ResourcesManager *resourcesManager) : Window({500, 400}, "Radar Contact - Menu"),
                 m_available_resolutions{{1920, 1080}, {1600, 900}, {1280, 720}},
-                m_numberOfButtons{3}
+                m_numberOfButtons{3},
+                m_resourcesManager{resourcesManager}
 {
     const std::vector<std::pair<float, float>> buttons_position = {
             {154, 98},
@@ -29,8 +29,7 @@ Menu::Menu(std::pair<int, int> *game_resolution) : Window(500, 400, "Radar Conta
         m_buttons.push_back(button);
     }
 
-    m_texture.loadFromFile("../resources/menu/menu.png");
-    m_background.setTexture(m_texture);
+    m_background.setTexture(resourcesManager->GetTexture("menu.png"));
 }
 
 Menu::~Menu() {
@@ -108,10 +107,10 @@ void Menu::handleEvent()
 
                     if(button_bounds.contains(float_mouse_position))
                     {
-                        m_game_resolution->first = m_available_resolutions[i].first;
-                        m_game_resolution->second = m_available_resolutions[i].second;
+                        m_resourcesManager->SetResolution(m_available_resolutions[i]);
 
                         m_window.close();
+
                         return;
                     }
                 }

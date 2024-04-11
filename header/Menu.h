@@ -10,10 +10,11 @@
 #include <iostream>
 
 #include "Window.h"
+#include "ResourcesManager.h"
 
 class Menu : public Window {
 public:
-    explicit Menu(std::pair<int, int> *game_resolution);
+    explicit Menu(ResourcesManager *resourcesManager);
     ~Menu();
 private:
     void render() override;
@@ -25,9 +26,9 @@ private:
     sf::Texture m_texture;
     sf::Sprite m_background;
     std::vector<sf::RectangleShape> m_buttons;
-    std::pair<int, int> *m_game_resolution;
     const std::vector<std::pair<int, int>> m_available_resolutions;
     const int m_numberOfButtons;
+    ResourcesManager *m_resourcesManager;
 };
 
 

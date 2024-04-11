@@ -11,10 +11,11 @@
 
 #include "Window.h"
 #include "Airplane.h"
+#include "ResourcesManager.h"
 
 class Game : public Window {
 public:
-    explicit Game(int width, int height);
+    explicit Game(ResourcesManager *resourcesManager);
     ~Game() { std::cout<<"Destr Game\n"; };
 
 private:
@@ -23,6 +24,7 @@ private:
     void update() override;
 
     std::vector<Airplane> m_airplanes;
+    ResourcesManager *m_resourcesManager;
 };
 
 

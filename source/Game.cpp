@@ -4,7 +4,9 @@
 
 #include "../header/Game.h"
 
-Game::Game(const int width, const int height) : Window(width, height, "Radar Contact")
+Game::Game(ResourcesManager *resourcesManager) :
+            Window{resourcesManager->GetResolution(), "Radar Contact"},
+            m_resourcesManager{resourcesManager}
 {
     std::string callsign = "ROT123";
     Airplane test{35000, 35000, 315, 315, 90, 7700, callsign, sf::Vector2f{500, 800}};

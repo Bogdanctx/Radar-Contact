@@ -147,10 +147,14 @@ add_executable(${PROJECT_NAME}
         header/Menu.h
         source/Window.cpp
         header/Window.h
+        header/FlyingEntity.h
         source/FlyingEntity.cpp
+        header/Airplane.h
         source/Airplane.cpp
         header/Math.h
         source/Math.cpp
+        header/ResourcesManager.h
+        source/ResourcesManager.cpp
 )
 
 ###############################################################################

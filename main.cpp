@@ -1,5 +1,6 @@
 #include "./header/Menu.h"
 #include "./header/Game.h"
+#include "./header/ResourcesManager.h"
 
 int main() {
     /*cpr::Response r = cpr::Get(cpr::Url{"https://api.aviationapi.com/v1/vatsim/pilots?apt=EGLL&arr=1&dep=0"},
@@ -17,18 +18,20 @@ int main() {
 
     return 0;*/
 
-    std::pair<int, int> game_resolution{0, 0};
+    ResourcesManager resourcesManager;
 
     {
-        Menu menu{&game_resolution};
+        Menu menu{&resourcesManager};
 
         menu.run();
     }
 
-    if(game_resolution.first != 0 && game_resolution.second != 0) {
-        Game game{game_resolution.first, game_resolution.second};
-        game.run();
+    if(resourcesManager.GetResolution().first == 0) {
+        return 0;
     }
+
+    Game game{&resourcesManager};
+    game.run();
 
     return 0;
 }

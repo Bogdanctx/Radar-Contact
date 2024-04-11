@@ -4,8 +4,8 @@
 
 #include "../header/Window.h"
 
-Window::Window(const int width, const int height, const std::string &title) :
-                m_window(sf::VideoMode(width, height), title)
+Window::Window(const std::pair<int, int> resolution, const std::string &title) :
+                m_window(sf::VideoMode(resolution.first, resolution.second), title)
 {
     m_window.setVerticalSyncEnabled(true);
 }

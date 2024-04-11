@@ -10,7 +10,7 @@
 
 class Window {
 public:
-    explicit Window(int width, int height, const std::string &title);
+    explicit Window(std::pair<int, int> resolution, const std::string &title);
     ~Window() { std::cout << "Destr Window\n"; }
 
     void run();

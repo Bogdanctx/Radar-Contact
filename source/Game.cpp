@@ -4,32 +4,25 @@
 
 #include "../header/Game.h"
 
-Game::Game(const int width, const int height) : m_window(sf::VideoMode(width, height), "Radar Contact") {
+Game::Game(const int width, const int height) : Window(width, height, "Radar Contact")
+{
 
 }
 
-void Game::run() {
-    while(m_window.isOpen())
-    {
-
-        handleEvents();
-        update();
-        render();
-
-    }
-}
-
-void Game::update() {
+void Game::update()
+{
 
 }
 
-void Game::render() {
+void Game::render()
+{
     m_window.clear();
 
     m_window.display();
 }
 
-void Game::handleEvents() {
+void Game::handleEvent()
+{
     sf::Event game_event{};
 
     while(m_window.pollEvent(game_event))

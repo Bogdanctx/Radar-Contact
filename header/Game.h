@@ -6,22 +6,20 @@
 #define OOP_GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include "Window.h"
 
-class Game {
+class Game : public Window {
 public:
-    Game() = delete;
     explicit Game(int width, int height);
-    ~Game() = default;
-
-    void run();
+    ~Game() { std::cout<<"Destr Game\n"; };
 
 private:
+    void render() override;
+    void handleEvent() override;
+    void update() override;
 
-    void handleEvents();
-    void update();
-    void render();
 
-    sf::RenderWindow m_window;
 };
 
 

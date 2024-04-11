@@ -102,8 +102,20 @@ FetchContent_Declare(
   GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
 )
 
+FetchContent_Declare(
+        cpr
+        GIT_REPOSITORY https://github.com/libcpr/cpr.git
+        GIT_TAG 1.10.5
+)
+
+FetchContent_Declare(
+        json
+        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
 
 FetchContent_MakeAvailable(SFML)
+FetchContent_MakeAvailable(cpr)
+FetchContent_MakeAvailable(json)
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
 else()
@@ -135,6 +147,10 @@ add_executable(${PROJECT_NAME}
         header/Menu.h
         source/Window.cpp
         header/Window.h
+        source/FlyingEntity.cpp
+        source/Airplane.cpp
+        header/Math.h
+        source/Math.cpp
 )
 
 ###############################################################################
@@ -173,6 +189,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PRIVATE cpr::cpr)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
 
 if(APPLE)
 elseif(UNIX)

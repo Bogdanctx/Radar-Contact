@@ -7,7 +7,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
+
 #include "Window.h"
+#include "Airplane.h"
 
 class Game : public Window {
 public:
@@ -19,7 +22,7 @@ private:
     void handleEvent() override;
     void update() override;
 
-
+    std::vector<Airplane> m_airplanes;
 };
 
 

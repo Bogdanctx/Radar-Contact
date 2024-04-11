@@ -11,15 +11,17 @@
 
 class FlyingEntity {
 public:
-    FlyingEntity(int altitude, int max_altitude, int speed, int max_speed, int heading, int tcas, sf::Vector2f position);
+    explicit FlyingEntity(int altitude, int max_altitude, int speed, int max_speed, int heading, int squawk,
+                          const std::string &callsign, sf::Vector2f position);
 
     virtual void update();
     virtual void render(sf::RenderWindow *game_window);
+    virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 protected:
     int m_heading{};
     int m_speed{};
     int m_altitude{};
-    int m_tcas{};
+    int m_squawk{};
 private:
 
     sf::RectangleShape m_entity{};
@@ -30,6 +32,7 @@ private:
     const std::string m_callsign;
 
     const int m_update_interval = 500;
+    bool m_entitySelected;
 
     sf::Clock m_update_position_interval; // la un interval x de timp se va actualiza pozitia avionului
 };

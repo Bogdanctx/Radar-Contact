@@ -27,3 +27,15 @@ nlohmann::json DataAPI::getArrivals(const std::string airportICAO)
 
     return arrivals;
 }
+
+std::pair<int, int> DataAPI::getWeather(const std::string airportICAO) {
+    const std::string link = "https://aviationweather.gov/api/data/metar?ids=" + airportICAO + "&format=json";
+    const cpr::Response res = cpr::Get(cpr::Url{link});
+
+    nlohmann::json metar = nlohmann::json::parse(res.text);
+
+    int wdir = metar[0]["wdir"];
+    int wspd = metar[0]["wspd"];
+
+    return {wdir,wspd};
+}

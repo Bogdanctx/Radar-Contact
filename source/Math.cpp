@@ -35,3 +35,28 @@ float Math::radians(const float deg)
 {
     return deg * PI / 180;
 }
+
+// https://stackoverflow.com/questions/2103924/mercator-longitude-and-latitude-calculations-to-x-and-y-on-a-cropped-map-of-the/10401734#10401734
+sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, std::vector<float> imgBounds,
+                                      std::pair<int, int> gameResolution) {
+
+    const float mapWidth = gameResolution.first;
+    const float mapHeight = gameResolution.second;
+
+    const float mapLonLeft = imgBounds[3];
+    const float mapLonRight = imgBounds[1];
+    const float mapLonDelta = mapLonRight - mapLonLeft;
+
+    const float mapLatBottom = imgBounds[2];
+    const float mapLatBottomDegree = radians(mapLatBottom);
+
+    const float x = (crtLongitude - mapLonLeft) * (mapWidth / mapLonDelta);
+
+    crtLatitude = radians(crtLatitude);
+
+    const float worldMapWidth = ((mapWidth / mapLonDelta) * 360) / (2 * PI);
+    const float mapOffsetY = (worldMapWidth / 2 * log((1+sin(mapLatBottomDegree)) / (1 - sin(mapLatBottomDegree))));
+    const float y = mapHeight - ((worldMapWidth / 2 * log((1 + sin(crtLatitude)) / (1 - sin(crtLatitude)))) - mapOffsetY);
+
+    return {x,y};
+}

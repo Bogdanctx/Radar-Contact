@@ -7,7 +7,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <iostream>
 
 #include "Window.h"
 #include "ResourcesManager.h"
@@ -15,7 +14,7 @@
 class Menu : public Window {
 public:
     explicit Menu(ResourcesManager *resourcesManager);
-    ~Menu();
+    ~Menu() = default;
 private:
     void render() override;
     void handleEvent() override;

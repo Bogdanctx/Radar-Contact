@@ -6,9 +6,9 @@
 #define OOP_GAME_H
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
+#include <unordered_set>
 
 #include "Window.h"
 #include "Airplane.h"
@@ -18,9 +18,10 @@
 
 class Game : public Window {
 public:
-    explicit Game(ResourcesManager *resourcesManager);
-    ~Game() { std::cout<<"Destr Game\n"; };
+    explicit Game(ResourcesManager &resourcesManager);
+    ~Game() = default;
 
+    void run() override;
 private:
     void render() override;
     void handleEvent() override;
@@ -32,13 +33,16 @@ private:
     std::vector<Airplane> m_airplanes;
     std::vector<Airport> m_airports;
 
-    ResourcesManager *m_resourcesManager;
-    DataAPI m_dataApi;
+    ResourcesManager m_resourcesManager;
 
-    sf::Clock m_newEntities_interval;
+    sf::Clock m_newEntitiesInterval;
+    sf::Sprite m_backgroundRegion;
+    sf::Text m_connectingToFrequency;
 
-    sf::Texture t;
-    sf::Sprite aprt;
+    std::unordered_set<std::string> m_addedEntities;
+    const std::string m_selectedRegion = "UK";
+
+    bool m_isFirstTime;
 };
 
 

@@ -6,7 +6,8 @@
 
 ResourcesManager::ResourcesManager() : m_game_resolution{0, 0}
 {
-    loadFonts("roboto.ttf");
+    loadFonts("Raleway-Regular.ttf");
+    loadFonts("Poppins-Regular.ttf");
 
     loadTextures("menu.png");
 
@@ -60,10 +61,13 @@ void ResourcesManager::loadRegion(const std::string region_name) {
     m_textures[region_name] = texture;
 
     std::ifstream fin(region_position);
-    std::vector<float> box(4);
+    std::vector<float> box;
     for(int i = 0; i < 4; i++) {
-        fin>>box[i];
+        float f;
+        fin>>f;
+        box.push_back(f);
     }
+    m_regionBox[region_name] = box;
     fin.close();
 
     fin.open(region_airports);

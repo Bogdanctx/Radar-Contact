@@ -32,10 +32,6 @@ Menu::Menu(ResourcesManager *resourcesManager) : Window({500, 400}, "Radar Conta
     m_background.setTexture(resourcesManager->getTexture("menu.png"));
 }
 
-Menu::~Menu() {
-    std::cout<<"Destr Menu\n";
-}
-
 void Menu::render()
 {
     m_window.clear();

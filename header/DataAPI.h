@@ -8,14 +8,13 @@
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 
-#include <iostream>
-
 class DataAPI {
 public:
     DataAPI() = default;
     ~DataAPI() = default;
 
     static nlohmann::json getArrivals(const std::string airportICAO);
+    static std::pair<int, int> getWeather(const std::string airportICAO);
 private:
 
 };

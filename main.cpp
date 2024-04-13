@@ -3,7 +3,6 @@
 #include "./header/ResourcesManager.h"
 
 int main() {
-
     ResourcesManager resourcesManager;
 
     {
@@ -16,7 +15,7 @@ int main() {
         return 0;
     }
 
-    Game game{&resourcesManager};
+    Game game{resourcesManager};
     game.run();
 
     return 0;

@@ -6,14 +6,13 @@
 #define OOP_WINDOW_H
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 class Window {
 public:
     explicit Window(std::pair<int, int> resolution, const std::string &title);
-    ~Window() { std::cout << "Destr Window\n"; }
+    ~Window() = default;
 
-    void run();
+    virtual void run();
 protected:
     sf::RenderWindow m_window;
 private:

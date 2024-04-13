@@ -7,14 +7,25 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "ResourcesManager.h"
+#include "DataAPI.h"
+
 class Airport {
 public:
-    explicit Airport(sf::Vector2f position, const std::string airportICAO);
+    explicit Airport(sf::Vector2f position, const std::string airportICAO, ResourcesManager &resourcesManager);
     ~Airport() = default;
 
     void render(sf::RenderWindow *window);
+    void handleEvent(sf::Event event, sf::Vector2f mousePosition);
+
 private:
+    bool m_isCoverageSelected;
+    std::pair<int, int> m_weather; // (direction, wind)
+
+    std::pair<int, int> m_windData;
     sf::CircleShape m_coverage;
+    sf::Text m_labelICAO;
+    sf::Text m_windDataText;
 };
 
 

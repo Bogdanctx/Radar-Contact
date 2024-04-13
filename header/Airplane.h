@@ -7,16 +7,15 @@
 
 #include "FlyingEntity.h"
 #include "ResourcesManager.h"
-#include <iostream>
 
 class Airplane : public FlyingEntity {
 public:
     explicit Airplane(int altitude, int speed, int heading, std::string squawk,
-                      const std::string &callsign, sf::Vector2f position, ResourcesManager *resourcesManager);
-    ~Airplane() { std::cout << "Destr Airplane\n"; }
+                      const std::string &callsign, sf::Vector2f position, ResourcesManager &resourcesManager);
+    ~Airplane() = default;
 
 private:
-    ResourcesManager *m_resourcesManager;
+    ResourcesManager m_resourcesManager;
 };
 
 

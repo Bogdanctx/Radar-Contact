@@ -11,7 +11,6 @@ Window::Window(const std::pair<int, int> resolution, const std::string &title) :
 }
 
 void Window::run() {
-
     while(m_window.isOpen())
     {
         handleEvent();

@@ -6,11 +6,10 @@
 
 #include <iostream>
 
-FlyingEntity::FlyingEntity(int altitude, int max_altitude, int speed, int max_speed, int heading, int squawk,
-                           const std::string &callsign, sf::Vector2f position) :
+FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
+                           const std::string &callsign, sf::Vector2f position, ResourcesManager *resourcesManager) :
         m_heading(heading), m_speed(speed), m_altitude(altitude), m_squawk{squawk},
-        m_position{position}, m_max_altitude(max_altitude), m_max_speed(max_speed),
-        m_callsign(callsign)
+        m_callsign(callsign), m_entitySelected{false}
 {
 
     m_entity.setSize(sf::Vector2f(10, 10));
@@ -24,18 +23,25 @@ FlyingEntity::FlyingEntity(int altitude, int max_altitude, int speed, int max_sp
 
 void FlyingEntity::update()
 {
-    if(m_update_position_interval.getElapsedTime().asMilliseconds() >= m_update_interval)
+    if(m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
     {
         const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
         m_entity.move(translation_to_point);
 
-        m_update_position_interval.restart();
+        //sf::Vector2f pos = m_entity.getPosition();
+
+        m_updatePositionInterval.restart();
     }
 }
 
 void FlyingEntity::render(sf::RenderWindow *game_window)
 {
     game_window->draw(m_entity);
+
+    if(m_entitySelected)
+    {
+
+    }
 }
 
 void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)

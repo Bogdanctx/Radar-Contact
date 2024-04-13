@@ -29,7 +29,7 @@ Menu::Menu(ResourcesManager *resourcesManager) : Window({500, 400}, "Radar Conta
         m_buttons.push_back(button);
     }
 
-    m_background.setTexture(resourcesManager->GetTexture("menu.png"));
+    m_background.setTexture(resourcesManager->getTexture("menu.png"));
 }
 
 Menu::~Menu() {
@@ -107,7 +107,7 @@ void Menu::handleEvent()
 
                     if(button_bounds.contains(float_mouse_position))
                     {
-                        m_resourcesManager->SetResolution(m_available_resolutions[i]);
+                        m_resourcesManager->setResolution(m_available_resolutions[i]);
 
                         m_window.close();
 

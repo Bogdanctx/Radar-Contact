@@ -155,6 +155,12 @@ add_executable(${PROJECT_NAME}
         source/Math.cpp
         header/ResourcesManager.h
         source/ResourcesManager.cpp
+        source/Airplane.cpp
+        source/DataAPI.cpp
+        header/DataAPI.h
+        source/Airport.cpp
+        header/Airport.h
+        header/Airport.h
 )
 
 ###############################################################################

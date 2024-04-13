@@ -8,10 +8,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "Window.h"
 #include "Airplane.h"
 #include "ResourcesManager.h"
+#include "DataAPI.h"
+#include "Airport.h"
 
 class Game : public Window {
 public:
@@ -23,8 +26,19 @@ private:
     void handleEvent() override;
     void update() override;
 
+    void addNewEntities();
+    void initAirports();
+
     std::vector<Airplane> m_airplanes;
+    std::vector<Airport> m_airports;
+
     ResourcesManager *m_resourcesManager;
+    DataAPI m_dataApi;
+
+    sf::Clock m_newEntities_interval;
+
+    sf::Texture t;
+    sf::Sprite aprt;
 };
 
 

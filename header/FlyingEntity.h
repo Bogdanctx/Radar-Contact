@@ -7,12 +7,13 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "ResourcesManager.h"
 #include "Math.h"
 
 class FlyingEntity {
 public:
-    explicit FlyingEntity(int altitude, int max_altitude, int speed, int max_speed, int heading, int squawk,
-                          const std::string &callsign, sf::Vector2f position);
+    explicit FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
+                          const std::string &callsign, sf::Vector2f position, ResourcesManager *resourcesManager);
 
     virtual void update();
     virtual void render(sf::RenderWindow *game_window);
@@ -21,20 +22,18 @@ protected:
     int m_heading{};
     int m_speed{};
     int m_altitude{};
-    int m_squawk{};
+    std::string m_squawk{};
 private:
 
     sf::RectangleShape m_entity{};
-    sf::Vector2f m_position{};
 
-    const int m_max_altitude{};
-    const int m_max_speed{};
     const std::string m_callsign;
 
-    const int m_update_interval = 500;
+    const int m_updateInterval = 500;
     bool m_entitySelected;
 
-    sf::Clock m_update_position_interval; // la un interval x de timp se va actualiza pozitia avionului
+    sf::Clock m_updatePositionInterval; // la un interval x de timp se va actualiza pozitia avionului
+
 };
 
 

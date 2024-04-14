@@ -4,32 +4,10 @@
 
 #include "../header/Menu.h"
 
-Menu::Menu(ResourcesManager *resourcesManager) : Window({500, 400}, "Radar Contact - Menu"),
-                m_available_resolutions{{1920, 1080}, {1600, 900}, {1280, 720}},
-                m_numberOfButtons{3},
-                m_resourcesManager{resourcesManager}
+Menu::Menu(ResourcesManager &resourcesManager) :
+        Window({800, 600}, "Radar Contact - Menu")
 {
-    const std::vector<std::pair<float, float>> buttons_position = {
-            {154, 98},
-            {154, 197},
-            {154, 306},
-    };
-
-    for(int i = 0; i < m_numberOfButtons; i++) {
-        sf::RectangleShape button;
-
-        button.setPosition(
-                sf::Vector2f(buttons_position[i].first, buttons_position[i].second)
-                );
-        button.setFillColor(sf::Color::Transparent);
-        button.setOutlineThickness(2);
-        button.setOutlineColor(sf::Color(255, 255, 255, 180));
-        button.setSize(sf::Vector2f(179, 44));
-
-        m_buttons.push_back(button);
-    }
-
-    m_background.setTexture(resourcesManager->getTexture("menu.png"));
+    m_background.setTexture(resourcesManager.getTexture("menu.png"));
 }
 
 void Menu::render()
@@ -37,11 +15,6 @@ void Menu::render()
     m_window.clear();
 
     m_window.draw(m_background);
-
-    for(const auto &button: m_buttons)
-    {
-        m_window.draw(button);
-    }
 
     m_window.display();
 }
@@ -56,18 +29,7 @@ void Menu::checkHovers()
     sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
     sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
 
-    for(auto &button: m_buttons)
-    {
-        if(button.getGlobalBounds().contains(float_mouse_position))
-        {
-            button.setOutlineThickness(3.f);
-            button.setOutlineColor(sf::Color::Black);
-        }
-        else
-        {
-            button.setOutlineColor(sf::Color::White);
-        }
-    }
+
 }
 
 void Menu::handleEvent()
@@ -98,18 +60,7 @@ void Menu::handleEvent()
             }
             case sf::Event::MouseButtonPressed:
             {
-                for(int i = 0; i < m_numberOfButtons; i++) {
-                    sf::FloatRect button_bounds = m_buttons[i].getGlobalBounds();
 
-                    if(button_bounds.contains(float_mouse_position))
-                    {
-                        m_resourcesManager->setResolution(m_available_resolutions[i]);
-
-                        m_window.close();
-
-                        return;
-                    }
-                }
 
                 break;
             }

@@ -15,8 +15,7 @@ class Math
 public:
     static int DirectionToPoint(sf::Vector2f origin, sf::Vector2f point);
     static sf::Vector2f TranslatePositionToPoint(float speed, float direction);
-    static sf::Vector2f MercatorProjection(float crtLatitude, float crtLongitude, std::vector<float> imgBounds,
-                                           std::pair<int, int> gameResolution);
+    static sf::Vector2f MercatorProjection(float crtLatitude, float crtLongitude, std::vector<float> imgBounds);
 
 private:
     constexpr static const float PI = 3.14159265;

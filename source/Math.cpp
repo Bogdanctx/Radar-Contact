@@ -37,17 +37,16 @@ float Math::radians(const float deg)
 }
 
 // https://stackoverflow.com/questions/2103924/mercator-longitude-and-latitude-calculations-to-x-and-y-on-a-cropped-map-of-the/10401734#10401734
-// https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box NOW
-sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, std::vector<float> imgBounds,
-                                      std::pair<int, int> gameResolution)
+// https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box - CURRENT
+sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, std::vector<float> imgBounds)
 {
     const float north = radians(imgBounds[0]);
     const float south = radians(imgBounds[2]);
     const float east = radians(imgBounds[1]);
     const float west = radians(imgBounds[3]);
 
-    const float map_width = gameResolution.first;
-    const float map_height = gameResolution.second;
+    const float map_width = 1280;
+    const float map_height = 720;
 
     crtLatitude = radians(crtLatitude);
     crtLongitude = radians(crtLongitude);

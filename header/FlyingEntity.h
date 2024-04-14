@@ -8,7 +8,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "ResourcesManager.h"
-#include "Math.h"
 
 class FlyingEntity {
 public:
@@ -24,16 +23,15 @@ protected:
     int m_speed{};
     int m_altitude{};
     std::string m_squawk{};
-private:
     sf::RectangleShape m_entity{};
-
+private:
     const std::string m_callsign;
 
-    const int m_updateInterval{500};
+    const int m_updateInterval{1111111111};
     bool m_entitySelected;
 
     sf::Clock m_updatePositionInterval; // la un interval x de timp se va actualiza pozitia avionului
-
+    sf::Text t;
 };
 
 

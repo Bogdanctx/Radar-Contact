@@ -15,7 +15,7 @@ Airport::Airport(sf::Vector2f position, const std::string airportICAO, Resources
 
     m_labelICAO.setPosition(position);
 
-    m_windDataText.setPosition(10, resourcesManager.getResolution().second - 30);
+    m_windDataText.setPosition(10, 720 - 30);
 }
 
 void Airport::render(sf::RenderWindow *window) {

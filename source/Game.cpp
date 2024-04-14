@@ -3,9 +3,10 @@
 //
 
 #include "../header/Game.h"
+#include "../header/Math.h"
 
 Game::Game(ResourcesManager &resourcesManager) :
-            Window{resourcesManager.getResolution(), "Radar Contact"},
+            Window{{1280, 720}, "Radar Contact"},
             m_resourcesManager{resourcesManager},
             m_connectingToFrequency{"Connecting to radar frequency. Please wait a few seconds...",
                                     resourcesManager.getFont("Raleway-Regular.ttf"), 12},
@@ -37,7 +38,7 @@ void Game::update()
 
     for(Airplane &airplane: m_airplanes)
     {
-        //airplane.update();
+        airplane.update();
     }
 
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60 || m_isFirstTime)
@@ -123,7 +124,6 @@ void Game::addNewEntities()
 {
     const std::unordered_map<std::string, std::pair<int, int>> regionAirports = m_resourcesManager.getRegionAirports(m_selectedRegion);
     const std::vector<float> longLatBox{m_resourcesManager.getRegionBox(m_selectedRegion)};
-    const std::pair<int, int> gameResolution = m_resourcesManager.getResolution();
 
     for(const auto &airport: regionAirports)
     {
@@ -145,7 +145,7 @@ void Game::addNewEntities()
                 const float longitude = arrivals[i]["longitude"];
 
                 const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude,
-                                                                           longLatBox, gameResolution);
+                                                                           longLatBox);
 
                 Airplane airplane{altitude, groundspeed, heading, squawk, callsign, mercatorProjection,
                                   m_resourcesManager};

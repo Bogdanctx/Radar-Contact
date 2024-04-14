@@ -3,11 +3,17 @@
 //
 
 #include "../header/FlyingEntity.h"
+#include "../header/Math.h"
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                            const std::string &callsign, sf::Vector2f position, ResourcesManager &resourcesManager) :
-        m_heading(heading), m_speed(speed), m_altitude(altitude), m_squawk{squawk},
-        m_callsign(callsign), m_entitySelected{false}
+        m_heading{heading},
+        m_speed{speed},
+        m_altitude{altitude},
+        m_squawk{squawk},
+        m_callsign{callsign},
+        m_entitySelected{false},
+        t{callsign, resourcesManager.getFont("Raleway-Regular.ttf"), 10}
 {
 
     m_entity.setSize(sf::Vector2f(10, 10));
@@ -17,6 +23,8 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_entity.setOrigin(sf::Vector2f(entity_bounds.left + 5, entity_bounds.top + 5)); // pun originea in mijloc
 
     m_entity.setPosition(position);
+
+    t.setPosition(position.x-3, position.y - 17);
 }
 
 void FlyingEntity::update()
@@ -26,7 +34,8 @@ void FlyingEntity::update()
         const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
         m_entity.move(translation_to_point);
 
-        //sf::Vector2f pos = m_entity.getPosition();
+        sf::Vector2f pos = m_entity.getPosition();
+        t.setPosition(pos.x-3, pos.y - 17);
 
         m_updatePositionInterval.restart();
     }
@@ -41,10 +50,7 @@ void FlyingEntity::render(sf::RenderWindow *game_window)
 {
     game_window->draw(m_entity);
 
-    if(m_entitySelected)
-    {
-
-    }
+    game_window->draw(t);
 }
 
 void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)

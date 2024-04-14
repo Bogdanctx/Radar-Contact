@@ -13,7 +13,7 @@
 
 class Menu : public Window {
 public:
-    explicit Menu(ResourcesManager *resourcesManager);
+    explicit Menu(ResourcesManager &resourcesManager);
     ~Menu() = default;
 private:
     void render() override;
@@ -24,10 +24,7 @@ private:
 
     sf::Texture m_texture;
     sf::Sprite m_background;
-    std::vector<sf::RectangleShape> m_buttons;
-    const std::vector<std::pair<int, int>> m_available_resolutions;
-    const int m_numberOfButtons;
-    ResourcesManager *m_resourcesManager;
+    ResourcesManager m_resourcesManager;
 };
 
 

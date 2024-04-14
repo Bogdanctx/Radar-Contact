@@ -4,7 +4,7 @@
 
 #include "../header/ResourcesManager.h"
 
-ResourcesManager::ResourcesManager() : m_game_resolution{0, 0}
+ResourcesManager::ResourcesManager()
 {
     loadFonts("Raleway-Regular.ttf");
     loadFonts("Poppins-Regular.ttf");
@@ -42,14 +42,6 @@ void ResourcesManager::loadTextures(const std::string textureName)
 sf::Texture &ResourcesManager::getTexture(std::string key)
 {
     return m_textures.at(key);
-}
-
-void ResourcesManager::setResolution(std::pair<int, int> resolution) {
-    m_game_resolution = resolution;
-}
-
-std::pair<int, int> ResourcesManager::getResolution() {
-    return m_game_resolution;
 }
 
 void ResourcesManager::loadRegion(const std::string region_name) {

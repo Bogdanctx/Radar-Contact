@@ -39,3 +39,12 @@ std::pair<int, int> DataAPI::getWeather(const std::string airportICAO) {
 
     return {wdir,wspd};
 }
+
+std::string DataAPI::getWeatherPath() {
+    const std::string link = "https://api.rainviewer.com/public/weather-maps.json";
+    const cpr::Response res = cpr::Get(cpr::Url{link});
+
+    nlohmann::json api = nlohmann::json::parse(res.text);
+
+    return api["radar"]["nowcast"].back()["path"];
+}

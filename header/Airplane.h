@@ -13,9 +13,7 @@ public:
     explicit Airplane(int altitude, int speed, int heading, std::string squawk,
                       const std::string &callsign, sf::Vector2f position, ResourcesManager &resourcesManager);
     ~Airplane() = default;
-
 private:
-
 };
 
 

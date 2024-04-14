@@ -33,9 +33,11 @@ void Weather::fetchWeatherImages() {
     request.setHttpVersion(1, 1);
     request.setField("Content-Type", "application/x-www-form-urlencoded");
 
+    const std::string path = DataAPI::getWeatherPath();
+
     for(const std::pair<float, float> &tile: m_tiles) {
         sf::Texture temp_texture;
-        const std::string link = "/v2/radar/nowcast_2f329a280afd/256/6/" + std::to_string(tile.first) + '/' +
+        const std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
                                     std::to_string(tile.second) + "/2/1_0.png";
 
         request.setUri(link);
@@ -53,8 +55,7 @@ void Weather::fetchWeatherImages() {
         temp_sprite.setTexture(m_textures[i]);
 
         sf::Vector2f projection = Math::MercatorProjection(m_tiles[i].first, m_tiles[i].second,
-                                                           m_resourcesManager.getRegionBox(m_selectedRegion),
-                                                           m_resourcesManager.getResolution());
+                                                           m_resourcesManager.getRegionBox(m_selectedRegion));
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
     }

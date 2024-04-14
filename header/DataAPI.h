@@ -20,6 +20,7 @@ public:
 
     static nlohmann::json getArrivals(const std::string airportICAO);
     static std::pair<int, int> getWeather(const std::string airportICAO);
+    static std::string getWeatherPath();
 private:
 
 };

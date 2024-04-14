@@ -6,13 +6,9 @@ int main() {
     ResourcesManager resourcesManager;
 
     {
-        Menu menu{&resourcesManager};
+        //Menu menu{resourcesManager};
 
-        menu.run();
-    }
-
-    if(resourcesManager.getResolution().first == 0) {
-        return 0;
+        //menu.run();
     }
 
     Game game{resourcesManager};

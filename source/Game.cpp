@@ -6,11 +6,14 @@
 
 Game::Game(ResourcesManager &resourcesManager) :
             Window{resourcesManager.getResolution(), "Radar Contact"},
-            m_resourcesManager{resourcesManager}, m_isFirstTime{true},
+            m_resourcesManager{resourcesManager},
             m_connectingToFrequency{"Connecting to radar frequency. Please wait a few seconds...",
-                                    resourcesManager.getFont("Raleway-Regular.ttf"), 12}
+                                    resourcesManager.getFont("Raleway-Regular.ttf"), 12},
+            m_selectedRegion{"UK"},
+            m_isFirstTime{true},
+            weather{resourcesManager, m_selectedRegion}
 {
-    m_backgroundRegion.setTexture(resourcesManager.getTexture("UK"));
+    m_backgroundRegion.setTexture(resourcesManager.getTexture(m_selectedRegion));
     m_connectingToFrequency.setLetterSpacing(2);
 
     initAirports();
@@ -51,6 +54,13 @@ void Game::render()
 
     m_window.draw(m_backgroundRegion);
 
+    for(Airport &airport: m_airports)
+    {
+        airport.render(&m_window);
+    }
+
+    weather.render(&m_window);
+
     if(m_isFirstTime)
     {
         m_window.draw(m_connectingToFrequency);
@@ -59,10 +69,6 @@ void Game::render()
     for(Airplane &airplane: m_airplanes)
     {
         airplane.render(&m_window);
-    }
-    for(Airport &airport: m_airports)
-    {
-        airport.render(&m_window);
     }
 
     m_window.display();

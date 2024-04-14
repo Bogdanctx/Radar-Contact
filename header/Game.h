@@ -15,6 +15,7 @@
 #include "ResourcesManager.h"
 #include "DataAPI.h"
 #include "Airport.h"
+#include "Weather.h"
 
 class Game : public Window {
 public:
@@ -43,6 +44,8 @@ private:
     const std::string m_selectedRegion = "UK";
 
     bool m_isFirstTime;
+
+    Weather weather;
 };
 
 

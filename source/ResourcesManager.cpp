@@ -12,6 +12,7 @@ ResourcesManager::ResourcesManager() : m_game_resolution{0, 0}
     loadTextures("menu.png");
 
     loadRegion("UK");
+    loadWeatherTiles("UK");
 }
 
 void ResourcesManager::loadFonts(const std::string fontName)
@@ -92,4 +93,23 @@ std::vector<float> ResourcesManager::getRegionBox(const std::string region) {
 
 std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports(const std::string region) {
     return m_airports[region];
+}
+
+void ResourcesManager::loadWeatherTiles(const std::string region) {
+    const std::string path = "../resources/regions/" + region + "/weather_tiles.txt";
+    std::vector<std::pair<float, float>> tiles;
+    std::ifstream fin(path);
+    int n;
+    fin>>n;
+    for(int i = 0; i < n; i++) {
+        float longitude, latitude;
+        fin>>longitude>>latitude;
+        tiles.emplace_back(latitude, longitude);
+    }
+    m_regionWeatherTiles[region] = tiles;
+    fin.close();
+}
+
+std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles(const std::string region) {
+    return m_regionWeatherTiles[region];
 }

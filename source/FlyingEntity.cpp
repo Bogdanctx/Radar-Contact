@@ -30,6 +30,11 @@ void FlyingEntity::update()
 
         m_updatePositionInterval.restart();
     }
+
+    if(m_entitySelected)
+    {
+
+    }
 }
 
 void FlyingEntity::render(sf::RenderWindow *game_window)

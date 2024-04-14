@@ -37,26 +37,29 @@ float Math::radians(const float deg)
 }
 
 // https://stackoverflow.com/questions/2103924/mercator-longitude-and-latitude-calculations-to-x-and-y-on-a-cropped-map-of-the/10401734#10401734
+// https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box NOW
 sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, std::vector<float> imgBounds,
-                                      std::pair<int, int> gameResolution) {
+                                      std::pair<int, int> gameResolution)
+{
+    const float north = radians(imgBounds[0]);
+    const float south = radians(imgBounds[2]);
+    const float east = radians(imgBounds[1]);
+    const float west = radians(imgBounds[3]);
 
-    const float mapWidth = gameResolution.first;
-    const float mapHeight = gameResolution.second;
-
-    const float mapLonLeft = imgBounds[3];
-    const float mapLonRight = imgBounds[1];
-    const float mapLonDelta = mapLonRight - mapLonLeft;
-
-    const float mapLatBottom = imgBounds[2];
-    const float mapLatBottomDegree = radians(mapLatBottom);
-
-    const float x = (crtLongitude - mapLonLeft) * (mapWidth / mapLonDelta);
+    const float map_width = gameResolution.first;
+    const float map_height = gameResolution.second;
 
     crtLatitude = radians(crtLatitude);
+    crtLongitude = radians(crtLongitude);
 
-    const float worldMapWidth = ((mapWidth / mapLonDelta) * 360) / (2 * PI);
-    const float mapOffsetY = (worldMapWidth / 2 * log((1+sin(mapLatBottomDegree)) / (1 - sin(mapLatBottomDegree))));
-    const float y = mapHeight - ((worldMapWidth / 2 * log((1 + sin(crtLatitude)) / (1 - sin(crtLatitude)))) - mapOffsetY);
+    const float ymin = log(tan(south / 2 + PI / 4));
+    const float ymax = log(tan(north / 2 + PI / 4));
+
+    const float x_factor = map_width / (east - west);
+    const float y_factor = map_height / (ymax - ymin);
+
+    const float x = (crtLongitude - west) * x_factor;
+    const float y = (ymax - log(tan(crtLatitude / 2 + PI / 4))) * y_factor;
 
     return {x,y};
 }

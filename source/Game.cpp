@@ -37,7 +37,7 @@ void Game::update()
 
     for(Airplane &airplane: m_airplanes)
     {
-        airplane.update();
+        //airplane.update();
     }
 
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60 || m_isFirstTime)
@@ -98,6 +98,11 @@ void Game::handleEvent()
                 if(key_code == sf::Keyboard::Escape)
                 {
                     m_window.close();
+                }
+
+                if(key_code == sf::Keyboard::LAlt)
+                {
+
                 }
 
                 break;

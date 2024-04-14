@@ -15,7 +15,7 @@ public:
     ~Airplane() = default;
 
 private:
-    ResourcesManager m_resourcesManager;
+
 };
 
 

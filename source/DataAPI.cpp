@@ -39,31 +39,3 @@ std::pair<int, int> DataAPI::getWeather(const std::string airportICAO) {
 
     return {wdir,wspd};
 }
-
-#include <iostream>
-std::vector<sf::Texture> DataAPI::getWeatherTiles(const std::vector<std::pair<float, float>> positions) {
-    std::vector<sf::Texture> response;
-    sf::Http http{"http://tilecache.rainviewer.com"};
-    sf::Http::Request request;
-    sf::Http::Response api_response;
-
-    request.setMethod(sf::Http::Request::Post);
-    request.setHttpVersion(1, 1);
-    request.setField("Content-Type", "application/x-www-form-urlencoded");
-
-    for(const std::pair<float, float> &position: positions) {
-        sf::Texture temp_texture;
-        const std::string link = "/v2/radar/nowcast_a65885cf5a7d/512/6/" + std::to_string(position.first) + '/' + std::to_string(position.second) + "/1/1_0.png";
-        std::cout<<link<<'\n';
-        std::cout.flush();
-        request.setUri(link);
-
-        api_response = http.sendRequest(request);
-
-        temp_texture.loadFromMemory(api_response.getBody().data(), api_response.getBody().size());
-
-        response.push_back(temp_texture);
-    }
-
-    return response;
-}

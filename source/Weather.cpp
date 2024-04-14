@@ -5,6 +5,7 @@
 #include "../header/Weather.h"
 #include "../header/Math.h"
 
+// https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png
 Weather::Weather(ResourcesManager &resourcesManager, const std::string region) :
                 m_tiles{resourcesManager.getWeatherTiles(region)},
@@ -34,8 +35,8 @@ void Weather::fetchWeatherImages() {
 
     for(const std::pair<float, float> &tile: m_tiles) {
         sf::Texture temp_texture;
-        const std::string link = "/v2/radar/nowcast_a65885cf5a7d/256/6/" + std::to_string(tile.first) + '/' +
-                                    std::to_string(tile.second) + "/1/1_0.png";
+        const std::string link = "/v2/radar/nowcast_2f329a280afd/256/6/" + std::to_string(tile.first) + '/' +
+                                    std::to_string(tile.second) + "/2/1_0.png";
 
         request.setUri(link);
 
@@ -48,12 +49,12 @@ void Weather::fetchWeatherImages() {
 
     for(int i = 0; i < m_textures.size(); i++) {
         sf::Sprite temp_sprite;
+        temp_sprite.setOrigin(128, 128);
         temp_sprite.setTexture(m_textures[i]);
 
         sf::Vector2f projection = Math::MercatorProjection(m_tiles[i].first, m_tiles[i].second,
                                                            m_resourcesManager.getRegionBox(m_selectedRegion),
                                                            m_resourcesManager.getResolution());
-
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
     }

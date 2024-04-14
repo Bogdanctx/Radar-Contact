@@ -20,7 +20,6 @@ public:
 
     static nlohmann::json getArrivals(const std::string airportICAO);
     static std::pair<int, int> getWeather(const std::string airportICAO);
-    static std::vector<sf::Texture> getWeatherTiles(const std::vector<std::pair<float, float>> positions);
 private:
 
 };

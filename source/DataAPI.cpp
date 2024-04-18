@@ -3,7 +3,7 @@
 //
 
 #include "../header/DataAPI.h"
-
+#include <iostream>
 nlohmann::json DataAPI::getArrivals(const std::string &airportICAO)
 {
     const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";
@@ -19,8 +19,11 @@ nlohmann::json DataAPI::getArrivals(const std::string &airportICAO)
 
     for(int i = 0; i < pilots_size; i++)
     {
-        if(data["pilots"][i]["flight_plan"]["arrival"] == airportICAO)
+        int altitude = data["pilots"][i]["altitude"];
+        if(data["pilots"][i]["flight_plan"]["arrival"] == airportICAO && altitude >= 10000)
         {
+            altitude = altitude / 1000 * 1000;
+            data["pilots"][i]["altitude"] = altitude;
             arrivals.push_back(data["pilots"][i]);
         }
     }

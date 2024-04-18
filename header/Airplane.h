@@ -15,7 +15,14 @@ public:
 
     void update() override;
 private:
-    const int m_updateInterval;
+    void checkAltitudeChange();
+
+    sf::Clock m_updateAltitudeClock{};
+
+    sf::Clock m_dataChangeDelay{};
+
+    const int m_updateInterval{};
+    const int m_updateAltitudeInterval{};
 };
 
 

@@ -25,7 +25,15 @@ protected:
     std::string m_squawk{};
     sf::RectangleShape m_entity{};
     sf::Clock m_updatePositionInterval{}; // la un interval x de timp se va actualiza pozitia avionului
+    int m_newHeading{};
+    int m_newAltitde{};
+    int m_newSpeed{};
 
+    sf::Text m_headingText{};
+    sf::Text m_speedText{};
+    sf::Text m_altitudeText{}, m_newAltitudeText{};
+    sf::Text m_squawkText{};
+    sf::Text m_callsignText{};
 
     void updateText(const sf::Vector2f &position);
 private:
@@ -33,12 +41,6 @@ private:
 
     const int m_updateInterval{};
     bool m_entitySelected{};
-
-    sf::Text m_headingText{};
-    sf::Text m_speedText{};
-    sf::Text m_altitudeText{};
-    sf::Text m_squawkText{};
-    sf::Text m_callsignText{};
 };
 
 

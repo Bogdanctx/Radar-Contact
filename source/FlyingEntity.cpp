@@ -7,9 +7,9 @@
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                            const std::string &callsign, sf::Vector2f position) :
-        m_heading{heading},
-        m_speed{speed},
-        m_altitude{altitude},
+        m_heading{heading}, m_newHeading{heading},
+        m_speed{speed}, m_newSpeed{speed},
+        m_altitude{altitude}, m_newAltitde{altitude},
         m_squawk{squawk},
         m_callsign{callsign},
         m_updateInterval{800},
@@ -19,14 +19,16 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
-        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}
+        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+
+        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
-
     m_entity.setOrigin(sf::Vector2f(5, 5)); // pun originea in mijloc
-
     m_entity.setPosition(position);
+
+    m_newAltitudeText.setFillColor(sf::Color::Cyan);
 
     updateText(position);
 }
@@ -55,6 +57,10 @@ void FlyingEntity::render(sf::RenderWindow *game_window)
         game_window->draw(m_speedText);
         game_window->draw(m_altitudeText);
         game_window->draw(m_squawkText);
+
+        if(m_altitude != m_newAltitde) {
+            game_window->draw(m_newAltitudeText);
+        }
     }
 }
 
@@ -69,6 +75,9 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
 
         m_callsignText.setPosition(position.x - 8, position.y - 30);
         m_squawkText.setPosition(position.x - 8 + m_callsignText.getLocalBounds().width + 5, position.y - 30);
+
+        xOffset += (int) m_altitudeText.getLocalBounds().width + 5;
+        m_newAltitudeText.setPosition((float)xOffset, position.y - 20);
     }
     else {
         m_callsignText.setPosition(position.x - 5, position.y - 20);

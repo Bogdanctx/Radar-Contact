@@ -8,24 +8,26 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-#include "ResourcesManager.h"
 #include "DataAPI.h"
+#include "ResourcesManager.h"
 
 class Weather {
 public:
-    explicit Weather(ResourcesManager &resourcesManager, const std::string region);
+    Weather() = default;
+    explicit Weather(const std::string region);
+    Weather(const Weather &weather) = default;
     ~Weather() = default;
 
     void render(sf::RenderWindow *window);
-public:
+    void update();
     void fetchWeatherImages();
-
+public:
     std::vector<std::pair<float, float>> m_tiles;
     std::vector<sf::Texture> m_textures;
     std::vector<sf::Sprite> m_sprites;
 
-    ResourcesManager m_resourcesManager;
     const std::string m_selectedRegion;
+    sf::Clock m_updateWeather;
 };
 
 

@@ -4,10 +4,10 @@
 
 #include "../header/Airport.h"
 
-Airport::Airport(sf::Vector2f position, const std::string airportICAO, ResourcesManager &resourcesManager) :
+Airport::Airport(sf::Vector2f position, const std::string airportICAO) :
                 m_coverage(16), m_isCoverageSelected{false},
-                m_labelICAO{airportICAO, resourcesManager.getFont("Raleway-Regular.ttf"), 8},
-                m_windDataText{"foo", resourcesManager.getFont("Poppins-Regular.ttf"), 15}
+                m_labelICAO{airportICAO, ResourcesManager::Instance().getFont("Raleway-Regular.ttf"), 8},
+                m_windDataText{"foo", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 15}
 {
     m_coverage.setOrigin(8, 8);
     m_coverage.setFillColor(sf::Color(255, 223, 135, 100));

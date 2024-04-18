@@ -22,7 +22,7 @@
 #include "./header/ResourcesManager.h"
 
 int main() {
-    ResourcesManager resourcesManager;
+    ResourcesManager::Instance().load();
 
     {
         //Menu menu{resourcesManager};
@@ -30,7 +30,7 @@ int main() {
         //menu.run();
     }
 
-    Game game{resourcesManager};
+    Game game;
     game.run();
 
     return 0;

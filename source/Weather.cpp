@@ -7,17 +7,23 @@
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png
-Weather::Weather(ResourcesManager &resourcesManager, const std::string region) :
-                m_tiles{resourcesManager.getWeatherTiles(region)},
-                m_resourcesManager(resourcesManager),
-                m_selectedRegion{region}
+Weather::Weather(const std::string region) :
+        m_tiles{ResourcesManager::Instance().getWeatherTiles(region)},
+        m_selectedRegion{region}
 {
-    fetchWeatherImages();
+
 }
 
 void Weather::render(sf::RenderWindow *window) {
     for(const sf::Sprite &sprite: m_sprites) {
         window->draw(sprite);
+    }
+}
+
+void Weather::update() {
+    if(m_updateWeather.getElapsedTime().asSeconds() >= 60*5) { // 5 minutes passed -> update weather
+        fetchWeatherImages();
+        m_updateWeather.restart();
     }
 }
 
@@ -37,9 +43,10 @@ void Weather::fetchWeatherImages() {
 
     for(const std::pair<float, float> &tile: m_tiles) {
         sf::Texture temp_texture;
+        /*const std::string link = path + "/256/7/" + std::to_string(tile.first) + '/' +
+                                    std::to_string(tile.second) + "/2/1_0.png";*/
         const std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
-                                    std::to_string(tile.second) + "/2/1_0.png";
-
+                                 std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
 
         api_response = http.sendRequest(request);
@@ -51,11 +58,13 @@ void Weather::fetchWeatherImages() {
 
     for(int i = 0; i < m_textures.size(); i++) {
         sf::Sprite temp_sprite;
-        temp_sprite.setOrigin(128, 128);
         temp_sprite.setTexture(m_textures[i]);
+        // temp_sprite.setScale(0.55f, 0.55f);
+        sf::FloatRect bounds = temp_sprite.getLocalBounds();
+        temp_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 
         sf::Vector2f projection = Math::MercatorProjection(m_tiles[i].first, m_tiles[i].second,
-                                                           m_resourcesManager.getRegionBox(m_selectedRegion));
+                                                           ResourcesManager::Instance().getRegionBox(m_selectedRegion));
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
     }

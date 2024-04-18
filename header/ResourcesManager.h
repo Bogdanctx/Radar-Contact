@@ -11,8 +11,13 @@
 
 class ResourcesManager {
 public:
-    ResourcesManager();
-    ~ResourcesManager() = default;
+    ResourcesManager(const ResourcesManager&) = delete;
+    ResourcesManager& operator=(const ResourcesManager&) = delete;
+
+    static ResourcesManager& Instance() {
+        static ResourcesManager instance;
+        return instance;
+    }
 
     sf::Font &getFont(std::string key);
     sf::Texture& getTexture(std::string key);
@@ -20,7 +25,11 @@ public:
     std::unordered_map<std::string, std::pair<int, int>> getRegionAirports(const std::string region);
     std::vector<std::pair<float, float>> getWeatherTiles(const std::string region);
 
+    void load();
+
 private:
+    ResourcesManager() = default;
+
     void loadRegion(const std::string region);
     void loadTextures(const std::string textureName);
     void loadFonts(const std::string fontName);
@@ -33,6 +42,5 @@ private:
     std::unordered_map<std::string, std::vector<std::pair<float, float>>> m_regionWeatherTiles;
 
 };
-
 
 #endif //OOP_RESOURCESMANAGER_H

@@ -8,12 +8,12 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-#include "Window.h"
 #include "ResourcesManager.h"
+#include "Window.h"
 
 class Menu : public Window {
 public:
-    explicit Menu(ResourcesManager &resourcesManager);
+    Menu();
     ~Menu() = default;
 private:
     void render() override;
@@ -24,7 +24,6 @@ private:
 
     sf::Texture m_texture;
     sf::Sprite m_background;
-    ResourcesManager m_resourcesManager;
 };
 
 

@@ -6,12 +6,11 @@
 #define OOP_AIRPLANE_H
 
 #include "FlyingEntity.h"
-#include "ResourcesManager.h"
 
 class Airplane : public FlyingEntity {
 public:
     explicit Airplane(int altitude, int speed, int heading, std::string squawk,
-                      const std::string &callsign, sf::Vector2f position, ResourcesManager &resourcesManager);
+                      const std::string &callsign, sf::Vector2f position);
     ~Airplane() = default;
 private:
 };

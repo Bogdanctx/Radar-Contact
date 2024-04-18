@@ -6,16 +6,15 @@
 #include "../header/Math.h"
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
-                           const std::string &callsign, sf::Vector2f position, ResourcesManager &resourcesManager) :
+                           const std::string &callsign, sf::Vector2f position) :
         m_heading{heading},
         m_speed{speed},
         m_altitude{altitude},
         m_squawk{squawk},
         m_callsign{callsign},
         m_entitySelected{false},
-        t{callsign, resourcesManager.getFont("Raleway-Regular.ttf"), 10}
+        t{callsign, ResourcesManager::Instance().getFont("Raleway-Regular.ttf"), 10}
 {
-
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
 

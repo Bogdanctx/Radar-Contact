@@ -3,11 +3,10 @@
 //
 
 #include "../header/Menu.h"
-
-Menu::Menu(ResourcesManager &resourcesManager) :
+Menu::Menu() :
         Window({800, 600}, "Radar Contact - Menu")
 {
-    m_background.setTexture(resourcesManager.getTexture("menu.png"));
+    m_background.setTexture(ResourcesManager::Instance().getTexture("menu.png"));
 }
 
 void Menu::render()

@@ -5,19 +5,23 @@
 #include "../header/Game.h"
 #include "../header/Math.h"
 
-Game::Game(ResourcesManager &resourcesManager) :
+Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
-            m_resourcesManager{resourcesManager},
             m_connectingToFrequency{"Connecting to radar frequency. Please wait a few seconds...",
-                                    resourcesManager.getFont("Raleway-Regular.ttf"), 12},
+                                    ResourcesManager::Instance().getFont("Raleway-Regular.ttf"), 12},
             m_selectedRegion{"UK"},
             m_isFirstTime{true},
-            weather{resourcesManager, m_selectedRegion}
+            weather{m_selectedRegion}
 {
-    m_backgroundRegion.setTexture(resourcesManager.getTexture(m_selectedRegion));
+
+
+    m_backgroundRegion.setTexture(ResourcesManager::Instance().getTexture(m_selectedRegion));
     m_connectingToFrequency.setLetterSpacing(2);
 
+    weather.fetchWeatherImages();
+
     initAirports();
+
 }
 
 void Game::run()
@@ -122,8 +126,8 @@ void Game::handleEvent()
 
 void Game::addNewEntities()
 {
-    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = m_resourcesManager.getRegionAirports(m_selectedRegion);
-    const std::vector<float> longLatBox{m_resourcesManager.getRegionBox(m_selectedRegion)};
+    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports(m_selectedRegion);
+    const std::vector<float> longLatBox{ResourcesManager::Instance().getRegionBox(m_selectedRegion)};
 
     for(const auto &airport: regionAirports)
     {
@@ -147,8 +151,7 @@ void Game::addNewEntities()
                 const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude,
                                                                            longLatBox);
 
-                Airplane airplane{altitude, groundspeed, heading, squawk, callsign, mercatorProjection,
-                                  m_resourcesManager};
+                Airplane airplane{altitude, groundspeed, heading, squawk, callsign, mercatorProjection};
 
                 m_airplanes.push_back(airplane);
                 m_addedEntities.insert(callsign);
@@ -159,14 +162,14 @@ void Game::addNewEntities()
 }
 
 void Game::initAirports() {
-    std::unordered_map<std::string, std::pair<int, int>> airports = m_resourcesManager.getRegionAirports("UK");
+    std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports("UK");
 
     for(const auto &airport: airports) {
         const std::string icao = airport.first;
         const int x = airport.second.first;
         const int y = airport.second.second;
 
-        const Airport newAirport{sf::Vector2f(x, y), icao, m_resourcesManager};
+        const Airport newAirport{sf::Vector2f(x, y), icao};
         m_airports.push_back(newAirport);
     }
 

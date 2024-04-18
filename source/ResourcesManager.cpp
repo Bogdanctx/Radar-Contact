@@ -4,15 +4,21 @@
 
 #include "../header/ResourcesManager.h"
 
-ResourcesManager::ResourcesManager()
+void ResourcesManager::load()
 {
-    loadFonts("Raleway-Regular.ttf");
-    loadFonts("Poppins-Regular.ttf");
+    loadRegion("UK");
+    loadRegion("Poland");
+    loadRegion("Iceland");
 
     loadTextures("menu.png");
+    loadTextures("loading_screen.png");
 
-    loadRegion("UK");
+    loadFonts("Poppins-Regular.ttf");
+    loadFonts("Raleway-Regular.ttf");
+
     loadWeatherTiles("UK");
+    loadWeatherTiles("Poland");
+    loadWeatherTiles("Iceland");
 }
 
 void ResourcesManager::loadFonts(const std::string fontName)

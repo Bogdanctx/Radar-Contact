@@ -12,13 +12,13 @@
 
 #include "Window.h"
 #include "Airplane.h"
-#include "ResourcesManager.h"
 #include "Airport.h"
 #include "Weather.h"
+#include "ResourcesManager.h"
 
 class Game : public Window {
 public:
-    explicit Game(ResourcesManager &resourcesManager);
+    Game();
     ~Game() = default;
 
     void run() override;
@@ -30,19 +30,17 @@ private:
     void addNewEntities();
     void initAirports();
 
-    std::vector<Airplane> m_airplanes;
-    std::vector<Airport> m_airports;
+    std::vector<Airplane> m_airplanes{};
+    std::vector<Airport> m_airports{};
 
-    ResourcesManager m_resourcesManager;
+    sf::Clock m_newEntitiesInterval{};
+    sf::Sprite m_backgroundRegion{};
+    sf::Text m_connectingToFrequency{};
 
-    sf::Clock m_newEntitiesInterval;
-    sf::Sprite m_backgroundRegion;
-    sf::Text m_connectingToFrequency;
-
-    std::unordered_set<std::string> m_addedEntities;
+    std::unordered_set<std::string> m_addedEntities{};
     const std::string m_selectedRegion = "UK";
 
-    bool m_isFirstTime;
+    bool m_isFirstTime{};
 
     Weather weather;
 };

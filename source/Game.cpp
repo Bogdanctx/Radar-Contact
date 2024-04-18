@@ -7,27 +7,34 @@
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
-            m_connectingToFrequency{"Connecting to radar frequency. Please wait a few seconds...",
-                                    ResourcesManager::Instance().getFont("Raleway-Regular.ttf"), 12},
             m_selectedRegion{"UK"},
             m_isFirstTime{true},
             weather{m_selectedRegion}
 {
+    std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
+    sf::Text randomFact{"Fact: " + facts[rand() % facts.size()], ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
+
+    sf::FloatRect factBounds = randomFact.getLocalBounds();
+    randomFact.setOrigin(factBounds.width / 2, factBounds.height / 2);
+    randomFact.setPosition(640, 680);
+
+    sf::Sprite loadingScreen{ResourcesManager::Instance().getTexture("loading_screen.png")};
 
     m_backgroundRegion.setTexture(ResourcesManager::Instance().getTexture(m_selectedRegion));
-    m_connectingToFrequency.setLetterSpacing(2);
 
-    weather.fetchWeatherImages();
+    m_window.draw(loadingScreen);
+    m_window.draw(randomFact);
+    m_window.display();
 
+    weather.fetchWeatherImages(&m_window);
+    addNewEntities();
     initAirports();
 
 }
 
 void Game::run()
 {
-    render();
-
     while(m_window.isOpen())
     {
         handleEvent();
@@ -38,18 +45,21 @@ void Game::run()
 
 void Game::update()
 {
+    if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
+        weather.fetchWeatherImages(&m_window);
+        m_updateWeatherClock.restart();
+    }
+    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60)
+    {
+        addNewEntities();
+        m_newEntitiesInterval.restart();
+    }
+
     m_window.draw(m_backgroundRegion);
 
     for(Airplane &airplane: m_airplanes)
     {
         airplane.update();
-    }
-
-    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60 || m_isFirstTime)
-    {
-        addNewEntities();
-        m_newEntitiesInterval.restart();
-        m_isFirstTime = false;
     }
 }
 
@@ -65,11 +75,6 @@ void Game::render()
     }
 
     weather.render(&m_window);
-
-    if(m_isFirstTime)
-    {
-        m_window.draw(m_connectingToFrequency);
-    }
 
     for(Airplane &airplane: m_airplanes)
     {
@@ -133,7 +138,10 @@ void Game::addNewEntities()
     {
         const std::string airportIcao = airport.first;
         const nlohmann::json arrivals = DataAPI::getArrivals(airportIcao);
-        const int number_of_arrivals = arrivals.size();
+        const int number_of_arrivals = (int) arrivals.size();
+
+        sf::Event tempEvent{};
+        m_window.pollEvent(tempEvent);
 
         for(int i = 0; i < number_of_arrivals; i++)
         {
@@ -143,6 +151,7 @@ void Game::addNewEntities()
             if(altitude >= 10000 && m_addedEntities.find(callsign) == m_addedEntities.end())
             {
                 const int groundspeed = arrivals[i]["groundspeed"];
+                const int airspeed = groundspeed - 130;
                 const int heading = arrivals[i]["heading"];
                 const std::string squawk = arrivals[i]["transponder"];
                 const float latitude = arrivals[i]["latitude"];
@@ -151,7 +160,7 @@ void Game::addNewEntities()
                 const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude,
                                                                            longLatBox);
 
-                Airplane airplane{altitude, groundspeed, heading, squawk, callsign, mercatorProjection};
+                Airplane airplane{altitude, airspeed, heading, squawk, callsign, mercatorProjection};
 
                 m_airplanes.push_back(airplane);
                 m_addedEntities.insert(callsign);
@@ -169,7 +178,7 @@ void Game::initAirports() {
         const int x = airport.second.first;
         const int y = airport.second.second;
 
-        const Airport newAirport{sf::Vector2f(x, y), icao};
+        const Airport newAirport{sf::Vector2f((float)x, (float)y), icao};
         m_airports.push_back(newAirport);
     }
 

@@ -21,7 +21,11 @@ void ResourcesManager::load()
     loadWeatherTiles("Iceland");
 }
 
-void ResourcesManager::loadFonts(const std::string fontName)
+std::vector<std::string> ResourcesManager::getFacts() {
+    return m_randomFacts;
+}
+
+void ResourcesManager::loadFonts(const std::string &fontName)
 {
     const std::string fontPath = "../resources/fonts/" + fontName;
     sf::Font font;
@@ -30,12 +34,12 @@ void ResourcesManager::loadFonts(const std::string fontName)
     m_fonts[fontName] = font;
 }
 
-sf::Font &ResourcesManager::getFont(const std::string key)
+sf::Font &ResourcesManager::getFont(const std::string &key)
 {
     return m_fonts.at(key);
 }
 
-void ResourcesManager::loadTextures(const std::string textureName)
+void ResourcesManager::loadTextures(const std::string &textureName)
 {
     const std::string texturePath = "../resources/general_textures/" + textureName;
     sf::Texture texture;
@@ -45,12 +49,12 @@ void ResourcesManager::loadTextures(const std::string textureName)
     m_textures[textureName] = texture;
 }
 
-sf::Texture &ResourcesManager::getTexture(std::string key)
+sf::Texture &ResourcesManager::getTexture(const std::string &key)
 {
     return m_textures.at(key);
 }
 
-void ResourcesManager::loadRegion(const std::string region_name) {
+void ResourcesManager::loadRegion(const std::string &region_name) {
     const std::string region_position = "../resources/regions/" + region_name + "/long_lat.txt";
     const std::string region_airports = "../resources/regions/" + region_name + "/airports.txt";
     const std::string region_texture = "../resources/regions/" + region_name + "/" + region_name + ".png";
@@ -85,15 +89,15 @@ void ResourcesManager::loadRegion(const std::string region_name) {
     fin.close();
 }
 
-std::vector<float> ResourcesManager::getRegionBox(const std::string region) {
+std::vector<float> ResourcesManager::getRegionBox(const std::string &region) {
     return m_regionBox[region];
 }
 
-std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports(const std::string region) {
+std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports(const std::string &region) {
     return m_airports[region];
 }
 
-void ResourcesManager::loadWeatherTiles(const std::string region) {
+void ResourcesManager::loadWeatherTiles(const std::string &region) {
     const std::string path = "../resources/regions/" + region + "/weather_tiles.txt";
     std::vector<std::pair<float, float>> tiles;
     std::ifstream fin(path);
@@ -108,6 +112,6 @@ void ResourcesManager::loadWeatherTiles(const std::string region) {
     fin.close();
 }
 
-std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles(const std::string region) {
+std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles(const std::string &region) {
     return m_regionWeatherTiles[region];
 }

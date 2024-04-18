@@ -24,14 +24,21 @@ protected:
     int m_altitude{};
     std::string m_squawk{};
     sf::RectangleShape m_entity{};
+    sf::Clock m_updatePositionInterval{}; // la un interval x de timp se va actualiza pozitia avionului
+
+
+    void updateText(const sf::Vector2f &position);
 private:
-    const std::string m_callsign;
+    const std::string m_callsign{};
 
-    const int m_updateInterval{1111111111};
-    bool m_entitySelected;
+    const int m_updateInterval{};
+    bool m_entitySelected{};
 
-    sf::Clock m_updatePositionInterval; // la un interval x de timp se va actualiza pozitia avionului
-    sf::Text t;
+    sf::Text m_headingText{};
+    sf::Text m_speedText{};
+    sf::Text m_altitudeText{};
+    sf::Text m_squawkText{};
+    sf::Text m_callsignText{};
 };
 
 

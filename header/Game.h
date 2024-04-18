@@ -9,6 +9,7 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <unordered_set>
+#include <future>
 
 #include "Window.h"
 #include "Airplane.h"
@@ -35,7 +36,6 @@ private:
 
     sf::Clock m_newEntitiesInterval{};
     sf::Sprite m_backgroundRegion{};
-    sf::Text m_connectingToFrequency{};
 
     std::unordered_set<std::string> m_addedEntities{};
     const std::string m_selectedRegion = "UK";
@@ -43,6 +43,7 @@ private:
     bool m_isFirstTime{};
 
     Weather weather;
+    sf::Clock m_updateWeatherClock;
 };
 
 

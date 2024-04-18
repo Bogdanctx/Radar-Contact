@@ -4,8 +4,8 @@
 
 #include "../header/Airport.h"
 
-Airport::Airport(sf::Vector2f position, const std::string airportICAO) :
-                m_coverage(16), m_isCoverageSelected{false},
+Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
+                m_isCoverageSelected{false}, m_coverage(16),
                 m_labelICAO{airportICAO, ResourcesManager::Instance().getFont("Raleway-Regular.ttf"), 8},
                 m_windDataText{"foo", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 15}
 {

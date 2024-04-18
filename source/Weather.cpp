@@ -7,7 +7,7 @@
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png
-Weather::Weather(const std::string region) :
+Weather::Weather(const std::string &region) :
         m_tiles{ResourcesManager::Instance().getWeatherTiles(region)},
         m_selectedRegion{region}
 {
@@ -20,14 +20,7 @@ void Weather::render(sf::RenderWindow *window) {
     }
 }
 
-void Weather::update() {
-    if(m_updateWeather.getElapsedTime().asSeconds() >= 60*5) { // 5 minutes passed -> update weather
-        fetchWeatherImages();
-        m_updateWeather.restart();
-    }
-}
-
-void Weather::fetchWeatherImages() {
+void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     m_textures = std::vector<sf::Texture> {};
     m_sprites = std::vector<sf::Sprite> {};
 
@@ -54,9 +47,13 @@ void Weather::fetchWeatherImages() {
         temp_texture.loadFromMemory(api_response.getBody().data(), api_response.getBody().size());
 
         m_textures.push_back(temp_texture);
+
+        sf::Event tempEvent{};
+        window->pollEvent(tempEvent);
+
     }
 
-    for(int i = 0; i < m_textures.size(); i++) {
+    for(int i = 0; i < (int) m_textures.size(); i++) {
         sf::Sprite temp_sprite;
         temp_sprite.setTexture(m_textures[i]);
         // temp_sprite.setScale(0.55f, 0.55f);

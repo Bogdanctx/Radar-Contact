@@ -14,20 +14,17 @@
 class Weather {
 public:
     Weather() = default;
-    explicit Weather(const std::string region);
-    Weather(const Weather &weather) = default;
+    explicit Weather(const std::string &region);
     ~Weather() = default;
 
     void render(sf::RenderWindow *window);
-    void update();
-    void fetchWeatherImages();
+    void fetchWeatherImages(sf::RenderWindow *window);
 public:
     std::vector<std::pair<float, float>> m_tiles;
     std::vector<sf::Texture> m_textures;
     std::vector<sf::Sprite> m_sprites;
 
     const std::string m_selectedRegion;
-    sf::Clock m_updateWeather;
 };
 
 

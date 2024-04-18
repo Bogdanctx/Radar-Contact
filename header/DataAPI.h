@@ -18,8 +18,8 @@ public:
     DataAPI() = default;
     ~DataAPI() = default;
 
-    static nlohmann::json getArrivals(const std::string airportICAO);
-    static std::pair<int, int> getWeather(const std::string airportICAO);
+    static nlohmann::json getArrivals(const std::string &airportICAO);
+    static std::pair<int, int> getWeather(const std::string &airportICAO);
     static std::string getWeatherPath();
 private:
 

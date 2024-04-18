@@ -4,7 +4,7 @@
 
 #include "../header/DataAPI.h"
 
-nlohmann::json DataAPI::getArrivals(const std::string airportICAO)
+nlohmann::json DataAPI::getArrivals(const std::string &airportICAO)
 {
     const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";
 
@@ -15,7 +15,7 @@ nlohmann::json DataAPI::getArrivals(const std::string airportICAO)
     nlohmann::json data = nlohmann::json::parse(res.text);
     nlohmann::json arrivals;
 
-    const int pilots_size = data["pilots"].size();
+    const int pilots_size = (int) data["pilots"].size();
 
     for(int i = 0; i < pilots_size; i++)
     {
@@ -28,7 +28,7 @@ nlohmann::json DataAPI::getArrivals(const std::string airportICAO)
     return arrivals;
 }
 
-std::pair<int, int> DataAPI::getWeather(const std::string airportICAO) {
+std::pair<int, int> DataAPI::getWeather(const std::string &airportICAO) {
     const std::string link = "https://aviationweather.gov/api/data/metar?ids=" + airportICAO + "&format=json";
     const cpr::Response res = cpr::Get(cpr::Url{link});
 

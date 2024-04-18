@@ -25,16 +25,16 @@ void Menu::update()
 
 void Menu::checkHovers()
 {
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
-    sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
+    // sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
+    // sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
 
 
 }
 
 void Menu::handleEvent()
 {
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
-    sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
+    //sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
+    // sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
     sf::Event menu_event{};
 
     while(m_window.pollEvent(menu_event))

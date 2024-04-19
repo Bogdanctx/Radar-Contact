@@ -15,17 +15,11 @@ public:
 
     void update() override;
 private:
-    void checkAltitudeChange();
-    void checkSpeedChange();
-    void checkHeadingChange();
-
     void updateFlightData();
 
     sf::Clock m_updateAltitudeClock{};
     sf::Clock m_updateSpeedClock{};
     sf::Clock m_updateHeadingClock{};
-
-    sf::Clock m_dataChangeDelay{};
 
     const int m_updateInterval{};
     const int m_updateAltitudeInterval{};

@@ -41,7 +41,13 @@ protected:
     sf::RectangleShape m_headingStick{};
 
     void updateText(const sf::Vector2f &position);
+    void checkAltitudeChange();
+    void checkSpeedChange();
+    void checkHeadingChange();
+
 private:
+    sf::Clock m_dataChangeDelay{};
+
     const std::string m_callsign{};
 
     const int m_updateInterval{};

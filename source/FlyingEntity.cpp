@@ -107,6 +107,13 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
 
 void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)
 {
+    if(m_entitySelected)
+    {
+        checkAltitudeChange();
+        checkSpeedChange();
+        checkHeadingChange();
+    }
+
     m_mousePosition = mouse_position;
 
     switch(game_event.type)
@@ -129,5 +136,58 @@ void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mo
 
         default:
             break;
+    }
+}
+
+void FlyingEntity::checkAltitudeChange() {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+    {
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            m_newAltitde += 1000;
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            m_newAltitde -= 1000;
+        }
+
+        if(m_newAltitde != m_altitude) {
+            m_newAltitudeText.setString(std::to_string(m_newAltitde));
+        }
+
+        m_dataChangeDelay.restart();
+    }
+}
+
+void FlyingEntity::checkSpeedChange() {
+    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LAlt)))
+    {
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+            m_newSpeed++;
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            m_newSpeed--;
+        }
+
+        if(m_newSpeed != m_speed) {
+            m_newSpeedText.setString(std::to_string(m_newSpeed));
+        }
+
+        m_dataChangeDelay.restart();
+    }
+}
+
+void FlyingEntity::checkHeadingChange() {
+    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift)))
+    {
+        m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);
+        m_newHeadingText.setString(std::to_string(m_newHeading));
+        m_headingStick.setRotation((float)m_newHeading - 90);
+
+        if(m_newSpeed != m_speed) {
+            m_newSpeedText.setString(std::to_string(m_newSpeed));
+        }
+
+        m_dataChangeDelay.restart();
     }
 }

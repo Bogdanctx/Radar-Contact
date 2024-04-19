@@ -18,6 +18,13 @@ public:
     virtual void update();
     virtual void render(sf::RenderWindow *game_window);
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
+
+    sf::Vector2f getEntityPosition() const { return m_entity.getPosition(); }
+    int getAltitude() const { return m_altitude; }
+
+    void setDanger() { m_entity.setFillColor(sf::Color::Red); };
+
+    std::string getCallsign() const { return m_callsign; };
 protected:
     int m_heading{};
     int m_speed{};

@@ -16,6 +16,7 @@
 #include "Airport.h"
 #include "Weather.h"
 #include "ResourcesManager.h"
+#include <typeinfo>
 
 class Game : public Window {
 public:
@@ -30,6 +31,7 @@ private:
 
     void addNewEntities();
     void initAirports();
+    void checkForEntitiesCollisions();
 
     std::vector<Airplane> m_airplanes{};
     std::vector<Airport> m_airports{};

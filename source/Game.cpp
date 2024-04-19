@@ -84,16 +84,53 @@ void Game::render()
     m_window.display();
 }
 
+void Game::checkForEntitiesCollisions() {
+    std::vector<FlyingEntity*> flyingEntities;
+    for(Airplane &airplane: m_airplanes) {
+        FlyingEntity *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
+        flyingEntities.push_back(flyingEntity);
+    }
+
+    for(FlyingEntity *A_flyingEntity: flyingEntities) {
+        const std::string A_callsign = A_flyingEntity->getCallsign();
+        const sf::Vector2f A_position = A_flyingEntity->getEntityPosition();
+        const int A_altitude = A_flyingEntity->getAltitude();
+
+        for(FlyingEntity *B_flyingEntity: flyingEntities) {
+            const std::string B_callsign = B_flyingEntity->getCallsign();
+            const sf::Vector2f B_position = B_flyingEntity->getEntityPosition();
+            const int B_altitude = B_flyingEntity->getAltitude();
+
+            if(A_callsign != B_callsign) {
+                int distance = Math::DistanceBetweenTwoPoints(A_position, B_position);
+
+                if(distance <= 20) {
+                    if(A_altitude == B_altitude) {
+                        A_flyingEntity->setDanger();
+                        B_flyingEntity->setDanger();
+                    }
+                }
+            }
+
+        }
+    }
+
+}
+
 void Game::handleEvent()
 {
     sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
     sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
     sf::Event game_event{};
 
+    checkForEntitiesCollisions();
+
     while(m_window.pollEvent(game_event))
     {
         for(Airplane &airplane: m_airplanes) {
             airplane.handleEvent(game_event, float_mouse_position);
+
+
         }
         for(Airport &airport: m_airports) {
             airport.handleEvent(game_event, float_mouse_position);

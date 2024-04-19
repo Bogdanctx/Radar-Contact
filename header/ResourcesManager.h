@@ -35,7 +35,11 @@ private:
             "The cabin is dimmed upon landing for emergency measures.",
             "The tanks of oxygen for passenger masks are only supposed to last 15 minutes.",
             "The tiny hole in the passenger windows helps regulate cabin pressure.",
-            "Travelers lose out on over a third of their taste buds during flight."
+            "Travelers lose out on over a third of their taste buds during flight.",
+            "The first female pilot was a woman named Raymonde de Laroche.",
+            "A Boeing 747 is made up of six million parts",
+            "More than 80% of the population is afraid of flying",
+            "Each engine on a Boeing 747 weighs almost 9,500 pounds",
     } {}
 
     void loadRegion(const std::string &region);

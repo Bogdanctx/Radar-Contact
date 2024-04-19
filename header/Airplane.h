@@ -14,6 +14,7 @@ public:
     ~Airplane() = default;
 
     void update() override;
+
 private:
     void updateFlightData();
 

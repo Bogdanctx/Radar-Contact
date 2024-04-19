@@ -18,6 +18,8 @@ public:
     void render(sf::RenderWindow *window);
     void handleEvent(sf::Event event, sf::Vector2f mousePosition);
 
+    std::string getIcao() const { return m_labelICAO.getString(); }
+
 private:
     bool m_isCoverageSelected{};
     //std::pair<int, int> m_weather{}; // (direction, wind)

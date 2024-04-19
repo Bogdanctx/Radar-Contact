@@ -6,7 +6,16 @@
 
 #include "../header/Math.h"
 
-int  Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point)
+int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
+    float xSquare = (B.x - A.x) * (B.x - A.x);
+    float ySquare = (B.y - A.y) * (B.y - A.y);
+
+    float distance = std::sqrt(xSquare + ySquare);
+
+    return (int) distance;
+}
+
+int Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point)
 {
     const auto dir_radians = atan2(origin.y - point.y, origin.x - point.x);
     int direction = (int) degrees((float)dir_radians) - 90;

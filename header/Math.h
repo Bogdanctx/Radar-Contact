@@ -16,6 +16,7 @@ public:
     static int DirectionToPoint(sf::Vector2f origin, sf::Vector2f point);
     static sf::Vector2f TranslatePositionToPoint(float speed, float direction);
     static sf::Vector2f MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds);
+    static int DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B);
 
 private:
     constexpr static const float PI = 3.14159265;

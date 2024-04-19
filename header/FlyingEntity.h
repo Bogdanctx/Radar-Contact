@@ -46,8 +46,6 @@ protected:
     void checkHeadingChange();
 
 private:
-    sf::Clock m_dataChangeDelay{};
-
     const std::string m_callsign{};
 
     const int m_updateInterval{};

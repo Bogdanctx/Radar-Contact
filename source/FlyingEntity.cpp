@@ -7,24 +7,24 @@
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                            const std::string &callsign, sf::Vector2f position) :
-        m_heading{heading}, m_newHeading{heading},
-        m_speed{speed}, m_newSpeed{speed},
-        m_altitude{altitude}, m_newAltitde{altitude},
-        m_squawk{squawk},
-        m_callsign{callsign},
-        m_updateInterval{800},
+        m_heading{heading}, m_speed{speed},
+        m_altitude{altitude}, m_squawk{squawk},
+        m_newHeading{heading}, m_newAltitde{altitude},
+        m_newSpeed{speed},
         m_entitySelected{false},
-
         m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
-        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-
-        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_headingStick{sf::Vector2f(26, 1.2f)}
+
+        m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
+
+        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_headingStick{sf::Vector2f(26, 1.2f)},
+        m_callsign{callsign},
+        m_updateInterval{800}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
@@ -154,8 +154,6 @@ void FlyingEntity::checkAltitudeChange() {
         if(m_newAltitde != m_altitude) {
             m_newAltitudeText.setString(std::to_string(m_newAltitde));
         }
-
-        m_dataChangeDelay.restart();
     }
 }
 
@@ -172,22 +170,17 @@ void FlyingEntity::checkSpeedChange() {
         if(m_newSpeed != m_speed) {
             m_newSpeedText.setString(std::to_string(m_newSpeed));
         }
-
-        m_dataChangeDelay.restart();
     }
 }
 
 void FlyingEntity::checkHeadingChange() {
-    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift)))
-    {
+    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift))) {
         m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);
         m_newHeadingText.setString(std::to_string(m_newHeading));
-        m_headingStick.setRotation((float)m_newHeading - 90);
+        m_headingStick.setRotation((float) m_newHeading - 90);
 
-        if(m_newSpeed != m_speed) {
+        if (m_newSpeed != m_speed) {
             m_newSpeedText.setString(std::to_string(m_newSpeed));
         }
-
-        m_dataChangeDelay.restart();
     }
 }

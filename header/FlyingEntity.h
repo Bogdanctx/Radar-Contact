@@ -28,19 +28,23 @@ protected:
     int m_newHeading{};
     int m_newAltitde{};
     int m_newSpeed{};
+    bool m_entitySelected{};
 
-    sf::Text m_headingText{};
-    sf::Text m_speedText{};
+    sf::Vector2f m_mousePosition;
+
+    sf::Text m_headingText{}, m_newHeadingText{};
+    sf::Text m_speedText{}, m_newSpeedText{};
     sf::Text m_altitudeText{}, m_newAltitudeText{};
     sf::Text m_squawkText{};
     sf::Text m_callsignText{};
+
+    sf::RectangleShape m_headingStick{};
 
     void updateText(const sf::Vector2f &position);
 private:
     const std::string m_callsign{};
 
     const int m_updateInterval{};
-    bool m_entitySelected{};
 };
 
 

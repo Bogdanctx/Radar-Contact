@@ -21,7 +21,10 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
 
-        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}
+        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_headingStick{sf::Vector2f(26, 1.2f)}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
@@ -29,6 +32,13 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_entity.setPosition(position);
 
     m_newAltitudeText.setFillColor(sf::Color::Cyan);
+    m_newSpeedText.setFillColor(sf::Color::Cyan);
+    m_newHeadingText.setFillColor(sf::Color::Cyan);
+
+    m_headingStick.setFillColor(sf::Color::Cyan);
+    m_headingStick.setPosition(position);
+    m_headingStick.setSize(sf::Vector2f(26, 1.2));
+    m_headingStick.setRotation((float)heading - 90);
 
     updateText(position);
 }
@@ -58,9 +68,10 @@ void FlyingEntity::render(sf::RenderWindow *game_window)
         game_window->draw(m_altitudeText);
         game_window->draw(m_squawkText);
 
-        if(m_altitude != m_newAltitde) {
-            game_window->draw(m_newAltitudeText);
-        }
+        game_window->draw(m_newSpeedText);
+        game_window->draw(m_newAltitudeText);
+        game_window->draw(m_newHeadingText);
+        game_window->draw(m_headingStick);
     }
 }
 
@@ -68,8 +79,10 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
     if(m_entitySelected) {
         int xOffset = (int) position.x - 8;
         m_speedText.setPosition((float)xOffset, position.y - 20);
+
         xOffset += (int) m_speedText.getLocalBounds().width + 5;
         m_headingText.setPosition((float)xOffset, position.y - 20);
+
         xOffset += (int)m_headingText.getLocalBounds().width + 5;
         m_altitudeText.setPosition((float)xOffset, position.y - 20);
 
@@ -77,7 +90,15 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
         m_squawkText.setPosition(position.x - 8 + m_callsignText.getLocalBounds().width + 5, position.y - 30);
 
         xOffset += (int) m_altitudeText.getLocalBounds().width + 5;
-        m_newAltitudeText.setPosition((float)xOffset, position.y - 20);
+        m_newSpeedText.setPosition((float)xOffset, position.y - 20);
+
+        xOffset += (int) m_newSpeedText.getLocalBounds().width + 5;
+        m_newHeadingText.setPosition((float)xOffset, position.y - 20);
+
+        xOffset += (int) m_newHeadingText.getLocalBounds().width + 5;
+        m_newAltitudeText.setPosition((float) xOffset, position.y - 20);
+
+        m_headingStick.setPosition(position.x, position.y);
     }
     else {
         m_callsignText.setPosition(position.x - 5, position.y - 20);
@@ -86,6 +107,8 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
 
 void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)
 {
+    m_mousePosition = mouse_position;
+
     switch(game_event.type)
     {
         case sf::Event::MouseButtonPressed:

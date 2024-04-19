@@ -3,8 +3,6 @@
  *
 1. De facut ca avioanele sa se miste separat de elicoptere
 3. Detectie coliziuni intre avioane si elicoptere
-4. Sa poti modifica altitudinea si viteza entitatilor
-5. Sa poti schimba directia entitatilor
 6. Cand avioanele intra in raza de acoperire a unui aeroport sa dispara de pe harta
 7. Pusa limita de avioane per aeroport
 8. Event-uri random pentru emergency-uri pentru avioane si elicoptere

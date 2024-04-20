@@ -6,6 +6,7 @@
 #define OOP_RESOURCESMANAGER_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <unordered_map>
 #include <fstream>
 
@@ -25,7 +26,11 @@ public:
     std::unordered_map<std::string, std::pair<int, int>> getRegionAirports(const std::string &region);
     std::vector<std::pair<float, float>> getWeatherTiles(const std::string &region);
     std::vector<std::string> getFacts();
+    sf::SoundBuffer &getSound(const std::string &soundName);
+    std::string getSelectedRegion() const;
 
+
+    void loadRegion(const std::string &region);
     void load();
 
 private:
@@ -42,17 +47,20 @@ private:
             "Each engine on a Boeing 747 weighs almost 9,500 pounds",
     } {}
 
-    void loadRegion(const std::string &region);
     void loadTextures(const std::string &textureName);
     void loadFonts(const std::string &fontName);
     void loadWeatherTiles(const std::string &region);
+    void loadSounds(const std::string &sound_name);
 
     std::unordered_map<std::string, sf::Font>m_fonts{};
     std::unordered_map<std::string, sf::Texture>m_textures{};
     std::unordered_map<std::string, std::vector<float>>m_regionBox{};
     std::unordered_map<std::string, std::unordered_map<std::string, std::pair<int, int>>>m_airports{};
     std::unordered_map<std::string, std::vector<std::pair<float, float>>> m_regionWeatherTiles{};
+    std::unordered_map<std::string, sf::SoundBuffer> m_sounds;
     std::vector<std::string> m_randomFacts{};
+
+    std::string m_selectedRegion{};
 };
 
 #endif //OOP_RESOURCESMANAGER_H

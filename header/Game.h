@@ -6,6 +6,7 @@
 #define OOP_GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <nlohmann/json.hpp>
 

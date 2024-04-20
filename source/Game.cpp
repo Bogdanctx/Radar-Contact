@@ -7,7 +7,7 @@
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
-            m_selectedRegion{"Cyprus"},
+            m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()},
             weather{m_selectedRegion}
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
@@ -22,6 +22,11 @@ Game::Game() :
 
     m_backgroundRegion.setTexture(ResourcesManager::Instance().getTexture(m_selectedRegion));
 
+    sf::Sound loadingSound;
+    loadingSound.setBuffer(ResourcesManager::Instance().getSound("plane_landing.wav"));
+    loadingSound.setPlayingOffset(sf::seconds(4));
+    loadingSound.play();
+
     m_window.draw(loadingScreen);
     m_window.draw(randomFact);
     m_window.display();
@@ -34,6 +39,12 @@ Game::Game() :
 
 void Game::run()
 {
+    sf::Sound loadingSound;
+    loadingSound.setBuffer(ResourcesManager::Instance().getSound("atc.wav"));
+    loadingSound.setLoop(true);
+    loadingSound.play();
+
+
     while(m_window.isOpen())
     {
         handleEvent();
@@ -85,12 +96,12 @@ void Game::render()
 
     m_window.draw(m_backgroundRegion);
 
+    weather.render(&m_window);
+
     for(Airport &airport: m_airports)
     {
         airport.render(&m_window);
     }
-
-    weather.render(&m_window);
 
     for(Airplane &airplane: m_airplanes)
     {

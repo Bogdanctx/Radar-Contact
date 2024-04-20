@@ -6,16 +6,26 @@
 
 void ResourcesManager::load()
 {
-    loadRegion("UK");
-    loadRegion("Poland");
-    loadRegion("Iceland");
-    loadRegion("Cyprus");
-
     loadTextures("menu.png");
     loadTextures("loading_screen.png");
 
+    loadSounds("plane_landing.wav");
+    loadSounds("atc.wav");
+
     loadFonts("Poppins-Regular.ttf");
     loadFonts("Raleway-Regular.ttf");
+}
+
+void ResourcesManager::loadSounds(const std::string &sound_name) {
+    const std::string path = "../resources/sounds/" + sound_name;
+    sf::SoundBuffer sound;
+
+    sound.loadFromFile(path);
+    m_sounds[sound_name] = sound;
+}
+
+sf::SoundBuffer &ResourcesManager::getSound(const std::string &soundName) {
+    return m_sounds[soundName];
 }
 
 std::vector<std::string> ResourcesManager::getFacts() {
@@ -51,7 +61,13 @@ sf::Texture &ResourcesManager::getTexture(const std::string &key)
     return m_textures.at(key);
 }
 
+std::string ResourcesManager::getSelectedRegion() const {
+    return m_selectedRegion;
+}
+
 void ResourcesManager::loadRegion(const std::string &region_name) {
+    m_selectedRegion = region_name;
+
     const std::string region_position = "../resources/regions/" + region_name + "/long_lat.txt";
     const std::string region_airports = "../resources/regions/" + region_name + "/airports.txt";
     const std::string region_texture = "../resources/regions/" + region_name + "/" + region_name + ".png";

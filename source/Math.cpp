@@ -56,6 +56,7 @@ float Math::radians(const float deg)
     return deg * PI / 180;
 }
 
+//
 // https://stackoverflow.com/questions/2103924/mercator-longitude-and-latitude-calculations-to-x-and-y-on-a-cropped-map-of-the/10401734#10401734
 // https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box - CURRENT
 sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds)

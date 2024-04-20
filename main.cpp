@@ -17,9 +17,9 @@ int main() {
     ResourcesManager::Instance().load();
 
     {
-        //Menu menu{resourcesManager};
+        Menu menu;
 
-        //menu.run();
+        menu.run();
     }
 
     Game game;

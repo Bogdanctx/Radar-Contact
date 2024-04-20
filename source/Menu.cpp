@@ -4,7 +4,7 @@
 
 #include "../header/Menu.h"
 Menu::Menu() :
-        Window({800, 600}, "Radar Contact - Menu")
+        Window({500, 400}, "Radar Contact - Menu")
 {
     m_background.setTexture(ResourcesManager::Instance().getTexture("menu.png"));
 }

@@ -163,6 +163,8 @@ add_executable(${PROJECT_NAME}
         header/Airport.h
         source/Weather.cpp
         header/Weather.h
+        header/Helicopter.h
+        source/Helicopter.cpp
 )
 
 ###############################################################################

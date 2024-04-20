@@ -7,7 +7,7 @@
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
-            m_selectedRegion{"UK"},
+            m_selectedRegion{"Cyprus"},
             weather{m_selectedRegion}
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
@@ -44,10 +44,19 @@ void Game::run()
 
 void Game::update()
 {
-    auto it = std::remove_if(m_airplanes.begin(), m_airplanes.end(), [](const Airplane &airplane) {
+    // Stergere avion de pe harta
+    auto it1 = std::remove_if(m_airplanes.begin(), m_airplanes.end(), [](const Airplane &airplane) {
         return airplane.getCrashed();
     });
-    m_airplanes.erase(it, m_airplanes.end());
+    m_airplanes.erase(it1, m_airplanes.end());
+    //////
+
+    // Stergere elicopter de pe harta
+    auto it2 = std::remove_if(m_helicopters.begin(), m_helicopters.end(), [](const Helicopter &helicopter) {
+        return helicopter.getCrashed();
+    });
+    m_helicopters.erase(it2, m_helicopters.end());
+    ///////
 
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
         weather.fetchWeatherImages(&m_window);
@@ -61,9 +70,12 @@ void Game::update()
 
     m_window.draw(m_backgroundRegion);
 
-    for(Airplane &airplane: m_airplanes)
-    {
+    for(Airplane &airplane: m_airplanes) {
         airplane.update();
+    }
+
+    for(Helicopter &helicopter: m_helicopters) {
+        helicopter.update();
     }
 }
 
@@ -85,6 +97,11 @@ void Game::render()
         airplane.render(&m_window);
     }
 
+    for(Helicopter &helicopter: m_helicopters)
+    {
+        helicopter.render(&m_window);
+    }
+
     m_window.display();
 }
 
@@ -92,6 +109,10 @@ void Game::checkForEntitiesCollisions() {
     std::vector<FlyingEntity*> flyingEntities;
     for(Airplane &airplane: m_airplanes) {
         auto *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
+        flyingEntities.push_back(flyingEntity);
+    }
+    for(Helicopter &helicopter: m_helicopters) {
+        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&helicopter);
         flyingEntities.push_back(flyingEntity);
     }
 
@@ -137,6 +158,10 @@ void Game::checkInsideAirspace() {
         auto *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
         flyingEntities.push_back(flyingEntity);
     }
+    for(Helicopter &helicopter: m_helicopters) {
+        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&helicopter);
+        flyingEntities.push_back(flyingEntity);
+    }
 
     for(Airport &airport: m_airports)
     {
@@ -163,6 +188,9 @@ void Game::handleEvent()
     {
         for(Airplane &airplane: m_airplanes) {
             airplane.handleEvent(game_event, float_mouse_position);
+        }
+        for(Helicopter &helicopter: m_helicopters) {
+            helicopter.handleEvent(game_event, float_mouse_position);
         }
 
         switch(game_event.type)
@@ -192,9 +220,7 @@ void Game::handleEvent()
 
 void Game::addNewEntities()
 {
-    DataAPI dataApi{};
-
-    const nlohmann::json arrivals = dataApi.getArrivals(m_selectedRegion);
+    const nlohmann::json arrivals = dataAPI.getArrivals(m_selectedRegion);
     const int number_of_arrivals = (int) arrivals.size();
 
     sf::Event tempEvent{};
@@ -202,28 +228,29 @@ void Game::addNewEntities()
 
     for(int i = 0; i < number_of_arrivals; i++)
     {
-        const int groundspeed = arrivals[i]["groundspeed"];
-        const int airspeed = groundspeed;
         const int heading = arrivals[i]["heading"];
         const int altitude = arrivals[i]["altitude"];
+        const int airspeed = Math::AirspeedAtAltitude(altitude);
         const std::string squawk = arrivals[i]["transponder"];
         const std::string callsign = arrivals[i]["callsign"];
         const sf::Vector2f position{arrivals[i]["longitude"], arrivals[i]["latitude"]};
         const std::string arrival = arrivals[i]["flight_plan"]["arrival"];
 
-        if(altitude >= 7000) {
+        if(altitude >= 11000) {
             Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
             m_airplanes.push_back(airplane);
         }
         else if(altitude >= 2000) {
+            Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
+            m_helicopters.push_back(helicopter);
         }
     }
 }
 
 void Game::initAirports() {
-    std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports("UK");
+    std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports(m_selectedRegion);
 
     for(const auto &airport: airports) {
         const std::string icao = airport.first;

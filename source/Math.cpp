@@ -15,6 +15,15 @@ int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
     return (int) distance;
 }
 
+int Math::AirspeedAtAltitude(const int altitude) {
+    const double a = 1.f / 250.f;
+    const double b = 165;
+
+    const double airspeed = a * altitude + b;
+
+    return (int) airspeed;
+}
+
 int Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point)
 {
     const auto dir_radians = atan2(origin.y - point.y, origin.x - point.x);

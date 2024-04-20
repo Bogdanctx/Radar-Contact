@@ -9,16 +9,13 @@ void ResourcesManager::load()
     loadRegion("UK");
     loadRegion("Poland");
     loadRegion("Iceland");
+    loadRegion("Cyprus");
 
     loadTextures("menu.png");
     loadTextures("loading_screen.png");
 
     loadFonts("Poppins-Regular.ttf");
     loadFonts("Raleway-Regular.ttf");
-
-    loadWeatherTiles("UK");
-    loadWeatherTiles("Poland");
-    loadWeatherTiles("Iceland");
 }
 
 std::vector<std::string> ResourcesManager::getFacts() {
@@ -87,6 +84,8 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     }
 
     fin.close();
+
+    loadWeatherTiles(region_name);
 }
 
 std::vector<float> ResourcesManager::getRegionBox(const std::string &region) {

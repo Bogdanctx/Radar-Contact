@@ -229,3 +229,7 @@ sf::Vector2f FlyingEntity::getEntityPosition() const {
 std::string FlyingEntity::getArrival() const {
     return m_arrival;
 }
+
+int FlyingEntity::getAirspeed() const {
+    return m_speed;
+}

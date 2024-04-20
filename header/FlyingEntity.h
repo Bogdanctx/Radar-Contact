@@ -21,6 +21,7 @@ public:
 
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
+    int getAirspeed() const;
 
     void setDanger(int conflictType);
     void setCrashed();

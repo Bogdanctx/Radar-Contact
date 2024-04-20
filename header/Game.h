@@ -8,14 +8,14 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <nlohmann/json.hpp>
-#include <unordered_set>
-#include <future>
 
 #include "Window.h"
 #include "Airplane.h"
+#include "Helicopter.h"
 #include "Airport.h"
 #include "Weather.h"
 #include "ResourcesManager.h"
+#include "DataAPI.h"
 
 class Game : public Window {
 public:
@@ -34,16 +34,18 @@ private:
     void checkInsideAirspace();
 
     std::vector<Airplane> m_airplanes{};
+    std::vector<Helicopter> m_helicopters{};
     std::vector<Airport> m_airports{};
 
     sf::Clock m_newEntitiesInterval{};
     sf::Sprite m_backgroundRegion{};
 
-    std::unordered_set<std::string> m_addedEntities{};
-    const std::string m_selectedRegion = "UK";
+    const std::string m_selectedRegion{};
 
-    Weather weather;
-    sf::Clock m_updateWeatherClock;
+    Weather weather{};
+    DataAPI dataAPI{};
+
+    sf::Clock m_updateWeatherClock{};
 };
 
 

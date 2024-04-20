@@ -38,11 +38,11 @@ nlohmann::json DataAPI::getArrivals(const std::string &region)
                     const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude, longLatBox);
                     const int distanceFromMiddle = Math::DistanceBetweenTwoPoints(sf::Vector2f(640, 360), mercatorProjection);
 
-                    if(distanceFromMiddle <= 640 && altitude >= 2000) {
+                    if(distanceFromMiddle <= 640 && altitude >= 2000 && altitude <= 40000) {
                         altitude = altitude / 1000 * 1000;
                         data["pilots"][i]["altitude"] = altitude;
-                        data["pilots"][i]["latitude"] = mercatorProjection.x;
-                        data["pilots"][i]["longitude"] = mercatorProjection.y;
+                        data["pilots"][i]["longitude"] = mercatorProjection.x;
+                        data["pilots"][i]["latitude"] = mercatorProjection.y;
 
                         m_fetchedEntities.insert(callsign);
                         arrivals.push_back(data["pilots"][i]);
@@ -56,7 +56,7 @@ nlohmann::json DataAPI::getArrivals(const std::string &region)
     return arrivals;
 }
 
-std::pair<int, int> DataAPI::getWeather(const std::string &airportICAO) {
+/*std::pair<int, int> DataAPI::getWeather(const std::string &airportICAO) {
     const std::string link = "https://aviationweather.gov/api/data/metar?ids=" + airportICAO + "&format=json";
     const cpr::Response res = cpr::Get(cpr::Url{link});
 
@@ -66,7 +66,7 @@ std::pair<int, int> DataAPI::getWeather(const std::string &airportICAO) {
     int wspd = metar[0]["wspd"];
 
     return {wdir,wspd};
-}
+}*/
 
 std::string DataAPI::getWeatherPath() {
     const std::string link = "https://api.rainviewer.com/public/weather-maps.json";

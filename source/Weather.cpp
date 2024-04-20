@@ -38,7 +38,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
         sf::Texture temp_texture;
         /*const std::string link = path + "/256/7/" + std::to_string(tile.first) + '/' +
                                     std::to_string(tile.second) + "/2/1_0.png";*/
-        const std::string link = path + "/256/5/" + std::to_string(tile.first) + '/' +
+        const std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
                                  std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
 

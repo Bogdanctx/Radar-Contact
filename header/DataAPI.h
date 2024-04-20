@@ -21,7 +21,6 @@ public:
     ~DataAPI() = default;
 
     nlohmann::json getArrivals(const std::string &region);
-    static std::pair<int, int> getWeather(const std::string &airportICAO);
     static std::string getWeatherPath();
 private:
     std::unordered_set<std::string> m_fetchedEntities;

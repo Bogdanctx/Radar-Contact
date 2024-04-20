@@ -26,7 +26,8 @@ bool Airport::isFlyingEntityInside(FlyingEntity *flyingEntity) {
     {
         sf::FloatRect bounds = m_coverage.getGlobalBounds();
 
-        return flyingEntity->getAltitude() <= 10000 && bounds.contains(flyingEntity->getEntityPosition());
+        return flyingEntity->getAltitude() <= 10000 && flyingEntity->getAirspeed() <= 250 &&
+                bounds.contains(flyingEntity->getEntityPosition());
     }
 
     return false;

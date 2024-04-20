@@ -11,6 +11,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
+#include <unordered_set>
+
 #include "ResourcesManager.h"
 
 class DataAPI {
@@ -18,11 +20,11 @@ public:
     DataAPI() = default;
     ~DataAPI() = default;
 
-    static nlohmann::json getArrivals(const std::string &airportICAO);
+    nlohmann::json getArrivals(const std::string &region);
     static std::pair<int, int> getWeather(const std::string &airportICAO);
     static std::string getWeatherPath();
 private:
-
+    std::unordered_set<std::string> m_fetchedEntities;
 };
 
 

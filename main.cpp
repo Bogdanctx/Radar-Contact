@@ -3,8 +3,6 @@
  *
 1. De facut ca avioanele sa se miste separat de elicoptere
 3. Detectie coliziuni intre avioane si elicoptere
-6. Cand avioanele intra in raza de acoperire a unui aeroport sa dispara de pe harta
-7. Pusa limita de avioane per aeroport
 8. Event-uri random pentru emergency-uri pentru avioane si elicoptere
 	-> Avioanele pot avea emergency-uri de tipul alarma cu bomba, engine fire, sanatate pacient
 	-> Emergency-uri elicoptere: Engine fire (si sa isi schimbe de multe ori directia si sa

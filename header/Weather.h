@@ -13,7 +13,6 @@
 
 class Weather {
 public:
-    Weather() = default;
     explicit Weather(const std::string &region);
     ~Weather() = default;
 

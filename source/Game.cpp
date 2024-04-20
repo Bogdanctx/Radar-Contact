@@ -8,7 +8,6 @@
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
             m_selectedRegion{"UK"},
-            m_isFirstTime{true},
             weather{m_selectedRegion}
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
@@ -45,6 +44,11 @@ void Game::run()
 
 void Game::update()
 {
+    auto it = std::remove_if(m_airplanes.begin(), m_airplanes.end(), [](const Airplane &airplane) {
+        return airplane.getCrashed();
+    });
+    m_airplanes.erase(it, m_airplanes.end());
+
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
         weather.fetchWeatherImages(&m_window);
         m_updateWeatherClock.restart();
@@ -87,7 +91,7 @@ void Game::render()
 void Game::checkForEntitiesCollisions() {
     std::vector<FlyingEntity*> flyingEntities;
     for(Airplane &airplane: m_airplanes) {
-        FlyingEntity *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
+        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
         flyingEntities.push_back(flyingEntity);
     }
 
@@ -95,6 +99,8 @@ void Game::checkForEntitiesCollisions() {
         const std::string A_callsign = A_flyingEntity->getCallsign();
         const sf::Vector2f A_position = A_flyingEntity->getEntityPosition();
         const int A_altitude = A_flyingEntity->getAltitude();
+
+        int conflictType = 0;
 
         for(FlyingEntity *B_flyingEntity: flyingEntities) {
             const std::string B_callsign = B_flyingEntity->getCallsign();
@@ -104,17 +110,44 @@ void Game::checkForEntitiesCollisions() {
             if(A_callsign != B_callsign) {
                 int distance = Math::DistanceBetweenTwoPoints(A_position, B_position);
 
-                if(distance <= 20) {
-                    if(A_altitude == B_altitude) {
-                        A_flyingEntity->setDanger();
-                        B_flyingEntity->setDanger();
+                if(A_altitude == B_altitude)
+                {
+                    if(distance <= 70) {
+                        conflictType = 1;
+                    }
+                    if(distance <= 40) {
+                        conflictType = 2;
+                    }
+                    if(distance <= 5) {
+                        A_flyingEntity->setCrashed();
+                        B_flyingEntity->setCrashed();
                     }
                 }
             }
-
         }
+
+        A_flyingEntity->setDanger(conflictType);
     }
 
+}
+
+void Game::checkInsideAirspace() {
+    std::vector<FlyingEntity*> flyingEntities;
+    for(Airplane &airplane: m_airplanes) {
+        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
+        flyingEntities.push_back(flyingEntity);
+    }
+
+    for(Airport &airport: m_airports)
+    {
+        for(FlyingEntity *flyingEntity: flyingEntities)
+        {
+            if(airport.isFlyingEntityInside(flyingEntity))
+            {
+                flyingEntity->setCrashed();
+            }
+        }
+    }
 }
 
 void Game::handleEvent()
@@ -124,16 +157,12 @@ void Game::handleEvent()
     sf::Event game_event{};
 
     checkForEntitiesCollisions();
+    checkInsideAirspace();
 
     while(m_window.pollEvent(game_event))
     {
         for(Airplane &airplane: m_airplanes) {
             airplane.handleEvent(game_event, float_mouse_position);
-
-
-        }
-        for(Airport &airport: m_airports) {
-            airport.handleEvent(game_event, float_mouse_position);
         }
 
         switch(game_event.type)
@@ -145,11 +174,6 @@ void Game::handleEvent()
                 if(key_code == sf::Keyboard::Escape)
                 {
                     m_window.close();
-                }
-
-                if(key_code == sf::Keyboard::LAlt)
-                {
-
                 }
 
                 break;
@@ -168,43 +192,34 @@ void Game::handleEvent()
 
 void Game::addNewEntities()
 {
-    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports(m_selectedRegion);
-    const std::vector<float> longLatBox{ResourcesManager::Instance().getRegionBox(m_selectedRegion)};
+    DataAPI dataApi{};
 
-    for(const auto &airport: regionAirports)
+    const nlohmann::json arrivals = dataApi.getArrivals(m_selectedRegion);
+    const int number_of_arrivals = (int) arrivals.size();
+
+    sf::Event tempEvent{};
+    m_window.pollEvent(tempEvent);
+
+    for(int i = 0; i < number_of_arrivals; i++)
     {
-        const std::string airportIcao = airport.first;
-        const nlohmann::json arrivals = DataAPI::getArrivals(airportIcao);
-        const int number_of_arrivals = (int) arrivals.size();
+        const int groundspeed = arrivals[i]["groundspeed"];
+        const int airspeed = groundspeed;
+        const int heading = arrivals[i]["heading"];
+        const int altitude = arrivals[i]["altitude"];
+        const std::string squawk = arrivals[i]["transponder"];
+        const std::string callsign = arrivals[i]["callsign"];
+        const sf::Vector2f position{arrivals[i]["longitude"], arrivals[i]["latitude"]};
+        const std::string arrival = arrivals[i]["flight_plan"]["arrival"];
 
-        sf::Event tempEvent{};
-        m_window.pollEvent(tempEvent);
+        if(altitude >= 7000) {
+            Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
-        for(int i = 0; i < number_of_arrivals; i++)
-        {
-            const std::string callsign = arrivals[i]["callsign"];
-            const int altitude = arrivals[i]["altitude"];
+            m_airplanes.push_back(airplane);
+        }
+        else if(altitude >= 2000) {
 
-            if(altitude >= 10000 && m_addedEntities.find(callsign) == m_addedEntities.end())
-            {
-                const int groundspeed = arrivals[i]["groundspeed"];
-                const int airspeed = groundspeed - 130;
-                const int heading = arrivals[i]["heading"];
-                const std::string squawk = arrivals[i]["transponder"];
-                const float latitude = arrivals[i]["latitude"];
-                const float longitude = arrivals[i]["longitude"];
-
-                const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude,
-                                                                           longLatBox);
-
-                Airplane airplane{altitude, airspeed, heading, squawk, callsign, mercatorProjection};
-
-                m_airplanes.push_back(airplane);
-                m_addedEntities.insert(callsign);
-            }
         }
     }
-
 }
 
 void Game::initAirports() {

@@ -6,8 +6,8 @@
 #include "../header/Math.h"
 
 Airplane::Airplane(int altitude, int speed, int heading, const std::string& squawk,
-                   const std::string &callsign, sf::Vector2f position) :
-        FlyingEntity(altitude, speed, heading, squawk, callsign, position),
+                   const std::string &callsign, sf::Vector2f position, const std::string &arrival) :
+        FlyingEntity(altitude, speed, heading, squawk, callsign, position, arrival),
         m_updateInterval{900},
         m_updateAltitudeInterval{970},
         m_updateSpeedInterval{600},

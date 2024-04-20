@@ -11,20 +11,23 @@
 
 class FlyingEntity {
 public:
-    explicit FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
-                          const std::string &callsign, sf::Vector2f position);
+    FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
+                          const std::string &callsign, sf::Vector2f position, const std::string &arrival);
     ~FlyingEntity() = default;
 
     virtual void update();
     virtual void render(sf::RenderWindow *game_window);
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
-    sf::Vector2f getEntityPosition() const { return m_entity.getPosition(); }
-    int getAltitude() const { return m_altitude; }
+    sf::Vector2f getEntityPosition() const;
+    int getAltitude() const;
 
-    void setDanger() { m_entity.setFillColor(sf::Color::Red); };
+    void setDanger(int conflictType);
+    void setCrashed();
+    bool getCrashed() const;
+    std::string getCallsign() const;
+    std::string getArrival() const;
 
-    std::string getCallsign() const { return m_callsign; };
 protected:
     int m_heading{};
     int m_speed{};
@@ -44,6 +47,7 @@ protected:
     sf::Text m_altitudeText{}, m_newAltitudeText{};
     sf::Text m_squawkText{};
     sf::Text m_callsignText{};
+    sf::Text m_arrivalText{};
 
     sf::RectangleShape m_headingStick{};
 
@@ -53,9 +57,11 @@ protected:
     void checkHeadingChange();
 
 private:
-    const std::string m_callsign{};
+    bool m_isCrashed{};
+    std::string m_callsign{};
+    std::string m_arrival;
 
-    const int m_updateInterval{};
+    int m_updateInterval{};
 };
 
 

@@ -3,8 +3,9 @@
 //
 
 #include "../header/DataAPI.h"
-#include <iostream>
-nlohmann::json DataAPI::getArrivals(const std::string &airportICAO)
+#include "../header/Math.h"
+
+nlohmann::json DataAPI::getArrivals(const std::string &region)
 {
     const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";
 
@@ -16,15 +17,39 @@ nlohmann::json DataAPI::getArrivals(const std::string &airportICAO)
     nlohmann::json arrivals;
 
     const int pilots_size = (int) data["pilots"].size();
+    const std::vector<float> longLatBox{ResourcesManager::Instance().getRegionBox(region)};
+    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports(region);
 
-    for(int i = 0; i < pilots_size; i++)
+    for(const auto &airport: regionAirports)
     {
-        int altitude = data["pilots"][i]["altitude"];
-        if(data["pilots"][i]["flight_plan"]["arrival"] == airportICAO && altitude >= 10000)
+        const std::string airportIcao = airport.first;
+
+        for(int i = 0; i < pilots_size; i++)
         {
-            altitude = altitude / 1000 * 1000;
-            data["pilots"][i]["altitude"] = altitude;
-            arrivals.push_back(data["pilots"][i]);
+            if(data["pilots"][i]["flight_plan"]["arrival"] == airportIcao)
+            {
+                const std::string callsign = data["pilots"][i]["callsign"];
+
+                if(m_fetchedEntities.find(callsign) == m_fetchedEntities.end())
+                {
+                    int altitude = data["pilots"][i]["altitude"];
+                    const float latitude = data["pilots"][i]["latitude"];
+                    const float longitude = data["pilots"][i]["longitude"];
+                    const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude, longLatBox);
+                    const int distanceFromMiddle = Math::DistanceBetweenTwoPoints(sf::Vector2f(640, 360), mercatorProjection);
+
+                    if(distanceFromMiddle <= 640 && altitude >= 2000) {
+                        altitude = altitude / 1000 * 1000;
+                        data["pilots"][i]["altitude"] = altitude;
+                        data["pilots"][i]["latitude"] = mercatorProjection.x;
+                        data["pilots"][i]["longitude"] = mercatorProjection.y;
+
+                        m_fetchedEntities.insert(callsign);
+                        arrivals.push_back(data["pilots"][i]);
+                    }
+                }
+
+            }
         }
     }
 

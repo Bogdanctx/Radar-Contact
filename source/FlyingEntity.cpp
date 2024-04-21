@@ -80,32 +80,32 @@ void FlyingEntity::render(sf::RenderWindow *game_window)
 
 void FlyingEntity::updateText(const sf::Vector2f &position) {
     if(m_entitySelected) {
-        int xOffset;
+        float xOffset;
 
         m_callsignText.setPosition(position.x - 8, position.y - 30);
 
-        xOffset = (int) position.x - 8 + m_callsignText.getLocalBounds().width + 5;
-        m_squawkText.setPosition((float)xOffset, position.y - 30);
-        xOffset += (int) m_squawkText.getLocalBounds().width + 5;
-        m_arrivalText.setPosition((float)xOffset, position.y - 30);
+        xOffset = position.x - 8 + m_callsignText.getLocalBounds().width + 5;
+        m_squawkText.setPosition(xOffset, position.y - 30);
+        xOffset += m_squawkText.getLocalBounds().width + 5;
+        m_arrivalText.setPosition(xOffset, position.y - 30);
 
-        xOffset = (int) position.x - 8;
-        m_speedText.setPosition((float)xOffset, position.y - 20);
+        xOffset = position.x - 8;
+        m_speedText.setPosition(xOffset, position.y - 20);
 
-        xOffset += (int) m_speedText.getLocalBounds().width + 5;
-        m_headingText.setPosition((float)xOffset, position.y - 20);
+        xOffset += m_speedText.getLocalBounds().width + 5;
+        m_headingText.setPosition(xOffset, position.y - 20);
 
-        xOffset += (int)m_headingText.getLocalBounds().width + 5;
-        m_altitudeText.setPosition((float)xOffset, position.y - 20);
+        xOffset += m_headingText.getLocalBounds().width + 5;
+        m_altitudeText.setPosition(xOffset, position.y - 20);
 
-        xOffset += (int) m_altitudeText.getLocalBounds().width + 5;
-        m_newSpeedText.setPosition((float)xOffset, position.y - 20);
+        xOffset += m_altitudeText.getLocalBounds().width + 5;
+        m_newSpeedText.setPosition(xOffset, position.y - 20);
 
-        xOffset += (int) m_newSpeedText.getLocalBounds().width + 5;
-        m_newHeadingText.setPosition((float)xOffset, position.y - 20);
+        xOffset += m_newSpeedText.getLocalBounds().width + 5;
+        m_newHeadingText.setPosition(xOffset, position.y - 20);
 
-        xOffset += (int) m_newHeadingText.getLocalBounds().width + 5;
-        m_newAltitudeText.setPosition((float) xOffset, position.y - 20);
+        xOffset += m_newHeadingText.getLocalBounds().width + 5;
+        m_newAltitudeText.setPosition(xOffset, position.y - 20);
 
         m_headingStick.setPosition(position.x, position.y);
     }

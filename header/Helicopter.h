@@ -12,7 +12,7 @@ class Helicopter : public FlyingEntity {
 public:
     explicit Helicopter(int altitude, int speed, int heading, const std::string& squawk,
                const std::string &callsign, sf::Vector2f position, const std::string &arrival);
-    ~Helicopter() = default;
+    virtual ~Helicopter() = default;
 
     void update() override;
 private:

@@ -57,7 +57,7 @@ private:
     std::unordered_map<std::string, std::vector<float>>m_regionBox{};
     std::unordered_map<std::string, std::unordered_map<std::string, std::pair<int, int>>>m_airports{};
     std::unordered_map<std::string, std::vector<std::pair<float, float>>> m_regionWeatherTiles{};
-    std::unordered_map<std::string, sf::SoundBuffer> m_sounds;
+    std::unordered_map<std::string, sf::SoundBuffer> m_sounds{};
     std::vector<std::string> m_randomFacts{};
 
     std::string m_selectedRegion{};

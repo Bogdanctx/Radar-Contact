@@ -11,7 +11,7 @@ class Airplane : public FlyingEntity {
 public:
     explicit Airplane(int altitude, int speed, int heading, const std::string& squawk,
                       const std::string &callsign, sf::Vector2f position, const std::string &arrival);
-    ~Airplane() = default;
+    virtual ~Airplane() = default;
 
     void update() override;
 

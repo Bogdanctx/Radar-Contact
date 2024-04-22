@@ -14,6 +14,7 @@
 #include "Airplane.h"
 #include "Helicopter.h"
 #include "Airport.h"
+#include "HotAirBalloon.h"
 #include "Weather.h"
 #include "ResourcesManager.h"
 #include "DataAPI.h"
@@ -29,13 +30,17 @@ private:
     void handleEvent() override;
     void update() override;
 
+    void addNewBalloons();
     void addNewEntities();
     void initAirports();
-    void checkForEntitiesCollisions();
-    void checkInsideAirspace();
+    static void checkForEntitiesCollisions(const std::vector<FlyingEntity*>& flyingEntities);
+    void checkInsideAirspace(const std::vector<FlyingEntity*>& flyingEntities);
+
+    void removeCrashedEntities();
 
     std::vector<Airplane> m_airplanes{};
     std::vector<Helicopter> m_helicopters{};
+    std::vector<HotAirBalloon> m_balloons{};
     std::vector<Airport> m_airports{};
 
     sf::Clock m_newEntitiesInterval{};

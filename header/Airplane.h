@@ -9,23 +9,23 @@
 
 class Airplane : public FlyingEntity {
 public:
-    explicit Airplane(int altitude, int speed, int heading, const std::string& squawk,
-                      const std::string &callsign, sf::Vector2f position, const std::string &arrival);
-    virtual ~Airplane() = default;
+    template <typename... Args> explicit Airplane(Args... args) :
+            FlyingEntity(args...),
+            m_updateInterval{1100},
+            m_updateAltitudeInterval{1300},
+            m_updateSpeedInterval{800},
+            m_updateHeadingInterval{240} {}
+
+    ~Airplane() = default;
 
     void update() override;
-
 private:
-    void updateFlightData();
-
-    sf::Clock m_updateAltitudeClock{};
-    sf::Clock m_updateSpeedClock{};
-    sf::Clock m_updateHeadingClock{};
-
     int m_updateInterval{};
     int m_updateAltitudeInterval{};
     int m_updateSpeedInterval{};
     int m_updateHeadingInterval{};
+
+    sf::Clock m_updatePositionInterval{};
 };
 
 

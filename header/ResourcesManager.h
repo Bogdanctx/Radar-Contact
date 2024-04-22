@@ -28,7 +28,7 @@ public:
     std::vector<std::string> getFacts();
     sf::SoundBuffer &getSound(const std::string &soundName);
     std::string getSelectedRegion() const;
-
+    std::unordered_map<std::string, std::pair<int, int>> getAirports();
 
     void loadRegion(const std::string &region);
     void load();
@@ -55,7 +55,7 @@ private:
     std::unordered_map<std::string, sf::Font>m_fonts{};
     std::unordered_map<std::string, sf::Texture>m_textures{};
     std::unordered_map<std::string, std::vector<float>>m_regionBox{};
-    std::unordered_map<std::string, std::unordered_map<std::string, std::pair<int, int>>>m_airports{};
+    std::unordered_map<std::string, std::pair<int, int>>m_airports{};
     std::unordered_map<std::string, std::vector<std::pair<float, float>>> m_regionWeatherTiles{};
     std::unordered_map<std::string, sf::SoundBuffer> m_sounds{};
     std::vector<std::string> m_randomFacts{};

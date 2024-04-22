@@ -15,7 +15,7 @@ public:
                           const std::string &callsign, sf::Vector2f position, const std::string &arrival);
     ~FlyingEntity() = default;
 
-    virtual void update();
+    virtual void update() = 0;
     virtual void render(sf::RenderWindow *game_window);
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
@@ -35,34 +35,42 @@ protected:
     int m_altitude{};
     std::string m_squawk{};
     sf::RectangleShape m_entity{};
-    sf::Clock m_updatePositionInterval{}; // la un interval x de timp se va actualiza pozitia avionului
     int m_newHeading{};
     int m_newAltitde{};
     int m_newSpeed{};
     bool m_entitySelected{};
 
-    sf::Vector2f m_mousePosition;
-
-    sf::Text m_headingText{}, m_newHeadingText{};
-    sf::Text m_speedText{}, m_newSpeedText{};
-    sf::Text m_altitudeText{}, m_newAltitudeText{};
+    sf::Text m_headingText{};
+    sf::Text m_speedText{};
+    sf::Text m_altitudeText{};
     sf::Text m_squawkText{};
     sf::Text m_callsignText{};
     sf::Text m_arrivalText{};
 
     sf::RectangleShape m_headingStick{};
 
+    void updateAltitudeData(int updateTime);
+    void updateSpeedData(int updateTime);
+    void updateHeadingData(int updateTime);
     void updateText(const sf::Vector2f &position);
-    void checkAltitudeChange();
-    void checkSpeedChange();
-    void checkHeadingChange();
 
+    virtual void checkAltitudeChange();
+    virtual void checkSpeedChange();
+    virtual void checkHeadingChange();
 private:
+    sf::Vector2f m_mousePosition;
+
+    sf::Text m_newHeadingText{};
+    sf::Text m_newSpeedText{};
+    sf::Text m_newAltitudeText{};
+
+    sf::Clock m_updateAltitudeClock{};
+    sf::Clock m_updateSpeedClock{};
+    sf::Clock m_updateHeadingClock{};
+
     bool m_isCrashed{};
     std::string m_callsign{};
     std::string m_arrival;
-
-    int m_updateInterval{};
 };
 
 

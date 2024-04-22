@@ -5,19 +5,10 @@
 #include "../header/Airplane.h"
 #include "../header/Math.h"
 
-Airplane::Airplane(int altitude, int speed, int heading, const std::string& squawk,
-                   const std::string &callsign, sf::Vector2f position, const std::string &arrival) :
-        FlyingEntity(altitude, speed, heading, squawk, callsign, position, arrival),
-        m_updateInterval{900},
-        m_updateAltitudeInterval{970},
-        m_updateSpeedInterval{600},
-        m_updateHeadingInterval{130}
-{
-
-}
-
 void Airplane::update() {
-    updateFlightData();
+    updateAltitudeData(m_updateAltitudeInterval);
+    updateSpeedData(m_updateSpeedInterval);
+    updateHeadingData(m_updateHeadingInterval);
 
     if(m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
     {
@@ -31,58 +22,5 @@ void Airplane::update() {
         }
 
         m_updatePositionInterval.restart();
-    }
-}
-
-void Airplane::updateFlightData() {
-    bool shouldUpdateAltitude = m_updateAltitudeClock.getElapsedTime().asMilliseconds() >= m_updateAltitudeInterval;
-
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitde && shouldUpdateAltitude)
-    {
-        if(m_altitude < m_newAltitde) {
-            m_altitude += 1000;
-        }
-        if(m_altitude > m_newAltitde) {
-            m_altitude -= 1000;
-        }
-
-        m_altitudeText.setString(std::to_string(m_altitude));
-        m_updateAltitudeClock.restart();
-    }
-
-    bool shouldUpdateSpeed = m_updateSpeedClock.getElapsedTime().asMilliseconds() >= m_updateSpeedInterval;
-
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && m_newSpeed != m_speed && shouldUpdateSpeed)
-    {
-        if(m_speed < m_newSpeed) {
-            m_speed++;
-        }
-        if(m_speed > m_newSpeed) {
-            m_speed--;
-        }
-
-        m_speedText.setString(std::to_string(m_speed));
-        m_updateSpeedClock.restart();
-    }
-
-    bool shouldUpdateHeading = m_updateHeadingClock.getElapsedTime().asMilliseconds() >= m_updateHeadingInterval;
-
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading)
-    {
-        if ((m_newHeading - m_heading + 360) % 360 < 180) {
-            m_heading++;
-        } else {
-            m_heading--;
-        }
-
-        if(m_heading < 0) {
-            m_heading += 360;
-        }
-        if(m_heading >= 360) {
-            m_heading -= 360;
-        }
-
-        m_headingText.setString(std::to_string(m_heading));
-        m_updateHeadingClock.restart();
     }
 }

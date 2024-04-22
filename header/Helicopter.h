@@ -7,25 +7,24 @@
 
 #include "FlyingEntity.h"
 
-
 class Helicopter : public FlyingEntity {
 public:
-    explicit Helicopter(int altitude, int speed, int heading, const std::string& squawk,
-               const std::string &callsign, sf::Vector2f position, const std::string &arrival);
-    virtual ~Helicopter() = default;
+    template <typename... Args> explicit Helicopter(Args... args) :
+                FlyingEntity(args...),
+                m_updateInterval{600},
+                m_updateAltitudeInterval{750},
+                m_updateSpeedInterval{680},
+                m_updateHeadingInterval{70} {}
+    ~Helicopter() = default;
 
     void update() override;
 private:
-    void updateFlightData();
-
-    sf::Clock m_updateAltitudeClock{};
-    sf::Clock m_updateSpeedClock{};
-    sf::Clock m_updateHeadingClock{};
-
     int m_updateInterval{};
     int m_updateAltitudeInterval{};
     int m_updateSpeedInterval{};
     int m_updateHeadingInterval{};
+
+    sf::Clock m_updatePositionInterval{};
 };
 
 

@@ -165,6 +165,8 @@ add_executable(${PROJECT_NAME}
         header/Weather.h
         header/Helicopter.h
         source/Helicopter.cpp
+        source/HotAirBalloon.cpp
+        header/HotAirBalloon.h
 )
 
 ###############################################################################

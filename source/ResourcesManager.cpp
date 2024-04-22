@@ -96,7 +96,7 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
         int x, y;
         fin>>x>>y>>airportICAO;
 
-        m_airports[region_name][airportICAO] = {x, y};
+        m_airports[airportICAO] = {x, y};
     }
 
     fin.close();
@@ -109,7 +109,7 @@ std::vector<float> ResourcesManager::getRegionBox(const std::string &region) {
 }
 
 std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports(const std::string &region) {
-    return m_airports[region];
+    return m_airports;
 }
 
 void ResourcesManager::loadWeatherTiles(const std::string &region) {
@@ -129,4 +129,8 @@ void ResourcesManager::loadWeatherTiles(const std::string &region) {
 
 std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles(const std::string &region) {
     return m_regionWeatherTiles[region];
+}
+
+std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getAirports() {
+    return m_airports;
 }

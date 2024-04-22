@@ -13,20 +13,19 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newSpeed{speed},
         m_entitySelected{false},
         m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-
-        m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-
         m_headingStick{sf::Vector2f(26, 1.2f)},
+        m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+
+        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_callsign{callsign},
-        m_arrival{arrival},
-        m_updateInterval{800}
+        m_arrival{arrival}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
@@ -43,19 +42,6 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_headingStick.setRotation((float)heading - 90);
 
     updateText(position);
-}
-
-void FlyingEntity::update()
-{
-    if(m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
-    {
-        const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
-        m_entity.move(translation_to_point);
-
-        updateText(m_entity.getPosition());
-
-        m_updatePositionInterval.restart();
-    }
 }
 
 void FlyingEntity::render(sf::RenderWindow *game_window)
@@ -116,14 +102,14 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
 
 void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)
 {
+    m_mousePosition = mouse_position;
+
     if(m_entitySelected)
     {
         checkAltitudeChange();
         checkSpeedChange();
         checkHeadingChange();
     }
-
-    m_mousePosition = mouse_position;
 
     switch(game_event.type)
     {
@@ -203,6 +189,63 @@ void FlyingEntity::setDanger(const int conflictType) {
     }
     else if(conflictType == 2) { // coliziunea este iminenta
         m_entity.setFillColor(sf::Color::Red);
+    }
+}
+
+void FlyingEntity::updateAltitudeData(const int updateTime) {
+    bool shouldUpdateAltitude = m_updateAltitudeClock.getElapsedTime().asMilliseconds() >= updateTime;
+
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitde && shouldUpdateAltitude)
+    {
+        if(m_altitude < m_newAltitde) {
+            m_altitude += 1000;
+        }
+        if(m_altitude > m_newAltitde) {
+            m_altitude -= 1000;
+        }
+
+        m_altitudeText.setString(std::to_string(m_altitude));
+        m_updateAltitudeClock.restart();
+    }
+}
+
+void FlyingEntity::updateSpeedData(const int updateTime) {
+    bool shouldUpdateSpeed = m_updateSpeedClock.getElapsedTime().asMilliseconds() >= updateTime;
+
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && m_newSpeed != m_speed && shouldUpdateSpeed)
+    {
+        if(m_speed < m_newSpeed) {
+            m_speed++;
+        }
+        if(m_speed > m_newSpeed) {
+            m_speed--;
+        }
+
+        m_speedText.setString(std::to_string(m_speed));
+        m_updateSpeedClock.restart();
+    }
+}
+
+void FlyingEntity::updateHeadingData(const int updateTime) {
+    bool shouldUpdateHeading = m_updateHeadingClock.getElapsedTime().asMilliseconds() >= updateTime;
+
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading)
+    {
+        if ((m_newHeading - m_heading + 360) % 360 < 180) {
+            m_heading++;
+        } else {
+            m_heading--;
+        }
+
+        if(m_heading < 0) {
+            m_heading += 360;
+        }
+        if(m_heading >= 360) {
+            m_heading -= 360;
+        }
+
+        m_headingText.setString(std::to_string(m_heading));
+        m_updateHeadingClock.restart();
     }
 }
 

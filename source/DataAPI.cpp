@@ -5,7 +5,7 @@
 #include "../header/DataAPI.h"
 #include "../header/Math.h"
 
-nlohmann::json DataAPI::getArrivals(const std::string &region)
+nlohmann::json DataAPI::getArrivals()
 {
     const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";
 
@@ -17,8 +17,8 @@ nlohmann::json DataAPI::getArrivals(const std::string &region)
     nlohmann::json arrivals;
 
     const int pilots_size = (int) data["pilots"].size();
-    const std::vector<float> longLatBox{ResourcesManager::Instance().getRegionBox(region)};
-    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports(region);
+    const std::vector<float> longLatBox{ResourcesManager::Instance().getRegionBox()};
+    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
     for(const auto &airport: regionAirports)
     {

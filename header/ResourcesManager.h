@@ -22,13 +22,12 @@ public:
 
     sf::Font &getFont(const std::string &key);
     sf::Texture& getTexture(const std::string &key);
-    std::vector<float> getRegionBox(const std::string &region);
-    std::unordered_map<std::string, std::pair<int, int>> getRegionAirports(const std::string &region);
-    std::vector<std::pair<float, float>> getWeatherTiles(const std::string &region);
+    std::vector<float> getRegionBox();
+    std::unordered_map<std::string, std::pair<int, int>> getRegionAirports();
+    std::vector<std::pair<float, float>> getWeatherTiles();
     std::vector<std::string> getFacts();
     sf::SoundBuffer &getSound(const std::string &soundName);
     std::string getSelectedRegion() const;
-    std::unordered_map<std::string, std::pair<int, int>> getAirports();
 
     void loadRegion(const std::string &region);
     void load();
@@ -54,9 +53,9 @@ private:
 
     std::unordered_map<std::string, sf::Font>m_fonts{};
     std::unordered_map<std::string, sf::Texture>m_textures{};
-    std::unordered_map<std::string, std::vector<float>>m_regionBox{};
+    std::vector<float> m_regionBox{};
     std::unordered_map<std::string, std::pair<int, int>>m_airports{};
-    std::unordered_map<std::string, std::vector<std::pair<float, float>>> m_regionWeatherTiles{};
+    std::vector<std::pair<float, float>> m_regionWeatherTiles{};
     std::unordered_map<std::string, sf::SoundBuffer> m_sounds{};
     std::vector<std::string> m_randomFacts{};
 

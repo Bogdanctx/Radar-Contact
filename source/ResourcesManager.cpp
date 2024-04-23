@@ -83,7 +83,7 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
         fin>>f;
         box.push_back(f);
     }
-    m_regionBox[region_name] = box;
+    m_regionBox = box;
     fin.close();
 
     fin.open(region_airports);
@@ -104,11 +104,11 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     loadWeatherTiles(region_name);
 }
 
-std::vector<float> ResourcesManager::getRegionBox(const std::string &region) {
-    return m_regionBox[region];
+std::vector<float> ResourcesManager::getRegionBox() {
+    return m_regionBox;
 }
 
-std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports(const std::string &region) {
+std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports() {
     return m_airports;
 }
 
@@ -123,14 +123,10 @@ void ResourcesManager::loadWeatherTiles(const std::string &region) {
         fin>>longitude>>latitude;
         tiles.emplace_back(latitude, longitude);
     }
-    m_regionWeatherTiles[region] = tiles;
+    m_regionWeatherTiles = tiles;
     fin.close();
 }
 
-std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles(const std::string &region) {
-    return m_regionWeatherTiles[region];
-}
-
-std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getAirports() {
-    return m_airports;
+std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles() {
+    return m_regionWeatherTiles;
 }

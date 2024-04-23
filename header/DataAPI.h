@@ -20,7 +20,7 @@ public:
     DataAPI() = default;
     ~DataAPI() = default;
 
-    nlohmann::json getArrivals(const std::string &region);
+    nlohmann::json getArrivals();
     static std::string getWeatherPath();
 private:
     std::unordered_set<std::string> m_fetchedEntities;

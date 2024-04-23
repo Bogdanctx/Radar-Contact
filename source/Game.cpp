@@ -7,8 +7,7 @@
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
-            m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()},
-            weather{m_selectedRegion}
+            m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()}
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
@@ -56,10 +55,6 @@ void Game::run()
 void Game::update()
 {
     removeCrashedEntities();
-
-    if(m_balloons.size() < 3) {
-        addNewBalloons();
-    }
 
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
         weather.fetchWeatherImages(&m_window);
@@ -261,7 +256,7 @@ void Game::addNewBalloons() {
     const std::string squawk{"7000"};
     const std::string callsign{"BALLOON" + std::to_string(m_balloons.size() + 1)};
 
-    std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getAirports();
+    std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
     int randomDepartureAirport = rand() % regionAirports.size();
     int randomDestination = rand() % regionAirports.size();
@@ -291,7 +286,7 @@ void Game::addNewBalloons() {
 
 void Game::addNewEntities()
 {
-    const nlohmann::json arrivals = dataAPI.getArrivals(m_selectedRegion);
+    const nlohmann::json arrivals = dataAPI.getArrivals();
     const int number_of_arrivals = (int) arrivals.size();
 
     sf::Event tempEvent{};
@@ -321,7 +316,7 @@ void Game::addNewEntities()
 }
 
 void Game::initAirports() {
-    std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports(m_selectedRegion);
+    std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports();
 
     for(const auto &airport: airports) {
         const std::string icao = airport.first;

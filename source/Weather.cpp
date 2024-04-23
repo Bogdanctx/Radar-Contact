@@ -7,12 +7,8 @@
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png
-Weather::Weather(const std::string &region) :
-        m_tiles{ResourcesManager::Instance().getWeatherTiles(region)},
-        m_selectedRegion{region}
-{
-
-}
+Weather::Weather() : m_tiles{ResourcesManager::Instance().getWeatherTiles()}
+{}
 
 void Weather::render(sf::RenderWindow *window) {
     for(const sf::Sprite &sprite: m_sprites) {
@@ -61,7 +57,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
         temp_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 
         sf::Vector2f projection = Math::MercatorProjection(m_tiles[i].first, m_tiles[i].second,
-                                                           ResourcesManager::Instance().getRegionBox(m_selectedRegion));
+                                                           ResourcesManager::Instance().getRegionBox());
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
     }

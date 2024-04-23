@@ -11,7 +11,7 @@ class Airplane : public FlyingEntity {
 public:
     template <typename... Args> explicit Airplane(Args... args) :
             FlyingEntity(args...),
-            m_updateInterval{1100},
+            m_updateInterval{200},
             m_updateAltitudeInterval{1300},
             m_updateSpeedInterval{800},
             m_updateHeadingInterval{240} {}

@@ -20,7 +20,7 @@ public:
     static int AirspeedAtAltitude(int altitude);
 
 private:
-    constexpr static const float PI = 3.14;
+    constexpr static const float PI = 3.1415f;
 
     static float degrees(float rad); // conversie din radiani in grade
     static float radians(float deg); //  conversie din grade in radiani

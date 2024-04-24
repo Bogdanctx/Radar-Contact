@@ -5,11 +5,11 @@
 #ifndef OOP_DATAAPI_H
 #define OOP_DATAAPI_H
 
-#include <cpr/cpr.h>
-#include <nlohmann/json.hpp>
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+
+#include <cpr/cpr.h>
+#include <nlohmann/json.hpp>
 
 #include <unordered_set>
 

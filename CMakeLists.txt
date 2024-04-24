@@ -110,12 +110,13 @@ FetchContent_Declare(
 
 FetchContent_Declare(
         JSON
-        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.11.3
 )
 
 FetchContent_MakeAvailable(SFML)
-FetchContent_MakeAvailable(cpr)
-FetchContent_MakeAvailable(json)
+FetchContent_MakeAvailable(CPR)
+FetchContent_MakeAvailable(JSON)
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
 else()
@@ -209,8 +210,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${JSON_SOURCE_DIR}/inc
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
-target_link_libraries(${PROJECT_NAME} PRIVATE cpr::cpr)
-target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
 
 if(APPLE)

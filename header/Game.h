@@ -9,6 +9,7 @@
 #include <SFML/Audio.hpp>
 #include <vector>
 
+#include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 
 #include "Window.h"

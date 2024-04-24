@@ -13,7 +13,7 @@ class FlyingEntity {
 public:
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                           const std::string &callsign, sf::Vector2f position, const std::string &arrival);
-    ~FlyingEntity() = default;
+    virtual ~FlyingEntity() = default;
 
     virtual void update() = 0;
     virtual void render(sf::RenderWindow *game_window);

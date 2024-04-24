@@ -16,8 +16,6 @@ public:
             m_updateSpeedInterval{800},
             m_updateHeadingInterval{240} {}
 
-    ~Airplane() = default;
-
     void update() override;
 private:
     int m_updateInterval{};

@@ -16,8 +16,6 @@ public:
             m_updateSpeedInterval{600},
             m_updateHeadingInterval{210} {}
 
-    ~HotAirBalloon() = default;
-
     void update() override;
 private:
     int m_updateInterval{};

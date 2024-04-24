@@ -103,13 +103,13 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-        cpr
+        CPR
         GIT_REPOSITORY https://github.com/libcpr/cpr.git
         GIT_TAG 1.10.5
 )
 
 FetchContent_Declare(
-        json
+        JSON
         URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
 )
 
@@ -203,11 +203,15 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
 # target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${CPR_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${JSON_SOURCE_DIR}/include)
+
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr::cpr)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+
 
 if(APPLE)
 elseif(UNIX)

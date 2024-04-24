@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <vector>
+
 #include <nlohmann/json.hpp>
 
 #include "Window.h"

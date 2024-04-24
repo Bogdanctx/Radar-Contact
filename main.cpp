@@ -14,7 +14,28 @@
 
 int main() {
     srand(time(nullptr));
-    ResourcesManager::Instance().load();
+
+    try {
+        ResourcesManager::Instance().load();
+    } catch(ErrorLoadSound &err) {
+        std::cout<<err.what();
+        return 0;
+    } catch(ErrorLoadFont &err) {
+        std::cout<<err.what();
+        return 0;
+    } catch (ErrorLoadTexture &err) {
+        std::cout << err.what();
+        return 0;
+    } catch (ErrorRegionAirports &err) {
+        std::cout << err.what();
+        return 0;
+    } catch (ErrorRegionWeatherTiles &err) {
+        std::cout << err.what();
+        return 0;
+    } catch (ErrorRegionLatLongBox &err) {
+        std::cout << err.what();
+        return 0;
+    }
 
     {
         Menu menu;

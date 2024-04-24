@@ -20,7 +20,9 @@ void ResourcesManager::loadSounds(const std::string &sound_name) {
     const std::string path = "../resources/sounds/" + sound_name;
     sf::SoundBuffer sound;
 
-    sound.loadFromFile(path);
+    if(!sound.loadFromFile(path)) {
+        throw ErrorLoadSound(sound_name + " missing or corrupted\n");
+    }
     m_sounds[sound_name] = sound;
 }
 
@@ -37,7 +39,10 @@ void ResourcesManager::loadFonts(const std::string &fontName)
     const std::string fontPath = "../resources/fonts/" + fontName;
     sf::Font font;
 
-    font.loadFromFile(fontPath);
+    if(!font.loadFromFile(fontPath)) {
+        throw ErrorLoadFont(fontName + " missing or corrupted.\n");
+    }
+
     m_fonts[fontName] = font;
 }
 
@@ -51,7 +56,9 @@ void ResourcesManager::loadTextures(const std::string &textureName)
     const std::string texturePath = "../resources/general_textures/" + textureName;
     sf::Texture texture;
 
-    texture.loadFromFile(texturePath);
+    if(!texture.loadFromFile(texturePath)) {
+        throw ErrorLoadTexture(textureName + " missing or corrupted.\n");
+    }
 
     m_textures[textureName] = texture;
 }
@@ -73,10 +80,17 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     const std::string region_texture = "../resources/regions/" + region_name + "/" + region_name + ".png";
 
     sf::Texture texture;
-    texture.loadFromFile(region_texture);
+    if(!texture.loadFromFile(region_texture)) {
+        throw ErrorLoadTexture(region_name + " missing or corrupted.\n");
+    }
     m_textures[region_name] = texture;
 
     std::ifstream fin(region_position);
+
+    if(!fin.is_open()) {
+        throw ErrorRegionLatLongBox();
+    }
+
     std::vector<float> box;
     for(int i = 0; i < 4; i++) {
         float f;
@@ -87,6 +101,10 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     fin.close();
 
     fin.open(region_airports);
+
+    if(!fin.is_open()) {
+        throw ErrorRegionAirports();
+    }
 
     int numberOfAirports;
     fin>>numberOfAirports;
@@ -116,6 +134,11 @@ void ResourcesManager::loadWeatherTiles(const std::string &region) {
     const std::string path = "../resources/regions/" + region + "/weather_tiles.txt";
     std::vector<std::pair<float, float>> tiles;
     std::ifstream fin(path);
+
+    if(!fin.is_open()) {
+        throw ErrorRegionWeatherTiles();
+    }
+
     int n;
     fin>>n;
     for(int i = 0; i < n; i++) {

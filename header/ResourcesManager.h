@@ -9,6 +9,37 @@
 #include <SFML/Audio.hpp>
 #include <unordered_map>
 #include <fstream>
+#include <iostream>
+
+class ErrorLoadSound : public std::runtime_error {
+public:
+    explicit ErrorLoadSound(const std::string &message) : std::runtime_error("Sound Error: " + message) {};
+};
+
+class ErrorLoadTexture : public std::runtime_error {
+public:
+    explicit ErrorLoadTexture(const std::string &message) : std::runtime_error("Texture Error: " + message) {};
+};
+
+class ErrorLoadFont : public std::runtime_error {
+public:
+    explicit ErrorLoadFont(const std::string &message) : std::runtime_error("Font Error: " + message) {};
+};
+
+class ErrorRegionLatLongBox : public std::runtime_error {
+public:
+    ErrorRegionLatLongBox() : std::runtime_error("Could not load selected region latitudes and longitudes.\n") {}
+};
+
+class ErrorRegionWeatherTiles : public std::runtime_error {
+public:
+    ErrorRegionWeatherTiles() : std::runtime_error("Could not load selected region weather tiles.\n") {}
+};
+
+class ErrorRegionAirports : public std::runtime_error {
+public:
+    ErrorRegionAirports() : std::runtime_error("Could not load selected region airports.\n") {}
+};
 
 class ResourcesManager {
 public:

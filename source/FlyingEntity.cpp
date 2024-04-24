@@ -38,7 +38,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
 
     m_headingStick.setFillColor(sf::Color::Cyan);
     m_headingStick.setPosition(position);
-    m_headingStick.setSize(sf::Vector2f(26, 1.2));
+    m_headingStick.setSize(sf::Vector2f(26.f, 1.2f));
     m_headingStick.setRotation((float)heading - 90);
 
     updateText(position);

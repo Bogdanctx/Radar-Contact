@@ -17,30 +17,16 @@ int main() {
 
     try {
         ResourcesManager::Instance().load();
-    } catch(ErrorLoadSound &err) {
+    } catch(ErrorResourcesManager &err) {
         std::cout<<err.what();
-        return 0;
-    } catch(ErrorLoadFont &err) {
-        std::cout<<err.what();
-        return 0;
-    } catch (ErrorLoadTexture &err) {
-        std::cout << err.what();
-        return 0;
-    } catch (ErrorRegionAirports &err) {
-        std::cout << err.what();
-        return 0;
-    } catch (ErrorRegionWeatherTiles &err) {
-        std::cout << err.what();
-        return 0;
-    } catch (ErrorRegionLatLongBox &err) {
-        std::cout << err.what();
         return 0;
     }
 
-    {
-        Menu menu;
+    Menu menu;
+    menu.run();
 
-        menu.run();
+    if(ResourcesManager::Instance().getSelectedRegion().empty()) {
+        return 0;
     }
 
     Game game;

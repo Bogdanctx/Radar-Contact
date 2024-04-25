@@ -14,7 +14,7 @@ public:
             m_updateInterval{1100},
             m_updateAltitudeInterval{1300},
             m_updateSpeedInterval{800},
-            m_updateHeadingInterval{240} {}
+            m_updateHeadingInterval{190} {}
 
     void update() override;
 private:

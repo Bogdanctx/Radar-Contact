@@ -2,8 +2,6 @@
 // Created by bgd on 11.04.2024.
 //
 
-#include <cmath>
-
 #include "../header/Math.h"
 
 int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {

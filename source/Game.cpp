@@ -43,7 +43,6 @@ void Game::run()
     loadingSound.setLoop(true);
     loadingSound.play();
 
-
     while(m_window.isOpen())
     {
         handleEvent();
@@ -60,6 +59,11 @@ void Game::update()
         weather.fetchWeatherImages(&m_window);
         m_updateWeatherClock.restart();
     }
+
+    if(m_balloons.size() + m_airplanes.size() + m_helicopters.size() == 0) {
+        addNewBalloons();
+    }
+
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60)
     {
         if(rand() % 100 >= 40) {
@@ -254,15 +258,17 @@ void Game::addNewBalloons() {
     const int airspeed{rand() % (130-50) + 50};
     const int heading{rand() % 360};
     const std::string squawk{"7000"};
-    const std::string callsign{"BALLOON" + std::to_string(m_balloons.size() + 1)};
+    const std::string callsign{"BALLOON" + std::to_string(rand() % 1000)};
 
     std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
-    int randomDepartureAirport = rand() % regionAirports.size();
-    int randomDestination = rand() % regionAirports.size();
+    const int numberOfAirports = (int) regionAirports.size();
+
+    int randomDepartureAirport = rand() % numberOfAirports;
+    int randomDestination = rand() % numberOfAirports;
 
     if(randomDestination == randomDepartureAirport) {
-        randomDestination = (randomDepartureAirport + 1) % regionAirports.size();
+        randomDestination = (randomDepartureAirport + 1) % numberOfAirports;
     }
 
     auto it = regionAirports.begin();

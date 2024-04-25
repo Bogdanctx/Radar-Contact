@@ -8,6 +8,7 @@
 #endif //OOP_MATH_H
 
 #include <SFML/Graphics.hpp>
+
 #include <cmath>
 
 class Math

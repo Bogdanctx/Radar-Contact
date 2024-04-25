@@ -7,38 +7,44 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
 #include <unordered_map>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 
-class ErrorLoadSound : public std::runtime_error {
-public:
-    explicit ErrorLoadSound(const std::string &message) : std::runtime_error("Sound Error: " + message) {};
+class ErrorResourcesManager: public std::runtime_error {
+    using std::runtime_error::runtime_error;
 };
 
-class ErrorLoadTexture : public std::runtime_error {
+class ErrorSound: public ErrorResourcesManager {
 public:
-    explicit ErrorLoadTexture(const std::string &message) : std::runtime_error("Texture Error: " + message) {};
+    explicit ErrorSound(const std::string &message) : ErrorResourcesManager("Sound Error: " + message) {};
 };
 
-class ErrorLoadFont : public std::runtime_error {
+class ErrorTexture: public ErrorResourcesManager {
 public:
-    explicit ErrorLoadFont(const std::string &message) : std::runtime_error("Font Error: " + message) {};
+    explicit ErrorTexture(const std::string &message) : ErrorResourcesManager("Texture Error: " + message) {};
 };
 
-class ErrorRegionLatLongBox : public std::runtime_error {
+class ErrorFont: public ErrorResourcesManager {
 public:
-    ErrorRegionLatLongBox() : std::runtime_error("Could not load selected region latitudes and longitudes.\n") {}
+    explicit ErrorFont(const std::string &message) : ErrorResourcesManager("Font Error: " + message) {};
 };
 
-class ErrorRegionWeatherTiles : public std::runtime_error {
+class ErrorLatLongBox: public ErrorResourcesManager {
 public:
-    ErrorRegionWeatherTiles() : std::runtime_error("Could not load selected region weather tiles.\n") {}
+    explicit ErrorLatLongBox(const std::string &message) : ErrorResourcesManager("LatLong Box error: " + message) {};
 };
 
-class ErrorRegionAirports : public std::runtime_error {
+class ErrorWeatherTiles: public ErrorResourcesManager {
 public:
-    ErrorRegionAirports() : std::runtime_error("Could not load selected region airports.\n") {}
+    explicit ErrorWeatherTiles(const std::string &message) : ErrorResourcesManager("Weather Tiles Error: " + message) {};
+};
+
+class ErrorAirports: public ErrorResourcesManager {
+public:
+    explicit ErrorAirports(const std::string &message) : ErrorResourcesManager("Airports Error: " + message) {};
 };
 
 class ResourcesManager {

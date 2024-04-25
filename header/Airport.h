@@ -12,7 +12,7 @@
 
 class Airport {
 public:
-    explicit Airport(sf::Vector2f position, const std::string &airportICAO);
+    Airport(sf::Vector2f position, const std::string &airportICAO);
     ~Airport() = default;
 
     void render(sf::RenderWindow *window);

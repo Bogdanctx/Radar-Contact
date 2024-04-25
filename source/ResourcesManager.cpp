@@ -17,11 +17,11 @@ void ResourcesManager::load()
 }
 
 void ResourcesManager::loadSounds(const std::string &sound_name) {
-    const std::string path = "../resources/sounds/" + sound_name;
+    const std::string path = "resources/sounds/" + sound_name;
     sf::SoundBuffer sound;
 
     if(!sound.loadFromFile(path)) {
-        throw ErrorLoadSound(sound_name + " missing or corrupted\n");
+        throw ErrorSound(sound_name + " missing or corrupted\n");
     }
     m_sounds[sound_name] = sound;
 }
@@ -36,11 +36,11 @@ std::vector<std::string> ResourcesManager::getFacts() {
 
 void ResourcesManager::loadFonts(const std::string &fontName)
 {
-    const std::string fontPath = "../resources/fonts/" + fontName;
+    const std::string fontPath = "resources/fonts/" + fontName;
     sf::Font font;
 
     if(!font.loadFromFile(fontPath)) {
-        throw ErrorLoadFont(fontName + " missing or corrupted.\n");
+        throw ErrorFont(fontName + " missing or corrupted.\n");
     }
 
     m_fonts[fontName] = font;
@@ -53,11 +53,11 @@ sf::Font &ResourcesManager::getFont(const std::string &key)
 
 void ResourcesManager::loadTextures(const std::string &textureName)
 {
-    const std::string texturePath = "../resources/general_textures/" + textureName;
+    const std::string texturePath = "resources/general_textures/" + textureName;
     sf::Texture texture;
 
     if(!texture.loadFromFile(texturePath)) {
-        throw ErrorLoadTexture(textureName + " missing or corrupted.\n");
+        throw ErrorTexture(textureName + " missing or corrupted.\n");
     }
 
     m_textures[textureName] = texture;
@@ -75,20 +75,20 @@ std::string ResourcesManager::getSelectedRegion() const {
 void ResourcesManager::loadRegion(const std::string &region_name) {
     m_selectedRegion = region_name;
 
-    const std::string region_position = "../resources/regions/" + region_name + "/long_lat.txt";
-    const std::string region_airports = "../resources/regions/" + region_name + "/airports.txt";
-    const std::string region_texture = "../resources/regions/" + region_name + "/" + region_name + ".png";
+    const std::string region_position = "resources/regions/" + region_name + "/long_lat.txt";
+    const std::string region_airports = "resources/regions/" + region_name + "/airports.txt";
+    const std::string region_texture = "resources/regions/" + region_name + "/" + region_name + ".png";
 
     sf::Texture texture;
     if(!texture.loadFromFile(region_texture)) {
-        throw ErrorLoadTexture(region_name + " missing or corrupted.\n");
+        throw ErrorTexture(region_name + " missing or corrupted.\n");
     }
     m_textures[region_name] = texture;
 
     std::ifstream fin(region_position);
 
     if(!fin.is_open()) {
-        throw ErrorRegionLatLongBox();
+        throw ErrorLatLongBox("Could not open long_lat.txt. It may be missing or corrupted\n");
     }
 
     std::vector<float> box;
@@ -103,7 +103,7 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     fin.open(region_airports);
 
     if(!fin.is_open()) {
-        throw ErrorRegionAirports();
+        throw ErrorAirports("Could not open airports.txt. It may be missing or corrupted.\n");
     }
 
     int numberOfAirports;
@@ -131,12 +131,12 @@ std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegion
 }
 
 void ResourcesManager::loadWeatherTiles(const std::string &region) {
-    const std::string path = "../resources/regions/" + region + "/weather_tiles.txt";
+    const std::string path = "resources/regions/" + region + "/weather_tiles.txt";
     std::vector<std::pair<float, float>> tiles;
     std::ifstream fin(path);
 
     if(!fin.is_open()) {
-        throw ErrorRegionWeatherTiles();
+        throw ErrorWeatherTiles("Could not open weather_tiles.txt. It may be missing or corrupted.\n");
     }
 
     int n;

@@ -3,6 +3,7 @@
 //
 
 #include "../header/Menu.h"
+#include "../header/ResourcesManager.h"
 
 Menu::Menu() :
         Window({500, 400}, "Radar Contact - Menu")

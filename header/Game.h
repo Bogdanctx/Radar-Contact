@@ -19,13 +19,11 @@
 #include "Airport.h"
 #include "HotAirBalloon.h"
 #include "Weather.h"
-#include "ResourcesManager.h"
 #include "DataAPI.h"
 
 class Game : public Window {
 public:
     Game();
-    ~Game() = default;
 
     void run() override;
 private:

@@ -4,6 +4,7 @@
 
 #include "../header/DataAPI.h"
 #include "../header/Math.h"
+#include "../header/ResourcesManager.h"
 
 nlohmann::json DataAPI::getArrivals()
 {

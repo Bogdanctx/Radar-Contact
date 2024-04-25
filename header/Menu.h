@@ -9,13 +9,11 @@
 
 #include <vector>
 
-#include "ResourcesManager.h"
 #include "Window.h"
 
 class Menu : public Window {
 public:
     Menu();
-    ~Menu() = default;
 private:
     void render() override;
     void handleEvent() override;

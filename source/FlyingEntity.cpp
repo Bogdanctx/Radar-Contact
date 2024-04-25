@@ -4,6 +4,7 @@
 
 #include "../header/FlyingEntity.h"
 #include "../header/Math.h"
+#include "../header/ResourcesManager.h"
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                            const std::string &callsign, sf::Vector2f position, const std::string &arrival) :

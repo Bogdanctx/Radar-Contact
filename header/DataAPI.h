@@ -13,8 +13,6 @@
 
 #include <unordered_set>
 
-#include "ResourcesManager.h"
-
 class DataAPI {
 public:
     DataAPI() = default;

@@ -7,8 +7,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "ResourcesManager.h"
-
 class FlyingEntity {
 public:
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,

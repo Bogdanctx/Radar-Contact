@@ -9,7 +9,6 @@
 #include <SFML/Network.hpp>
 
 #include "DataAPI.h"
-#include "ResourcesManager.h"
 
 class Weather {
 public:

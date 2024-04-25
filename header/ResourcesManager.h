@@ -60,9 +60,9 @@ public:
     sf::Font &getFont(const std::string &key);
     sf::Texture& getTexture(const std::string &key);
     std::vector<float> getRegionBox();
-    std::unordered_map<std::string, std::pair<int, int>> getRegionAirports();
-    std::vector<std::pair<float, float>> getWeatherTiles();
-    std::vector<std::string> getFacts();
+    std::unordered_map<std::string, std::pair<int, int>> getRegionAirports() const;
+    std::vector<std::pair<float, float>> getWeatherTiles() const;
+    std::vector<std::string> getFacts() const;
     sf::SoundBuffer &getSound(const std::string &soundName);
     std::string getSelectedRegion() const;
 

@@ -30,12 +30,11 @@ sf::SoundBuffer &ResourcesManager::getSound(const std::string &soundName) {
     return m_sounds[soundName];
 }
 
-std::vector<std::string> ResourcesManager::getFacts() {
+std::vector<std::string> ResourcesManager::getFacts() const {
     return m_randomFacts;
 }
 
-void ResourcesManager::loadFonts(const std::string &fontName)
-{
+void ResourcesManager::loadFonts(const std::string &fontName) {
     const std::string fontPath = "resources/fonts/" + fontName;
     sf::Font font;
 
@@ -46,8 +45,7 @@ void ResourcesManager::loadFonts(const std::string &fontName)
     m_fonts[fontName] = font;
 }
 
-sf::Font &ResourcesManager::getFont(const std::string &key)
-{
+sf::Font &ResourcesManager::getFont(const std::string &key) {
     return m_fonts.at(key);
 }
 
@@ -63,8 +61,7 @@ void ResourcesManager::loadTextures(const std::string &textureName)
     m_textures[textureName] = texture;
 }
 
-sf::Texture &ResourcesManager::getTexture(const std::string &key)
-{
+sf::Texture &ResourcesManager::getTexture(const std::string &key) {
     return m_textures.at(key);
 }
 
@@ -126,7 +123,7 @@ std::vector<float> ResourcesManager::getRegionBox() {
     return m_regionBox;
 }
 
-std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports() {
+std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegionAirports() const {
     return m_airports;
 }
 
@@ -150,6 +147,6 @@ void ResourcesManager::loadWeatherTiles(const std::string &region) {
     fin.close();
 }
 
-std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles() {
+std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles() const {
     return m_regionWeatherTiles;
 }

@@ -26,6 +26,9 @@ Game::Game() :
     loadingSound.setPlayingOffset(sf::seconds(4));
     loadingSound.play();
 
+    m_atcSound.setBuffer(ResourcesManager::Instance().getSound("atc.wav"));
+    m_atcSound.setLoop(true);
+
     m_window.draw(loadingScreen);
     m_window.draw(randomFact);
     m_window.display();
@@ -38,11 +41,6 @@ Game::Game() :
 
 void Game::run()
 {
-    sf::Sound loadingSound;
-    loadingSound.setBuffer(ResourcesManager::Instance().getSound("atc.wav"));
-    loadingSound.setLoop(true);
-    loadingSound.play();
-
     while(m_window.isOpen())
     {
         handleEvent();
@@ -55,13 +53,18 @@ void Game::update()
 {
     removeCrashedEntities();
 
+    if(m_flyingEntities.empty()) {
+        m_atcSound.stop();
+    }
+    else {
+        if(m_atcSound.getStatus() != sf::SoundSource::Playing) {
+            m_atcSound.play();
+        }
+    }
+
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
         weather.fetchWeatherImages(&m_window);
         m_updateWeatherClock.restart();
-    }
-
-    if(m_balloons.size() + m_airplanes.size() + m_helicopters.size() == 0) {
-        addNewBalloons();
     }
 
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60)
@@ -76,41 +79,17 @@ void Game::update()
 
     m_window.draw(m_backgroundRegion);
 
-    for(Airplane &airplane: m_airplanes) {
-        airplane.update();
-    }
-
-    for(Helicopter &helicopter: m_helicopters) {
-        helicopter.update();
-    }
-
-    for(HotAirBalloon &hotAirBalloon: m_balloons) {
-        hotAirBalloon.update();
+    for(auto &flyingEntity: m_flyingEntities) {
+        flyingEntity->update();
     }
 }
 
 void Game::removeCrashedEntities() {
-
-    // Stergere avion de pe harta
-    auto it1 = std::remove_if(m_airplanes.begin(), m_airplanes.end(), [](const Airplane &airplane) {
-        return airplane.getCrashed();
+    auto it1 = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(), [](auto &flyingEntity) {
+        return flyingEntity->getCrashed();
     });
-    m_airplanes.erase(it1, m_airplanes.end());
+    m_flyingEntities.erase(it1, m_flyingEntities.end());
     //////
-
-    // Stergere elicopter de pe harta
-    auto it2 = std::remove_if(m_helicopters.begin(), m_helicopters.end(), [](const Helicopter &helicopter) {
-        return helicopter.getCrashed();
-    });
-    m_helicopters.erase(it2, m_helicopters.end());
-    ///////
-
-    // Stergere balon cu aer de pe harta
-    auto it3 = std::remove_if(m_balloons.begin(), m_balloons.end(), [](const HotAirBalloon &balloon) {
-        return balloon.getCrashed();
-    });
-    m_balloons.erase(it3, m_balloons.end());
-    ///////
 }
 
 void Game::render()
@@ -126,32 +105,22 @@ void Game::render()
         airport.render(&m_window);
     }
 
-    for(Airplane &airplane: m_airplanes)
-    {
-        airplane.render(&m_window);
-    }
-
-    for(Helicopter &helicopter: m_helicopters)
-    {
-        helicopter.render(&m_window);
-    }
-
-    for(HotAirBalloon &hotAirBalloon: m_balloons) {
-        hotAirBalloon.render(&m_window);
+    for(const auto &flyingEntity: m_flyingEntities) {
+        flyingEntity->render(&m_window);
     }
 
     m_window.display();
 }
 
-void Game::checkForEntitiesCollisions(const std::vector<FlyingEntity*>& flyingEntities) {
-    for(FlyingEntity *A_flyingEntity: flyingEntities) {
+void Game::checkForEntitiesCollisions() {
+    for(auto &A_flyingEntity: m_flyingEntities) {
         const std::string A_callsign = A_flyingEntity->getCallsign();
         const sf::Vector2f A_position = A_flyingEntity->getEntityPosition();
         const int A_altitude = A_flyingEntity->getAltitude();
 
         int conflictType = 0;
 
-        for(FlyingEntity *B_flyingEntity: flyingEntities) {
+        for(auto &B_flyingEntity: m_flyingEntities) {
             const std::string B_callsign = B_flyingEntity->getCallsign();
             const sf::Vector2f B_position = B_flyingEntity->getEntityPosition();
             const int B_altitude = B_flyingEntity->getAltitude();
@@ -180,10 +149,10 @@ void Game::checkForEntitiesCollisions(const std::vector<FlyingEntity*>& flyingEn
 
 }
 
-void Game::checkInsideAirspace(const std::vector<FlyingEntity*>& flyingEntities) {
+void Game::checkInsideAirspace() {
     for(Airport &airport: m_airports)
     {
-        for(FlyingEntity *flyingEntity: flyingEntities)
+        for(auto &flyingEntity: m_flyingEntities)
         {
             if(airport.isFlyingEntityInside(flyingEntity))
             {
@@ -199,33 +168,13 @@ void Game::handleEvent()
     sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
     sf::Event game_event{};
 
-    std::vector<FlyingEntity*> flyingEntities;
-    for(Airplane &airplane: m_airplanes) {
-        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&airplane);
-        flyingEntities.push_back(flyingEntity);
-    }
-    for(Helicopter &helicopter: m_helicopters) {
-        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&helicopter);
-        flyingEntities.push_back(flyingEntity);
-    }
-    for(HotAirBalloon &hotAirBalloon: m_balloons) {
-        auto *flyingEntity = dynamic_cast<FlyingEntity*>(&hotAirBalloon);
-        flyingEntities.push_back(flyingEntity);
-    }
-
-    checkForEntitiesCollisions(flyingEntities);
-    checkInsideAirspace(flyingEntities);
+    checkForEntitiesCollisions();
+    checkInsideAirspace();
 
     while(m_window.pollEvent(game_event))
     {
-        for(Airplane &airplane: m_airplanes) {
-            airplane.handleEvent(game_event, float_mouse_position);
-        }
-        for(Helicopter &helicopter: m_helicopters) {
-            helicopter.handleEvent(game_event, float_mouse_position);
-        }
-        for(HotAirBalloon &hotAirBalloon: m_balloons) {
-            hotAirBalloon.handleEvent(game_event, float_mouse_position);
+        for(auto &flyingEntity: m_flyingEntities) {
+            flyingEntity->handleEvent(game_event, float_mouse_position);
         }
 
         switch(game_event.type)
@@ -287,7 +236,9 @@ void Game::addNewBalloons() {
     arrival = it->first;
 
     HotAirBalloon balloon{altitude, airspeed, heading, squawk, callsign, position, arrival};
-    m_balloons.push_back(balloon);
+
+    std::shared_ptr<FlyingEntity> base = std::make_shared<HotAirBalloon>(balloon);
+    m_flyingEntities.push_back(base);
 }
 
 void Game::addNewEntities()
@@ -311,12 +262,14 @@ void Game::addNewEntities()
         if(altitude >= 11000) {
             Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
-            m_airplanes.push_back(airplane);
+            std::shared_ptr<FlyingEntity> base = std::make_shared<Airplane>(airplane);
+            m_flyingEntities.push_back(base);
         }
         else if(altitude >= 2000) {
             Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
-            m_helicopters.push_back(helicopter);
+            std::shared_ptr<FlyingEntity> base = std::make_shared<Helicopter>(helicopter);
+            m_flyingEntities.push_back(base);
         }
     }
 }

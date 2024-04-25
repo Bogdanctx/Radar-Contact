@@ -140,11 +140,11 @@ void FlyingEntity::checkAltitudeChange() {
     {
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            m_newAltitde += 1000;
+            m_newAltitde += 100;
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            m_newAltitde -= 1000;
+            m_newAltitde -= 100;
         }
 
         if(m_newAltitde != m_altitude) {
@@ -199,10 +199,10 @@ void FlyingEntity::updateAltitudeData(const int updateTime) {
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitde && shouldUpdateAltitude)
     {
         if(m_altitude < m_newAltitde) {
-            m_altitude += 1000;
+            m_altitude += 100;
         }
         if(m_altitude > m_newAltitde) {
-            m_altitude -= 1000;
+            m_altitude -= 100;
         }
 
         m_altitudeText.setString(std::to_string(m_altitude));

@@ -9,6 +9,7 @@
 #include <SFML/Audio.hpp>
 
 #include <vector>
+#include <memory>
 
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
@@ -34,25 +35,24 @@ private:
     void addNewBalloons();
     void addNewEntities();
     void initAirports();
-    static void checkForEntitiesCollisions(const std::vector<FlyingEntity*>& flyingEntities);
-    void checkInsideAirspace(const std::vector<FlyingEntity*>& flyingEntities);
+    void checkForEntitiesCollisions();
+    void checkInsideAirspace();
 
     void removeCrashedEntities();
 
-    std::vector<Airplane> m_airplanes{};
-    std::vector<Helicopter> m_helicopters{};
-    std::vector<HotAirBalloon> m_balloons{};
     std::vector<Airport> m_airports{};
+    std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities;
 
+
+    sf::Clock m_updateWeatherClock{};
     sf::Clock m_newEntitiesInterval{};
     sf::Sprite m_backgroundRegion{};
+    sf::Sound m_atcSound{};
 
     const std::string m_selectedRegion{};
 
     Weather weather{};
     DataAPI dataAPI{};
-
-    sf::Clock m_updateWeatherClock{};
 };
 
 

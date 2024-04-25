@@ -12,9 +12,9 @@ public:
     template <typename... Args> explicit HotAirBalloon(Args... args) :
             FlyingEntity(args...),
             m_updateInterval{900},
-            m_updateAltitudeInterval{970},
-            m_updateSpeedInterval{600},
-            m_updateHeadingInterval{280} {}
+            m_updateAltitudeInterval{1300},
+            m_updateSpeedInterval{850},
+            m_updateHeadingInterval{310} {}
 
     void update() override;
 private:

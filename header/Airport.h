@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <memory>
+
 #include "ResourcesManager.h"
 #include "FlyingEntity.h"
 
@@ -17,7 +19,7 @@ public:
 
     void render(sf::RenderWindow *window);
 
-    bool isFlyingEntityInside(FlyingEntity *flyingEntity);
+    bool isFlyingEntityInside(std::shared_ptr<FlyingEntity> &flyingEntity);
 
 private:
     sf::CircleShape m_coverage{};

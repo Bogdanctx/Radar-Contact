@@ -20,7 +20,7 @@ void Airport::render(sf::RenderWindow *window) {
     window->draw(m_labelICAO);
 }
 
-bool Airport::isFlyingEntityInside(std::shared_ptr<FlyingEntity> &flyingEntity) {
+bool Airport::isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity) {
 
     if(flyingEntity->getArrival() == m_labelICAO.getString())
     {

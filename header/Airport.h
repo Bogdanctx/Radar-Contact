@@ -19,7 +19,7 @@ public:
 
     void render(sf::RenderWindow *window);
 
-    bool isFlyingEntityInside(std::shared_ptr<FlyingEntity> &flyingEntity);
+    bool isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity);
 
 private:
     sf::CircleShape m_coverage{};

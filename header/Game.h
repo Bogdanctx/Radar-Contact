@@ -11,6 +11,7 @@
 #include <vector>
 #include <memory>
 #include <utility>
+#include <typeinfo>
 
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
@@ -19,6 +20,7 @@
 #include "Airplane.h"
 #include "Helicopter.h"
 #include "Airport.h"
+#include "SpaceEntity.h"
 #include "OZN.h"
 #include "HotAirBalloon.h"
 #include "Weather.h"
@@ -40,7 +42,7 @@ private:
 
     void addNewBalloons();
     void addNewEntities();
-    void addNewOZN();
+    void newSpaceEntity();
 
     void initAirports();
     void checkForEntitiesCollisions();
@@ -49,12 +51,12 @@ private:
     void removeCrashedEntities();
 
     std::vector<Airport> m_airports{};
-    std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities;
-    OZN ozn{};
+    std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities{};
+    SpaceEntity *m_spaceEntity{nullptr};
 
     sf::Clock m_updateWeatherClock{};
     sf::Clock m_newEntitiesInterval{};
-    sf::Clock m_passingOZN{};
+    sf::Clock m_spaceEntitiesInterval{};
     sf::Sprite m_backgroundRegion{};
     sf::Sound m_atcSound{};
 

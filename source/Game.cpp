@@ -36,7 +36,6 @@ Game::Game() :
     weather.fetchWeatherImages(&m_window);
     addNewEntities();
     initAirports();
-
 }
 
 [[maybe_unused]] Game::Game(const Game& other) : Window{{1280, 720}, "Radar Contact"},
@@ -62,7 +61,6 @@ void swap(Game& game1, Game& game2) {
     swap(game1.m_selectedRegion, game2.m_selectedRegion);
     swap(game1.weather, game2.weather);
     swap(game1.dataAPI, game2.dataAPI);
-    swap(game1.ozn, game2.ozn);
 }
 
 void Game::update()
@@ -78,10 +76,10 @@ void Game::update()
         }
     }
 
-    if(m_passingOZN.getElapsedTime().asSeconds() >= 40) {
-        addNewOZN();
+    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 7) {
+        newSpaceEntity();
 
-        m_passingOZN.restart();
+        m_spaceEntitiesInterval.restart();
     }
 
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
@@ -105,10 +103,10 @@ void Game::update()
         flyingEntity->update();
     }
 
-    sf::Vector2f oznPosition = ozn.getEntityPosition();
-
-    if(oznPosition.x >= -15 && oznPosition.x <= 1300 && oznPosition.y >= -15 && oznPosition.y <= 745) {
-        ozn.update();
+    if(m_spaceEntity != nullptr) {
+        if(m_spaceEntity->isInsideScreen()) {
+            m_spaceEntity->update();
+        }
     }
 }
 
@@ -132,11 +130,24 @@ void Game::render()
         airport.render(&m_window);
     }
 
-    for(const auto &flyingEntity: m_flyingEntities) {
-        flyingEntity->render(&m_window);
-    }
+    if(m_spaceEntity) {
+        auto* ozn = dynamic_cast<OZN*>(m_spaceEntity);
 
-    ozn.render(&m_window);
+        if(ozn && m_spaceEntity->isInsideScreen()) {
+            m_spaceEntity->render(&m_window);
+        }
+        else {
+            for(const auto &flyingEntity: m_flyingEntities) {
+                flyingEntity->render(&m_window);
+            }
+        }
+
+    }
+    else {
+        for(const auto &flyingEntity: m_flyingEntities) {
+            flyingEntity->render(&m_window);
+        }
+    }
 
     m_window.display();
 }
@@ -206,7 +217,9 @@ void Game::handleEvent()
         for(auto &flyingEntity: m_flyingEntities) {
             flyingEntity->handleEvent(gameEvent, floatMousePosition);
         }
-        ozn.handleEvent(gameEvent, floatMousePosition);
+        if(m_spaceEntity) {
+            m_spaceEntity->handleEvent(gameEvent, floatMousePosition);
+        }
 
         switch(gameEvent.type)
         {
@@ -233,13 +246,14 @@ void Game::handleEvent()
     }
 }
 
-void Game::addNewOZN() {
+void Game::newSpaceEntity() {
     enum Sides {
         NORTH,
         EAST,
         SOUTH,
         WEST
     };
+
     const int spawnSide = rand() % 4;
     sf::Vector2f position;
     int heading;
@@ -278,13 +292,18 @@ void Game::addNewOZN() {
             break;
     }
 
-    const int altitude{(rand() % (500000 - 60000) + 60000) / 100 * 100};
-    const int airspeed{rand() % (2500-1000) + 1000};
+    const int altitude = 100000;
+    const int airspeed = 1250;
     const std::string squawk{"0000"};
-    const std::string callsign{"OZN"};
-    const std::string arrival = "ANDROMEDA";
+    std::string callsign{"OZN"};
+    std::string arrival = "ANDROMEDA";
 
-    ozn = OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
+    if(1) { // ozn
+        m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
+    }
+    else {
+
+    }
 }
 
 void Game::addNewBalloons() {

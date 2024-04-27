@@ -11,6 +11,7 @@
 
 class FlyingEntity {
 public:
+    FlyingEntity() = default;
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                           const std::string &callsign, sf::Vector2f position, const std::string &arrival);
     virtual FlyingEntity* clone() const = 0;

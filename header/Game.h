@@ -41,6 +41,7 @@ private:
 
     void addNewBalloons();
     void addNewEntities();
+
     void initAirports();
     void checkForEntitiesCollisions();
     void checkInsideAirspace();
@@ -49,7 +50,6 @@ private:
 
     std::vector<Airport> m_airports{};
     std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities;
-
 
     sf::Clock m_updateWeatherClock{};
     sf::Clock m_newEntitiesInterval{};

@@ -82,7 +82,7 @@ void Game::update()
         m_atcSound.stop();
     }
     else {
-        if(m_atcSound.getStatus() != sf::SoundSource::Playing) {
+        if(m_atcSound.getStatus() == sf::SoundSource::Stopped) {
             m_atcSound.play();
         }
     }

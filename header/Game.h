@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <memory>
+#include <utility>
 
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
@@ -25,8 +26,14 @@
 class Game : public Window {
 public:
     Game();
+    [[maybe_unused]] Game(const Game& other);
+    ~Game() override = default;
+
+    Game& operator=(Game other);
 
     void run() override;
+
+    friend void swap(Game& game1, Game& game2);
 private:
     void render() override;
     void handleEvent() override;
@@ -49,7 +56,7 @@ private:
     sf::Sprite m_backgroundRegion{};
     sf::Sound m_atcSound{};
 
-    const std::string m_selectedRegion{};
+    std::string m_selectedRegion{};
 
     Weather weather{};
     DataAPI dataAPI{};

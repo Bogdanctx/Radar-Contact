@@ -15,7 +15,11 @@ public:
             m_updateAltitudeInterval{1300},
             m_updateSpeedInterval{850},
             m_updateHeadingInterval{310} {}
+    FlyingEntity* clone() const override {
+        return new HotAirBalloon(*this);
+    }
 
+    void render(sf::RenderWindow *game_window) override;
     void update() override;
 private:
     int m_updateInterval{};

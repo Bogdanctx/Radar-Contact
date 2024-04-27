@@ -15,6 +15,11 @@ Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
     m_labelICAO.setPosition(position);
 }
 
+void swap(Airport& airport1, Airport& airport2) {
+    std::swap(airport1.m_coverage, airport2.m_coverage);
+    std::swap(airport1.m_labelICAO, airport2.m_labelICAO);
+}
+
 void Airport::render(sf::RenderWindow *window) {
     window->draw(m_coverage);
     window->draw(m_labelICAO);

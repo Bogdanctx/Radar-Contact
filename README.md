@@ -49,7 +49,7 @@ O cerință nu se consideră îndeplinită dacă este realizată doar ca o serie
   - [ ✓ ] apelarea constructorului din clasa de bază din constructori din derivate
   - [ ] smart pointers (recomandat, opțional)
   - [ ] `dynamic_cast`/`std::dynamic_pointer_cast` pentru downcast cu sens
-- [ ] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
+- [ ✓ ] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
 - [ ✓ ] excepții
   - [ ✓ ] ierarhie proprie cu baza `std::exception` sau derivată din `std::exception`; minim **3** clase pentru erori specifice
   - [ ✓ ] utilizare cu sens: de exemplu, `throw` în constructor (sau funcție care întoarce un obiect), `try`/`catch` în `main`

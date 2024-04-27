@@ -12,11 +12,14 @@
 #include <nlohmann/json.hpp>
 
 #include <unordered_set>
+#include <utility>
 
 class DataAPI {
 public:
     DataAPI() = default;
     ~DataAPI() = default;
+
+    friend void swap(DataAPI& dataAPI1, DataAPI& dataAPI2);
 
     nlohmann::json getArrivals();
     static std::string getWeatherPath();

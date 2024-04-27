@@ -17,6 +17,12 @@ void Weather::render(sf::RenderWindow *window) {
     }
 }
 
+void swap(Weather& weather1, Weather& weather2) {
+    std::swap(weather1.m_tiles, weather2.m_tiles);
+    std::swap(weather1.m_textures, weather2.m_textures);
+    std::swap(weather1.m_sprites, weather2.m_sprites);
+}
+
 void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     m_textures = std::vector<sf::Texture> {};
     m_sprites = std::vector<sf::Sprite> {};

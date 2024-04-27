@@ -8,12 +8,16 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
+#include <utility>
+
 #include "DataAPI.h"
 
 class Weather {
 public:
     Weather();
     ~Weather() = default;
+
+    friend void swap(Weather& weather1, Weather& weather2);
 
     void render(sf::RenderWindow *window);
     void fetchWeatherImages(sf::RenderWindow *window);

@@ -20,11 +20,11 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_headingStick{sf::Vector2f(26, 1.2f)},
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-
         m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+
+        m_headingStick{sf::Vector2f(26, 1.2f)},
         m_callsign{callsign},
         m_arrival{arrival}
 {
@@ -45,24 +45,34 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     updateText(position);
 }
 
-void FlyingEntity::render(sf::RenderWindow *game_window)
+void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)
 {
-    game_window->draw(m_entity);
-    game_window->draw(m_callsignText);
-
-    if(m_entitySelected)
-    {
-        game_window->draw(m_arrivalText);
-        game_window->draw(m_headingText);
-        game_window->draw(m_speedText);
-        game_window->draw(m_altitudeText);
-        game_window->draw(m_squawkText);
-
-        game_window->draw(m_newSpeedText);
-        game_window->draw(m_newAltitudeText);
-        game_window->draw(m_newHeadingText);
-        game_window->draw(m_headingStick);
-    }
+    std::swap(flyingEntity1.m_heading, flyingEntity2.m_heading);
+    std::swap(flyingEntity1.m_speed, flyingEntity2.m_speed);
+    std::swap(flyingEntity1.m_altitude, flyingEntity2.m_altitude);
+    std::swap(flyingEntity1.m_squawk, flyingEntity2.m_squawk);
+    std::swap(flyingEntity1.m_entity, flyingEntity2.m_entity);
+    std::swap(flyingEntity1.m_newHeading, flyingEntity2.m_newHeading);
+    std::swap(flyingEntity1.m_newAltitde, flyingEntity2.m_newAltitde);
+    std::swap(flyingEntity1.m_newSpeed, flyingEntity2.m_newSpeed);
+    std::swap(flyingEntity1.m_entitySelected, flyingEntity2.m_entitySelected);
+    std::swap(flyingEntity1.m_headingText, flyingEntity2.m_headingText);
+    std::swap(flyingEntity1.m_speedText, flyingEntity2.m_speedText);
+    std::swap(flyingEntity1.m_altitudeText, flyingEntity2.m_altitudeText);
+    std::swap(flyingEntity1.m_squawkText, flyingEntity2.m_squawkText);
+    std::swap(flyingEntity1.m_callsignText, flyingEntity2.m_callsignText);
+    std::swap(flyingEntity1.m_arrivalText, flyingEntity2.m_arrivalText);
+    std::swap(flyingEntity1.m_newHeadingText, flyingEntity2.m_newHeadingText);
+    std::swap(flyingEntity1.m_newSpeedText, flyingEntity2.m_newSpeedText);
+    std::swap(flyingEntity1.m_newAltitudeText, flyingEntity2.m_newAltitudeText);
+    std::swap(flyingEntity1.m_headingStick, flyingEntity2.m_headingStick);
+    std::swap(flyingEntity1.m_mousePosition, flyingEntity2.m_mousePosition);
+    std::swap(flyingEntity1.m_updateAltitudeClock, flyingEntity2.m_updateAltitudeClock);
+    std::swap(flyingEntity1.m_updateSpeedClock, flyingEntity2.m_updateSpeedClock);
+    std::swap(flyingEntity1.m_updateHeadingClock, flyingEntity2.m_updateHeadingClock);
+    std::swap(flyingEntity1.m_isCrashed, flyingEntity2.m_isCrashed);
+    std::swap(flyingEntity1.m_callsign, flyingEntity2.m_callsign);
+    std::swap(flyingEntity1.m_arrival, flyingEntity2.m_arrival);
 }
 
 void FlyingEntity::updateText(const sf::Vector2f &position) {

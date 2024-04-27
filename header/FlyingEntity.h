@@ -7,15 +7,20 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <utility>
+
 class FlyingEntity {
 public:
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                           const std::string &callsign, sf::Vector2f position, const std::string &arrival);
+    virtual FlyingEntity* clone() const = 0;
     virtual ~FlyingEntity() = default;
 
     virtual void update() = 0;
-    virtual void render(sf::RenderWindow *game_window);
+    virtual void render(sf::RenderWindow *game_window) = 0;
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
+
+    friend void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2);
 
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
@@ -28,6 +33,9 @@ public:
     std::string getArrival() const;
 
 protected:
+    FlyingEntity(const FlyingEntity &other) = default;
+    FlyingEntity& operator=(const FlyingEntity& other) = default;
+
     int m_heading{};
     int m_speed{};
     int m_altitude{};
@@ -45,6 +53,10 @@ protected:
     sf::Text m_callsignText{};
     sf::Text m_arrivalText{};
 
+    sf::Text m_newHeadingText{};
+    sf::Text m_newSpeedText{};
+    sf::Text m_newAltitudeText{};
+
     sf::RectangleShape m_headingStick{};
 
     void updateAltitudeData(int updateTime);
@@ -57,10 +69,6 @@ protected:
     virtual void checkHeadingChange();
 private:
     sf::Vector2f m_mousePosition;
-
-    sf::Text m_newHeadingText{};
-    sf::Text m_newSpeedText{};
-    sf::Text m_newAltitudeText{};
 
     sf::Clock m_updateAltitudeClock{};
     sf::Clock m_updateSpeedClock{};

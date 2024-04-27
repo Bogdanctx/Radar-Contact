@@ -27,3 +27,22 @@ void Helicopter::update() {
         m_updatePositionInterval.restart();
     }
 }
+
+void Helicopter::render(sf::RenderWindow *game_window) {
+    game_window->draw(m_entity);
+    game_window->draw(m_callsignText);
+
+    if(m_entitySelected)
+    {
+        game_window->draw(m_arrivalText);
+        game_window->draw(m_headingText);
+        game_window->draw(m_speedText);
+        game_window->draw(m_altitudeText);
+        game_window->draw(m_squawkText);
+
+        game_window->draw(m_newSpeedText);
+        game_window->draw(m_newAltitudeText);
+        game_window->draw(m_newHeadingText);
+        game_window->draw(m_headingStick);
+    }
+}

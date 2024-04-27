@@ -6,6 +6,10 @@
 #include "../header/Math.h"
 #include "../header/ResourcesManager.h"
 
+void swap(DataAPI& dataAPI1, DataAPI& dataAPI2) {
+    std::swap(dataAPI1.m_fetchedEntities, dataAPI2.m_fetchedEntities);
+}
+
 nlohmann::json DataAPI::getArrivals()
 {
     const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";

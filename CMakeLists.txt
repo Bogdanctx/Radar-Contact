@@ -168,6 +168,7 @@ add_executable(${PROJECT_NAME}
         source/Helicopter.cpp
         source/HotAirBalloon.cpp
         header/HotAirBalloon.h
+        source/OZN.cpp
 )
 
 ###############################################################################

@@ -62,6 +62,7 @@ void swap(Game& game1, Game& game2) {
     swap(game1.m_selectedRegion, game2.m_selectedRegion);
     swap(game1.weather, game2.weather);
     swap(game1.dataAPI, game2.dataAPI);
+    swap(game1.ozn, game2.ozn);
 }
 
 void Game::run()
@@ -87,6 +88,12 @@ void Game::update()
         }
     }
 
+    if(m_passingOZN.getElapsedTime().asSeconds() >= 40) {
+        addNewOZN();
+
+        m_passingOZN.restart();
+    }
+
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
         weather.fetchWeatherImages(&m_window);
         m_updateWeatherClock.restart();
@@ -106,6 +113,12 @@ void Game::update()
 
     for(auto &flyingEntity: m_flyingEntities) {
         flyingEntity->update();
+    }
+
+    sf::Vector2f oznPosition = ozn.getEntityPosition();
+
+    if(oznPosition.x >= -15 && oznPosition.x <= 1300 && oznPosition.y >= -15 && oznPosition.y <= 745) {
+        ozn.update();
     }
 }
 
@@ -133,6 +146,8 @@ void Game::render()
     for(const auto &flyingEntity: m_flyingEntities) {
         flyingEntity->render(&m_window);
     }
+
+    ozn.render(&m_window);
 
     m_window.display();
 }
@@ -201,6 +216,7 @@ void Game::handleEvent()
         for(auto &flyingEntity: m_flyingEntities) {
             flyingEntity->handleEvent(game_event, float_mouse_position);
         }
+        ozn.handleEvent(game_event, float_mouse_position);
 
         switch(game_event.type)
         {
@@ -225,6 +241,60 @@ void Game::handleEvent()
                 break;
         }
     }
+}
+
+void Game::addNewOZN() {
+    enum Sides {
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    };
+    const int spawnSide = rand() % 4;
+    sf::Vector2f position;
+    int heading;
+
+    switch (spawnSide) {
+        case Sides::NORTH:
+        {
+            position.x = (float) (rand() % (900 - 50) + 50);
+            position.y = 0;
+            heading = rand() % (225 - 145) + 145;
+            break;
+        }
+        case Sides::EAST:
+        {
+            position.x = 1280;
+            position.y = (float) (rand() % (500 - 20) + 20);
+            heading = rand() % (290 - 245) + 245;
+            break;
+        }
+        case Sides::SOUTH:
+        {
+            position.x = (float) (rand() % (900 - 50) + 50);
+            position.y = 1280;
+            heading = rand() % (385 - 330) + 330;
+            break;
+        }
+        case Sides::WEST:
+        {
+            position.x = 0;
+            position.y = (float) (rand() % (500 - 20) + 20);
+            heading = rand() % (120 - 60) + 60;
+            break;
+        }
+        default:
+            heading = 0;
+            break;
+    }
+
+    const int altitude{(rand() % (500000 - 60000) + 60000) / 100 * 100};
+    const int airspeed{rand() % (2500-1000) + 1000};
+    const std::string squawk{"0000"};
+    const std::string callsign{"OZN"};
+    const std::string arrival = "ANDROMEDA";
+
+    ozn = OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
 }
 
 void Game::addNewBalloons() {

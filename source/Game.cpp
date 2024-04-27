@@ -76,7 +76,7 @@ void Game::update()
         }
     }
 
-    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 7) {
+    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 20) {
         newSpaceEntity();
 
         m_spaceEntitiesInterval.restart();
@@ -300,11 +300,11 @@ void Game::newSpaceEntity() {
     std::string callsign{"OZN"};
     std::string arrival = "ANDROMEDA";
 
-    if(0) { // ozn
+    if(rand() % 2 == 0) { // ozn
         m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
     }
     else {
-
+        m_spaceEntity = new Satellite{altitude, airspeed, heading, squawk, callsign, position, arrival};
     }
 }
 

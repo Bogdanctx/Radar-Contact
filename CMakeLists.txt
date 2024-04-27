@@ -171,6 +171,9 @@ add_executable(${PROJECT_NAME}
         source/OZN.cpp
         header/SpaceEntity.h
         source/SpaceEntity.cpp
+        source/Satellite.cpp
+        header/Satellite.h
+        header/Satellite.h
 )
 
 ###############################################################################

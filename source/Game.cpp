@@ -131,12 +131,14 @@ void Game::render()
     }
 
     if(m_spaceEntity) {
-        auto* ozn = dynamic_cast<OZN*>(m_spaceEntity);
 
-        if(ozn && m_spaceEntity->isInsideScreen()) {
+        if(m_spaceEntity->isInsideScreen()) {
             m_spaceEntity->render(&m_window);
         }
-        else {
+
+        auto* ozn = dynamic_cast<OZN*>(m_spaceEntity);
+
+        if(!ozn) {
             for(const auto &flyingEntity: m_flyingEntities) {
                 flyingEntity->render(&m_window);
             }
@@ -298,7 +300,7 @@ void Game::newSpaceEntity() {
     std::string callsign{"OZN"};
     std::string arrival = "ANDROMEDA";
 
-    if(1) { // ozn
+    if(0) { // ozn
         m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
     }
     else {

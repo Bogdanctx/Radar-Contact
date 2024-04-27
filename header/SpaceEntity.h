@@ -22,11 +22,9 @@ public:
     void handleEvent(sf::Event game_event, sf::Vector2f mouse_position) override;
 
     bool isInsideScreen() const;
-
-private:
-    int m_updateInterval{};
-
+protected:
     sf::Clock m_updatePositionInterval{};
+    int m_updateInterval{};
 };
 
 

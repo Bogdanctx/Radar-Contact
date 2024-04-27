@@ -65,16 +65,6 @@ void swap(Game& game1, Game& game2) {
     swap(game1.ozn, game2.ozn);
 }
 
-void Game::run()
-{
-    while(m_window.isOpen())
-    {
-        handleEvent();
-        update();
-        render();
-    }
-}
-
 void Game::update()
 {
     removeCrashedEntities();
@@ -127,7 +117,6 @@ void Game::removeCrashedEntities() {
         return flyingEntity->getCrashed();
     });
     m_flyingEntities.erase(it1, m_flyingEntities.end());
-    //////
 }
 
 void Game::render()
@@ -189,7 +178,8 @@ void Game::checkForEntitiesCollisions() {
 
 }
 
-void Game::checkInsideAirspace() {
+void Game::checkInsideAirspace() { // check if a flying entity could be controlled by a inferior ATC level
+    // flying entity altitude must be <= 10000 ft and speed <= 250kts
     for(Airport &airport: m_airports)
     {
         for(auto &flyingEntity: m_flyingEntities)
@@ -204,25 +194,25 @@ void Game::checkInsideAirspace() {
 
 void Game::handleEvent()
 {
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
-    sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
-    sf::Event game_event{};
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
+    sf::Vector2f floatMousePosition{(float) mousePosition.x, (float) mousePosition.y};
+    sf::Event gameEvent{};
 
     checkForEntitiesCollisions();
     checkInsideAirspace();
 
-    while(m_window.pollEvent(game_event))
+    while(m_window.pollEvent(gameEvent))
     {
         for(auto &flyingEntity: m_flyingEntities) {
-            flyingEntity->handleEvent(game_event, float_mouse_position);
+            flyingEntity->handleEvent(gameEvent, floatMousePosition);
         }
-        ozn.handleEvent(game_event, float_mouse_position);
+        ozn.handleEvent(gameEvent, floatMousePosition);
 
-        switch(game_event.type)
+        switch(gameEvent.type)
         {
             case sf::Event::KeyPressed:
             {
-                const sf::Keyboard::Key key_code = game_event.key.code;
+                const sf::Keyboard::Key key_code = gameEvent.key.code;
 
                 if(key_code == sf::Keyboard::Escape)
                 {
@@ -350,7 +340,7 @@ void Game::addNewEntities()
         const int altitude = arrivals[i]["altitude"];
         const int airspeed = Math::AirspeedAtAltitude(altitude);
         const std::string squawk = arrivals[i]["transponder"];
-        const std::string callsign = arrivals[i]["callsign"];
+        std::string callsign = arrivals[i]["callsign"];
         const sf::Vector2f position{arrivals[i]["longitude"], arrivals[i]["latitude"]};
         const std::string arrival = arrivals[i]["flight_plan"]["arrival"];
 
@@ -361,6 +351,14 @@ void Game::addNewEntities()
             m_flyingEntities.push_back(base);
         }
         else if(altitude >= 2000) {
+            const std::vector<std::string> helicopterCallsigns = {
+                    "Rotor",
+                    "Blackhawk",
+                    "UH",
+                    "Medevac"
+            };
+
+            callsign = helicopterCallsigns[rand() % helicopterCallsigns.size()] + std::to_string(rand() % 100 + 1);
             Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
             std::shared_ptr<FlyingEntity> base = std::make_shared<Helicopter>(helicopter);

@@ -30,7 +30,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
-    m_entity.setOrigin(sf::Vector2f(5, 5)); // pun originea in mijloc
+    m_entity.setOrigin(sf::Vector2f(5, 5)); // set origin in middle
     m_entity.setPosition(position);
 
     m_newAltitudeText.setFillColor(sf::Color::Cyan);
@@ -43,36 +43,6 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_headingStick.setRotation((float)heading - 90);
 
     updateText(position);
-}
-
-void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)
-{
-    std::swap(flyingEntity1.m_heading, flyingEntity2.m_heading);
-    std::swap(flyingEntity1.m_speed, flyingEntity2.m_speed);
-    std::swap(flyingEntity1.m_altitude, flyingEntity2.m_altitude);
-    std::swap(flyingEntity1.m_squawk, flyingEntity2.m_squawk);
-    std::swap(flyingEntity1.m_entity, flyingEntity2.m_entity);
-    std::swap(flyingEntity1.m_newHeading, flyingEntity2.m_newHeading);
-    std::swap(flyingEntity1.m_newAltitde, flyingEntity2.m_newAltitde);
-    std::swap(flyingEntity1.m_newSpeed, flyingEntity2.m_newSpeed);
-    std::swap(flyingEntity1.m_entitySelected, flyingEntity2.m_entitySelected);
-    std::swap(flyingEntity1.m_headingText, flyingEntity2.m_headingText);
-    std::swap(flyingEntity1.m_speedText, flyingEntity2.m_speedText);
-    std::swap(flyingEntity1.m_altitudeText, flyingEntity2.m_altitudeText);
-    std::swap(flyingEntity1.m_squawkText, flyingEntity2.m_squawkText);
-    std::swap(flyingEntity1.m_callsignText, flyingEntity2.m_callsignText);
-    std::swap(flyingEntity1.m_arrivalText, flyingEntity2.m_arrivalText);
-    std::swap(flyingEntity1.m_newHeadingText, flyingEntity2.m_newHeadingText);
-    std::swap(flyingEntity1.m_newSpeedText, flyingEntity2.m_newSpeedText);
-    std::swap(flyingEntity1.m_newAltitudeText, flyingEntity2.m_newAltitudeText);
-    std::swap(flyingEntity1.m_headingStick, flyingEntity2.m_headingStick);
-    std::swap(flyingEntity1.m_mousePosition, flyingEntity2.m_mousePosition);
-    std::swap(flyingEntity1.m_updateAltitudeClock, flyingEntity2.m_updateAltitudeClock);
-    std::swap(flyingEntity1.m_updateSpeedClock, flyingEntity2.m_updateSpeedClock);
-    std::swap(flyingEntity1.m_updateHeadingClock, flyingEntity2.m_updateHeadingClock);
-    std::swap(flyingEntity1.m_isCrashed, flyingEntity2.m_isCrashed);
-    std::swap(flyingEntity1.m_callsign, flyingEntity2.m_callsign);
-    std::swap(flyingEntity1.m_arrival, flyingEntity2.m_arrival);
 }
 
 void FlyingEntity::updateText(const sf::Vector2f &position) {
@@ -117,9 +87,9 @@ void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mo
 
     if(m_entitySelected)
     {
-        checkAltitudeChange();
-        checkSpeedChange();
-        checkHeadingChange();
+        checkAltitudeChange(); // check if user changed entity altitude
+        checkSpeedChange(); // check if user changed entity speed
+        checkHeadingChange(); /// check if user changed entity heading
     }
 
     switch(game_event.type)
@@ -128,6 +98,7 @@ void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mo
         {
             sf::FloatRect entity_bounds = m_entity.getGlobalBounds();
 
+            // if an entity has been selected by user
             if(entity_bounds.contains(mouse_position))
             {
                 m_entitySelected = true;
@@ -192,13 +163,13 @@ void FlyingEntity::checkHeadingChange() {
 }
 
 void FlyingEntity::setDanger(const int conflictType) {
-    if(conflictType == 0) { // nu exista conflict
+    if(conflictType == 0) { // no conflict
         m_entity.setFillColor(sf::Color::White);
     }
-    else if(conflictType == 1) { // entitatile se aproprie una de cealalta
+    else if(conflictType == 1) { // entities are getting close to each other
         m_entity.setFillColor(sf::Color(230, 140, 44));
     }
-    else if(conflictType == 2) { // coliziunea este iminenta
+    else if(conflictType == 2) { // collission is imminent
         m_entity.setFillColor(sf::Color::Red);
     }
 }
@@ -286,4 +257,34 @@ std::string FlyingEntity::getArrival() const {
 
 int FlyingEntity::getAirspeed() const {
     return m_speed;
+}
+
+void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)
+{
+    std::swap(flyingEntity1.m_heading, flyingEntity2.m_heading);
+    std::swap(flyingEntity1.m_speed, flyingEntity2.m_speed);
+    std::swap(flyingEntity1.m_altitude, flyingEntity2.m_altitude);
+    std::swap(flyingEntity1.m_squawk, flyingEntity2.m_squawk);
+    std::swap(flyingEntity1.m_entity, flyingEntity2.m_entity);
+    std::swap(flyingEntity1.m_newHeading, flyingEntity2.m_newHeading);
+    std::swap(flyingEntity1.m_newAltitde, flyingEntity2.m_newAltitde);
+    std::swap(flyingEntity1.m_newSpeed, flyingEntity2.m_newSpeed);
+    std::swap(flyingEntity1.m_entitySelected, flyingEntity2.m_entitySelected);
+    std::swap(flyingEntity1.m_headingText, flyingEntity2.m_headingText);
+    std::swap(flyingEntity1.m_speedText, flyingEntity2.m_speedText);
+    std::swap(flyingEntity1.m_altitudeText, flyingEntity2.m_altitudeText);
+    std::swap(flyingEntity1.m_squawkText, flyingEntity2.m_squawkText);
+    std::swap(flyingEntity1.m_callsignText, flyingEntity2.m_callsignText);
+    std::swap(flyingEntity1.m_arrivalText, flyingEntity2.m_arrivalText);
+    std::swap(flyingEntity1.m_newHeadingText, flyingEntity2.m_newHeadingText);
+    std::swap(flyingEntity1.m_newSpeedText, flyingEntity2.m_newSpeedText);
+    std::swap(flyingEntity1.m_newAltitudeText, flyingEntity2.m_newAltitudeText);
+    std::swap(flyingEntity1.m_headingStick, flyingEntity2.m_headingStick);
+    std::swap(flyingEntity1.m_mousePosition, flyingEntity2.m_mousePosition);
+    std::swap(flyingEntity1.m_updateAltitudeClock, flyingEntity2.m_updateAltitudeClock);
+    std::swap(flyingEntity1.m_updateSpeedClock, flyingEntity2.m_updateSpeedClock);
+    std::swap(flyingEntity1.m_updateHeadingClock, flyingEntity2.m_updateHeadingClock);
+    std::swap(flyingEntity1.m_isCrashed, flyingEntity2.m_isCrashed);
+    std::swap(flyingEntity1.m_callsign, flyingEntity2.m_callsign);
+    std::swap(flyingEntity1.m_arrival, flyingEntity2.m_arrival);
 }

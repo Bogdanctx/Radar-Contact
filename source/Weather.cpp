@@ -40,7 +40,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     for(const std::pair<float, float> &tile: m_tiles) {
         sf::Texture temp_texture;
         /*const std::string link = path + "/256/7/" + std::to_string(tile.first) + '/' +
-                                    std::to_string(tile.second) + "/2/1_0.png";*/
+                                    std::to_string(tile.second) + "/2/1_0.png";*/ // tested something, might implement in future
         const std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
                                  std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
@@ -59,7 +59,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     for(int i = 0; i < (int) m_textures.size(); i++) {
         sf::Sprite temp_sprite;
         temp_sprite.setTexture(m_textures[i]);
-        // temp_sprite.setScale(0.55f, 0.55f);
+        // temp_sprite.setScale(0.55f, 0.55f); // maybe for future implementations
         sf::FloatRect bounds = temp_sprite.getLocalBounds();
         temp_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 

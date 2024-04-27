@@ -35,6 +35,7 @@ nlohmann::json DataAPI::getArrivals()
             {
                 const std::string callsign = data["pilots"][i]["callsign"];
 
+                // daca avionul nu a mai fost adaugat in joc
                 if(m_fetchedEntities.find(callsign) == m_fetchedEntities.end())
                 {
                     int altitude = data["pilots"][i]["altitude"];
@@ -61,6 +62,7 @@ nlohmann::json DataAPI::getArrivals()
     return arrivals;
 }
 
+// for a potential feature
 /*std::pair<int, int> DataAPI::getWeather(const std::string &airportICAO) {
     const std::string link = "https://aviationweather.gov/api/data/metar?ids=" + airportICAO + "&format=json";
     const cpr::Response res = cpr::Get(cpr::Url{link});

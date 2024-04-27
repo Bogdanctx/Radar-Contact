@@ -56,8 +56,8 @@ O cerință nu se consideră îndeplinită dacă este realizată doar ca o serie
 - [ ✓ ] funcții și atribute `static`
 - [ ✓ ] STL
 - [ ✓ ] cât mai multe `const`
-- [ ] la sfârșit: commit separat cu adăugarea unei noi clase derivate fără a modifica restul codului, **pe lângă cele 3 derivate deja adăugate**
-  - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou
+- [ ✓ ] la sfârșit: commit separat cu adăugarea unei noi clase derivate fără a modifica restul codului, **pe lângă cele 3 derivate deja adăugate**
+  - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou <a href="https://github.com/Bogdanctx/Radar-Contact/commit/e157f1f8f0d4975367fc6e2b8506501e232b6089">Commit aici</a>
 - [ ✓ ] tag de `git`: de exemplu `v0.2`
 
 ## Tema 3

@@ -32,8 +32,6 @@ public:
 
     Game& operator=(Game other);
 
-    void run() override;
-
     friend void swap(Game& game1, Game& game2);
 private:
     void render() override;

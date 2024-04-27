@@ -13,6 +13,8 @@ int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
     return (int) distance;
 }
 
+
+// f(speed) = 1 / 250 * speed + 165;
 int Math::AirspeedAtAltitude(const int altitude) {
     const double a = 1.f / 250.f;
     const double b = 165;
@@ -54,8 +56,9 @@ float Math::radians(const float deg)
     return deg * PI / 180;
 }
 
-//
+// LINK BELOW IS DEPRECATED
 // https://stackoverflow.com/questions/2103924/mercator-longitude-and-latitude-calculations-to-x-and-y-on-a-cropped-map-of-the/10401734#10401734
+
 // https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box - CURRENT
 sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds)
 {

@@ -10,7 +10,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
                            const std::string &callsign, sf::Vector2f position, const std::string &arrival) :
         m_heading{heading}, m_speed{speed},
         m_altitude{altitude}, m_squawk{squawk},
-        m_newHeading{heading}, m_newAltitde{altitude},
+        m_newHeading{heading}, m_newAltitude{altitude},
         m_newSpeed{speed},
         m_entitySelected{false},
         m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
@@ -119,17 +119,17 @@ void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mo
 void FlyingEntity::checkAltitudeChange() {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
     {
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        if(m_newAltitude + 100 <= m_maxAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            m_newAltitde += 100;
+            m_newAltitude += 100;
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        if(m_newAltitude - 100 >= m_minAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            m_newAltitde -= 100;
+            m_newAltitude -= 100;
         }
 
-        if(m_newAltitde != m_altitude) {
-            m_newAltitudeText.setString(std::to_string(m_newAltitde));
+        if(m_newAltitude != m_altitude) {
+            m_newAltitudeText.setString(std::to_string(m_newAltitude));
         }
     }
 }
@@ -137,10 +137,10 @@ void FlyingEntity::checkAltitudeChange() {
 void FlyingEntity::checkSpeedChange() {
     if(sf::Keyboard::isKeyPressed((sf::Keyboard::LAlt)))
     {
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if(m_newSpeed + 1 <= m_maxSpeed && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             m_newSpeed++;
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        if(m_newSpeed - 1 >= m_minSpeed && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             m_newSpeed--;
         }
 
@@ -162,6 +162,16 @@ void FlyingEntity::checkHeadingChange() {
     }
 }
 
+void FlyingEntity::setAltitudeConstraints(int minAltitude, int maxAltitude) {
+    m_minAltitude = minAltitude;
+    m_maxAltitude = maxAltitude;
+}
+
+void FlyingEntity::setSpeedConstraints(int minSpeed, int maxSpeed) {
+    m_minSpeed = minSpeed;
+    m_maxSpeed = maxSpeed;
+}
+
 void FlyingEntity::setDanger(const int conflictType) {
     if(conflictType == 0) { // no conflict
         m_entity.setFillColor(sf::Color::White);
@@ -177,12 +187,12 @@ void FlyingEntity::setDanger(const int conflictType) {
 void FlyingEntity::updateAltitudeData(const int updateTime) {
     bool shouldUpdateAltitude = m_updateAltitudeClock.getElapsedTime().asMilliseconds() >= updateTime;
 
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitde && shouldUpdateAltitude)
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitude && shouldUpdateAltitude)
     {
-        if(m_altitude < m_newAltitde) {
+        if(m_altitude < m_newAltitude) {
             m_altitude += 100;
         }
-        if(m_altitude > m_newAltitde) {
+        if(m_altitude > m_newAltitude) {
             m_altitude -= 100;
         }
 
@@ -231,6 +241,12 @@ void FlyingEntity::updateHeadingData(const int updateTime) {
     }
 }
 
+bool FlyingEntity::isInsideScreen() const {
+    sf::Vector2f position = m_entity.getPosition();
+
+    return position.x >= -20 && position.x <= 1305 && position.y >= -20 && position.y <= 750;
+}
+
 void FlyingEntity::setCrashed() {
     m_isCrashed = true;
 }
@@ -267,7 +283,7 @@ void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)
     std::swap(flyingEntity1.m_squawk, flyingEntity2.m_squawk);
     std::swap(flyingEntity1.m_entity, flyingEntity2.m_entity);
     std::swap(flyingEntity1.m_newHeading, flyingEntity2.m_newHeading);
-    std::swap(flyingEntity1.m_newAltitde, flyingEntity2.m_newAltitde);
+    std::swap(flyingEntity1.m_newAltitude, flyingEntity2.m_newAltitude);
     std::swap(flyingEntity1.m_newSpeed, flyingEntity2.m_newSpeed);
     std::swap(flyingEntity1.m_entitySelected, flyingEntity2.m_entitySelected);
     std::swap(flyingEntity1.m_headingText, flyingEntity2.m_headingText);

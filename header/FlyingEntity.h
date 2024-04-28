@@ -30,6 +30,7 @@ public:
     void setDanger(int conflictType);
     void setCrashed();
     bool getCrashed() const;
+    bool isInsideScreen() const;
     std::string getCallsign() const;
     std::string getArrival() const;
 
@@ -43,9 +44,12 @@ protected:
     std::string m_squawk{};
     sf::RectangleShape m_entity{};
     int m_newHeading{};
-    int m_newAltitde{};
+    int m_newAltitude{};
     int m_newSpeed{};
     bool m_entitySelected{};
+
+    int m_minSpeed{}, m_maxSpeed{};
+    int m_minAltitude{}, m_maxAltitude{};
 
     sf::Text m_headingText{};
     sf::Text m_speedText{};
@@ -68,6 +72,9 @@ protected:
     virtual void checkAltitudeChange();
     virtual void checkSpeedChange();
     virtual void checkHeadingChange();
+
+    void setAltitudeConstraints(int minAltitude, int maxAltitude);
+    void setSpeedConstraints(int minSpeed, int maxSpeed);
 private:
     sf::Vector2f m_mousePosition;
 

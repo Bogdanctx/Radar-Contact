@@ -47,6 +47,7 @@ private:
     void initAirports();
     void checkForEntitiesCollisions();
     void checkInsideAirspace();
+    void checkOutsideScreen();
 
     void removeCrashedEntities();
 

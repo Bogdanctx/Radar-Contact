@@ -65,6 +65,10 @@ void swap(Game& game1, Game& game2) {
 
 void Game::update()
 {
+    checkForEntitiesCollisions();
+    checkInsideAirspace();
+    checkOutsideScreen();
+
     removeCrashedEntities();
 
     if(m_flyingEntities.empty()) {
@@ -106,6 +110,14 @@ void Game::update()
     if(m_spaceEntity != nullptr) {
         if(m_spaceEntity->isInsideScreen()) {
             m_spaceEntity->update();
+        }
+    }
+}
+
+void Game::checkOutsideScreen() {
+    for(auto &flyingEntity: m_flyingEntities) {
+        if(!flyingEntity->isInsideScreen()) {
+            flyingEntity->setCrashed();
         }
     }
 }
@@ -193,7 +205,7 @@ void Game::checkForEntitiesCollisions() {
 
 }
 
-void Game::checkInsideAirspace() { // check if a flying entity could be controlled by a inferior ATC level
+void Game::checkInsideAirspace() { // check if a flying entity could be controlled by an inferior ATC level
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
     for(Airport &airport: m_airports)
     {
@@ -212,9 +224,6 @@ void Game::handleEvent()
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
     sf::Vector2f floatMousePosition{(float) mousePosition.x, (float) mousePosition.y};
     sf::Event gameEvent{};
-
-    checkForEntitiesCollisions();
-    checkInsideAirspace();
 
     while(m_window.pollEvent(gameEvent))
     {

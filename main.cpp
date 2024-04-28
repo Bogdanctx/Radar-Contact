@@ -24,7 +24,7 @@ int main() {
     Menu menu;
     menu.run();
 
-    if(ResourcesManager::Instance().getSelectedRegion().empty()) { // daca a fost jocul inchis din meniu
+    if(ResourcesManager::Instance().getSelectedRegion().empty()) { // if game has been closed in menu
         return 0;
     }
 

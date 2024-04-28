@@ -21,11 +21,6 @@ void SpaceEntity::update() {
     }
 }
 
-bool SpaceEntity::isInsideScreen() const {
-    sf::Vector2f position = m_entity.getPosition();
-    return position.x >= -15 && position.x <= 1295 && position.y >= -15 && position.y <= 735;
-}
-
 void SpaceEntity::render(sf::RenderWindow *game_window) {
     game_window->draw(m_entity);
 

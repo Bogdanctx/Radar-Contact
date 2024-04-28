@@ -14,7 +14,12 @@ public:
             m_updateInterval{1100},
             m_updateAltitudeInterval{900},
             m_updateSpeedInterval{800},
-            m_updateHeadingInterval{190} {}
+            m_updateHeadingInterval{190}
+    {
+        setSpeedConstraints(185, 335);
+        setAltitudeConstraints(5000, 39000);
+    }
+
     FlyingEntity* clone() const override {
         return new Airplane(*this);
     }

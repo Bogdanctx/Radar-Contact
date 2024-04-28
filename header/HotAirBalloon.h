@@ -14,7 +14,12 @@ public:
             m_updateInterval{900},
             m_updateAltitudeInterval{1300},
             m_updateSpeedInterval{850},
-            m_updateHeadingInterval{310} {}
+            m_updateHeadingInterval{310}
+    {
+        setSpeedConstraints(25, 100);
+        setAltitudeConstraints(300, 2700);
+    }
+
     FlyingEntity* clone() const override {
         return new HotAirBalloon(*this);
     }

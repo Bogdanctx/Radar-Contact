@@ -14,7 +14,12 @@ public:
                 m_updateInterval{600},
                 m_updateAltitudeInterval{750},
                 m_updateSpeedInterval{680},
-                m_updateHeadingInterval{70} {}
+                m_updateHeadingInterval{70}
+    {
+        setSpeedConstraints(120, 270);
+        setAltitudeConstraints(5000, 17000);
+    }
+
     FlyingEntity* clone() const override {
         return new Helicopter(*this);
     }

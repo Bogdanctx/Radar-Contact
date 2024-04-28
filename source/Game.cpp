@@ -76,7 +76,7 @@ void Game::update()
         }
     }
 
-    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 20) {
+    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 5) {
         newSpaceEntity();
 
         m_spaceEntitiesInterval.restart();
@@ -134,11 +134,13 @@ void Game::render()
 
         if(m_spaceEntity->isInsideScreen()) {
             m_spaceEntity->render(&m_window);
+            m_atcSound.setVolume(0);
         }
 
         auto* ozn = dynamic_cast<OZN*>(m_spaceEntity);
 
-        if(!ozn) {
+        if(!ozn || !m_spaceEntity->isInsideScreen()) {
+            m_atcSound.setVolume(100);
             for(const auto &flyingEntity: m_flyingEntities) {
                 flyingEntity->render(&m_window);
             }
@@ -304,7 +306,7 @@ void Game::newSpaceEntity() {
         m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
     }
     else {
-        m_spaceEntity = new Satellite{altitude, airspeed, heading, squawk, callsign, position, arrival};
+
     }
 }
 

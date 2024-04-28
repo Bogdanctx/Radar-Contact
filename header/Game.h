@@ -21,7 +21,6 @@
 #include "Helicopter.h"
 #include "Airport.h"
 #include "SpaceEntity.h"
-#include "Satellite.h"
 #include "OZN.h"
 #include "HotAirBalloon.h"
 #include "Weather.h"

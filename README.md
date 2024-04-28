@@ -1,3 +1,34 @@
+# Radar Contact
+
+### How to play?
+
+Run the game and choose a region. Available regions: Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland.
+
+![Alt Text](./resources/preview/menu.png)
+
+After that, control your airspace! Give instructions to airplanes, helicopters and hot air balloons to arrive to their airports.
+
+A flying entity will disconnect from your frequency when it is inside the arrival airport coverage area (the yellow circles). In order to disconnect, some conditions are required: altitude must be below 10000ft and the airspeed must be below 250 knots.
+
+![Alt Text](./resources/preview/landing.gif)
+
+# Collisions!
+Be careful! If 2 flying entities are at the same altitude they'll collide!
+
+![Alt Text](./resources/preview/collision.gif)
+
+# Data of a flying entity
+
+Blue text represents new flight data, if any has been given. 
+
+![Alt Text](./resources/preview/data_meaning.png)
+
+Change heading by pressing LSHIFT and move your cursor around.
+
+Change altitude by pressing LALT and UP/DOWN Arrows.
+
+Change airspeed by pressing LCTRL and UP/DOWN Arrows.
+
 # Nu primesc notă pentru că nu am pus titlu și descriere
 
 ### Important!
@@ -57,7 +88,7 @@ O cerință nu se consideră îndeplinită dacă este realizată doar ca o serie
 - [ ✓ ] STL
 - [ ✓ ] cât mai multe `const`
 - [ ✓ ] la sfârșit: commit separat cu adăugarea unei noi clase derivate fără a modifica restul codului, **pe lângă cele 3 derivate deja adăugate**
-  - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou <a href="https://github.com/Bogdanctx/Radar-Contact/commit/e157f1f8f0d4975367fc6e2b8506501e232b6089">Commit aici</a>
+  - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou <a href="https://github.com/Bogdanctx/Radar-Contact/commit/f90796aac1f9f8388094c3e4b9543ec16e02fb48">Commit aici</a>
 - [ ✓ ] tag de `git`: de exemplu `v0.2`
 
 ## Tema 3

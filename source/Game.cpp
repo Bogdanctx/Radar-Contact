@@ -81,7 +81,7 @@ void Game::update()
         }
     }
 
-    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 30) {
+    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 35) {
         newSpaceEntity();
 
         m_spaceEntitiesInterval.restart();
@@ -316,7 +316,7 @@ void Game::newSpaceEntity() {
         m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
     }
     else {
-
+        m_spaceEntity = new Satellite{altitude, airspeed, heading, squawk, callsign, position, arrival};
     }
 }
 

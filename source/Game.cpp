@@ -61,6 +61,7 @@ void swap(Game& game1, Game& game2) {
     swap(game1.m_selectedRegion, game2.m_selectedRegion);
     swap(game1.weather, game2.weather);
     swap(game1.dataAPI, game2.dataAPI);
+    swap(game1.m_spaceEntity, game2.m_spaceEntity);
 }
 
 void Game::update()
@@ -80,7 +81,7 @@ void Game::update()
         }
     }
 
-    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 5) {
+    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 30) {
         newSpaceEntity();
 
         m_spaceEntitiesInterval.restart();
@@ -308,8 +309,8 @@ void Game::newSpaceEntity() {
     const int altitude = 100000;
     const int airspeed = 1250;
     const std::string squawk{"0000"};
-    std::string callsign{"OZN"};
-    std::string arrival = "ANDROMEDA";
+    const std::string callsign;
+    const std::string arrival;
 
     if(rand() % 2 == 0) { // ozn
         m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};

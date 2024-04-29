@@ -21,6 +21,12 @@ void Window::run() {
 
 }
 
+void Window::render() {
+    m_window.clear();
+
+    m_window.display();
+}
+
 void Window::handleEvent()
 {
     sf::Event window_event{};

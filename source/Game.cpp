@@ -150,7 +150,7 @@ void Game::render()
             m_atcSound.setVolume(0);
         }
 
-        auto* ozn = dynamic_cast<OZN*>(m_spaceEntity);
+        auto ozn = std::dynamic_pointer_cast<OZN>(m_spaceEntity);
 
         if(!ozn || !m_spaceEntity->isInsideScreen()) {
             m_atcSound.setVolume(100);
@@ -313,10 +313,10 @@ void Game::newSpaceEntity() {
     const std::string arrival;
 
     if(rand() % 2 == 0) { // ozn
-        m_spaceEntity = new OZN{altitude, airspeed, heading, squawk, callsign, position, arrival};
+        m_spaceEntity = std::make_shared<OZN>(altitude, airspeed, heading, squawk, callsign, position, arrival);
     }
     else {
-        m_spaceEntity = new Satellite{altitude, airspeed, heading, squawk, callsign, position, arrival};
+        m_spaceEntity = std::make_shared<Satellite>(altitude, airspeed, heading, squawk, callsign, position, arrival);
     }
 }
 

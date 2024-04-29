@@ -54,7 +54,7 @@ private:
 
     std::vector<Airport> m_airports{};
     std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities{};
-    SpaceEntity *m_spaceEntity{nullptr};
+    std::shared_ptr<SpaceEntity> m_spaceEntity{};
 
     sf::Clock m_updateWeatherClock{};
     sf::Clock m_newEntitiesInterval{};

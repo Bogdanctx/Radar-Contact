@@ -4,24 +4,24 @@
 
 Run the game and choose a region. Available regions: Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland.
 
-![Alt Text](./resources/preview/menu.png)
+![Alt Text](./preview/menu.png)
 
 After that, control your airspace! Give instructions to airplanes, helicopters and hot air balloons to arrive to their airports.
 
 A flying entity will disconnect from your frequency when it is inside the arrival airport coverage area (the yellow circles). In order to disconnect, some conditions are required: altitude must be below 10000ft and the airspeed must be below 250 knots.
 
-![Alt Text](./resources/preview/landing.gif)
+![Alt Text](./preview/landing.gif)
 
 # Collisions!
 Be careful! If 2 flying entities are at the same altitude they'll collide!
 
-![Alt Text](./resources/preview/collision.gif)
+![Alt Text](./preview/collision.gif)
 
 # Data of a flying entity
 
 Blue text represents new flight data, if any has been given. 
 
-![Alt Text](./resources/preview/data_meaning.png)
+![Alt Text](./preview/data_meaning.png)
 
 Change heading by pressing LSHIFT and move your cursor around.
 

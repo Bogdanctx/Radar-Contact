@@ -5,7 +5,8 @@
 #include "../header/Window.h"
 
 Window::Window(const std::pair<int, int> resolution, const std::string &title) :
-                m_window(sf::VideoMode(resolution.first, resolution.second), title)
+                m_window(sf::VideoMode(resolution.first, resolution.second), title,
+                         sf::Style::Close | sf::Style::Titlebar)
 {
     m_window.setVerticalSyncEnabled(true);
 }

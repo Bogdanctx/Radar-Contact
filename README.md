@@ -103,4 +103,8 @@ O cerință nu se consideră îndeplinită dacă este realizată doar ca o serie
 ## Resurse
 
 - [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
-- adăugați trimiteri către resursele externe care v-au ajutat sau pe care le-ați folosit
+- [Google Fonts](https://fonts.google.com/specimen/Poppins) (Poppins)
+- [Google Fonts](https://fonts.google.com/specimen/Raleway?query=raleway) (Raleway)
+- [Flaticon](https://www.flaticon.com/free-icon/radar_15721478?term=radar&page=1&position=33&origin=tag&related_id=15721478) (Radar icon)
+- [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC)
+- [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Landing sound)

@@ -103,6 +103,8 @@ O cerință nu se consideră îndeplinită dacă este realizată doar ca o serie
 ## Resurse
 
 - [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
+- [RainViewer](https://www.rainviewer.com/) (Weather API)
+- [VATSIM](https://vatsim.dev/) (Airplanes API)
 - [Google Fonts](https://fonts.google.com/specimen/Poppins) (Poppins)
 - [Google Fonts](https://fonts.google.com/specimen/Raleway?query=raleway) (Raleway)
 - [Flaticon](https://www.flaticon.com/free-icon/radar_15721478?term=radar&page=1&position=33&origin=tag&related_id=15721478) (Radar icon)

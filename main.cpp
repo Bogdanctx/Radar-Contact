@@ -27,20 +27,20 @@ int main() {
 
     try {
         ResourcesManager::Instance().load();
+
+        Menu menu;
+        menu.run();
+
+        if(ResourcesManager::Instance().getSelectedRegion().empty()) { // if game has been closed in menu
+            return 0;
+        }
+
+        Game game;
+        game.run();
+
     } catch(ErrorResourcesManager &err) {
-        std::cout<<err.what();
-        return 0;
+        std::cout << err.what();
     }
-
-    Menu menu;
-    menu.run();
-
-    if(ResourcesManager::Instance().getSelectedRegion().empty()) { // if game has been closed in menu
-        return 0;
-    }
-
-    Game game;
-    game.run();
 
     return 0;
 }

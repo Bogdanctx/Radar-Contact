@@ -12,8 +12,8 @@ void Satellite::render(sf::RenderWindow *game_window) {
     }
 }
 
-void Satellite::update() {
-    if(m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
+void Satellite::update(bool force = false) {
+    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
     {
         const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed,
                                                                                  (float) m_heading);
@@ -25,6 +25,8 @@ void Satellite::update() {
 
         updateText(m_entity.getPosition());
 
-        m_updatePositionInterval.restart();
+        if(!force) {
+            m_updatePositionInterval.restart();
+        }
     }
 }

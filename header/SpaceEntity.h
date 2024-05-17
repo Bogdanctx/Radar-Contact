@@ -22,7 +22,7 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update() override;
+    void update(bool force) override;
     void handleEvent(sf::Event game_event, sf::Vector2f mouse_position) override;
 protected:
     sf::Clock m_updatePositionInterval{};

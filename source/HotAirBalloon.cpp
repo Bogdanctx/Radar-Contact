@@ -5,12 +5,12 @@
 #include "../header/HotAirBalloon.h"
 #include "../header/Math.h"
 
-void HotAirBalloon::update() {
+void HotAirBalloon::update(bool force = false) {
     updateAltitudeData(m_updateAltitudeInterval);
     updateSpeedData(m_updateSpeedInterval);
     updateHeadingData(m_updateHeadingInterval);
 
-    if(m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
+    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
     {
         const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
         m_entity.move(translation_to_point);
@@ -21,7 +21,9 @@ void HotAirBalloon::update() {
             m_headingStick.setRotation((float)m_heading - 90);
         }
 
-        m_updatePositionInterval.restart();
+        if(!force) {
+            m_updatePositionInterval.restart();
+        }
     }
 }
 

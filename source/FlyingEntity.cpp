@@ -24,8 +24,8 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
 
-        m_headingStick{sf::Vector2f(26, 1.2f)},
         m_callsign{callsign},
+        m_headingStick{sf::Vector2f(26, 1.2f)},
         m_arrival{arrival}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
@@ -273,6 +273,10 @@ std::string FlyingEntity::getArrival() const {
 
 int FlyingEntity::getAirspeed() const {
     return m_speed;
+}
+
+void FlyingEntity::setEntitySelected() {
+    m_entitySelected = true;
 }
 
 void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)

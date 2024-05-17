@@ -118,7 +118,7 @@ void Game::update()
 
     if(m_spaceEntity != nullptr) {
         if(m_spaceEntity->isInsideScreen()) {
-            m_spaceEntity->update();
+            m_spaceEntity->update(false);
         }
     }
 }
@@ -244,6 +244,7 @@ void Game::handleEvent()
         if(m_spaceEntity) {
             m_spaceEntity->handleEvent(gameEvent, floatMousePosition);
         }
+        flightsTable.handleEvent(gameEvent, floatMousePosition);
 
         switch(gameEvent.type)
         {

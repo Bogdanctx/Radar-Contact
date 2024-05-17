@@ -5,8 +5,8 @@
 #include "../header/SpaceEntity.h"
 #include "../header/Math.h"
 
-void SpaceEntity::update() {
-    if(m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
+void SpaceEntity::update(bool force) {
+    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
     {
         const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
         m_entity.move(translation_to_point);
@@ -17,7 +17,9 @@ void SpaceEntity::update() {
             m_headingStick.setRotation((float)m_heading - 90);
         }
 
-        m_updatePositionInterval.restart();
+        if(!force) {
+            m_updatePositionInterval.restart();
+        }
     }
 }
 

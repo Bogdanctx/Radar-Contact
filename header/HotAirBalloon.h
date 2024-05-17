@@ -9,7 +9,8 @@
 
 class HotAirBalloon : public FlyingEntity {
 public:
-    template <typename... Args> explicit HotAirBalloon(Args... args) :
+    template <typename... Args>
+    explicit HotAirBalloon(Args... args) :
             FlyingEntity(args...),
             m_updateInterval{900},
             m_updateAltitudeInterval{1300},
@@ -25,7 +26,7 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update() override;
+    void update(bool force) override;
 private:
     int m_updateInterval{};
     int m_updateAltitudeInterval{};

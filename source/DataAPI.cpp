@@ -44,7 +44,7 @@ nlohmann::json DataAPI::getArrivals()
                     const sf::Vector2f mercatorProjection = Math::MercatorProjection(latitude, longitude, longLatBox);
                     const int distanceFromMiddle = Math::DistanceBetweenTwoPoints(sf::Vector2f(640, 360), mercatorProjection);
 
-                    if(distanceFromMiddle <= 640 && altitude >= 2000 && altitude <= 40000) {
+                    if(distanceFromMiddle <= 620 && altitude >= 2000 && altitude <= 40000) {
                         altitude = altitude / 1000 * 1000;
                         data["pilots"][i]["altitude"] = altitude;
                         data["pilots"][i]["longitude"] = mercatorProjection.x;

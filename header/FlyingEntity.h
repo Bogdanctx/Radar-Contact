@@ -18,7 +18,7 @@ public:
     virtual FlyingEntity* clone() const = 0;
     virtual ~FlyingEntity() = default;
 
-    virtual void update() = 0;
+    virtual void update(bool force = false) = 0;
     virtual void render(sf::RenderWindow *game_window) = 0;
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
@@ -30,6 +30,7 @@ public:
 
     void setDanger(int conflictType);
     void setCrashed();
+    void setEntitySelected();
     bool getCrashed() const;
     bool isInsideScreen() const;
     std::string getCallsign() const;
@@ -100,8 +101,9 @@ public:
         const std::string callsign = m_component->m_callsign;
         const std::string altitude = m_component->m_altitudeText.getString() + "ft";
         const std::string airspeed = m_component->m_speedText.getString() + "kts";
+        const std::string arrival = m_component->m_arrival;
 
-        const std::string result = callsign + "     " + altitude + "     " + airspeed;
+        const std::string result = callsign + "     " + altitude + "     " + airspeed + "     " + arrival;
 
         return result;
     }

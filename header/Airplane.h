@@ -27,15 +27,9 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update(bool force) override;
 
 private:
-    int m_updateInterval{};
-    int m_updateAltitudeInterval{};
-    int m_updateSpeedInterval{};
-    int m_updateHeadingInterval{};
-
-    sf::Clock m_updatePositionInterval{};
+    void internalUpdate() override;
 };
 
 

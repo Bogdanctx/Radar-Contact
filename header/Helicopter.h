@@ -26,8 +26,9 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update(bool force) override;
 private:
+    void internalUpdate() override;
+
     int m_updateInterval{};
     int m_updateAltitudeInterval{};
     int m_updateSpeedInterval{};

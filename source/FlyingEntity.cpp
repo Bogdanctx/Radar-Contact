@@ -150,6 +150,20 @@ void FlyingEntity::checkSpeedChange() {
     }
 }
 
+void FlyingEntity::update(bool force = false) {
+    updateAltitudeData(m_updateAltitudeInterval);
+    updateSpeedData(m_updateSpeedInterval);
+    updateHeadingData(m_updateHeadingInterval);
+
+    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
+    {
+        internalUpdate();
+
+        if(!force) {
+            m_updatePositionInterval.restart();
+        }
+    }
+}
 void FlyingEntity::checkHeadingChange() {
     if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift))) {
         m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);

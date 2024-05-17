@@ -18,7 +18,7 @@ public:
     virtual FlyingEntity* clone() const = 0;
     virtual ~FlyingEntity() = default;
 
-    virtual void update(bool force = false) = 0;
+    void update(bool force);
     virtual void render(sf::RenderWindow *game_window) = 0;
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
@@ -80,6 +80,8 @@ protected:
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
 private:
+    virtual void internalUpdate() = 0;
+
     friend class FlyingEntity_Decorator;
 
     sf::Vector2f m_mousePosition;
@@ -87,6 +89,13 @@ private:
     sf::Clock m_updateAltitudeClock{};
     sf::Clock m_updateSpeedClock{};
     sf::Clock m_updateHeadingClock{};
+
+    int m_updateInterval{};
+    int m_updateAltitudeInterval{};
+    int m_updateSpeedInterval{};
+    int m_updateHeadingInterval{};
+
+    sf::Clock m_updatePositionInterval{};
 
     bool m_isCrashed{};
     std::string m_arrival;

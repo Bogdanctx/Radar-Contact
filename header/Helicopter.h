@@ -9,7 +9,8 @@
 
 class Helicopter : public FlyingEntity {
 public:
-    template <typename... Args> explicit Helicopter(Args... args) :
+    template <typename... Args>
+    explicit Helicopter(Args... args) :
                 FlyingEntity(args...),
                 m_updateInterval{600},
                 m_updateAltitudeInterval{750},
@@ -34,6 +35,5 @@ private:
 
     sf::Clock m_updatePositionInterval{};
 };
-
 
 #endif //RADAR_CONTACT_HELICOPTER_H

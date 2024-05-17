@@ -15,7 +15,6 @@
 class Weather {
 public:
     Weather();
-    ~Weather() = default;
 
     friend void swap(Weather& weather1, Weather& weather2);
 

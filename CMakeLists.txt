@@ -173,6 +173,8 @@ add_executable(${PROJECT_NAME}
         source/SpaceEntity.cpp
         source/Satellite.cpp
         header/Satellite.h
+        source/FlightsTable.cpp
+        header/FlightsTable.h
 )
 
 ###############################################################################

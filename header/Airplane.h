@@ -9,7 +9,9 @@
 
 class Airplane : public FlyingEntity {
 public:
-    template <typename... Args> explicit Airplane(Args... args) :
+    Airplane() = default;
+    template <typename... Args>
+    explicit Airplane(Args... args) :
             FlyingEntity(args...),
             m_updateInterval{1100},
             m_updateAltitudeInterval{900},

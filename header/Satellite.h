@@ -12,14 +12,15 @@
 
 class Satellite : public SpaceEntity {
 public:
-    template <typename... Args> explicit Satellite(Args... args) : SpaceEntity(args...) {
+    template <typename... Args>
+    explicit Satellite(Args... args) : SpaceEntity(args...) {
         sf::Vector2f startPosition = m_entity.getPosition();
 
         for(int i = 1; i <= 4; i++) {
             sf::RectangleShape bodyPart;
 
-            startPosition.x -= 11 - i;
-            startPosition.y -= 11 - i;
+            startPosition.x -= (float)(11 - i);
+            startPosition.y -= (float)(11 - i);
 
             bodyPart.setSize(sf::Vector2f(10, 10));
             bodyPart.setFillColor(sf::Color::White);

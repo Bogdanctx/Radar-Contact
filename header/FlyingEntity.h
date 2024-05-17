@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <utility>
+#include <memory>
 
 class FlyingEntity {
 public:
@@ -62,6 +63,8 @@ protected:
     sf::Text m_newSpeedText{};
     sf::Text m_newAltitudeText{};
 
+    std::string m_callsign{};
+
     sf::RectangleShape m_headingStick{};
 
     void updateAltitudeData(int updateTime);
@@ -76,6 +79,8 @@ protected:
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
 private:
+    friend class FlyingEntity_Decorator;
+
     sf::Vector2f m_mousePosition;
 
     sf::Clock m_updateAltitudeClock{};
@@ -83,9 +88,25 @@ private:
     sf::Clock m_updateHeadingClock{};
 
     bool m_isCrashed{};
-    std::string m_callsign{};
     std::string m_arrival;
 };
 
+class FlyingEntity_Decorator {
+public:
+    FlyingEntity_Decorator() = delete;
+    explicit FlyingEntity_Decorator(std::shared_ptr<FlyingEntity> component) : m_component(std::move(component)) {}
+
+    std::string to_text() {
+        const std::string callsign = m_component->m_callsign;
+        const std::string altitude = m_component->m_altitudeText.getString() + "ft";
+        const std::string airspeed = m_component->m_speedText.getString() + "kts";
+
+        const std::string result = callsign + "     " + altitude + "     " + airspeed;
+
+        return result;
+    }
+private:
+    std::shared_ptr<FlyingEntity> m_component{};
+};
 
 #endif //OOP_FLYINGENTITY_H

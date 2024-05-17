@@ -26,6 +26,7 @@
 #include "HotAirBalloon.h"
 #include "Weather.h"
 #include "DataAPI.h"
+#include "FlightsTable.h"
 
 class Game : public Window {
 public:
@@ -59,6 +60,7 @@ private:
     sf::Clock m_updateWeatherClock{};
     sf::Clock m_newEntitiesInterval{};
     sf::Clock m_spaceEntitiesInterval{};
+    sf::Clock m_flightTableClock{};
     sf::Sprite m_backgroundRegion{};
     sf::Sound m_atcSound{};
 
@@ -66,6 +68,7 @@ private:
 
     Weather weather{};
     DataAPI dataAPI{};
+    FlightsTable flightsTable{};
 };
 
 

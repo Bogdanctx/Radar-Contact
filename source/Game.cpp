@@ -36,6 +36,8 @@ Game::Game() :
     weather.fetchWeatherImages(&m_window);
     addNewEntities();
     initAirports();
+
+    flightsTable.update(m_flyingEntities); // on first run
 }
 
 [[maybe_unused]] Game::Game(const Game& other) : Window{{1280, 720}, "Radar Contact"},
@@ -85,6 +87,12 @@ void Game::update()
         newSpaceEntity();
 
         m_spaceEntitiesInterval.restart();
+    }
+
+    if(m_flightTableClock.getElapsedTime().asSeconds() >= 5) {
+        flightsTable.update(m_flyingEntities);
+
+        m_flightTableClock.restart();
     }
 
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
@@ -165,6 +173,8 @@ void Game::render()
             flyingEntity->render(&m_window);
         }
     }
+
+    flightsTable.draw(&m_window);
 
     m_window.display();
 }

@@ -3,6 +3,7 @@
 //
 
 #include "../header/ResourcesManager.h"
+#include <mutex>
 
 void ResourcesManager::load()
 {
@@ -69,54 +70,64 @@ std::string ResourcesManager::getSelectedRegion() const {
     return m_selectedRegion;
 }
 
-void ResourcesManager::loadRegion(const std::string &region_name) {
-    m_selectedRegion = region_name;
+void ResourcesManager::loadLatLongBox(const std::string &region_name) {
+    static std::mutex mutex{};
+    const std::string regionBox = "resources/regions/" + region_name + "/long_lat.txt";
 
-    const std::string region_position = "resources/regions/" + region_name + "/long_lat.txt";
-    const std::string region_airports = "resources/regions/" + region_name + "/airports.txt";
-    const std::string region_texture = "resources/regions/" + region_name + "/" + region_name + ".png";
+    std::lock_guard<std::mutex> lockGuard(mutex);
 
-    sf::Texture texture;
-    if(!texture.loadFromFile(region_texture)) {
-        throw ErrorTexture(region_name + " missing or corrupted.\n");
-    }
-    m_textures[region_name] = texture;
-
-    std::ifstream fin(region_position);
-
+    std::ifstream fin(regionBox);
     if(!fin.is_open()) {
         throw ErrorLatLongBox("Could not open long_lat.txt. It may be missing or corrupted\n");
     }
 
-    std::vector<float> box;
     for(int i = 0; i < 4; i++) {
-        float f;
-        fin>>f;
-        box.push_back(f);
+        float coordinate;
+        fin>>coordinate;
+        m_regionBox.push_back(coordinate);
     }
-    m_regionBox = box;
+
     fin.close();
+}
 
-    fin.open(region_airports);
+void ResourcesManager::loadAirports(const std::string &region_name) {
+    const std::string regionAirports = "resources/regions/" + region_name + "/airports.txt";
+    static std::mutex mutex{};
 
+    std::lock_guard<std::mutex> lockGuard(mutex);
+
+    std::ifstream fin(regionAirports);
     if(!fin.is_open()) {
         throw ErrorAirports("Could not open airports.txt. It may be missing or corrupted.\n");
     }
 
     int numberOfAirports;
-    fin>>numberOfAirports;
+    fin >> numberOfAirports;
     for(int i = 0; i < numberOfAirports; i++)
     {
         std::string airportICAO;
         int x, y;
-        fin>>x>>y>>airportICAO;
+        fin >> x >> y >> airportICAO;
 
         m_airports[airportICAO] = {x, y};
     }
 
     fin.close();
+}
 
+void ResourcesManager::loadRegion(const std::string &region_name) {
+    m_selectedRegion = region_name;
+
+    loadLatLongBox(region_name);
+    loadAirports(region_name);
     loadWeatherTiles(region_name);
+
+    // load region background
+    const std::string region_texture = "resources/regions/" + region_name + "/" + region_name + ".png";
+    if(!m_textures[region_name].loadFromFile(region_texture)) {
+        throw ErrorTexture(region_name + " missing or corrupted.\n");
+    }
+    //////
 }
 
 std::vector<float> ResourcesManager::getRegionBox() {
@@ -129,21 +140,24 @@ std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegion
 
 void ResourcesManager::loadWeatherTiles(const std::string &region) {
     const std::string path = "resources/regions/" + region + "/weather_tiles.txt";
-    std::vector<std::pair<float, float>> tiles;
-    std::ifstream fin(path);
+    static std::mutex mutex{};
 
+    std::lock_guard<std::mutex> lockGuard(mutex);
+
+    std::ifstream fin(path);
     if(!fin.is_open()) {
         throw ErrorWeatherTiles("Could not open weather_tiles.txt. It may be missing or corrupted.\n");
     }
 
-    int n;
-    fin>>n;
-    for(int i = 0; i < n; i++) {
+    int numberOfTiles;
+    fin >> numberOfTiles;
+
+    for(int i = 0; i < numberOfTiles; i++) {
         float longitude, latitude;
-        fin>>longitude>>latitude;
-        tiles.emplace_back(latitude, longitude);
+        fin >> longitude >> latitude;
+        m_regionWeatherTiles.emplace_back(latitude, longitude);
     }
-    m_regionWeatherTiles = tiles;
+
     fin.close();
 }
 

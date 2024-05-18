@@ -5,6 +5,7 @@
 #include "../header/Game.h"
 #include "../header/Math.h"
 #include "../header/utils.h"
+#include "../header/Satellite.h"
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
@@ -12,7 +13,8 @@ Game::Game() :
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
-    sf::Text randomFact{"Fact: " + facts[rand32() % facts.size()], ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
+    sf::Text randomFact{"Fact: " + facts[Utilities::randGen<int>(0, (int) facts.size() - 1)],
+                        ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
 
     sf::FloatRect factBounds = randomFact.getLocalBounds();
     randomFact.setOrigin(factBounds.width / 2, factBounds.height / 2);
@@ -103,7 +105,7 @@ void Game::update()
 
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60)
     {
-        if(rand32() % 100 >= 40) {
+        if(Utilities::randGen<int>(0, 100) >= 40) {
             addNewBalloons();
         }
 
@@ -161,6 +163,10 @@ void Game::render()
 
         auto ozn = std::dynamic_pointer_cast<OZN>(m_spaceEntity);
 
+        // if (ozn && ozn_is_inside_screen) setez sunetul la 0 si nu mai randez avioanele
+        // aplic De Morgan
+        // if (!ozn || !ozn_is_inside_screen) setez sunetul la 100 si randez avioanele
+        //      ^ inseamna ca este satelit
         if(!ozn || !m_spaceEntity->isInsideScreen()) {
             m_atcSound.setVolume(100);
             for(const auto &flyingEntity: m_flyingEntities) {
@@ -280,37 +286,37 @@ void Game::newSpaceEntity() {
         WEST
     };
 
-    const int spawnSide = rand32() % 4;
+    const int spawnSide = Utilities::randGen<int>(0, 4);
     sf::Vector2f position;
     int heading;
 
     switch (spawnSide) {
         case Sides::NORTH:
         {
-            position.x = (float) (rand32() % (900 - 50) + 50);
-            position.y = 0;
-            heading = rand32() % (225 - 145) + 145;
+            position.x = Utilities::randGen<float>(50.f, 900.f);
+            position.y = 0.f;
+            heading = Utilities::randGen<int>(145, 225);
             break;
         }
         case Sides::EAST:
         {
-            position.x = 1280;
-            position.y = (float) (rand32() % (500 - 20) + 20);
-            heading = rand32() % (290 - 245) + 245;
+            position.x = 1280.f;
+            position.y = Utilities::randGen<float>(20.f, 500.f);
+            heading = Utilities::randGen<int>(245, 290);
             break;
         }
         case Sides::SOUTH:
         {
-            position.x = (float) (rand32() % (900 - 50) + 50);
-            position.y = 1280;
-            heading = rand32() % (385 - 330) + 330;
+            position.x = Utilities::randGen<float>(50, 900);
+            position.y = 1280.f;
+            heading = Utilities::randGen<int>(330, 385);
             break;
         }
         case Sides::WEST:
         {
             position.x = 0;
-            position.y = (float) (rand32() % (500 - 20) + 20);
-            heading = rand32() % (120 - 60) + 60;
+            position.y = Utilities::randGen<float>(20.f, 500.f);
+            heading = Utilities::randGen<int>(60, 120);
             break;
         }
         default:
@@ -324,7 +330,7 @@ void Game::newSpaceEntity() {
     const std::string callsign;
     const std::string arrival;
 
-    if(rand32() % 2 == 0) { // ozn
+    if(Utilities::randGen<int>(INT32_MIN, INT32_MAX) % 2 == 0) { // ozn
         m_spaceEntity = std::make_shared<OZN>(altitude, airspeed, heading, squawk, callsign, position, arrival);
     }
     else {
@@ -333,18 +339,18 @@ void Game::newSpaceEntity() {
 }
 
 void Game::addNewBalloons() {
-    const int altitude{(rand32() % 1301 + 200) / 100 * 100};
-    const int airspeed{rand32() % (130-50) + 50};
-    const int heading{rand32() % 360};
+    const int altitude{(Utilities::randGen<int>(200, 1300)) / 100 * 100};
+    const int airspeed{Utilities::randGen<int>(50, 130)};
+    const int heading{Utilities::randGen<int>(0, 360)};
     const std::string squawk{"7000"};
-    const std::string callsign{"BALLOON" + std::to_string(rand32() % 1000)};
+    const std::string callsign{"BALLOON" + std::to_string(Utilities::randGen<int>(1, 1000))};
 
     std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
     const int numberOfAirports = (int) regionAirports.size();
 
-    int randomDepartureAirport = rand32() % numberOfAirports;
-    int randomDestination = rand32() % numberOfAirports;
+    int randomDepartureAirport = Utilities::randGen<int>(0, numberOfAirports - 1);
+    int randomDestination = Utilities::randGen<int>(0, numberOfAirports - 1);
 
     if(randomDestination == randomDepartureAirport) {
         randomDestination = (randomDepartureAirport + 1) % numberOfAirports;
@@ -403,7 +409,8 @@ void Game::addNewEntities()
                     "Medevac"
             };
 
-            callsign = helicopterCallsigns[rand32() % helicopterCallsigns.size()] + std::to_string(rand() % 100 + 1);
+            callsign = helicopterCallsigns[Utilities::randGen<int>(0, (int) helicopterCallsigns.size() - 1)] \
+                        + std::to_string(Utilities::randGen<int>(1, 100));
             Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
             std::shared_ptr<FlyingEntity> base = std::make_shared<Helicopter>(helicopter);

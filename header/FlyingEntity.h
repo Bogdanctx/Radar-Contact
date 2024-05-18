@@ -12,6 +12,7 @@
 
 class FlyingEntity {
 protected:
+
     struct Clocks {
         Clocks() = default;
         explicit Clocks(int update, int altitude = 0, int speed = 0, int heading = 0) : m_updateInterval(update),
@@ -98,18 +99,18 @@ protected:
 
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
-    void setClocks(Clocks clock);
+
+    void setClocks(Clocks clocks);
 private:
     virtual void internalUpdate() = 0;
 
     friend class FlyingEntity_Decorator;
 
-    Clocks m_clocks{};
-
     sf::Vector2f m_mousePosition;
 
     bool m_isCrashed{};
     std::string m_arrival;
+    Clocks m_clocks{};
 };
 
 class FlyingEntity_Decorator {

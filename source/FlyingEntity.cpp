@@ -179,8 +179,8 @@ void FlyingEntity::checkHeadingChange() {
     }
 }
 
-void FlyingEntity::setClocks(const FlyingEntity::Clocks clock) {
-    m_clocks = clock;
+void FlyingEntity::setClocks(const FlyingEntity::Clocks clocks) {
+    m_clocks = clocks;
 }
 
 void FlyingEntity::setAltitudeConstraints(int minAltitude, int maxAltitude) {

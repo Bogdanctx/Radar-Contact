@@ -4,6 +4,7 @@
 
 #include "../header/Game.h"
 #include "../header/Math.h"
+#include "../header/utils.h"
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
@@ -11,7 +12,7 @@ Game::Game() :
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
-    sf::Text randomFact{"Fact: " + facts[rand() % facts.size()], ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
+    sf::Text randomFact{"Fact: " + facts[rand32() % facts.size()], ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
 
     sf::FloatRect factBounds = randomFact.getLocalBounds();
     randomFact.setOrigin(factBounds.width / 2, factBounds.height / 2);
@@ -102,7 +103,7 @@ void Game::update()
 
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60)
     {
-        if(rand() % 100 >= 40) {
+        if(rand32() % 100 >= 40) {
             addNewBalloons();
         }
 
@@ -279,37 +280,37 @@ void Game::newSpaceEntity() {
         WEST
     };
 
-    const int spawnSide = rand() % 4;
+    const int spawnSide = rand32() % 4;
     sf::Vector2f position;
     int heading;
 
     switch (spawnSide) {
         case Sides::NORTH:
         {
-            position.x = (float) (rand() % (900 - 50) + 50);
+            position.x = (float) (rand32() % (900 - 50) + 50);
             position.y = 0;
-            heading = rand() % (225 - 145) + 145;
+            heading = rand32() % (225 - 145) + 145;
             break;
         }
         case Sides::EAST:
         {
             position.x = 1280;
-            position.y = (float) (rand() % (500 - 20) + 20);
-            heading = rand() % (290 - 245) + 245;
+            position.y = (float) (rand32() % (500 - 20) + 20);
+            heading = rand32() % (290 - 245) + 245;
             break;
         }
         case Sides::SOUTH:
         {
-            position.x = (float) (rand() % (900 - 50) + 50);
+            position.x = (float) (rand32() % (900 - 50) + 50);
             position.y = 1280;
-            heading = rand() % (385 - 330) + 330;
+            heading = rand32() % (385 - 330) + 330;
             break;
         }
         case Sides::WEST:
         {
             position.x = 0;
-            position.y = (float) (rand() % (500 - 20) + 20);
-            heading = rand() % (120 - 60) + 60;
+            position.y = (float) (rand32() % (500 - 20) + 20);
+            heading = rand32() % (120 - 60) + 60;
             break;
         }
         default:
@@ -323,7 +324,7 @@ void Game::newSpaceEntity() {
     const std::string callsign;
     const std::string arrival;
 
-    if(rand() % 2 == 0) { // ozn
+    if(rand32() % 2 == 0) { // ozn
         m_spaceEntity = std::make_shared<OZN>(altitude, airspeed, heading, squawk, callsign, position, arrival);
     }
     else {
@@ -332,18 +333,18 @@ void Game::newSpaceEntity() {
 }
 
 void Game::addNewBalloons() {
-    const int altitude{(rand() % 1301 + 200) / 100 * 100};
-    const int airspeed{rand() % (130-50) + 50};
-    const int heading{rand() % 360};
+    const int altitude{(rand32() % 1301 + 200) / 100 * 100};
+    const int airspeed{rand32() % (130-50) + 50};
+    const int heading{rand32() % 360};
     const std::string squawk{"7000"};
-    const std::string callsign{"BALLOON" + std::to_string(rand() % 1000)};
+    const std::string callsign{"BALLOON" + std::to_string(rand32() % 1000)};
 
     std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
     const int numberOfAirports = (int) regionAirports.size();
 
-    int randomDepartureAirport = rand() % numberOfAirports;
-    int randomDestination = rand() % numberOfAirports;
+    int randomDepartureAirport = rand32() % numberOfAirports;
+    int randomDestination = rand32() % numberOfAirports;
 
     if(randomDestination == randomDepartureAirport) {
         randomDestination = (randomDepartureAirport + 1) % numberOfAirports;
@@ -402,7 +403,7 @@ void Game::addNewEntities()
                     "Medevac"
             };
 
-            callsign = helicopterCallsigns[rand() % helicopterCallsigns.size()] + std::to_string(rand() % 100 + 1);
+            callsign = helicopterCallsigns[rand32() % helicopterCallsigns.size()] + std::to_string(rand() % 100 + 1);
             Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
             std::shared_ptr<FlyingEntity> base = std::make_shared<Helicopter>(helicopter);

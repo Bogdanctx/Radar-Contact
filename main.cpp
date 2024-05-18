@@ -20,8 +20,6 @@ si in anumite cazuri entitatile sa aibe un timp pana la prabusire => pot fi prel
 #include "./header/Game.h"
 
 int main() {
-    srand(time(nullptr));
-
     try {
         ResourcesManager::Instance().load();
 

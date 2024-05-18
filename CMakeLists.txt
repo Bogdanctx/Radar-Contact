@@ -175,6 +175,7 @@ add_executable(${PROJECT_NAME}
         header/Satellite.h
         source/FlightsTable.cpp
         header/FlightsTable.h
+        header/utils.h
 )
 
 ###############################################################################

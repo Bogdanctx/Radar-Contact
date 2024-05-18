@@ -14,7 +14,7 @@ class FlyingEntity {
 protected:
     struct Clocks {
         Clocks() = default;
-        Clocks(int update, int altitude = 0, int speed = 0, int heading = 0) : m_updateInterval(update),
+        explicit Clocks(int update, int altitude = 0, int speed = 0, int heading = 0) : m_updateInterval(update),
                                                                 m_altitudeInterval(altitude),
                                                                 m_speedInterval(speed),
                                                                 m_headingInterval(heading) {}
@@ -98,7 +98,7 @@ protected:
 
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
-    void setClocks(const Clocks clock);
+    void setClocks(Clocks clock);
 private:
     virtual void internalUpdate() = 0;
 

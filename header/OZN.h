@@ -9,7 +9,8 @@
 
 class OZN : public SpaceEntity {
 public:
-    template <typename... Args> explicit OZN(Args... args) : SpaceEntity(args...) {}
+    template <typename... Args>
+    explicit OZN(Args... args) : SpaceEntity(args...) {}
 };
 
 

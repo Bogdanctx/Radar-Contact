@@ -5,21 +5,12 @@
 #include "../header/SpaceEntity.h"
 #include "../header/Math.h"
 
-void SpaceEntity::update(bool force) {
-    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
-    {
-        const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
-        m_entity.move(translation_to_point);
+void SpaceEntity::internalUpdate() {
+    const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
+    m_entity.move(translation_to_point);
 
-        updateText(m_entity.getPosition());
-
-        if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-            m_headingStick.setRotation((float)m_heading - 90);
-        }
-
-        if(!force) {
-            m_updatePositionInterval.restart();
-        }
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+        m_headingStick.setRotation((float)m_heading - 90);
     }
 }
 

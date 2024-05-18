@@ -14,8 +14,6 @@ si in anumite cazuri entitatile sa aibe un timp pana la prabusire => pot fi prel
  to heading {newHeading}; ROT125 set speed to 180kts) si mesajele transmise de entitati in cazul emergency-urilor
  (e.g.: WZZ1MK declares engine fire; si sa apara textul cu rosu)
 
--> Copy-paste mult la functia de update la FlyingEntity si derivate
-
 */
 
 #include "./header/Menu.h"

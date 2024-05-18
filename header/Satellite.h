@@ -32,9 +32,9 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update(bool force) override;
-
 private:
+    void internalUpdate() override;
+
     std::vector<sf::RectangleShape> body{};
 };
 

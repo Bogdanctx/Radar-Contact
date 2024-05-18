@@ -10,15 +10,10 @@
 class HotAirBalloon : public FlyingEntity {
 public:
     template <typename... Args>
-    explicit HotAirBalloon(Args... args) :
-            FlyingEntity(args...),
-            m_updateInterval{900},
-            m_updateAltitudeInterval{1300},
-            m_updateSpeedInterval{850},
-            m_updateHeadingInterval{310}
-    {
+    explicit HotAirBalloon(Args... args) : FlyingEntity(args...) {
         setSpeedConstraints(25, 100);
         setAltitudeConstraints(300, 2700);
+        setClocks(Clocks(900, 1300, 850, 310));
     }
 
     FlyingEntity* clone() const override {
@@ -26,14 +21,8 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update(bool force) override;
 private:
-    int m_updateInterval{};
-    int m_updateAltitudeInterval{};
-    int m_updateSpeedInterval{};
-    int m_updateHeadingInterval{};
-
-    sf::Clock m_updatePositionInterval{};
+    void internalUpdate() override;
 };
 
 

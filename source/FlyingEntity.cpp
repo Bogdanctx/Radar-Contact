@@ -150,20 +150,23 @@ void FlyingEntity::checkSpeedChange() {
     }
 }
 
-void FlyingEntity::update(bool force = false) {
-    updateAltitudeData(m_updateAltitudeInterval);
-    updateSpeedData(m_updateSpeedInterval);
-    updateHeadingData(m_updateHeadingInterval);
+void FlyingEntity::update(bool force) {
+    updateAltitudeData();
+    updateSpeedData();
+    updateHeadingData();
 
-    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
+    if(force || m_clocks.m_updateClock.getElapsedTime().asMilliseconds() >= m_clocks.m_updateInterval)
     {
         internalUpdate();
 
+        updateText(m_entity.getPosition());
+
         if(!force) {
-            m_updatePositionInterval.restart();
+            m_clocks.m_updateClock.restart();
         }
     }
 }
+
 void FlyingEntity::checkHeadingChange() {
     if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift))) {
         m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);
@@ -174,6 +177,10 @@ void FlyingEntity::checkHeadingChange() {
             m_newSpeedText.setString(std::to_string(m_newSpeed));
         }
     }
+}
+
+void FlyingEntity::setClocks(const FlyingEntity::Clocks clock) {
+    m_clocks = clock;
 }
 
 void FlyingEntity::setAltitudeConstraints(int minAltitude, int maxAltitude) {
@@ -198,8 +205,8 @@ void FlyingEntity::setDanger(const int conflictType) {
     }
 }
 
-void FlyingEntity::updateAltitudeData(const int updateTime) {
-    bool shouldUpdateAltitude = m_updateAltitudeClock.getElapsedTime().asMilliseconds() >= updateTime;
+void FlyingEntity::updateAltitudeData() {
+    bool shouldUpdateAltitude = m_clocks.m_altitudeClock.getElapsedTime().asMilliseconds() >= m_clocks.m_altitudeInterval;
 
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitude && shouldUpdateAltitude)
     {
@@ -211,12 +218,12 @@ void FlyingEntity::updateAltitudeData(const int updateTime) {
         }
 
         m_altitudeText.setString(std::to_string(m_altitude));
-        m_updateAltitudeClock.restart();
+        m_clocks.m_altitudeClock.restart();
     }
 }
 
-void FlyingEntity::updateSpeedData(const int updateTime) {
-    bool shouldUpdateSpeed = m_updateSpeedClock.getElapsedTime().asMilliseconds() >= updateTime;
+void FlyingEntity::updateSpeedData() {
+    bool shouldUpdateSpeed = m_clocks.m_speedClock.getElapsedTime().asMilliseconds() >= m_clocks.m_speedInterval;
 
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && m_newSpeed != m_speed && shouldUpdateSpeed)
     {
@@ -228,12 +235,12 @@ void FlyingEntity::updateSpeedData(const int updateTime) {
         }
 
         m_speedText.setString(std::to_string(m_speed));
-        m_updateSpeedClock.restart();
+        m_clocks.m_speedClock.restart();
     }
 }
 
-void FlyingEntity::updateHeadingData(const int updateTime) {
-    bool shouldUpdateHeading = m_updateHeadingClock.getElapsedTime().asMilliseconds() >= updateTime;
+void FlyingEntity::updateHeadingData() {
+    bool shouldUpdateHeading = m_clocks.m_headingClock.getElapsedTime().asMilliseconds() >= m_clocks.m_headingInterval;
 
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading)
     {
@@ -251,7 +258,7 @@ void FlyingEntity::updateHeadingData(const int updateTime) {
         }
 
         m_headingText.setString(std::to_string(m_heading));
-        m_updateHeadingClock.restart();
+        m_clocks.m_headingClock.restart();
     }
 }
 
@@ -315,9 +322,6 @@ void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)
     std::swap(flyingEntity1.m_newAltitudeText, flyingEntity2.m_newAltitudeText);
     std::swap(flyingEntity1.m_headingStick, flyingEntity2.m_headingStick);
     std::swap(flyingEntity1.m_mousePosition, flyingEntity2.m_mousePosition);
-    std::swap(flyingEntity1.m_updateAltitudeClock, flyingEntity2.m_updateAltitudeClock);
-    std::swap(flyingEntity1.m_updateSpeedClock, flyingEntity2.m_updateSpeedClock);
-    std::swap(flyingEntity1.m_updateHeadingClock, flyingEntity2.m_updateHeadingClock);
     std::swap(flyingEntity1.m_isCrashed, flyingEntity2.m_isCrashed);
     std::swap(flyingEntity1.m_callsign, flyingEntity2.m_callsign);
     std::swap(flyingEntity1.m_arrival, flyingEntity2.m_arrival);

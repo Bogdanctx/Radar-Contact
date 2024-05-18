@@ -11,6 +11,25 @@
 #include <memory>
 
 class FlyingEntity {
+protected:
+    struct Clocks {
+        Clocks() = default;
+        Clocks(int update, int altitude = 0, int speed = 0, int heading = 0) : m_updateInterval(update),
+                                                                m_altitudeInterval(altitude),
+                                                                m_speedInterval(speed),
+                                                                m_headingInterval(heading) {}
+
+        sf::Clock m_altitudeClock{};
+        sf::Clock m_speedClock{};
+        sf::Clock m_headingClock{};
+        sf::Clock m_updateClock{};
+
+        int m_updateInterval{};
+        int m_altitudeInterval{};
+        int m_speedInterval{};
+        int m_headingInterval{};
+    };
+
 public:
     FlyingEntity() = default;
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
@@ -18,7 +37,7 @@ public:
     virtual FlyingEntity* clone() const = 0;
     virtual ~FlyingEntity() = default;
 
-    void update(bool force);
+    void update(bool force = false);
     virtual void render(sf::RenderWindow *game_window) = 0;
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
@@ -68,9 +87,9 @@ protected:
 
     sf::RectangleShape m_headingStick{};
 
-    void updateAltitudeData(int updateTime);
-    void updateSpeedData(int updateTime);
-    void updateHeadingData(int updateTime);
+    void updateAltitudeData();
+    void updateSpeedData();
+    void updateHeadingData();
     void updateText(const sf::Vector2f &position);
 
     virtual void checkAltitudeChange();
@@ -79,23 +98,15 @@ protected:
 
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
+    void setClocks(const Clocks clock);
 private:
     virtual void internalUpdate() = 0;
 
     friend class FlyingEntity_Decorator;
 
+    Clocks m_clocks{};
+
     sf::Vector2f m_mousePosition;
-
-    sf::Clock m_updateAltitudeClock{};
-    sf::Clock m_updateSpeedClock{};
-    sf::Clock m_updateHeadingClock{};
-
-    int m_updateInterval{};
-    int m_updateAltitudeInterval{};
-    int m_updateSpeedInterval{};
-    int m_updateHeadingInterval{};
-
-    sf::Clock m_updatePositionInterval{};
 
     bool m_isCrashed{};
     std::string m_arrival;

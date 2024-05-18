@@ -10,8 +10,6 @@ void Helicopter::internalUpdate() {
         const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed,
                                                                                  (float) m_heading);
         m_entity.move(translation_to_point);
-
-        updateText(m_entity.getPosition());
     }
 
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {

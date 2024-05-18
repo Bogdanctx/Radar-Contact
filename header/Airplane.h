@@ -9,17 +9,11 @@
 
 class Airplane : public FlyingEntity {
 public:
-    Airplane() = default;
     template <typename... Args>
-    explicit Airplane(Args... args) :
-            FlyingEntity(args...),
-            m_updateInterval{1100},
-            m_updateAltitudeInterval{900},
-            m_updateSpeedInterval{800},
-            m_updateHeadingInterval{190}
-    {
+    explicit Airplane(Args... args) : FlyingEntity(args...) {
         setSpeedConstraints(185, 335);
         setAltitudeConstraints(5000, 39000);
+        setClocks(Clocks(1100, 900, 800, 190));
     }
 
     FlyingEntity* clone() const override {

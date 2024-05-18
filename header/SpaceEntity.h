@@ -10,10 +10,11 @@
 class SpaceEntity : public FlyingEntity {
 public:
     SpaceEntity() = default;
+
     template <typename... Args>
-    explicit SpaceEntity(Args... args) :
-            FlyingEntity(args...),
-            m_updateInterval{15} {}
+    explicit SpaceEntity(Args... args) : FlyingEntity(args...) {
+        setClocks(Clocks(15));
+    }
 
     friend void swap(SpaceEntity* spaceEntity1, SpaceEntity* spaceEntity2);
 
@@ -22,9 +23,10 @@ public:
     }
 
     void render(sf::RenderWindow *game_window) override;
-    void update(bool force) override;
     void handleEvent(sf::Event game_event, sf::Vector2f mouse_position) override;
 protected:
+    void internalUpdate() override;
+
     sf::Clock m_updatePositionInterval{};
     int m_updateInterval{};
 };

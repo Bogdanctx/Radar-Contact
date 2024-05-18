@@ -12,21 +12,12 @@ void Satellite::render(sf::RenderWindow *game_window) {
     }
 }
 
-void Satellite::update(bool force = false) {
-    if(force || m_updatePositionInterval.getElapsedTime().asMilliseconds() >= m_updateInterval)
-    {
-        const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed,
-                                                                                 (float) m_heading);
+void Satellite::internalUpdate() {
+    const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed,(float) m_heading);
 
-        m_entity.move(translation_to_point);
-        for(int i = 0; i < 4; i++) {
-            body[i].move(translation_to_point);
-        }
+    m_entity.move(translation_to_point);
 
-        updateText(m_entity.getPosition());
-
-        if(!force) {
-            m_updatePositionInterval.restart();
-        }
+    for(int i = 0; i < 4; i++) {
+        body[i].move(translation_to_point);
     }
 }

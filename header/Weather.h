@@ -10,8 +10,6 @@
 
 #include <utility>
 
-#include "DataAPI.h"
-
 class Weather {
 public:
     Weather();

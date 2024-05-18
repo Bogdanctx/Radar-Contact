@@ -24,7 +24,6 @@
 #include "OZN.h"
 #include "HotAirBalloon.h"
 #include "Weather.h"
-#include "DataAPI.h"
 #include "FlightsTable.h"
 
 class Game : public Window {
@@ -66,7 +65,6 @@ private:
     std::string m_selectedRegion{};
 
     Weather weather{};
-    DataAPI dataAPI{};
     FlightsTable flightsTable{};
 };
 

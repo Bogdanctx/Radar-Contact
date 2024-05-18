@@ -157,7 +157,6 @@ add_executable(${PROJECT_NAME}
         header/ResourcesManager.h
         source/ResourcesManager.cpp
         source/Airplane.cpp
-        source/DataAPI.cpp
         header/DataAPI.h
         source/Airport.cpp
         header/Airport.h
@@ -176,6 +175,10 @@ add_executable(${PROJECT_NAME}
         source/FlightsTable.cpp
         header/FlightsTable.h
         header/utils.h
+        source/MockAPI.cpp
+        header/MockAPI.h
+        source/API.cpp
+        header/API.h
 )
 
 ###############################################################################

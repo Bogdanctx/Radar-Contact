@@ -17,6 +17,14 @@ void ResourcesManager::load()
     loadFonts("Raleway-Regular.ttf");
 }
 
+void ResourcesManager::enableMockApi() {
+    m_usingMockApi = true;
+}
+
+bool ResourcesManager::isMockingEnabled() const {
+    return m_usingMockApi;
+}
+
 void ResourcesManager::loadSounds(const std::string &sound_name) {
     const std::string path = "resources/sounds/" + sound_name;
     sf::SoundBuffer sound;

@@ -14,14 +14,23 @@ si in anumite cazuri entitatile sa aibe un timp pana la prabusire => pot fi prel
  to heading {newHeading}; ROT125 set speed to 180kts) si mesajele transmise de entitati in cazul emergency-urilor
  (e.g.: WZZ1MK declares engine fire; si sa apara textul cu rosu)
 
+-> State machine
+
 */
 
 #include "./header/Menu.h"
 #include "./header/Game.h"
+#include "./header/Math.h"
 
-int main() {
+#include <string>
+
+int main(int argc, char **argv) {
     try {
         ResourcesManager::Instance().load();
+
+        if (argc == 2 && std::string(argv[1]) == "MOCK_API") {
+            ResourcesManager::Instance().enableMockApi();
+        }
 
         Menu menu;
         menu.run();

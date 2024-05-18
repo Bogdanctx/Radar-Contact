@@ -69,6 +69,9 @@ public:
     void loadRegion(const std::string &region);
     void load();
 
+    bool isMockingEnabled() const;
+    void enableMockApi();
+
 private:
     ResourcesManager() : m_randomFacts{
             "Planes can fly with only one engine.",
@@ -100,6 +103,7 @@ private:
     std::vector<std::string> m_randomFacts{};
 
     std::string m_selectedRegion{};
+    bool m_usingMockApi{};
 };
 
 #endif //OOP_RESOURCESMANAGER_H

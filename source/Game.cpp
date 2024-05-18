@@ -3,9 +3,12 @@
 //
 
 #include "../header/Game.h"
-#include "../header/Math.h"
 #include "../header/utils.h"
 #include "../header/Satellite.h"
+
+#include "../header/DataAPI.h"
+#include "../header/API.h"
+#include "../header/MockAPI.h"
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
@@ -64,8 +67,6 @@ void swap(Game& game1, Game& game2) {
     std::swap(game1.m_backgroundRegion, game2.m_backgroundRegion);
     std::swap(game1.m_atcSound, game2.m_atcSound);
     swap(game1.m_selectedRegion, game2.m_selectedRegion);
-    swap(game1.weather, game2.weather);
-    swap(game1.dataAPI, game2.dataAPI);
     swap(game1.m_spaceEntity, game2.m_spaceEntity);
 }
 
@@ -379,7 +380,9 @@ void Game::addNewBalloons() {
 
 void Game::addNewEntities()
 {
-    const nlohmann::json arrivals = dataAPI.getArrivals();
+    const nlohmann::json arrivals = (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::getArrivals() :
+                                                                                        DataAPI<API>::getArrivals());
+
     const int number_of_arrivals = (int) arrivals.size();
 
     sf::Event tempEvent{};

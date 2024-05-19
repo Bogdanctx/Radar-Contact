@@ -26,7 +26,7 @@ std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow *window) {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
     std::vector<sf::Texture> res{};
 
-    std::ifstream fin("resources/mock_api/" + region + "/links.txt");
+    std::ifstream fin("./resources/mock_api/" + region + "/links.txt");
     int numberOfLinks;
     fin >> numberOfLinks;
 
@@ -35,7 +35,7 @@ std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow *window) {
         fin >> link;
 
         sf::Texture temp;
-        temp.loadFromFile("resources/mock_api/" + region + '/' + link);
+        temp.loadFromFile("./resources/mock_api/" + region + '/' + link);
         res.push_back(temp);
 
         sf::Event tempEvent{};

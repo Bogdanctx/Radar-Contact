@@ -1,0 +1,7 @@
+6
+http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\55.776573\-22.500004\2\1_0.png
+http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\55.776573\-11.249998\2\1_0.png
+http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\55.776573\0.000000\2\1_0.png
+http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\48.922497\-22.500004\2\1_0.png
+http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\48.922497\-11.249998\2\1_0.png
+http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\48.922497\0.000000\2\1_0.png

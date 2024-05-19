@@ -1,0 +1,7 @@
+6
+_v2_radar_nowcast_0d200f2fdd67_256_6_55.776573_-22.500004_2_1_0.png
+_v2_radar_nowcast_0d200f2fdd67_256_6_55.776573_-11.249998_2_1_0.png
+_v2_radar_nowcast_0d200f2fdd67_256_6_55.776573_0.000000_2_1_0.png
+_v2_radar_nowcast_0d200f2fdd67_256_6_48.922497_-22.500004_2_1_0.png
+_v2_radar_nowcast_0d200f2fdd67_256_6_48.922497_-11.249998_2_1_0.png
+_v2_radar_nowcast_0d200f2fdd67_256_6_48.922497_0.000000_2_1_0.png

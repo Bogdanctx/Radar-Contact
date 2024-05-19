@@ -1,4 +1,0 @@
-3
-\v2\radar\nowcast_c09e8dd3b5a2\256\6\45.089035\5.624999\2\1_0.png
-\v2\radar\nowcast_c09e8dd3b5a2\256\6\45.089035\11.249998\2\1_0.png
-\v2\radar\nowcast_c09e8dd3b5a2\256\6\45.089035\16.874996\2\1_0.png

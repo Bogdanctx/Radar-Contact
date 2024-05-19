@@ -1,4 +1,0 @@
-3
-http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\45.089035\5.624999\2\1_0.png
-http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\45.089035\11.249998\2\1_0.png
-http:\\tilecache.rainviewer.com\v2\radar\nowcast_e08d4baf3729\256\6\45.089035\16.874996\2\1_0.png

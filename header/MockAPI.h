@@ -14,7 +14,7 @@ class MockAPI : public API {
 public:
     nlohmann::json getArrivals() override;
     std::string getWeatherPath() override;
-    std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow *window) override { return {}; };
+    std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow *window) override;
 };
 
 

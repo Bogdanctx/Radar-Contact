@@ -44,7 +44,7 @@ std::vector<sf::Texture> API::getWeatherTextures(sf::RenderWindow *window) {
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
 
-        const std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
+        std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
                                  std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
 

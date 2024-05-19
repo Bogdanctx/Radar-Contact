@@ -41,9 +41,8 @@ std::vector<sf::Texture> API::getWeatherTextures(sf::RenderWindow *window) {
     std::vector<sf::Texture> res{};
     std::vector<std::pair<float, float>> tiles = ResourcesManager::Instance().getWeatherTiles();
 
-    //std::ofstream fout("./resources/mock_api/"+ResourcesManager::Instance().getSelectedRegion()+"/links.txt"); // mock
-
-    //fout << tiles.size() <<'\n'; // mock
+    // std::ofstream fout("./resources/mock_api/"+ResourcesManager::Instance().getSelectedRegion()+"/links.txt"); // mock
+    // fout << tiles.size() <<'\n'; // mock
 
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
@@ -52,15 +51,15 @@ std::vector<sf::Texture> API::getWeatherTextures(sf::RenderWindow *window) {
                                  std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
 
-        //for(int i=0;link[i];i++) if(link[i]=='/') link[i]='\\'; // mock
+       // for(int i=0;link[i];i++) if(link[i]=='/') link[i]='_'; // mock
 
-        //fout << link <<'\n'; // mock
+       // fout << link <<'\n'; // mock
 
         api_response = http.sendRequest(request);
 
         temp_texture.loadFromMemory(api_response.getBody().data(), api_response.getBody().size());
 
-        //temp_texture.copyToImage().saveToFile(link); // mock
+        // temp_texture.copyToImage().saveToFile(link); // mock
 
         res.push_back(temp_texture);
 

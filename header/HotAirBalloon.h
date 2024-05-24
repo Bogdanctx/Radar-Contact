@@ -11,7 +11,7 @@ class HotAirBalloon : public FlyingEntity {
 public:
     template <typename... Args>
     explicit HotAirBalloon(Args... args) : FlyingEntity(args...) {
-        setSpeedConstraints(25, 100);
+        setSpeedConstraints(50, 130);
         setAltitudeConstraints(300, 2700);
         setClocks(Clocks(900, 1300, 850, 310));
     }

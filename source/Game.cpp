@@ -340,7 +340,7 @@ void Game::newSpaceEntity() {
 }
 
 void Game::addNewBalloons() {
-    const int altitude{(Utilities::randGen<int>(200, 1300)) / 100 * 100};
+    const int altitude{(Utilities::randGen<int>(300, 2700)) / 100 * 100};
     const int airspeed{Utilities::randGen<int>(50, 130)};
     const int heading{Utilities::randGen<int>(0, 360)};
     const std::string squawk{"7000"};

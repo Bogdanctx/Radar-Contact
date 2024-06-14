@@ -177,7 +177,7 @@ add_executable(${PROJECT_NAME}
         header/utils.h
         source/MockAPI.cpp
         header/MockAPI.h
-        source/API.cpp
+        source/LiveAPI.cpp
         header/API.h
         header/AirplaneInfo.h
         source/AirplaneInfo.cpp

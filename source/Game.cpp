@@ -377,7 +377,7 @@ void Game::addNewBalloons() {
 void Game::addNewEntities()
 {
     const nlohmann::json arrivals = (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::getArrivals() :
-                                                                                        DataAPI<API>::getArrivals());
+                                                                                        DataAPI<LiveAPI>::getArrivals());
 
     const int number_of_arrivals = (int) arrivals.size();
 

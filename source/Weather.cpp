@@ -24,7 +24,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     m_sprites = std::vector<sf::Sprite> {};
 
     m_textures = (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::getWeatherTextures(window) :
-                                                                    DataAPI<API>::getWeatherTextures(window));
+                                                                    DataAPI<LiveAPI>::getWeatherTextures(window));
 
     for(int i = 0; i < (int) m_textures.size(); i++) {
         sf::Sprite temp_sprite;

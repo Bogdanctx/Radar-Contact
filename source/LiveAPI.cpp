@@ -7,7 +7,7 @@
 #include <SFML/Network.hpp>
 #include "../header/ResourcesManager.h"
 
-nlohmann::json API::getArrivals() {
+nlohmann::json LiveAPI::getArrivals() {
     const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";
 
     const cpr::Response res = cpr::Get(cpr::Url{link},
@@ -19,7 +19,7 @@ nlohmann::json API::getArrivals() {
     return data;
 }
 
-std::string API::getWeatherPath() {
+std::string LiveAPI::getWeatherPath() {
     const std::string link = "https://api.rainviewer.com/public/weather-maps.json";
     const cpr::Response res = cpr::Get(cpr::Url{link});
 
@@ -28,7 +28,7 @@ std::string API::getWeatherPath() {
     return data["radar"]["nowcast"].back()["path"];
 }
 
-std::vector<sf::Texture> API::getWeatherTextures(sf::RenderWindow *window) {
+std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
     sf::Http http{"http://tilecache.rainviewer.com"};
     sf::Http::Request request;
     sf::Http::Response api_response;
@@ -37,7 +37,7 @@ std::vector<sf::Texture> API::getWeatherTextures(sf::RenderWindow *window) {
     request.setHttpVersion(1, 1);
     request.setField("Content-Type", "application/x-www-form-urlencoded");
 
-    const std::string path = API::getWeatherPath();
+    const std::string path = LiveAPI::getWeatherPath();
     std::vector<sf::Texture> res{};
     std::vector<std::pair<float, float>> tiles = ResourcesManager::Instance().getWeatherTiles();
 

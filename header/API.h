@@ -9,7 +9,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-class API {
+class LiveAPI {
 public:
     virtual nlohmann::json getArrivals();
     virtual std::string getWeatherPath();

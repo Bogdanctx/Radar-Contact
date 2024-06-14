@@ -1,5 +1,12 @@
 /* TO DO
 
+ !!!!!!!! Sa restructurez cumva API-ul astfel incat sa nu scriu mereu asta
+
+    (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::foo(window) : DataAPI<LiveAPI>::bar(window));
+
+    trebuie sa imi dea doar datele fara sa aleg din ce API !!!!!!!!!!!!!!!!!!!!
+
+
 -> La weather: transfer de la sf::Sprite la sf::Image pentru functia getPixel() [turbulente??, prabusiri...]
                                                                        ^ probabil sa sara in aer performanta
 

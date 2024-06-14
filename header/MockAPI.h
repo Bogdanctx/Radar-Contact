@@ -10,7 +10,7 @@
 #include <nlohmann/json.hpp>
 #include <SFML/Graphics.hpp>
 
-class MockAPI : public API {
+class MockAPI : public LiveAPI {
 public:
     nlohmann::json getArrivals() override;
     std::string getWeatherPath() override;

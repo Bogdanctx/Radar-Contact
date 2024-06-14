@@ -60,13 +60,9 @@ Game &Game::operator=(Game other) {
 }
 
 void swap(Game& game1, Game& game2) {
+    using std::swap;
+
     swap(game1.m_flyingEntities, game2.m_flyingEntities);
-    swap(game1.m_airports, game2.m_airports);
-    std::swap(game1.m_updateWeatherClock, game2.m_updateWeatherClock);
-    std::swap(game1.m_newEntitiesInterval, game2.m_newEntitiesInterval);
-    std::swap(game1.m_backgroundRegion, game2.m_backgroundRegion);
-    std::swap(game1.m_atcSound, game2.m_atcSound);
-    swap(game1.m_selectedRegion, game2.m_selectedRegion);
     swap(game1.m_spaceEntity, game2.m_spaceEntity);
 }
 

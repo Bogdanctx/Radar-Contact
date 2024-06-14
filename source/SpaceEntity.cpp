@@ -14,11 +14,6 @@ void SpaceEntity::internalUpdate() {
     }
 }
 
-void swap(SpaceEntity* spaceEntity1, SpaceEntity* spaceEntity2) {
-    std::swap(spaceEntity1->m_updatePositionInterval, spaceEntity2->m_updatePositionInterval);
-    std::swap(spaceEntity1->m_updateInterval, spaceEntity2->m_updateInterval);
-}
-
 void SpaceEntity::render(sf::RenderWindow *game_window) {
     game_window->draw(m_entity);
 

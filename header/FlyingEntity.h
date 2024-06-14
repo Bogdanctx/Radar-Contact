@@ -42,8 +42,6 @@ public:
     virtual void render(sf::RenderWindow *game_window) = 0;
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
-    friend void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2);
-
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
     int getAirspeed() const;
@@ -127,6 +125,11 @@ public:
         const std::string result = callsign + "     " + altitude + "     " + airspeed + "     " + arrival;
 
         return result;
+    }
+
+    friend void swap(FlyingEntity_Decorator& decorator1, FlyingEntity_Decorator& decorator2) {
+        using std::swap;
+        swap(decorator1.m_component, decorator2.m_component);
     }
 private:
     std::shared_ptr<FlyingEntity> m_component{};

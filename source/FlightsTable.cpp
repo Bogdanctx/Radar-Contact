@@ -7,9 +7,8 @@
 FlightsTable::FlightsTable() : m_poppins(ResourcesManager::Instance().getFont("Poppins-Regular.ttf")) {}
 
 void FlightsTable::draw(sf::RenderWindow *window) {
-    for(AirplaneInfo &airplaneInfo: m_airplanesInfo) {
-        window->draw(airplaneInfo.m_body);
-        window->draw(airplaneInfo.m_text);
+    for(AirplaneInfo& airplaneInfo: m_airplanesInfo) {
+        airplaneInfo.draw(window);
     }
 }
 
@@ -18,15 +17,9 @@ void FlightsTable::update(std::vector<std::shared_ptr<FlyingEntity>> &flyingEnti
     m_airplanesInfo.clear();
 
     for(auto &flyingEntity: flyingEntities) {
-        AirplaneInfo info;
         FlyingEntity_Decorator flyingEntityDecorator{flyingEntity};
 
-        info.m_text.setString(flyingEntityDecorator.to_text());
-        info.m_text.setFont(m_poppins);
-        info.m_text.setPosition(5, (float)size * 20 + 4);
-
-        info.m_body.setPosition(0, (float)size * 20);
-        info.flyingEntityPtr = flyingEntity;
+        AirplaneInfo info(flyingEntityDecorator.to_text(), flyingEntity, size);
 
         m_airplanesInfo.emplace_back(info);
 
@@ -40,9 +33,9 @@ void FlightsTable::handleEvent(sf::Event gameEvent, sf::Vector2f mousePosition) 
         case sf::Event::MouseButtonPressed:
         {
             for(auto &airplaneInfo: m_airplanesInfo) {
-                if(airplaneInfo.m_body.getGlobalBounds().contains(mousePosition)) {
-                    airplaneInfo.flyingEntityPtr->setEntitySelected();
-                    airplaneInfo.flyingEntityPtr->update(true); // force update
+                if(airplaneInfo.getBody().getGlobalBounds().contains(mousePosition)) {
+                    airplaneInfo.getFlyingEntityPtr()->setEntitySelected();
+                    airplaneInfo.getFlyingEntityPtr()->update(true); // force update
                 }
             }
 
@@ -52,3 +45,6 @@ void FlightsTable::handleEvent(sf::Event gameEvent, sf::Vector2f mousePosition) 
             break;
     }
 }
+
+
+

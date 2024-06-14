@@ -7,8 +7,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+
 #include "FlyingEntity.h"
 #include "ResourcesManager.h"
+#include "AirplaneInfo.h"
 
 class FlightsTable {
 public:
@@ -21,25 +23,7 @@ public:
 private:
     sf::Font m_poppins{};
 
-    struct AirplaneInfo {
-        AirplaneInfo() : m_body(sf::Vector2f(230, 20)) {
-
-            m_body.setFillColor(sf::Color(27, 28, 27, 110));
-            m_body.setOutlineColor(sf::Color::White);
-            m_body.setOutlineThickness(1.2f);
-
-            m_text.setFillColor(sf::Color::White);
-            m_text.setCharacterSize(10);
-        }
-
-        sf::RectangleShape m_body{};
-        sf::Text m_text;
-        std::string m_info{};
-        std::shared_ptr<FlyingEntity> flyingEntityPtr{};
-    };
-
     std::vector<AirplaneInfo> m_airplanesInfo{};
 };
-
 
 #endif //OOP_FLIGHTSTABLE_H

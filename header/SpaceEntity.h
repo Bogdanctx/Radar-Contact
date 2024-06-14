@@ -16,8 +16,6 @@ public:
         setClocks(Clocks(15));
     }
 
-    friend void swap(SpaceEntity* spaceEntity1, SpaceEntity* spaceEntity2);
-
     FlyingEntity* clone() const override {
         return new SpaceEntity(*this);
     }

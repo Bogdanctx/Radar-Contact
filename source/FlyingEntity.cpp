@@ -299,30 +299,3 @@ int FlyingEntity::getAirspeed() const {
 void FlyingEntity::setEntitySelected() {
     m_entitySelected = true;
 }
-
-void swap(FlyingEntity &flyingEntity1, FlyingEntity& flyingEntity2)
-{
-    std::swap(flyingEntity1.m_heading, flyingEntity2.m_heading);
-    std::swap(flyingEntity1.m_speed, flyingEntity2.m_speed);
-    std::swap(flyingEntity1.m_altitude, flyingEntity2.m_altitude);
-    std::swap(flyingEntity1.m_squawk, flyingEntity2.m_squawk);
-    std::swap(flyingEntity1.m_entity, flyingEntity2.m_entity);
-    std::swap(flyingEntity1.m_newHeading, flyingEntity2.m_newHeading);
-    std::swap(flyingEntity1.m_newAltitude, flyingEntity2.m_newAltitude);
-    std::swap(flyingEntity1.m_newSpeed, flyingEntity2.m_newSpeed);
-    std::swap(flyingEntity1.m_entitySelected, flyingEntity2.m_entitySelected);
-    std::swap(flyingEntity1.m_headingText, flyingEntity2.m_headingText);
-    std::swap(flyingEntity1.m_speedText, flyingEntity2.m_speedText);
-    std::swap(flyingEntity1.m_altitudeText, flyingEntity2.m_altitudeText);
-    std::swap(flyingEntity1.m_squawkText, flyingEntity2.m_squawkText);
-    std::swap(flyingEntity1.m_callsignText, flyingEntity2.m_callsignText);
-    std::swap(flyingEntity1.m_arrivalText, flyingEntity2.m_arrivalText);
-    std::swap(flyingEntity1.m_newHeadingText, flyingEntity2.m_newHeadingText);
-    std::swap(flyingEntity1.m_newSpeedText, flyingEntity2.m_newSpeedText);
-    std::swap(flyingEntity1.m_newAltitudeText, flyingEntity2.m_newAltitudeText);
-    std::swap(flyingEntity1.m_headingStick, flyingEntity2.m_headingStick);
-    std::swap(flyingEntity1.m_mousePosition, flyingEntity2.m_mousePosition);
-    std::swap(flyingEntity1.m_isCrashed, flyingEntity2.m_isCrashed);
-    std::swap(flyingEntity1.m_callsign, flyingEntity2.m_callsign);
-    std::swap(flyingEntity1.m_arrival, flyingEntity2.m_arrival);
-}

@@ -5,8 +5,7 @@
 #include "../header/Menu.h"
 #include "../header/ResourcesManager.h"
 
-Menu::Menu() :
-        Window({500, 400}, "Radar Contact - Menu")
+Menu::Menu() : Window({500, 400}, "Radar Contact - Menu")
 {
     m_background.setTexture(ResourcesManager::Instance().getTexture("menu.png"));
 
@@ -32,6 +31,19 @@ Menu::Menu() :
 
     button.setPosition(50,197);
     m_regionsButtons.emplace_back(button, "UK");
+
+
+    liveData.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
+    localData.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
+
+    liveData.setString("Live Data");
+    localData.setString("Offline");
+
+    liveData.setPosition(20, 375);
+    localData.setPosition(85, 375);
+
+    liveData.setCharacterSize(13);
+    localData.setCharacterSize(13);
 }
 
 void Menu::render()
@@ -44,11 +56,23 @@ void Menu::render()
         m_window.draw(regionsButton.first);
     }
 
+    m_window.draw(liveData);
+    m_window.draw(localData);
+
     m_window.display();
 }
 
 void Menu::update()
 {
+    if(ResourcesManager::Instance().isMockingEnabled()) {
+        liveData.setFillColor(sf::Color(209, 206, 199, 100));
+        localData.setFillColor(sf::Color::Green);
+    }
+    else {
+        localData.setFillColor(sf::Color(209, 206, 199, 100));
+        liveData.setFillColor(sf::Color::Green);
+    }
+
     checkHovers();
 }
 
@@ -100,6 +124,13 @@ void Menu::handleEvent()
                         ResourcesManager::Instance().loadRegion(regionButtons.second);
                         m_window.close();
                     }
+                }
+
+                if(liveData.getGlobalBounds().contains(float_mouse_position)) {
+                    ResourcesManager::Instance().setMocking(false);
+                }
+                else if(localData.getGlobalBounds().contains(float_mouse_position)) {
+                    ResourcesManager::Instance().setMocking(true);
                 }
 
                 break;

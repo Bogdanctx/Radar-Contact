@@ -24,6 +24,8 @@ private:
     sf::Texture m_texture;
     sf::Sprite m_background;
 
+    sf::Text liveData, localData;
+
     std::vector<std::pair<sf::RectangleShape, std::string>> m_regionsButtons;
 };
 

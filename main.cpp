@@ -31,13 +31,9 @@ si in anumite cazuri entitatile sa aibe un timp pana la prabusire => pot fi prel
 
 #include <string>
 
-int main(int argc, char **argv) {
+int main() {
     try {
         ResourcesManager::Instance().load();
-
-        if (argc == 2 && std::string(argv[1]) == "MOCK_API") {
-            ResourcesManager::Instance().enableMockApi();
-        }
 
         Menu menu;
         menu.run();

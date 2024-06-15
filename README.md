@@ -6,6 +6,11 @@ Run the game and choose a region. Available regions: Poland, Iceland, Cyprus, Au
 
 ![Alt Text](./preview/menu.png)
 
+In case of a missing network connection or if you prefer not to download live data, you can play in Offline mode using 
+local data. To achieve this, press the "Offline" button.
+
+![Alt Text](./preview/live_data.gif)
+
 After that, control your airspace! Give instructions to airplanes, helicopters and hot air balloons to arrive to their airports.
 
 A flying entity will disconnect from your frequency when it is inside the arrival airport coverage area (the yellow circles). In order to disconnect, some conditions are required: altitude must be below 10000ft and the airspeed must be below 250 knots.

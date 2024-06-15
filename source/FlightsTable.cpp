@@ -7,7 +7,7 @@
 FlightsTable::FlightsTable() : m_poppins(ResourcesManager::Instance().getFont("Poppins-Regular.ttf")) {}
 
 void FlightsTable::draw(sf::RenderWindow *window) {
-    for(AirplaneInfo& airplaneInfo: m_airplanesInfo) {
+    for(FlightInfo& airplaneInfo: m_airplanesInfo) {
         airplaneInfo.draw(window);
     }
 }
@@ -19,7 +19,7 @@ void FlightsTable::update(std::vector<std::shared_ptr<FlyingEntity>> &flyingEnti
     for(auto &flyingEntity: flyingEntities) {
         FlyingEntity_Decorator flyingEntityDecorator{flyingEntity};
 
-        AirplaneInfo info(flyingEntityDecorator.to_text(), flyingEntity, size);
+        FlightInfo info(flyingEntityDecorator.to_text(), flyingEntity, size);
 
         m_airplanesInfo.emplace_back(info);
 

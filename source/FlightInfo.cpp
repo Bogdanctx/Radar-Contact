@@ -2,9 +2,9 @@
 // Created by bgd on 14.06.2024.
 //
 
-#include "../header/AirplaneInfo.h"
+#include "../header/FlightInfo.h"
 
-AirplaneInfo::AirplaneInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
+FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
                             m_body(sf::Vector2f(230, 20)),
                             flyingEntityPtr(flyingEntity)
 
@@ -21,7 +21,7 @@ AirplaneInfo::AirplaneInfo(const std::string& strFormat, std::shared_ptr<FlyingE
     m_text.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
 }
 
-void AirplaneInfo::draw(sf::RenderWindow *window) {
+void FlightInfo::draw(sf::RenderWindow *window) {
     window->draw(m_body);
     window->draw(m_text);
 }

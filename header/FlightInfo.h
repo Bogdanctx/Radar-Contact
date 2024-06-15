@@ -2,8 +2,8 @@
 // Created by bgd on 14.06.2024.
 //
 
-#ifndef OOP_AIRPLANEINFO_H
-#define OOP_AIRPLANEINFO_H
+#ifndef OOP_FLIGHTINFO_H
+#define OOP_FLIGHTINFO_H
 
 #include <SFML/Graphics.hpp>
 #include <memory>
@@ -11,9 +11,9 @@
 #include "FlyingEntity.h"
 #include "ResourcesManager.h"
 
-class AirplaneInfo {
+class FlightInfo {
 public:
-    AirplaneInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset);
+    FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset);
 
     void draw(sf::RenderWindow* window);
 
@@ -25,7 +25,7 @@ public:
         return m_body;
     }
 
-    friend void swap(AirplaneInfo& obj1, AirplaneInfo& obj2) {
+    friend void swap(FlightInfo& obj1, FlightInfo& obj2) {
         using std::swap;
 
         swap(obj1.flyingEntityPtr, obj2.flyingEntityPtr);
@@ -39,4 +39,4 @@ private:
 };
 
 
-#endif //OOP_AIRPLANEINFO_H
+#endif //OOP_FLIGHTINFO_H

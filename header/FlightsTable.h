@@ -10,7 +10,7 @@
 
 #include "FlyingEntity.h"
 #include "ResourcesManager.h"
-#include "AirplaneInfo.h"
+#include "FlightInfo.h"
 
 class FlightsTable {
 public:
@@ -23,7 +23,7 @@ public:
 private:
     sf::Font m_poppins{};
 
-    std::vector<AirplaneInfo> m_airplanesInfo{};
+    std::vector<FlightInfo> m_airplanesInfo{};
 };
 
 #endif //OOP_FLIGHTSTABLE_H

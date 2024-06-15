@@ -179,8 +179,8 @@ add_executable(${PROJECT_NAME}
         header/MockAPI.h
         source/LiveAPI.cpp
         header/API.h
-        header/AirplaneInfo.h
-        source/AirplaneInfo.cpp
+        header/FlightInfo.h
+        source/FlightInfo.cpp
 )
 
 ###############################################################################

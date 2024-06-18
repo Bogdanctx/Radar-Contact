@@ -3,7 +3,8 @@
 //
 
 #include "../header/Menu.h"
-#include "../header/ResourcesManager.h"
+#include "../header/Game.h"
+#include "../header/StateMachine.h"
 
 Menu::Menu() : Window({500, 400}, "Radar Contact - Menu")
 {
@@ -122,6 +123,9 @@ void Menu::handleEvent()
                 for(const auto &regionButtons: m_regionsButtons) {
                     if(regionButtons.first.getGlobalBounds().contains(float_mouse_position)) {
                         ResourcesManager::Instance().loadRegion(regionButtons.second);
+                        std::shared_ptr<Window> game = std::make_shared<Game>();
+                        StateMachine::Instance().pushState(game);
+
                         m_window.close();
                     }
                 }

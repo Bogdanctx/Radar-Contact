@@ -30,7 +30,7 @@ class Game : public Window {
 public:
     Game();
     [[maybe_unused]] Game(const Game& other);
-    ~Game() override = default;
+    ~Game() = default;
 
     Game& operator=(Game other);
 
@@ -39,6 +39,8 @@ private:
     void render() override;
     void handleEvent() override;
     void update() override;
+
+    void loadElements();
 
     void addNewBalloons();
     void addNewEntities();
@@ -59,6 +61,7 @@ private:
     sf::Clock m_newEntitiesInterval{};
     sf::Clock m_spaceEntitiesInterval{};
     sf::Clock m_flightTableClock{};
+    sf::Clock m_loadingScreenDelay{};
     sf::Sprite m_backgroundRegion{};
     sf::Sound m_atcSound{};
 

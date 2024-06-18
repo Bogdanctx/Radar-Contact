@@ -21,29 +21,17 @@ si in anumite cazuri entitatile sa aibe un timp pana la prabusire => pot fi prel
  to heading {newHeading}; ROT125 set speed to 180kts) si mesajele transmise de entitati in cazul emergency-urilor
  (e.g.: WZZ1MK declares engine fire; si sa apara textul cu rosu)
 
--> State machine
-
 */
 
-#include "./header/Menu.h"
-#include "./header/Game.h"
 #include "./header/Math.h"
-
-#include <string>
+#include "./header/ResourcesManager.h"
+#include "./header/StateMachine.h"
 
 int main() {
     try {
         ResourcesManager::Instance().load();
 
-        Menu menu;
-        menu.run();
-
-        if(ResourcesManager::Instance().getSelectedRegion().empty()) { // if game has been closed in menu
-            return 0;
-        }
-
-        Game game;
-        game.run();
+        StateMachine::Instance().run();
 
     } catch(ErrorResourcesManager &err) {
         std::cout << err.what();

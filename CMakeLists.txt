@@ -181,6 +181,8 @@ add_executable(${PROJECT_NAME}
         header/API.h
         header/FlightInfo.h
         source/FlightInfo.cpp
+        header/StateMachine.h
+        source/StateMachine.cpp
 )
 
 ###############################################################################

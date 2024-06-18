@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <utility>
+#include <memory>
 
 class Window {
 public:

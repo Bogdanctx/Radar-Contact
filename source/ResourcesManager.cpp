@@ -13,9 +13,13 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "The tiny hole in the passenger windows helps regulate cabin pressure.",
                                         "Travelers lose out on over a third of their taste buds during flight.",
                                         "The first female pilot was a woman named Raymonde de Laroche.",
-                                        "A Boeing 747 is made up of six million parts",
-                                        "More than 80% of the population is afraid of flying",
-                                        "Each engine on a Boeing 747 weighs almost 9,500 pounds"},
+                                        "Black Boxes aren't black.",
+                                        "More than 80% of the population is afraid of flying.",
+                                        "Each engine on a Boeing 747 weighs almost 9,500 pounds.",
+                                        "The largest airplane ever built is called the Antonov An-225 Mriya.",
+                                        "The largest airplane ever built, Antonov An-225 Mriya, was destroyed in 2022.",
+                                        "Concorde was a passenger airplane that flew faster than the speed of sound."
+                                        },
                                         m_usingMockApi(false)
 {
 
@@ -95,10 +99,9 @@ std::string ResourcesManager::getSelectedRegion() const {
 }
 
 void ResourcesManager::loadLatLongBox(const std::string &region_name) {
-    static std::mutex mutex{};
-    const std::string regionBox = "resources/regions/" + region_name + "/long_lat.txt";
+    m_regionBox.clear();
 
-    std::lock_guard<std::mutex> lockGuard(mutex);
+    const std::string regionBox = "resources/regions/" + region_name + "/long_lat.txt";
 
     std::ifstream fin(regionBox);
     if(!fin.is_open()) {
@@ -115,10 +118,9 @@ void ResourcesManager::loadLatLongBox(const std::string &region_name) {
 }
 
 void ResourcesManager::loadAirports(const std::string &region_name) {
-    const std::string regionAirports = "resources/regions/" + region_name + "/airports.txt";
-    static std::mutex mutex{};
+    m_airports.clear();
 
-    std::lock_guard<std::mutex> lockGuard(mutex);
+    const std::string regionAirports = "resources/regions/" + region_name + "/airports.txt";
 
     std::ifstream fin(regionAirports);
     if(!fin.is_open()) {
@@ -163,10 +165,9 @@ std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegion
 }
 
 void ResourcesManager::loadWeatherTiles(const std::string &region) {
-    const std::string path = "resources/regions/" + region + "/weather_tiles.txt";
-    static std::mutex mutex{};
+    m_regionWeatherTiles.clear();
 
-    std::lock_guard<std::mutex> lockGuard(mutex);
+    const std::string path = "resources/regions/" + region + "/weather_tiles.txt";
 
     std::ifstream fin(path);
     if(!fin.is_open()) {

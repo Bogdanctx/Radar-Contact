@@ -3,8 +3,10 @@
 //
 
 #include "../header/Game.h"
+#include "../header/Menu.h"
 #include "../header/utils.h"
 #include "../header/Satellite.h"
+#include "../header/StateMachine.h"
 
 #include "../header/DataAPI.h"
 #include "../header/API.h"
@@ -13,6 +15,26 @@
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
             m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()}
+{
+    loadElements();
+
+    flightsTable.update(m_flyingEntities); // on first run
+}
+
+[[maybe_unused]] Game::Game(const Game& other) : Window{{1280, 720}, "Radar Contact"},
+                                m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()}
+{
+    for(const auto & flyingEntity: other.m_flyingEntities) {
+        m_flyingEntities.emplace_back(flyingEntity->clone());
+    }
+}
+
+Game &Game::operator=(Game other) {
+    swap(*this, other);
+    return *this;
+}
+
+void Game::loadElements()
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
@@ -40,23 +62,18 @@ Game::Game() :
     m_window.display();
 
     weather.fetchWeatherImages(&m_window);
+
     addNewEntities();
     initAirports();
 
-    flightsTable.update(m_flyingEntities); // on first run
-}
+    while(m_loadingScreenDelay.getElapsedTime().asSeconds() <= 3) {
+        m_window.clear();
 
-[[maybe_unused]] Game::Game(const Game& other) : Window{{1280, 720}, "Radar Contact"},
-                                m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()}
-{
-    for(const auto & flyingEntity: other.m_flyingEntities) {
-        m_flyingEntities.emplace_back(flyingEntity->clone());
+        m_window.draw(loadingScreen);
+        m_window.draw(randomFact);
+
+        m_window.display();
     }
-}
-
-Game &Game::operator=(Game other) {
-    swap(*this, other);
-    return *this;
 }
 
 void swap(Game& game1, Game& game2) {
@@ -258,6 +275,11 @@ void Game::handleEvent()
 
                 if(key_code == sf::Keyboard::Escape)
                 {
+                    m_window.close();
+                }
+                else if(key_code == sf::Keyboard::Enter) {
+                    std::shared_ptr<Window> menu = std::make_shared<Menu>();
+                    StateMachine::Instance().pushState(menu);
                     m_window.close();
                 }
 

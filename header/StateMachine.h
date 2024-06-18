@@ -15,10 +15,7 @@ public:
     StateMachine(const StateMachine&) = delete;
     StateMachine operator=(const StateMachine&) = delete;
 
-    static StateMachine& Instance() {
-        static StateMachine instance;
-        return instance;
-    }
+    static StateMachine& Instance();
 
     void run();
     void pushState(const std::shared_ptr<Window>& window);

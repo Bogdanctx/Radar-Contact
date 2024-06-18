@@ -30,7 +30,6 @@ class Game : public Window {
 public:
     Game();
     [[maybe_unused]] Game(const Game& other);
-    ~Game() = default;
 
     Game& operator=(Game other);
 

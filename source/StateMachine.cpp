@@ -11,6 +11,11 @@ StateMachine::StateMachine() {
     m_states.push(state);
 }
 
+StateMachine& StateMachine::Instance() {
+    static StateMachine instance;
+    return instance;
+}
+
 void StateMachine::run() {
     while(!m_states.empty()) {
         m_currentState = m_states.top();

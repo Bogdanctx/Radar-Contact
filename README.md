@@ -28,11 +28,15 @@ Blue text represents new flight data, if any has been given.
 
 ![Alt Text](./preview/data_meaning.png)
 
-Change heading by pressing LSHIFT and move your cursor around.
+# Controls
 
-Change altitude by pressing LALT and UP/DOWN Arrows.
+Change <b>heading</b> by pressing <b>LSHIFT</b> and <b>move your cursor around</b>.
 
-Change airspeed by pressing LCTRL and UP/DOWN Arrows.
+Change <b>altitude</b> by pressing <b>LALT</b> and <b>UP / DOWN Arrows</b>.
+
+Change <b>airspeed</b> by pressing <b>LCTRL</b> and <b>UP / DOWN Arrows</b>.
+
+To go <b>back to menu</b> press <b>Enter</b>. 
 
 # Nu primesc notă pentru că nu am pus titlu și descriere
 

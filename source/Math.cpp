@@ -14,7 +14,7 @@ int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
 }
 
 
-// f(speed) = 1 / 250 * speed + 165;
+// f(speed) = 1 / 250 * altitude + 165;
 int Math::AirspeedAtAltitude(const int altitude) {
     const double a = 1.f / 250.f;
     const double b = 165;
@@ -67,8 +67,8 @@ sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, con
     const float east = radians(imgBounds[1]);
     const float west = radians(imgBounds[3]);
 
-    const float map_width = 1280;
-    const float map_height = 720;
+    const float map_width = 1070;
+    const float map_height = 685;
 
     crtLatitude = radians(crtLatitude);
     crtLongitude = radians(crtLongitude);
@@ -79,8 +79,8 @@ sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, con
     const float x_factor = map_width / (east - west);
     const float y_factor = map_height / (ymax - ymin);
 
-    const float x = (crtLongitude - west) * x_factor;
-    const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor;
+    const float x = (crtLongitude - west) * x_factor + 80;
+    const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor + 35;
 
     return {x,y};
 }

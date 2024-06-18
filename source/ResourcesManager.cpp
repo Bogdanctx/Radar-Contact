@@ -3,7 +3,6 @@
 //
 
 #include "../header/ResourcesManager.h"
-#include <mutex>
 
 ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "Planes can fly with only one engine.",
@@ -25,8 +24,7 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
 
 }
 
-void ResourcesManager::load()
-{
+void ResourcesManager::load() {
     loadTextures("menu.png");
     loadTextures("loading_screen.png");
 
@@ -78,8 +76,7 @@ sf::Font &ResourcesManager::getFont(const std::string &key) {
     return m_fonts.at(key);
 }
 
-void ResourcesManager::loadTextures(const std::string &textureName)
-{
+void ResourcesManager::loadTextures(const std::string &textureName) {
     const std::string texturePath = "resources/general_textures/" + textureName;
     sf::Texture texture;
 

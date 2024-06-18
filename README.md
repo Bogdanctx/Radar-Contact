@@ -38,11 +38,6 @@ Change <b>airspeed</b> by pressing <b>LCTRL</b> and <b>UP / DOWN Arrows</b>.
 
 To go <b>back to menu</b> press <b>Enter</b>. 
 
-### Tema 0
-
-- [ ✓ ] Nume proiect (poate fi schimbat ulterior)
-- [ ✓ ] Scurtă descriere a temei alese, ce v-ați propus să implementați
-
 ## Tema 1
 
 #### Cerințe

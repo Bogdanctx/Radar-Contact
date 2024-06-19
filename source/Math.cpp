@@ -67,8 +67,8 @@ sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, con
     const float east = radians(imgBounds[1]);
     const float west = radians(imgBounds[3]);
 
-    const float map_width = 1070;
-    const float map_height = 685;
+    const float map_width = 1280 - 210;
+    const float map_height = 720 - 35;
 
     crtLatitude = radians(crtLatitude);
     crtLongitude = radians(crtLongitude);
@@ -79,8 +79,8 @@ sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, con
     const float x_factor = map_width / (east - west);
     const float y_factor = map_height / (ymax - ymin);
 
-    const float x = (crtLongitude - west) * x_factor + 80;
-    const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor + 35;
+    const float x = (crtLongitude - west) * x_factor + 65;
+    const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor + 15;
 
     return {x,y};
 }

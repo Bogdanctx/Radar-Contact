@@ -65,6 +65,7 @@ public:
     std::vector<std::string> getFacts() const;
     sf::SoundBuffer &getSound(const std::string &soundName);
     std::string getSelectedRegion() const;
+    int getRegionZoomLevel() const;
 
     void loadRegion(const std::string &region);
     void load();
@@ -92,6 +93,7 @@ private:
     std::vector<std::string> m_randomFacts{};
 
     std::string m_selectedRegion{};
+    int m_regionZoomLevel;
     bool m_usingMockApi{};
 };
 

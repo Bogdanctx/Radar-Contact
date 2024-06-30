@@ -111,7 +111,13 @@ void ResourcesManager::loadLatLongBox(const std::string &region_name) {
         m_regionBox.push_back(coordinate);
     }
 
+    fin >> m_regionZoomLevel;
+
     fin.close();
+}
+
+int ResourcesManager::getRegionZoomLevel() const {
+    return m_regionZoomLevel;
 }
 
 void ResourcesManager::loadAirports(const std::string &region_name) {

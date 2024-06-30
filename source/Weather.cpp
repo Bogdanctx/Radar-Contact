@@ -29,6 +29,8 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     for(int i = 0; i < (int) m_textures.size(); i++) {
         sf::Sprite temp_sprite;
         temp_sprite.setTexture(m_textures[i]);
+        sf::Color color = temp_sprite.getColor();
+        temp_sprite.setColor(sf::Color(color.r, color.g, color.b, 140));
 
         sf::FloatRect bounds = temp_sprite.getLocalBounds();
         temp_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);

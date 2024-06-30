@@ -47,13 +47,13 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
 
-        std::string link = path + "/256/6/" + std::to_string(tile.first) + '/' +
+        std::string link = path + "/256/" + std::to_string(ResourcesManager::Instance().getRegionZoomLevel()) + "/" + std::to_string(tile.first) + '/' +
                                  std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
 
        // for(int i=0;link[i];i++) if(link[i]=='/') link[i]='_'; // mock
 
-       std::cout <<"http://tilecache.rainviewer.com"+ link <<'\n'; // mock
+       //std::cout <<"http://tilecache.rainviewer.com"+ link <<'\n'; // mock
 
         api_response = http.sendRequest(request);
 

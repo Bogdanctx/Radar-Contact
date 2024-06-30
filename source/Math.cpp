@@ -79,8 +79,8 @@ sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, con
     const float x_factor = map_width / (east - west);
     const float y_factor = map_height / (ymax - ymin);
 
-    const float x = (crtLongitude - west) * x_factor * 0.995f;
-    const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor * 0.995f;
+    const float x = (crtLongitude - west) * x_factor * 0.998f;
+    const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor * 0.999f;
 
     return {x,y};
 }

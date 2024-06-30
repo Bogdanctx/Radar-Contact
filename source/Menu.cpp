@@ -33,6 +33,12 @@ Menu::Menu() : Window({500, 400}, "Radar Contact - Menu")
     button.setPosition(50,197);
     m_regionsButtons.emplace_back(button, "UK");
 
+    button.setPosition(146,194);
+    m_regionsButtons.emplace_back(button, "Denmark");
+
+
+
+
 
     liveData.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
     localData.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));

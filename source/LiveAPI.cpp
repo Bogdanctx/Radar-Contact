@@ -27,7 +27,7 @@ std::string LiveAPI::getWeatherPath() {
 
     return data["radar"]["nowcast"].back()["path"];
 }
-
+#include <iostream>
 std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
     sf::Http http{"http://tilecache.rainviewer.com"};
     sf::Http::Request request;
@@ -53,7 +53,7 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
 
        // for(int i=0;link[i];i++) if(link[i]=='/') link[i]='_'; // mock
 
-       // fout << link <<'\n'; // mock
+       std::cout <<"http://tilecache.rainviewer.com"+ link <<'\n'; // mock
 
         api_response = http.sendRequest(request);
 

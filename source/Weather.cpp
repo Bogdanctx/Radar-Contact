@@ -31,7 +31,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
         temp_sprite.setTexture(m_textures[i]);
 
         sf::FloatRect bounds = temp_sprite.getLocalBounds();
-        temp_sprite.setOrigin(bounds.width / 2, bounds.height / 2);
+        temp_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 
         sf::Vector2f projection = Math::MercatorProjection(m_tiles[i].first, m_tiles[i].second,
                                                            ResourcesManager::Instance().getRegionBox());

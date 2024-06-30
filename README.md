@@ -4,7 +4,7 @@
 
 Run the game and choose a region. Available regions: Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland.
 
-![Alt Text](./preview/menu.png)
+![Alt Text](./resources/general_textures/menu.png)
 
 In case of a missing network connection or if you prefer not to download live data, you can play in Offline mode using 
 local data. To achieve this, press the "Offline" button.

@@ -19,10 +19,8 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "The largest airplane ever built, Antonov An-225 Mriya, was destroyed in 2022.",
                                         "Concorde was a passenger airplane that flew faster than the speed of sound."
                                         },
-                                        m_usingMockApi(false)
-{
-
-}
+                                        m_regionZoomLevel{},
+                                        m_usingMockApi(false) {}
 
 void ResourcesManager::load() {
     loadTextures("menu.png");

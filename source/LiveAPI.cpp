@@ -27,7 +27,7 @@ std::string LiveAPI::getWeatherPath() {
 
     return data["radar"]["nowcast"].back()["path"];
 }
-#include <iostream>
+
 std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
     sf::Http http{"http://tilecache.rainviewer.com"};
     sf::Http::Request request;
@@ -51,15 +51,15 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
                                  std::to_string(tile.second) + "/2/1_0.png";
         request.setUri(link);
 
-       // for(int i=0;link[i];i++) if(link[i]=='/') link[i]='_'; // mock
+        // for(int i=0;link[i];i++) if(link[i]=='/') link[i]='_'; // mock
 
-       //std::cout <<"http://tilecache.rainviewer.com"+ link <<'\n'; // mock
+        // fout << link <<'\n'; // mock
 
         api_response = http.sendRequest(request);
 
         temp_texture.loadFromMemory(api_response.getBody().data(), api_response.getBody().size());
 
-        // temp_texture.copyToImage().saveToFile(link); // mock
+        // temp_texture.copyToImage().saveToFile("./resources/mock_api/"+ResourcesManager::Instance().getSelectedRegion() + "/" + link); // mock
 
         res.push_back(temp_texture);
 

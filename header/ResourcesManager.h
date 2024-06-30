@@ -93,7 +93,7 @@ private:
     std::vector<std::string> m_randomFacts{};
 
     std::string m_selectedRegion{};
-    int m_regionZoomLevel;
+    int m_regionZoomLevel{};
     bool m_usingMockApi{};
 };
 

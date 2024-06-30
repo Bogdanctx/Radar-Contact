@@ -38,7 +38,7 @@ Change <b>airspeed</b> by pressing <b>LCTRL</b> and <b>UP / DOWN Arrows</b>.
 
 To go <b>back to menu</b> press <b>Enter</b>. 
 
-## Tema 1
+## Task 1
 
 #### Cerințe
 - [ ✓ ] definirea a minim **3-4 clase** folosind compunere cu clasele definite de voi
@@ -56,7 +56,7 @@ To go <b>back to menu</b> press <b>Enter</b>.
 - [ ✓ ] tag de `git`: de exemplu `v0.1`
 - [ ✓ ] serviciu de integrare continuă (CI); exemplu: GitHub Actions
 
-## Tema 2
+## Task 2
 
 #### Cerințe
 - [ ✓ ] separarea codului din clase în `.h` (sau `.hpp`) și `.cpp`
@@ -81,7 +81,7 @@ To go <b>back to menu</b> press <b>Enter</b>.
   - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou <a href="https://github.com/Bogdanctx/Radar-Contact/commit/f90796aac1f9f8388094c3e4b9543ec16e02fb48">Commit aici</a>
 - [ ✓ ] tag de `git`: de exemplu `v0.2`
 
-## Tema 3
+## Task 3
 
 #### Cerințe
 - [ ✓ ] 2 șabloane de proiectare (design patterns)

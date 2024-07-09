@@ -19,8 +19,6 @@ public:
     FlyingEntity* clone() const override {
         return new HotAirBalloon(*this);
     }
-
-    void render(sf::RenderWindow *game_window) override;
 private:
     void internalUpdate() override;
 };

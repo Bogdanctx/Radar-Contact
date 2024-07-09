@@ -20,8 +20,6 @@ public:
         return new Airplane(*this);
     }
 
-    void render(sf::RenderWindow *game_window) override;
-
 private:
     void internalUpdate() override;
 };

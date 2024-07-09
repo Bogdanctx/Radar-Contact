@@ -14,15 +14,18 @@
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
-            m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()}
+            m_renderFlightsTable{false},
+            m_renderWaypoints{true}
 {
     loadElements();
+    loadWaypoints();
 
     flightsTable.update(m_flyingEntities); // on first run
 }
 
 [[maybe_unused]] Game::Game(const Game& other) : Window{{1280, 720}, "Radar Contact"},
-                                m_selectedRegion{ResourcesManager::Instance().getSelectedRegion()}
+                                                m_renderFlightsTable{false},
+                                                m_renderWaypoints{true}
 {
     for(const auto & flyingEntity: other.m_flyingEntities) {
         m_flyingEntities.emplace_back(flyingEntity->clone());
@@ -47,7 +50,8 @@ void Game::loadElements()
 
     sf::Sprite loadingScreen{ResourcesManager::Instance().getTexture("loading_screen.png")};
 
-    m_backgroundRegion.setTexture(ResourcesManager::Instance().getTexture(m_selectedRegion));
+    const std::string selectedRegion = ResourcesManager::Instance().getSelectedRegion();
+    m_backgroundRegion.setTexture(ResourcesManager::Instance().getTexture(selectedRegion));
 
     sf::Sound loadingSound;
     loadingSound.setBuffer(ResourcesManager::Instance().getSound("plane_landing.wav"));
@@ -195,7 +199,15 @@ void Game::render()
         }
     }
 
-    flightsTable.draw(&m_window);
+    if (m_renderFlightsTable) {
+        flightsTable.draw(&m_window);
+    }
+
+    if(m_renderWaypoints) {
+        for(const auto& waypoint: m_waypoints) {
+            waypoint.render(&m_window);
+        }
+    }
 
     m_window.display();
 }
@@ -265,7 +277,10 @@ void Game::handleEvent()
         if(m_spaceEntity) {
             m_spaceEntity->handleEvent(gameEvent, floatMousePosition);
         }
-        flightsTable.handleEvent(gameEvent, floatMousePosition);
+
+        if(m_renderFlightsTable) {
+            flightsTable.handleEvent(gameEvent, floatMousePosition);
+        }
 
         switch(gameEvent.type)
         {
@@ -281,6 +296,28 @@ void Game::handleEvent()
                     std::shared_ptr<Window> menu = std::make_shared<Menu>();
                     StateMachine::Instance().pushState(menu);
                     m_window.close();
+                }
+                else if(key_code == sf::Keyboard::R) {
+                    m_renderFlightsTable = !m_renderFlightsTable;
+                }
+                else if(key_code == sf::Keyboard::T) {
+                    m_renderWaypoints = !m_renderWaypoints;
+                }
+                else if(key_code == sf::Keyboard::Space) {
+                    if(m_renderWaypoints) {
+                        for(const Waypoint& wp: m_waypoints) {
+                            if(wp.getBounds().contains(floatMousePosition)) {
+                                for(const auto &flyingEntity: m_flyingEntities) {
+                                    if(flyingEntity->getIsEntitySelected()) {
+                                        if(flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
+                                            flyingEntity->addWaypointToRoute(wp);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 break;
@@ -452,4 +489,55 @@ void Game::initAirports() {
         m_airports.push_back(newAirport);
     }
 
+}
+
+void Game::loadWaypoints() {
+    const std::string waypoints = "resources/regions/" + ResourcesManager::Instance().getSelectedRegion() + "/waypoints.txt";
+
+    std::ifstream fin(waypoints);
+
+    std::unordered_map<std::string, std::pair<int, int>> test;
+
+    int numberOfWaypoints;
+    fin >> numberOfWaypoints;
+
+    for(int i = 0; i < numberOfWaypoints; i++) {
+        std::string pointName;
+        // float x, y;
+        float x, y;
+
+        fin >> x >> y >> pointName;
+
+        // sf::Vector2f projection = Math::MercatorProjection(x, y, ResourcesManager::Instance().getRegionBox());
+
+        sf::Vector2f position(x, y);
+        Waypoint waypoint{position, pointName};
+
+        m_waypoints.push_back(waypoint);
+        /*
+        if(test.empty()) {
+            test[pointName] = {projection.x, projection.y};
+        }
+        else {
+            int minDist = 1e5;
+            for(auto &[name, coords]: test) {
+                minDist = std::min(minDist, Math::DistanceBetweenTwoPoints(position, sf::Vector2f(coords.first, coords.second)));
+            }
+
+            if(minDist >= 25) {
+                m_waypoints.push_back(waypoint);
+                test[pointName] = {projection.x, projection.y};
+            }
+        }*/
+    }
+/*
+
+    std::ofstream fout(waypoints);
+    fout << test.size() << '\n';
+    for(auto &[name, coords]: test) {
+        fout << coords.first << ' ' << coords.second << ' ' << name << '\n';
+    }
+*/
+
+    fin.close();
 }

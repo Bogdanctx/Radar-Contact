@@ -8,6 +8,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+#include "Waypoint.h"
+
 #include <unordered_map>
 #include <fstream>
 #include <iostream>

@@ -8,25 +8,26 @@
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                            const std::string &callsign, sf::Vector2f position, const std::string &arrival) :
+        m_entitySelected{false}, m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_heading{heading}, m_speed{speed},
-        m_altitude{altitude}, m_squawk{squawk},
-        m_newHeading{heading}, m_newAltitude{altitude},
+        m_altitude{altitude}, m_newHeading{heading},
+        m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_entitySelected{false},
+        m_arrival{arrival},
+        m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_squawk{squawk},
+
+        m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
+        m_routeWaypointsText{"", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-
-        m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
-        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
 
         m_callsign{callsign},
-        m_headingStick{sf::Vector2f(26, 1.2f)},
-        m_arrival{arrival}
+        m_headingStick{sf::Vector2f(26, 1.2f)}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
@@ -56,6 +57,9 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
         xOffset += m_squawkText.getLocalBounds().width + 5;
         m_arrivalText.setPosition(xOffset, position.y - 30);
 
+        xOffset += m_arrivalText.getLocalBounds().width + 5;
+        m_routeWaypointsText.setPosition(xOffset, position.y - 30);
+
         xOffset = position.x - 8;
         m_speedText.setPosition(xOffset, position.y - 20);
 
@@ -81,6 +85,26 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
     }
 }
 
+void FlyingEntity::render(sf::RenderWindow *game_window) {
+    game_window->draw(m_entity);
+    game_window->draw(m_callsignText);
+
+    if(m_entitySelected)
+    {
+        game_window->draw(m_arrivalText);
+        game_window->draw(m_headingText);
+        game_window->draw(m_speedText);
+        game_window->draw(m_altitudeText);
+        game_window->draw(m_squawkText);
+        game_window->draw(m_routeWaypointsText);
+
+        game_window->draw(m_newSpeedText);
+        game_window->draw(m_newAltitudeText);
+        game_window->draw(m_newHeadingText);
+        game_window->draw(m_headingStick);
+    }
+}
+
 void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)
 {
     m_mousePosition = mouse_position;
@@ -89,7 +113,7 @@ void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mo
     {
         checkAltitudeChange(); // check if user changed entity altitude
         checkSpeedChange(); // check if user changed entity speed
-        checkHeadingChange(); /// check if user changed entity heading
+        checkHeadingChange(); // check if user changed entity heading
     }
 
     switch(game_event.type)
@@ -114,6 +138,13 @@ void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mo
         default:
             break;
     }
+}
+
+void FlyingEntity::addWaypointToRoute(const Waypoint& waypoint) {
+    route.push_back(waypoint);
+
+    m_routeWaypoints += waypoint.getName() + ' ';
+    m_routeWaypointsText.setString(m_routeWaypoints);
 }
 
 void FlyingEntity::checkAltitudeChange() {
@@ -161,8 +192,26 @@ void FlyingEntity::update(bool force) {
 
         updateText(m_entity.getPosition());
 
+        // if no direction is choosen, then heading stick might be updated
+        if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+            m_headingStick.setRotation((float)m_heading - 90);
+        }
+
         if(!force) {
             m_clocks.m_updateClock.restart();
+        }
+
+        if(!route.empty()) {
+            sf::Vector2f waypointPosition = route.front().getPosition();
+            int distance = Math::DistanceBetweenTwoPoints(m_entity.getPosition(), waypointPosition);
+
+            if(distance <= 3) {
+                route.pop_front();
+            }
+        }
+        else {
+            m_routeWaypoints = "";
+            m_routeWaypointsText.setString(m_routeWaypoints);
         }
     }
 }
@@ -173,9 +222,12 @@ void FlyingEntity::checkHeadingChange() {
         m_newHeadingText.setString(std::to_string(m_newHeading));
         m_headingStick.setRotation((float) m_newHeading - 90);
 
-        if (m_newSpeed != m_speed) {
-            m_newSpeedText.setString(std::to_string(m_newSpeed));
+        while(!route.empty()) {
+            route.pop_front();
         }
+
+        m_routeWaypoints = "";
+        m_routeWaypointsText.setString(m_routeWaypoints);
     }
 }
 
@@ -242,6 +294,10 @@ void FlyingEntity::updateSpeedData() {
 void FlyingEntity::updateHeadingData() {
     bool shouldUpdateHeading = m_clocks.m_headingClock.getElapsedTime().asMilliseconds() >= m_clocks.m_headingInterval;
 
+    if(!route.empty()) { // if waypoints were given to a flying entity
+        m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), route.front().getPosition());
+    }
+
     if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading)
     {
         if ((m_newHeading - m_heading + 360) % 360 < 180) {
@@ -298,4 +354,15 @@ int FlyingEntity::getAirspeed() const {
 
 void FlyingEntity::setEntitySelected() {
     m_entitySelected = true;
+}
+
+Waypoint FlyingEntity::getRouteCurrentWaypoint() const {
+    if(route.empty()) {
+        return {sf::Vector2f(0, 0), ""};
+    }
+    return route.back();
+}
+
+bool FlyingEntity::getIsEntitySelected() const {
+    return m_entitySelected;
 }

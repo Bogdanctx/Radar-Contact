@@ -8,10 +8,6 @@
 void SpaceEntity::internalUpdate() {
     const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
     m_entity.move(translation_to_point);
-
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-        m_headingStick.setRotation((float)m_heading - 90);
-    }
 }
 
 void SpaceEntity::render(sf::RenderWindow *game_window) {

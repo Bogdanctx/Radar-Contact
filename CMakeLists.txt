@@ -183,6 +183,8 @@ add_executable(${PROJECT_NAME}
         source/FlightInfo.cpp
         header/StateMachine.h
         source/StateMachine.cpp
+        header/Waypoint.h
+        source/Waypoint.cpp
 )
 
 ###############################################################################

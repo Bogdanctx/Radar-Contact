@@ -9,10 +9,12 @@
 
 #include <utility>
 #include <memory>
+#include <deque>
+
+#include "Waypoint.h"
 
 class FlyingEntity {
 protected:
-
     struct Clocks {
         Clocks() = default;
         explicit Clocks(int update, int altitude = 0, int speed = 0, int heading = 0) : m_updateInterval(update),
@@ -39,7 +41,7 @@ public:
     virtual ~FlyingEntity() = default;
 
     void update(bool force = false);
-    virtual void render(sf::RenderWindow *game_window) = 0;
+    virtual void render(sf::RenderWindow *game_window);
     virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
 
     sf::Vector2f getEntityPosition() const;
@@ -49,6 +51,9 @@ public:
     void setDanger(int conflictType);
     void setCrashed();
     void setEntitySelected();
+    bool getIsEntitySelected() const;
+    void addWaypointToRoute(const Waypoint& waypoint);
+    Waypoint getRouteCurrentWaypoint() const;
     bool getCrashed() const;
     bool isInsideScreen() const;
     std::string getCallsign() const;
@@ -57,34 +62,6 @@ public:
 protected:
     FlyingEntity(const FlyingEntity &other) = default;
     FlyingEntity& operator=(const FlyingEntity& other) = default;
-
-    int m_heading{};
-    int m_speed{};
-    int m_altitude{};
-    std::string m_squawk{};
-    sf::RectangleShape m_entity{};
-    int m_newHeading{};
-    int m_newAltitude{};
-    int m_newSpeed{};
-    bool m_entitySelected{};
-
-    int m_minSpeed{}, m_maxSpeed{};
-    int m_minAltitude{}, m_maxAltitude{};
-
-    sf::Text m_headingText{};
-    sf::Text m_speedText{};
-    sf::Text m_altitudeText{};
-    sf::Text m_squawkText{};
-    sf::Text m_callsignText{};
-    sf::Text m_arrivalText{};
-
-    sf::Text m_newHeadingText{};
-    sf::Text m_newSpeedText{};
-    sf::Text m_newAltitudeText{};
-
-    std::string m_callsign{};
-
-    sf::RectangleShape m_headingStick{};
 
     void updateAltitudeData();
     void updateSpeedData();
@@ -99,6 +76,19 @@ protected:
     void setSpeedConstraints(int minSpeed, int maxSpeed);
 
     void setClocks(Clocks clocks);
+
+    std::deque<Waypoint> route;
+    sf::RectangleShape m_entity{};
+    bool m_entitySelected{};
+    sf::Text m_callsignText{};
+
+    int m_heading{};
+    int m_speed{};
+    int m_altitude{};
+
+    int m_newHeading{};
+    int m_newAltitude{};
+    int m_newSpeed{};
 private:
     virtual void internalUpdate() = 0;
 
@@ -107,8 +97,31 @@ private:
     sf::Vector2f m_mousePosition;
 
     bool m_isCrashed{};
-    std::string m_arrival;
     Clocks m_clocks{};
+
+    std::string m_arrival{};
+    sf::Text m_arrivalText{};
+
+    std::string m_squawk{};
+    sf::Text m_squawkText{};
+
+    sf::Text m_routeWaypointsText{};
+    std::string m_routeWaypoints{};
+
+    int m_minSpeed{}, m_maxSpeed{};
+    int m_minAltitude{}, m_maxAltitude{};
+
+    sf::Text m_headingText{};
+    sf::Text m_speedText{};
+    sf::Text m_altitudeText{};
+
+    sf::Text m_newHeadingText{};
+    sf::Text m_newSpeedText{};
+    sf::Text m_newAltitudeText{};
+
+    std::string m_callsign{};
+
+    sf::RectangleShape m_headingStick{};
 };
 
 class FlyingEntity_Decorator {
@@ -121,8 +134,9 @@ public:
         const std::string altitude = m_component->m_altitudeText.getString() + "ft";
         const std::string airspeed = m_component->m_speedText.getString() + "kts";
         const std::string arrival = m_component->m_arrival;
+        const std::string waypointName = m_component->getRouteCurrentWaypoint().getName();
 
-        const std::string result = callsign + "     " + altitude + "     " + airspeed + "     " + arrival;
+        const std::string result = callsign + "     " + altitude + "     " + airspeed + "     " + arrival + "     " + waypointName;
 
         return result;
     }

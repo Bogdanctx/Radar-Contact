@@ -3,6 +3,7 @@
 //
 
 #include "../header/ResourcesManager.h"
+#include "../header/Math.h"
 
 ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "Planes can fly with only one engine.",
@@ -20,7 +21,10 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "Concorde was a passenger airplane that flew faster than the speed of sound."
                                         },
                                         m_regionZoomLevel{},
-                                        m_usingMockApi(false) {}
+                                        m_usingMockApi(false)
+{
+
+}
 
 void ResourcesManager::load() {
     loadTextures("menu.png");

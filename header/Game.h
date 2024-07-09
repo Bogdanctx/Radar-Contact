@@ -30,6 +30,7 @@ class Game : public Window {
 public:
     Game();
     [[maybe_unused]] Game(const Game& other);
+    ~Game() = default;
 
     Game& operator=(Game other);
 
@@ -40,6 +41,7 @@ private:
     void update() override;
 
     void loadElements();
+    void loadWaypoints();
 
     void addNewBalloons();
     void addNewEntities();
@@ -64,10 +66,13 @@ private:
     sf::Sprite m_backgroundRegion{};
     sf::Sound m_atcSound{};
 
-    std::string m_selectedRegion{};
-
     Weather weather{};
     FlightsTable flightsTable{};
+
+    std::vector<Waypoint> m_waypoints{};
+
+    bool m_renderFlightsTable{};
+    bool m_renderWaypoints{};
 };
 
 

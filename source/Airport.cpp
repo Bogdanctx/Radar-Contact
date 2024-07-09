@@ -8,10 +8,14 @@ Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
                 m_coverage(16),
                 m_labelICAO{airportICAO, ResourcesManager::Instance().getFont("Raleway-Regular.ttf"), 8}
 {
-    m_coverage.setOrigin(8, 8);
+    sf::FloatRect bounds = m_coverage.getGlobalBounds();
+
+    m_coverage.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
     m_coverage.setFillColor(sf::Color(255, 223, 135, 100));
     m_coverage.setPosition(position);
 
+    bounds = m_labelICAO.getGlobalBounds();
+    m_labelICAO.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
     m_labelICAO.setPosition(position);
 }
 

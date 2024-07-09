@@ -36,7 +36,20 @@ Change <b>altitude</b> by pressing <b>LALT</b> and <b>UP / DOWN Arrows</b>.
 
 Change <b>airspeed</b> by pressing <b>LCTRL</b> and <b>UP / DOWN Arrows</b>.
 
+Hide / show <b>flights table</b> by pressing <b>R</b>.
+
+Hide / show <b>waypoints</b> by pressing <b>T</b>.
+
 To go <b>back to menu</b> press <b>Enter</b>. 
+
+# Update 9 July 2024
+
+### Routes!
+To create a route for a flying entity, click on the flying entity, then press the spacebar on any waypoint 
+available on the map to add it to the current route. To reset the route, change the heading.
+
+![Alt Text](./preview/route.gif)
+
 
 ## Task 1
 

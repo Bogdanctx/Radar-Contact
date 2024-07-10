@@ -1,5 +1,9 @@
 # Radar Contact
 
+### Download
+
+Click on the latest tag available in <b>Releases</b> tab, then select the version (Windows, Ubuntu, macOS) that match your specifications. 
+
 ### How to play?
 
 Run the game and choose a region. Available regions: Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland.

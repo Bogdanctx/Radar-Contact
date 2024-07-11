@@ -21,25 +21,26 @@ Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
 
         sf::Text text(flags[i], ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 12);
 
-        if(i <= 4) {
-            button.setPosition(50 + 95 * (float) i, 140);
-            text.setPosition(50 + 95 * (float) i, 170);
+        float positionX = 50 + 95 * (float) (i % 5);
+        float positionY = 140;
+
+        if (5 <= i && i <= 9) {
+            positionY = 220;
         }
-        else if (i <= 9) {
-            button.setPosition(50 + 95 * (float) (i % 5), 220);
-            text.setPosition(50 + 95 * (float) (i % 5), 250);
-        }
+
+        button.setPosition(positionX, positionY);
+        text.setPosition(positionX, positionY + 30);
 
         m_flagsTexture[i] = (texture);
         button.setTexture(&m_flagsTexture[i]);
 
+        m_regionsButtons[i] = std::make_pair<>(button, flags[i]);
+
         if(flags[i] == "UK") {
-            m_regionsButtons[i] = std::make_pair<>(button, flags[i] + "& Ireland");
+            text.setString("UK & Ireland");
+            text.setPosition(positionX - 10, positionY + 30);
         }
-        else {
-            m_regionsButtons[i] = std::make_pair<>(button, flags[i]);
-        }
-        
+
         m_flagsLabel[i] = text;
     }
 

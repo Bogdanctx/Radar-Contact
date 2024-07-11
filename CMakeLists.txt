@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing executable name in this file
 # for now, the project name is used as the executable name
-project(oop)
+project(radar_contact)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

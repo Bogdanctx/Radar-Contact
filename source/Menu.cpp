@@ -17,8 +17,7 @@ Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
 
     for(int i = 0; i < (int) flags.size(); i++) {
         sf::Texture texture;
-        if(!texture.loadFromFile("./resources/flags/" + flags[i] + ".png"))
-            std::cout << "fail\n";
+        texture.loadFromFile("./resources/flags/" + flags[i] + ".png");
 
         sf::Text text(flags[i], ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 12);
 
@@ -34,7 +33,13 @@ Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
         m_flagsTexture[i] = (texture);
         button.setTexture(&m_flagsTexture[i]);
 
-        m_regionsButtons[i] = std::make_pair<>(button, flags[i]);
+        if(flags[i] == "UK") {
+            m_regionsButtons[i] = std::make_pair<>(button, flags[i] + "& Ireland");
+        }
+        else {
+            m_regionsButtons[i] = std::make_pair<>(button, flags[i]);
+        }
+        
         m_flagsLabel[i] = text;
     }
 

@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <vector>
+#include <array>
 
 #include "Window.h"
 
@@ -26,7 +26,9 @@ private:
 
     sf::Text liveData, localData;
 
-    std::vector<std::pair<sf::RectangleShape, std::string>> m_regionsButtons;
+    std::array<std::pair<sf::RectangleShape, std::string>, 7> m_regionsButtons;
+    std::array<sf::Texture, 7> m_flagsTexture;
+    std::array<sf::Text, 7> m_flagsLabel;
 };
 
 

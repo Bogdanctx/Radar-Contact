@@ -2,18 +2,19 @@
 
 ### How to play?
 
-Run the game and choose a region. Available regions: Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland.
+Run the game and select a region. Available regions: <b>Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland, Denmark.</b>
 
-![Alt Text](./resources/general_textures/menu.png)
+![Alt Text](./preview/menu.png)
 
-In case of a missing network connection or if you prefer not to download live data, you can play in Offline mode using 
-local data. To achieve this, press the "Offline" button.
+In case of a missing network connection or if you prefer <b>not to download live data</b>, you can play in <b>Offline mode</b> using 
+local data. To achieve this, press the <b>"Offline"</b> button.
 
 ![Alt Text](./preview/live_data.gif)
 
 After that, control your airspace! Give instructions to airplanes, helicopters and hot air balloons to arrive to their airports.
 
-A flying entity will disconnect from your frequency when it is inside the arrival airport coverage area (the yellow circles). In order to disconnect, some conditions are required: altitude must be below 10000ft and the airspeed must be below 250 knots.
+A flying entity will disconnect from your frequency when it is <b>inside the arrival airport coverage area</b> (the yellow circles). 
+In order to disconnect, some conditions are required: <b>altitude must be below 10.000ft</b> and <b>airspeed below 250 knots</b>.
 
 ![Alt Text](./preview/landing.gif)
 
@@ -57,7 +58,6 @@ available on the map to add it to the current route. To reset the route, change 
 - [VATSIM](https://vatsim.dev/) (Airplanes API)
 - [Google Fonts](https://fonts.google.com/specimen/Poppins) (Poppins)
 - [Google Fonts](https://fonts.google.com/specimen/Raleway?query=raleway) (Raleway)
-- [Flaticon](https://www.flaticon.com/free-icon/radar_15721478?term=radar&page=1&position=33&origin=tag&related_id=15721478) (Radar icon)
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC)
 - [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Landing sound)
 - [Flightradar24](https://www.flightradar24.com) (Map images)

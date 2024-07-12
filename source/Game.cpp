@@ -496,48 +496,20 @@ void Game::loadWaypoints() {
 
     std::ifstream fin(waypoints);
 
-    std::unordered_map<std::string, std::pair<int, int>> test;
-
     int numberOfWaypoints;
     fin >> numberOfWaypoints;
 
     for(int i = 0; i < numberOfWaypoints; i++) {
         std::string pointName;
-        // float x, y;
         float x, y;
 
         fin >> x >> y >> pointName;
-
-        // sf::Vector2f projection = Math::MercatorProjection(x, y, ResourcesManager::Instance().getRegionBox());
 
         sf::Vector2f position(x, y);
         Waypoint waypoint{position, pointName};
 
         m_waypoints.push_back(waypoint);
-        /*
-        if(test.empty()) {
-            test[pointName] = {projection.x, projection.y};
-        }
-        else {
-            int minDist = 1e5;
-            for(auto &[name, coords]: test) {
-                minDist = std::min(minDist, Math::DistanceBetweenTwoPoints(position, sf::Vector2f(coords.first, coords.second)));
-            }
-
-            if(minDist >= 25) {
-                m_waypoints.push_back(waypoint);
-                test[pointName] = {projection.x, projection.y};
-            }
-        }*/
     }
-/*
-
-    std::ofstream fout(waypoints);
-    fout << test.size() << '\n';
-    for(auto &[name, coords]: test) {
-        fout << coords.first << ' ' << coords.second << ' ' << name << '\n';
-    }
-*/
 
     fin.close();
 }

@@ -9,7 +9,7 @@
 Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
 {
     const std::vector<std::string> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
-                                            "UK", "Denmark"};
+                                            "UK", "Denmark", "France", "Spain", "Greece"};
 
     sf::RectangleShape button{sf::Vector2f(50,30)};
     button.setOutlineThickness(2.3f);
@@ -39,6 +39,10 @@ Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
         if(flags[i] == "UK") {
             text.setString("UK & Ireland");
             text.setPosition(positionX - 10, positionY + 30);
+        }
+        else if(flags[i] == "Spain") {
+            text.setString("Spain & Portugal");
+            text.setPosition(positionX - 25, positionY + 30);
         }
 
         m_flagsLabel[i] = text;

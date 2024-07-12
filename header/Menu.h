@@ -26,9 +26,9 @@ private:
 
     sf::Text liveData, localData;
 
-    std::array<std::pair<sf::RectangleShape, std::string>, 7> m_regionsButtons;
-    std::array<sf::Texture, 7> m_flagsTexture;
-    std::array<sf::Text, 7> m_flagsLabel;
+    std::array<std::pair<sf::RectangleShape, std::string>, 10> m_regionsButtons;
+    std::array<sf::Texture, 10> m_flagsTexture;
+    std::array<sf::Text, 10> m_flagsLabel;
 };
 
 

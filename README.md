@@ -6,7 +6,8 @@ Click on the latest tag available in <b>Releases</b> tab, then select the versio
 
 ### How to play?
 
-Run the game and select a region. Available regions: <b>Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland, Denmark.</b>
+Run the game and select a region. Available regions: <b>Poland, Iceland, Cyprus, Austria, Turkey, UK & Ireland, Denmark,
+France, Spain & Portugal, Greece</b>
 
 ![Alt Text](./preview/menu.png)
 

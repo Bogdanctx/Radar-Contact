@@ -248,6 +248,12 @@ void Game::checkInsideWeather() {
     std::vector<sf::Sprite> weatherSprites = weather.getSprites();
 
     for (auto& flyingEntity : m_flyingEntities) {
+        std::pair<sf::Clock, int> updateTimer = flyingEntity->getUpdateClock();
+
+        if(updateTimer.first.getElapsedTime().asMilliseconds() < updateTimer.second) {
+            continue;
+        }
+
         const sf::Vector2i entityPosition(static_cast<int>(flyingEntity->getEntityPosition().x),
                                           static_cast<int>(flyingEntity->getEntityPosition().y));
 

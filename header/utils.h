@@ -12,7 +12,7 @@ class Utilities {
 public:
     template<typename T>
     static T randGen(T minVal, T maxVal) {
-        T randomNumber;
+        T randomNumber = 0;
 
         if(std::is_integral<T>::value) {
             std::uniform_int_distribution<> uid(minVal, maxVal);

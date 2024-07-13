@@ -191,37 +191,23 @@ void FlyingEntity::update(bool force) {
     {
         internalUpdate();
 
-        int random = Utilities::randGen<int>(0, 100);
         switch (m_fallInWeather) {
             case 1: // yellow
             {
-                m_altitude -= Utilities::randGen<int>(100, 300) / 100 * 100;
+                m_altitude -= Utilities::randGen<int>(500, 800) / 100 * 100;
                 break;
             }
             case 2: // red
             {
-                m_altitude -= Utilities::randGen<int>(300, 500) / 100 * 100;
-                if(random % 2 == 0) {
-                    m_heading += Utilities::randGen<int>(0, 50);
-                    m_heading %= 360;
-                }
-                else {
-                    m_heading -= Utilities::randGen<int>(0, 50);
-                    m_heading %= 360;
-                }
+                m_altitude -= Utilities::randGen<int>(800, 1400) / 100 * 100;
+                m_heading += Utilities::randGen<int>(-15, 15);
                 break;
             }
             case 3: // pink
             {
-                m_altitude -= Utilities::randGen<int>(500, 800) / 100 * 100;
-                if(random % 2 == 0) {
-                    m_heading += Utilities::randGen<int>(0, 100);
-                    m_heading %= 360;
-                }
-                else {
-                    m_heading -= Utilities::randGen<int>(0, 100);
-                    m_heading %= 360;
-                }
+                m_altitude -= Utilities::randGen<int>(1400, 2000) / 100 * 100;
+                m_heading += Utilities::randGen<int>(-25, 25);
+
                 break;
             }
             default:
@@ -271,6 +257,10 @@ void FlyingEntity::checkHeadingChange() {
         m_routeWaypoints = "";
         m_routeWaypointsText.setString(m_routeWaypoints);
     }
+}
+
+std::pair<sf::Clock, int> FlyingEntity::getUpdateClock() const {
+    return std::make_pair(m_clocks.m_updateClock, m_clocks.m_updateInterval);
 }
 
 void FlyingEntity::setClocks(const FlyingEntity::Clocks clocks) {

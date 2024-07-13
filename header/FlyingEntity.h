@@ -35,6 +35,8 @@ protected:
     };
 
 public:
+    std::string getCallsign() const { return m_callsign; }
+
     FlyingEntity() = default;
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                           const std::string &callsign, sf::Vector2f position, const std::string &arrival);
@@ -48,6 +50,8 @@ public:
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
     int getAirspeed() const;
+
+    std::pair<sf::Clock, int> getUpdateClock() const;
 
     void setDanger(int conflictType);
     void setCrashed();

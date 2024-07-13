@@ -13,7 +13,7 @@ public:
     explicit Airplane(Args... args) : FlyingEntity(args...) {
         setSpeedConstraints(185, 335);
         setAltitudeConstraints(5000, 39000);
-        setClocks(Clocks(1100, 900, 800, 190));
+        setClocks(Clocks(1100, 750, 800, 190));
     }
 
     FlyingEntity* clone() const override {

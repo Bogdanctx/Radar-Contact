@@ -30,7 +30,4 @@ private:
     static std::mt19937 rng;
 };
 
-std::random_device Utilities::rd;
-std::mt19937 Utilities::rng(rd());
-
 #endif //OOP_UTILS_H

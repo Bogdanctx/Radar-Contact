@@ -4,7 +4,6 @@
 
 #include "../header/Game.h"
 #include "../header/Menu.h"
-#include "../header/utils.h"
 #include "../header/Satellite.h"
 #include "../header/StateMachine.h"
 
@@ -90,6 +89,7 @@ void swap(Game& game1, Game& game2) {
 void Game::update()
 {
     checkForEntitiesCollisions();
+    checkInsideWeather();
     checkInsideAirspace();
     checkOutsideScreen();
 
@@ -214,39 +214,72 @@ void Game::render()
 
 void Game::checkForEntitiesCollisions() {
     for(auto &A_flyingEntity: m_flyingEntities) {
-        const std::string A_callsign = A_flyingEntity->getCallsign();
-        const sf::Vector2f A_position = A_flyingEntity->getEntityPosition();
+        const sf::Vector2f& A_position = A_flyingEntity->getEntityPosition();
         const int A_altitude = A_flyingEntity->getAltitude();
 
         int conflictType = 0;
 
         for(auto &B_flyingEntity: m_flyingEntities) {
-            const std::string B_callsign = B_flyingEntity->getCallsign();
-            const sf::Vector2f B_position = B_flyingEntity->getEntityPosition();
-            const int B_altitude = B_flyingEntity->getAltitude();
+            if (A_flyingEntity == B_flyingEntity || A_altitude != B_flyingEntity->getAltitude()) {
+                continue;
+            }
 
-            if(A_callsign != B_callsign) {
-                int distance = Math::DistanceBetweenTwoPoints(A_position, B_position);
+            const sf::Vector2f& B_position = B_flyingEntity->getEntityPosition();
+            int distance = Math::DistanceBetweenTwoPoints(A_position, B_position);
 
-                if(A_altitude == B_altitude)
-                {
-                    if(distance <= 35) {
-                        conflictType = 1;
-                    }
-                    if(distance <= 15) {
-                        conflictType = 2;
-                    }
-                    if(distance <= 5) {
-                        A_flyingEntity->setCrashed();
-                        B_flyingEntity->setCrashed();
-                    }
-                }
+            if(distance <= 5) {
+                A_flyingEntity->setCrashed();
+                B_flyingEntity->setCrashed();
+            }
+            else if (distance <= 15) {
+                conflictType = 2;
+            }
+            else if (distance <= 35) {
+                conflictType = 1;
             }
         }
 
         A_flyingEntity->setDanger(conflictType);
     }
+}
 
+
+void Game::checkInsideWeather() {
+    std::vector<sf::Sprite> weatherSprites = weather.getSprites();
+
+    for (auto& flyingEntity : m_flyingEntities) {
+        const sf::Vector2i entityPosition(static_cast<int>(flyingEntity->getEntityPosition().x),
+                                          static_cast<int>(flyingEntity->getEntityPosition().y));
+
+        bool insideWeather = false;
+        for (int i = 0; i < (int) weatherSprites.size(); ++i) {
+            const sf::FloatRect& spriteBounds = weatherSprites[i].getGlobalBounds();
+
+            if (spriteBounds.contains(static_cast<sf::Vector2f>(entityPosition))) {
+                int weatherDanger = weather.getPixelColor(i, entityPosition);
+
+                switch (weatherDanger) {
+                    case Weather::RainDanger::Yellow:
+                        flyingEntity->setFallInWeather(1);
+                        break;
+                    case Weather::RainDanger::Red:
+                    case Weather::RainDanger::Pink:
+                        flyingEntity->setFallInWeather(2);
+                        break;
+                    default:
+                        flyingEntity->setFallInWeather(0);
+                        break;
+                }
+
+                insideWeather = true;
+                break; // Exit the loop once the entity is inside any weather sprite
+            }
+        }
+
+        if (!insideWeather) {
+            flyingEntity->setFallInWeather(0);
+        }
+    }
 }
 
 void Game::checkInsideAirspace() { // check if a flying entity could be controlled by an inferior ATC level
@@ -284,32 +317,30 @@ void Game::handleEvent()
 
         switch(gameEvent.type)
         {
-            case sf::Event::KeyPressed:
-            {
+            case sf::Event::KeyPressed: {
                 const sf::Keyboard::Key key_code = gameEvent.key.code;
 
-                if(key_code == sf::Keyboard::Escape)
-                {
+                if (key_code == sf::Keyboard::Escape) {
                     m_window.close();
                 }
-                else if(key_code == sf::Keyboard::Enter) {
+                else if (key_code == sf::Keyboard::Enter) {
                     std::shared_ptr<Window> menu = std::make_shared<Menu>();
                     StateMachine::Instance().pushState(menu);
                     m_window.close();
                 }
-                else if(key_code == sf::Keyboard::R) {
+                else if (key_code == sf::Keyboard::R) {
                     m_renderFlightsTable = !m_renderFlightsTable;
                 }
-                else if(key_code == sf::Keyboard::T) {
+                else if (key_code == sf::Keyboard::T) {
                     m_renderWaypoints = !m_renderWaypoints;
                 }
-                else if(key_code == sf::Keyboard::Space) {
-                    if(m_renderWaypoints) {
-                        for(const Waypoint& wp: m_waypoints) {
-                            if(wp.getBounds().contains(floatMousePosition)) {
-                                for(const auto &flyingEntity: m_flyingEntities) {
-                                    if(flyingEntity->getIsEntitySelected()) {
-                                        if(flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
+                else if (key_code == sf::Keyboard::Space) {
+                    if (m_renderWaypoints) {
+                        for (const Waypoint &wp: m_waypoints) {
+                            if (wp.getBounds().contains(floatMousePosition)) {
+                                for (const auto &flyingEntity: m_flyingEntities) {
+                                    if (flyingEntity->getIsEntitySelected()) {
+                                        if (flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
                                             flyingEntity->addWaypointToRoute(wp);
                                             break;
                                         }
@@ -319,7 +350,6 @@ void Game::handleEvent()
                         }
                     }
                 }
-
                 break;
             }
             case sf::Event::Closed:

@@ -51,6 +51,7 @@ private:
     void checkForEntitiesCollisions();
     void checkInsideAirspace();
     void checkOutsideScreen();
+    void checkInsideWeather();
 
     void removeCrashedEntities();
 

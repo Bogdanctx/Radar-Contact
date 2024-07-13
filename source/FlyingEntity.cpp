@@ -13,6 +13,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_altitude{altitude}, m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
+        m_fallInWeather{0},
         m_arrival{arrival},
         m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_squawk{squawk},
@@ -190,6 +191,47 @@ void FlyingEntity::update(bool force) {
     {
         internalUpdate();
 
+        int random = Utilities::randGen<int>(0, 100);
+        switch (m_fallInWeather) {
+            case 1: // yellow
+            {
+                m_altitude -= Utilities::randGen<int>(100, 300) / 100 * 100;
+                break;
+            }
+            case 2: // red
+            {
+                m_altitude -= Utilities::randGen<int>(300, 500) / 100 * 100;
+                if(random % 2 == 0) {
+                    m_heading += Utilities::randGen<int>(0, 50);
+                    m_heading %= 360;
+                }
+                else {
+                    m_heading -= Utilities::randGen<int>(0, 50);
+                    m_heading %= 360;
+                }
+                break;
+            }
+            case 3: // pink
+            {
+                m_altitude -= Utilities::randGen<int>(500, 800) / 100 * 100;
+                if(random % 2 == 0) {
+                    m_heading += Utilities::randGen<int>(0, 100);
+                    m_heading %= 360;
+                }
+                else {
+                    m_heading -= Utilities::randGen<int>(0, 100);
+                    m_heading %= 360;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+
+        if(m_altitude <= 2000) {
+            setCrashed();
+        }
+
         updateText(m_entity.getPosition());
 
         // if no direction is choosen, then heading stick might be updated
@@ -249,10 +291,10 @@ void FlyingEntity::setDanger(const int conflictType) {
     if(conflictType == 0) { // no conflict
         m_entity.setFillColor(sf::Color::White);
     }
-    else if(conflictType == 1) { // entities are getting close to each other
+    else if(conflictType == 1) {
         m_entity.setFillColor(sf::Color(230, 140, 44));
     }
-    else if(conflictType == 2) { // collission is imminent
+    else if(conflictType >= 2) {
         m_entity.setFillColor(sf::Color::Red);
     }
 }
@@ -318,6 +360,10 @@ void FlyingEntity::updateHeadingData() {
     }
 }
 
+void FlyingEntity::setFallInWeather(int degree) {
+    m_fallInWeather = degree;
+}
+
 bool FlyingEntity::isInsideScreen() const {
     sf::Vector2f position = m_entity.getPosition();
 
@@ -330,10 +376,6 @@ void FlyingEntity::setCrashed() {
 
 bool FlyingEntity::getCrashed() const {
     return m_isCrashed;
-}
-
-std::string FlyingEntity::getCallsign() const {
-    return m_callsign;
 }
 
 int FlyingEntity::getAltitude() const {

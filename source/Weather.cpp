@@ -20,6 +20,43 @@ void Weather::render(sf::RenderWindow *window) {
     }
 }
 
+int Weather::getPixelColor(int tile, sf::Vector2i position) {
+    sf::Vector2i spritePosition(static_cast<int>(m_sprites[tile].getPosition().x) - 128,
+                                static_cast<int>(m_sprites[tile].getPosition().y) - 128);
+
+    sf::Color pixelColor = m_images[tile].getPixel(position.x - spritePosition.x, position.y - spritePosition.y);
+
+    struct Color {
+        int r, g, b;
+    };
+
+    const std::vector<Color> colors = {
+            {255, 191, 0},   // yellow
+            {0, 118, 170},   // blue
+            {189, 0, 0},     // red
+            {255, 157, 255}, // pink
+            {0, 0, 0}        // nothing
+    };
+
+    int minDistance = std::numeric_limits<int>::max();
+    int colorIndex = -1;
+
+    for (int i = 0; i < (int) colors.size(); ++i) {
+        int dr = pixelColor.r - colors[i].r;
+        int dg = pixelColor.g - colors[i].g;
+        int db = pixelColor.b - colors[i].b;
+
+        int distance = dr * dr + dg * dg + db * db;
+
+        if (distance < minDistance) {
+            minDistance = distance;
+            colorIndex = i;
+        }
+    }
+
+    return colorIndex;
+}
+
 void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     m_sprites = std::vector<sf::Sprite> {};
 
@@ -33,11 +70,12 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
         temp_sprite.setColor(sf::Color(color.r, color.g, color.b, 140));
 
         sf::FloatRect bounds = temp_sprite.getLocalBounds();
-        temp_sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+        temp_sprite.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
 
         sf::Vector2f projection = Math::MercatorProjection(m_tiles[i].first, m_tiles[i].second,
                                                            ResourcesManager::Instance().getRegionBox());
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
+        m_images.push_back(m_textures[i].copyToImage());
     }
 }

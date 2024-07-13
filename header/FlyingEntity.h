@@ -11,6 +11,7 @@
 #include <memory>
 #include <deque>
 
+#include "utils.h"
 #include "Waypoint.h"
 
 class FlyingEntity {
@@ -56,8 +57,9 @@ public:
     Waypoint getRouteCurrentWaypoint() const;
     bool getCrashed() const;
     bool isInsideScreen() const;
-    std::string getCallsign() const;
     std::string getArrival() const;
+
+    void setFallInWeather(int degree);
 
 protected:
     FlyingEntity(const FlyingEntity &other) = default;
@@ -95,6 +97,8 @@ private:
     friend class FlyingEntity_Decorator;
 
     sf::Vector2f m_mousePosition;
+
+    int m_fallInWeather{};
 
     bool m_isCrashed{};
     Clocks m_clocks{};

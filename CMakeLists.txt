@@ -185,6 +185,7 @@ add_executable(${PROJECT_NAME}
         source/StateMachine.cpp
         header/Waypoint.h
         source/Waypoint.cpp
+        source/utils.cpp
 )
 
 ###############################################################################

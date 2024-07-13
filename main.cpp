@@ -6,10 +6,6 @@
 
     trebuie sa imi dea doar datele fara sa aleg din ce API !!!!!!!!!!!!!!!!!!!!
 
-
--> La weather: transfer de la sf::Sprite la sf::Image pentru functia getPixel() [turbulente??, prabusiri...]
-                                                                       ^ probabil sa sara in aer performanta
-
 -> Event-uri random pentru emergency-uri pentru avioane si elicoptere
 	-> Avioanele pot avea emergency-uri de tipul alarma cu bomba, engine fire, sanatate calator
 	-> Emergency-uri elicoptere: Engine fire (si sa isi schimbe de multe ori directia si sa

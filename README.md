@@ -48,6 +48,15 @@ Hide / show <b>waypoints</b> by pressing <b>T</b>.
 
 To go <b>back to menu</b> press <b>Enter</b>. 
 
+# Update [13 July 2024]
+
+### Ladies and gentlemen, fasten your seatbelts!
+
+Your job as an ATC just got tougher. Control airplanes to ensure they avoid storms. 
+Once inside bad weather, airplanes will rapidly lose altitude, their airspeed will decrease, and their heading will become unstable.
+
+![Alt Text](./preview/turbulences.gif)
+
 # Update [9 July 2024]
 
 ### Routes!

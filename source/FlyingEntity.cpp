@@ -195,18 +195,21 @@ void FlyingEntity::update(bool force) {
             case 1: // yellow
             {
                 m_altitude -= Utilities::randGen<int>(500, 800) / 100 * 100;
+                m_speed += Utilities::randGen<int>(-5, 5);
                 break;
             }
             case 2: // red
             {
                 m_altitude -= Utilities::randGen<int>(800, 1400) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-15, 15);
+                m_speed += Utilities::randGen<int>(-10, 10);
                 break;
             }
             case 3: // pink
             {
                 m_altitude -= Utilities::randGen<int>(1400, 2000) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-25, 25);
+                m_speed += Utilities::randGen<int>(-16, 16);
 
                 break;
             }
@@ -214,7 +217,7 @@ void FlyingEntity::update(bool force) {
                 break;
         }
 
-        if(m_altitude <= 2000) {
+        if(m_altitude <= 0) {
             setCrashed();
         }
 

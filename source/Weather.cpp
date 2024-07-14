@@ -20,11 +20,11 @@ void Weather::render(sf::RenderWindow *window) {
     }
 }
 
-int Weather::getPixelColor(sf::Image image, sf::Vector2f spritePosition, sf::Vector2i position) {
-    spritePosition.x = spritePosition.x - 128;
-    spritePosition.y = spritePosition.y - 128;
+int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
+    sf::Vector2i spritePosition(static_cast<int>(sprite.getPosition().x) - 128,
+                                static_cast<int>(sprite.getPosition().y) - 128);
 
-    sf::Color pixelColor = image.getPixel(position.x - spritePosition.x, position.y - spritePosition.y);
+    sf::Color pixelColor = sprite.getTexture()->copyToImage().getPixel(position.x - spritePosition.x, position.y - spritePosition.y);
 
     struct Color {
         int r, g, b;
@@ -66,6 +66,7 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
     for(int i = 0; i < (int) m_textures.size(); i++) {
         sf::Sprite temp_sprite;
         temp_sprite.setTexture(m_textures[i]);
+
         sf::Color color = temp_sprite.getColor();
         temp_sprite.setColor(sf::Color(color.r, color.g, color.b, 140));
 

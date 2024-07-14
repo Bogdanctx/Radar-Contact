@@ -245,7 +245,7 @@ void Game::checkForEntitiesCollisions() {
 
 
 void Game::checkInsideWeather() {
-    std::vector<sf::Sprite> sprites = weather.getSprites();
+    std::vector<sf::Sprite> weatherSprites = weather.getSprites();
 
     for (auto& flyingEntity : m_flyingEntities) {
         std::pair<sf::Clock, int> updateTimer = flyingEntity->getUpdateClock();
@@ -258,13 +258,11 @@ void Game::checkInsideWeather() {
                                           static_cast<int>(flyingEntity->getEntityPosition().y));
 
         bool insideWeather = false;
-        for (auto &sprite: sprites) {
+        for (sf::Sprite& sprite: weatherSprites) {
             const sf::FloatRect& spriteBounds = sprite.getGlobalBounds();
 
             if (spriteBounds.contains(static_cast<sf::Vector2f>(entityPosition))) {
-                int weatherDanger = weather.getPixelColor(sprite.getTexture()->copyToImage(),
-                                                          sf::Vector2f(spriteBounds.left, spriteBounds.top),
-                                                          entityPosition);
+                int weatherDanger = Weather::getPixelColor(sprite, entityPosition);
 
                 switch (weatherDanger) {
                     case Weather::RainDanger::Yellow:
@@ -280,7 +278,7 @@ void Game::checkInsideWeather() {
                 }
 
                 insideWeather = true;
-                break;
+                break; // Exit the loop once the entity is inside any weather sprite
             }
         }
 

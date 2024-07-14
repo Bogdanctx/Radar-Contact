@@ -245,7 +245,7 @@ void Game::checkForEntitiesCollisions() {
 
 
 void Game::checkInsideWeather() {
-    std::vector<sf::Sprite> weatherSprites = weather.getSprites();
+    const std::vector<sf::Sprite> weatherSprites = weather.getSprites();
 
     for (auto& flyingEntity : m_flyingEntities) {
         std::pair<sf::Clock, int> updateTimer = flyingEntity->getUpdateClock();
@@ -254,15 +254,18 @@ void Game::checkInsideWeather() {
             continue;
         }
 
-        const sf::Vector2i entityPosition(static_cast<int>(flyingEntity->getEntityPosition().x),
-                                          static_cast<int>(flyingEntity->getEntityPosition().y));
+        sf::Vector2f auxPos = flyingEntity->getEntityPosition();
+
+        const sf::Vector2i entityPosition((int)auxPos.x, (int)auxPos.y);
 
         bool insideWeather = false;
-        for (int i = 0; i < (int) weatherSprites.size(); ++i) {
-            const sf::FloatRect& spriteBounds = weatherSprites[i].getGlobalBounds();
+        for (const sf::Sprite& sprite: weatherSprites) {
+            const sf::FloatRect& spriteBounds = sprite.getGlobalBounds();
 
-            if (spriteBounds.contains(static_cast<sf::Vector2f>(entityPosition))) {
-                int weatherDanger = weather.getPixelColor(i, entityPosition);
+            if (spriteBounds.contains(auxPos)) {
+                int weatherDanger = weather.getPixelColor(sprite.getTexture()->copyToImage(),
+                                                        sf::Vector2f(spriteBounds.left, spriteBounds.top),
+                                                        entityPosition);
 
                 switch (weatherDanger) {
                     case Weather::RainDanger::Yellow:

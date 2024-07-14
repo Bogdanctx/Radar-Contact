@@ -30,13 +30,13 @@ public:
         return m_sprites;
     };
 
-    int getPixelColor(int tile, sf::Vector2i position);
+    int getPixelColor(sf::Image image, sf::Vector2f spritePosition, sf::Vector2i position) const;
 
 public:
-    std::vector<std::pair<float, float>> m_tiles;
-    std::vector<sf::Texture> m_textures;
-    std::vector<sf::Sprite> m_sprites;
-    std::vector<sf::Image> m_images;
+    std::vector<std::pair<float, float>> m_tiles{};
+    std::vector<sf::Texture> m_textures{};
+    std::vector<sf::Sprite> m_sprites{};
+    std::vector<sf::Image> m_images{};
 };
 
 

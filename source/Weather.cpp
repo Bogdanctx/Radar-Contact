@@ -20,15 +20,16 @@ void Weather::render(sf::RenderWindow *window) {
     }
 }
 
-int Weather::getPixelColor(int tile, sf::Vector2i position) {
-    sf::Vector2i spritePosition(static_cast<int>(m_sprites[tile].getPosition().x) - 128,
-                                static_cast<int>(m_sprites[tile].getPosition().y) - 128);
-
-    sf::Color pixelColor = m_images[tile].getPixel(position.x - spritePosition.x, position.y - spritePosition.y);
-
+int Weather::getPixelColor(sf::Image image, sf::Vector2f spritePosition, sf::Vector2i position) const {
+    return 4;
     struct Color {
         int r, g, b;
     };
+
+    spritePosition.x = spritePosition.x - 128;
+    spritePosition.y = spritePosition.y - 128;
+
+    sf::Color pixelColor = image.getPixel(position.x - spritePosition.x, position.y - spritePosition.y);
 
     const std::vector<Color> colors = {
             {255, 191, 0},   // yellow
@@ -38,8 +39,8 @@ int Weather::getPixelColor(int tile, sf::Vector2i position) {
             {0, 0, 0}        // nothing
     };
 
-    int minDistance = std::numeric_limits<int>::max();
-    int colorIndex = -1;
+    int minDistance = INT32_MAX;
+    int colorIndex = 4;
 
     for (int i = 0; i < (int) colors.size(); ++i) {
         int dr = pixelColor.r - colors[i].r;
@@ -58,14 +59,14 @@ int Weather::getPixelColor(int tile, sf::Vector2i position) {
 }
 
 void Weather::fetchWeatherImages(sf::RenderWindow *window) {
-    m_sprites = std::vector<sf::Sprite> {};
+    m_sprites.clear();
 
     m_textures = (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::getWeatherTextures(window) :
                                                                     DataAPI<LiveAPI>::getWeatherTextures(window));
 
     for(int i = 0; i < (int) m_textures.size(); i++) {
-        sf::Sprite temp_sprite;
-        temp_sprite.setTexture(m_textures[i]);
+        sf::Sprite temp_sprite(m_textures[i]);
+
         sf::Color color = temp_sprite.getColor();
         temp_sprite.setColor(sf::Color(color.r, color.g, color.b, 140));
 
@@ -76,6 +77,5 @@ void Weather::fetchWeatherImages(sf::RenderWindow *window) {
                                                            ResourcesManager::Instance().getRegionBox());
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
-        m_images.push_back(m_textures[i].copyToImage());
     }
 }

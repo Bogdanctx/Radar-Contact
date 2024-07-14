@@ -248,44 +248,8 @@ void Game::checkInsideWeather() {
     std::vector<sf::Sprite> sprites = weather.getSprites();
 
     for (auto& flyingEntity : m_flyingEntities) {
-        std::pair<sf::Clock, int> updateTimer = flyingEntity->getUpdateClock();
-
-        if(updateTimer.first.getElapsedTime().asMilliseconds() < updateTimer.second) {
-            continue;
-        }
-
-        const sf::Vector2i entityPosition(static_cast<int>(flyingEntity->getEntityPosition().x),
-                                          static_cast<int>(flyingEntity->getEntityPosition().y));
-
-        bool insideWeather = false;
         for (auto &sprite: sprites) {
-            const sf::FloatRect& spriteBounds = sprite.getGlobalBounds();
-
-            if (spriteBounds.contains(static_cast<sf::Vector2f>(entityPosition))) {
-                int weatherDanger = weather.getPixelColor(sprite.getTexture()->copyToImage(),
-                                                          sf::Vector2f(spriteBounds.left, spriteBounds.top),
-                                                          entityPosition);
-
-                switch (weatherDanger) {
-                    case Weather::RainDanger::Yellow:
-                        flyingEntity->setFallInWeather(1);
-                        break;
-                    case Weather::RainDanger::Red:
-                    case Weather::RainDanger::Pink:
-                        flyingEntity->setFallInWeather(2);
-                        break;
-                    default:
-                        flyingEntity->setFallInWeather(0);
-                        break;
-                }
-
-                insideWeather = true;
-                break;
-            }
-        }
-
-        if (!insideWeather) {
-            flyingEntity->setFallInWeather(0);
+        
         }
     }
 }

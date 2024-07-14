@@ -89,7 +89,7 @@ void swap(Game& game1, Game& game2) {
 void Game::update()
 {
     checkForEntitiesCollisions();
-    //checkInsideWeather();
+    checkInsideWeather();
     checkInsideAirspace();
     checkOutsideScreen();
 

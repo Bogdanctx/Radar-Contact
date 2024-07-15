@@ -4,11 +4,9 @@
 
 #include "../header/Game.h"
 #include "../header/Menu.h"
-#include "../header/Satellite.h"
 #include "../header/StateMachine.h"
 
-#include "../header/DataAPI.h"
-#include "../header/API.h"
+#include "../header/DataFetcher.h"
 #include "../header/MockAPI.h"
 
 Game::Game() :
@@ -40,7 +38,7 @@ void Game::loadElements()
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
-    sf::Text randomFact{"Fact: " + facts[Utilities::randGen<int>(0, (int) facts.size() - 1)],
+    sf::Text randomFact{"Fact: " + facts[Utilities::randGen<int>(0, static_cast<int>(facts.size()) - 1)],
                         ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
 
     sf::FloatRect factBounds = randomFact.getLocalBounds();
@@ -83,7 +81,6 @@ void swap(Game& game1, Game& game2) {
     using std::swap;
 
     swap(game1.m_flyingEntities, game2.m_flyingEntities);
-    swap(game1.m_spaceEntity, game2.m_spaceEntity);
 }
 
 void Game::update()
@@ -104,12 +101,6 @@ void Game::update()
         }
     }
 
-    if(m_spaceEntitiesInterval.getElapsedTime().asSeconds() >= 35) {
-        newSpaceEntity();
-
-        m_spaceEntitiesInterval.restart();
-    }
-
     if(m_flightTableClock.getElapsedTime().asSeconds() >= 5) {
         flightsTable.update(m_flyingEntities);
 
@@ -121,9 +112,9 @@ void Game::update()
         m_updateWeatherClock.restart();
     }
 
-    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 60)
+    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 4*60)
     {
-        if(Utilities::randGen<int>(0, 100) >= 40) {
+        if(Utilities::randGen<int>(0, 100) >= 50) {
             addNewBalloons();
         }
 
@@ -133,21 +124,16 @@ void Game::update()
 
     m_window.draw(m_backgroundRegion);
 
-    for(auto &flyingEntity: m_flyingEntities) {
+    for(auto& flyingEntity: m_flyingEntities) {
         flyingEntity->update();
-    }
-
-    if(m_spaceEntity != nullptr) {
-        if(m_spaceEntity->isInsideScreen()) {
-            m_spaceEntity->update(false);
-        }
     }
 }
 
 void Game::checkOutsideScreen() {
-    for(auto &flyingEntity: m_flyingEntities) {
+    for(auto& flyingEntity: m_flyingEntities) {
         if(!flyingEntity->isInsideScreen()) {
             flyingEntity->setCrashed();
+            m_fetchedFlyingEntities.erase(flyingEntity->getCallsign());
         }
     }
 }
@@ -172,31 +158,8 @@ void Game::render()
         airport.render(&m_window);
     }
 
-    if(m_spaceEntity) {
-
-        if(m_spaceEntity->isInsideScreen()) {
-            m_spaceEntity->render(&m_window);
-            m_atcSound.setVolume(0);
-        }
-
-        auto ozn = std::dynamic_pointer_cast<OZN>(m_spaceEntity);
-
-        // if (ozn && ozn_is_inside_screen) setez sunetul la 0 si nu mai randez avioanele
-        // aplic De Morgan
-        // if (!ozn || !ozn_is_inside_screen) setez sunetul la 100 si randez avioanele
-        //      ^ inseamna ca este satelit
-        if(!ozn || !m_spaceEntity->isInsideScreen()) {
-            m_atcSound.setVolume(100);
-            for(const auto &flyingEntity: m_flyingEntities) {
-                flyingEntity->render(&m_window);
-            }
-        }
-
-    }
-    else {
-        for(const auto &flyingEntity: m_flyingEntities) {
-            flyingEntity->render(&m_window);
-        }
+    for(const auto &flyingEntity: m_flyingEntities) {
+        flyingEntity->render(&m_window);
     }
 
     if (m_renderFlightsTable) {
@@ -288,7 +251,7 @@ void Game::checkInsideWeather() {
     }
 }
 
-void Game::checkInsideAirspace() { // check if a flying entity could be controlled by an inferior ATC level
+void Game::checkInsideAirspace() {
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
     for(Airport &airport: m_airports)
     {
@@ -312,9 +275,6 @@ void Game::handleEvent()
     {
         for(auto &flyingEntity: m_flyingEntities) {
             flyingEntity->handleEvent(gameEvent, floatMousePosition);
-        }
-        if(m_spaceEntity) {
-            m_spaceEntity->handleEvent(gameEvent, floatMousePosition);
         }
 
         if(m_renderFlightsTable) {
@@ -370,66 +330,6 @@ void Game::handleEvent()
     }
 }
 
-void Game::newSpaceEntity() {
-    enum Sides {
-        NORTH,
-        EAST,
-        SOUTH,
-        WEST
-    };
-
-    const int spawnSide = Utilities::randGen<int>(0, 4);
-    sf::Vector2f position;
-    int heading;
-
-    switch (spawnSide) {
-        case Sides::NORTH:
-        {
-            position.x = Utilities::randGen<float>(50.f, 900.f);
-            position.y = 0.f;
-            heading = Utilities::randGen<int>(145, 225);
-            break;
-        }
-        case Sides::EAST:
-        {
-            position.x = 1280.f;
-            position.y = Utilities::randGen<float>(20.f, 500.f);
-            heading = Utilities::randGen<int>(245, 290);
-            break;
-        }
-        case Sides::SOUTH:
-        {
-            position.x = Utilities::randGen<float>(50, 900);
-            position.y = 1280.f;
-            heading = Utilities::randGen<int>(330, 385);
-            break;
-        }
-        case Sides::WEST:
-        {
-            position.x = 0;
-            position.y = Utilities::randGen<float>(20.f, 500.f);
-            heading = Utilities::randGen<int>(60, 120);
-            break;
-        }
-        default:
-            heading = 0;
-            break;
-    }
-
-    const int altitude = 100000;
-    const int airspeed = 1250;
-    const std::string squawk{"0000"};
-    const std::string callsign;
-    const std::string arrival;
-
-    if(Utilities::randGen<int>(INT32_MIN, INT32_MAX) % 2 == 0) { // ozn
-        m_spaceEntity = std::make_shared<OZN>(altitude, airspeed, heading, squawk, callsign, position, arrival);
-    }
-    else {
-        m_spaceEntity = std::make_shared<Satellite>(altitude, airspeed, heading, squawk, callsign, position, arrival);
-    }
-}
-
 void Game::addNewBalloons() {
     const int altitude{(Utilities::randGen<int>(300, 2700)) / 100 * 100};
     const int airspeed{Utilities::randGen<int>(50, 130)};
@@ -453,7 +353,7 @@ void Game::addNewBalloons() {
         randomDepartureAirport--;
         it++;
     }
-    const sf::Vector2f position{(float)it->second.first, (float)it->second.second};
+    const sf::Vector2f position{static_cast<float>(it->second.first), static_cast<float>(it->second.second)};
 
     std::string arrival;
     it = regionAirports.begin();
@@ -471,45 +371,54 @@ void Game::addNewBalloons() {
 
 void Game::addNewEntities()
 {
-    const nlohmann::json arrivals = (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::getArrivals() :
-                                                                                        DataAPI<LiveAPI>::getArrivals());
+    const std::vector<std::string> helicopterTypes = {
+            "DH8D"
+    };
 
-    const int number_of_arrivals = (int) arrivals.size();
+    const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window);
+
+    const int number_of_arrivals = static_cast<int>(arrivals.size());
 
     sf::Event tempEvent{};
     m_window.pollEvent(tempEvent);
 
-    for(int i = 0; i < number_of_arrivals; i++)
-    {
+    for(int i = 0; i < number_of_arrivals; i++) {
+        if(m_fetchedFlyingEntities.size() > 20) {
+            break;
+        }
+
+        const std::string callsign = arrivals[i]["callsign"];
+
+        if(m_fetchedFlyingEntities.contains(callsign)) {
+            continue;
+        }
+
+        m_fetchedFlyingEntities.insert(callsign);
+
         const int heading = arrivals[i]["heading"];
         const int altitude = arrivals[i]["altitude"];
         const int airspeed = Math::AirspeedAtAltitude(altitude);
-        const std::string squawk = arrivals[i]["transponder"];
-        std::string callsign = arrivals[i]["callsign"];
-        const sf::Vector2f position{arrivals[i]["longitude"], arrivals[i]["latitude"]};
-        const std::string arrival = arrivals[i]["flight_plan"]["arrival"];
+        const std::string squawk = arrivals[i]["squawk"];
+        const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"], ResourcesManager::Instance().getRegionBox());
+        const std::string arrival = arrivals[i]["arrival"];
+        const std::string type = arrivals[i]["type"];
 
-        if(altitude >= 11000) {
-            Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
+        std::shared_ptr<FlyingEntity> base;
 
-            std::shared_ptr<FlyingEntity> base = std::make_shared<Airplane>(airplane);
-            m_flyingEntities.push_back(base);
+        for(const std::string& helicopterType: helicopterTypes) {
+            if(helicopterType == type) {
+                Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
+
+                base = std::make_shared<Helicopter>(helicopter);
+            }
+            else {
+                Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
+
+                base = std::make_shared<Airplane>(airplane);
+            }
         }
-        else if(altitude >= 2000) {
-            const std::vector<std::string> helicopterCallsigns = {
-                    "Rotor",
-                    "Blackhawk",
-                    "UH",
-                    "Medevac"
-            };
 
-            callsign = helicopterCallsigns[Utilities::randGen<int>(0, (int) helicopterCallsigns.size() - 1)] \
-                        + std::to_string(Utilities::randGen<int>(1, 100));
-            Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
-
-            std::shared_ptr<FlyingEntity> base = std::make_shared<Helicopter>(helicopter);
-            m_flyingEntities.push_back(base);
-        }
+        m_flyingEntities.push_back(base);
     }
 }
 
@@ -521,7 +430,7 @@ void Game::initAirports() {
         const int x = airport.second.first;
         const int y = airport.second.second;
 
-        const Airport newAirport{sf::Vector2f((float)x, (float)y), icao};
+        const Airport newAirport{sf::Vector2f(x, y), icao};
         m_airports.push_back(newAirport);
     }
 
@@ -537,7 +446,7 @@ void Game::loadWaypoints() {
 
     for(int i = 0; i < numberOfWaypoints; i++) {
         std::string pointName;
-        float x, y;
+        int x, y;
 
         fin >> x >> y >> pointName;
 

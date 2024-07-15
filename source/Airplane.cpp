@@ -6,6 +6,6 @@
 #include "../header/Math.h"
 
 void Airplane::internalUpdate() {
-    const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint((float) m_speed, (float) m_heading);
+    const sf::Vector2f translation_to_point = Math::TranslatePositionToPoint(static_cast<float>(m_speed), static_cast<float>(m_heading));
     m_entity.move(translation_to_point);
 }

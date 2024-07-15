@@ -5,8 +5,8 @@
 #include "../header/Weather.h"
 #include "../header/ResourcesManager.h"
 
-#include "../header/DataAPI.h"
-#include "../header/API.h"
+#include "../header/DataFetcher.h"
+#include "../header/LiveAPI.h"
 #include "../header/MockAPI.h"
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
@@ -15,13 +15,13 @@ Weather::Weather() : m_tiles{ResourcesManager::Instance().getWeatherTiles()}
 {}
 
 void Weather::render(sf::RenderWindow *window) {
-    for(const sf::Sprite &sprite: m_sprites) {
+    for(const sf::Sprite& sprite: m_sprites) {
         window->draw(sprite);
     }
 }
 
 int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
-    sf::Vector2i spritePosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+    sf::Vector2i spritePosition(static_cast<int>(sprite.getGlobalBounds().left), static_cast<int>(sprite.getGlobalBounds().top));
 
     sf::Vector2u pixelPosition(position.x - spritePosition.x, position.y - spritePosition.y);
 
@@ -46,10 +46,10 @@ int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
             {0, 0, 0}        // nothing
     };
 
-    int minDistance = std::numeric_limits<int>::max();
-    int colorIndex = -1;
+    int minDistance = 1<<30;
+    int colorIndex = 4;
 
-    for (int i = 0; i < (int) colors.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(colors.size()); ++i) {
         int dr = pixelColor.r - colors[i].r;
         int dg = pixelColor.g - colors[i].g;
         int db = pixelColor.b - colors[i].b;
@@ -65,13 +65,12 @@ int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
     return colorIndex;
 }
 
-void Weather::fetchWeatherImages(sf::RenderWindow *window) {
-    m_sprites = std::vector<sf::Sprite> {};
+void Weather::fetchWeatherImages(sf::RenderWindow* window) {
+    m_sprites.clear();
 
-    m_textures = (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::getWeatherTextures(window) :
-                                                                    DataAPI<LiveAPI>::getWeatherTextures(window));
+    m_textures = DataFetcher::getWeatherTextures(window);
 
-    for(int i = 0; i < (int) m_textures.size(); i++) {
+    for(int i = 0; i < static_cast<int>(m_textures.size()); i++) {
         sf::Sprite temp_sprite;
         temp_sprite.setTexture(m_textures[i]);
 

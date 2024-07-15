@@ -2,19 +2,27 @@
 // Created by bgd on 18.05.2024.
 //
 
-#include "../header/API.h"
 #include <cpr/cpr.h>
 #include <SFML/Network.hpp>
-#include "../header/ResourcesManager.h"
 
-nlohmann::json LiveAPI::getArrivals() {
-    const std::string link = "https://data.vatsim.net/v3/vatsim-data.json";
+#include "../header/LiveAPI.h"
+#include "../header/ResourcesManager.h"
+#include "../header/utils.h"
+
+nlohmann::json LiveAPI::getFlyingEntities() {
+    const std::vector<float> bounds = ResourcesManager::Instance().getRegionBox();
+
+    int latitudeAvg = static_cast<int>(bounds[0] + bounds[2]) / 2;
+    int longitudeAvg = static_cast<int>(bounds[1] + bounds[3]) / 2;
+
+    const std::string link = "https://api.airplanes.live/v2/point/" + std::to_string(latitudeAvg) + '/' \
+                            + std::to_string(longitudeAvg) + "/" + std::to_string(ResourcesManager::Instance().getRegionRadius());
 
     const cpr::Response res = cpr::Get(cpr::Url{link},
                                        cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
                                        cpr::Parameters{{"anon", "true"}, {"key", "value"}});
 
-    nlohmann::json data = nlohmann::json::parse(res.text);
+    nlohmann::json data = nlohmann::json::parse(res.text)["ac"];
 
     return data;
 }
@@ -28,7 +36,7 @@ std::string LiveAPI::getWeatherPath() {
     return data["radar"]["nowcast"].back()["path"];
 }
 
-std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
+std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
     sf::Http http{"http://tilecache.rainviewer.com"};
     sf::Http::Request request;
     sf::Http::Response api_response;
@@ -55,7 +63,8 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow *window) {
         res.push_back(temp_texture);
 
         sf::Event tempEvent{};
-        window->pollEvent(tempEvent);
+        while(window->pollEvent(tempEvent)) {}
+
     }
 
     return res;

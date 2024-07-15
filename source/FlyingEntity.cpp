@@ -42,7 +42,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_headingStick.setFillColor(sf::Color::Cyan);
     m_headingStick.setPosition(position);
     m_headingStick.setSize(sf::Vector2f(26.f, 1.2f));
-    m_headingStick.setRotation((float)heading - 90);
+    m_headingStick.setRotation(heading - 90);
 
     updateText(position);
 }
@@ -225,7 +225,7 @@ void FlyingEntity::update(bool force) {
 
         // if no direction is choosen, then heading stick might be updated
         if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-            m_headingStick.setRotation((float)m_heading - 90);
+            m_headingStick.setRotation(m_heading - 90);
         }
 
         if(!force) {
@@ -251,7 +251,7 @@ void FlyingEntity::checkHeadingChange() {
     if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift))) {
         m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);
         m_newHeadingText.setString(std::to_string(m_newHeading));
-        m_headingStick.setRotation((float) m_newHeading - 90);
+        m_headingStick.setRotation(m_newHeading - 90);
 
         while(!route.empty()) {
             route.pop_front();

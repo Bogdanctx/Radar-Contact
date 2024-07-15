@@ -12,7 +12,7 @@ public:
     template <typename... Args>
     explicit Airplane(Args... args) : FlyingEntity(args...) {
         setSpeedConstraints(185, 335);
-        setAltitudeConstraints(5000, 39000);
+        setAltitudeConstraints(2000, 39000);
         setClocks(Clocks(1100, 750, 800, 190));
     }
 

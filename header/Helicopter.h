@@ -12,7 +12,7 @@ public:
     template <typename... Args>
     explicit Helicopter(Args... args) : FlyingEntity(args...) {
         setSpeedConstraints(120, 270);
-        setAltitudeConstraints(5000, 17000);
+        setAltitudeConstraints(2000, 17000);
         setClocks(Clocks(600, 750, 680, 70));
     }
 

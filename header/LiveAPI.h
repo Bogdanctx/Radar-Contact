@@ -11,9 +11,9 @@
 
 class LiveAPI {
 public:
-    virtual nlohmann::json getArrivals();
+    virtual nlohmann::json getFlyingEntities();
     virtual std::string getWeatherPath();
-    virtual std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow *window);
+    virtual std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow* window);
 };
 
 

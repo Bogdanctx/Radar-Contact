@@ -23,7 +23,7 @@ void StateMachine::run() {
 
         m_currentState->run();
 
-        if(auto p = std::dynamic_pointer_cast<Menu>(m_currentState)) {
+        if(std::dynamic_pointer_cast<Menu>(m_currentState)) {
             if(ResourcesManager::Instance().getSelectedRegion().empty()) { // if game has been closed in menu
                 break;
             }

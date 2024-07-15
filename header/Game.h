@@ -20,8 +20,6 @@
 #include "Airplane.h"
 #include "Helicopter.h"
 #include "Airport.h"
-#include "SpaceEntity.h"
-#include "OZN.h"
 #include "HotAirBalloon.h"
 #include "Weather.h"
 #include "FlightsTable.h"
@@ -45,7 +43,6 @@ private:
 
     void addNewBalloons();
     void addNewEntities();
-    void newSpaceEntity();
 
     void initAirports();
     void checkForEntitiesCollisions();
@@ -57,11 +54,10 @@ private:
 
     std::vector<Airport> m_airports{};
     std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities{};
-    std::shared_ptr<SpaceEntity> m_spaceEntity{};
+    std::unordered_set<std::string> m_fetchedFlyingEntities;
 
     sf::Clock m_updateWeatherClock{};
     sf::Clock m_newEntitiesInterval{};
-    sf::Clock m_spaceEntitiesInterval{};
     sf::Clock m_flightTableClock{};
     sf::Clock m_loadingScreenDelay{};
     sf::Sprite m_backgroundRegion{};

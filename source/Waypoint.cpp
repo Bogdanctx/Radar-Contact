@@ -12,11 +12,11 @@ Waypoint::Waypoint(sf::Vector2f position, const std::string& label) :
     m_body.setFillColor(sf::Color::White);
     sf::FloatRect bounds = m_body.getGlobalBounds();
     m_body.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
-    m_body.setPosition(position);
+    m_body.setPosition(static_cast<int>(position.x), static_cast<int>(position.y));
 
     bounds = m_label.getGlobalBounds();
     m_label.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
-    m_label.setPosition(position.x, position.y - 8);
+    m_label.setPosition(static_cast<int>(position.x), static_cast<int>(position.y) - 8);
 }
 
 sf::Vector2f Waypoint::getPosition() const {

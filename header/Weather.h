@@ -14,7 +14,6 @@ class Weather {
 public:
     enum RainDanger {
         Yellow,
-        Blue,
         Red,
         Pink,
         Clear
@@ -24,7 +23,7 @@ public:
     Weather();
 
     void render(sf::RenderWindow *window);
-    void fetchWeatherImages(sf::RenderWindow *window);
+    void fetchWeatherImages(sf::RenderWindow* window);
 
     std::vector<sf::Sprite>& getSprites() {
         return m_sprites;

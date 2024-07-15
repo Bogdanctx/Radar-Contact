@@ -142,50 +142,44 @@ add_executable(${PROJECT_NAME}
     main.cpp
     generated/src/Helper.cpp
     env_fixes.h
-        source/Game.cpp
-        header/Game.h
-        source/Menu.cpp
-        header/Menu.h
-        source/Window.cpp
-        header/Window.h
-        header/FlyingEntity.h
-        source/FlyingEntity.cpp
-        header/Airplane.h
-        source/Airplane.cpp
         header/Math.h
         source/Math.cpp
         header/ResourcesManager.h
         source/ResourcesManager.cpp
-        source/Airplane.cpp
-        header/DataAPI.h
-        source/Airport.cpp
-        header/Airport.h
-        header/Airport.h
-        source/Weather.cpp
-        header/Weather.h
-        header/Helicopter.h
-        source/Helicopter.cpp
-        source/HotAirBalloon.cpp
-        header/HotAirBalloon.h
-        source/OZN.cpp
-        header/SpaceEntity.h
-        source/SpaceEntity.cpp
-        source/Satellite.cpp
-        header/Satellite.h
-        source/FlightsTable.cpp
-        header/FlightsTable.h
-        header/utils.h
-        source/MockAPI.cpp
-        header/MockAPI.h
+        header/DataFetcher.h
+        source/DataFetcher.cpp
+        header/LiveAPI.h
         source/LiveAPI.cpp
-        header/API.h
+        header/utils.h
+        source/utils.cpp
+        header/MockAPI.h
+        source/MockAPI.cpp
+        header/Game.h
+        source/Game.cpp
+        header/Airplane.h
+        source/Airplane.cpp
+        header/Airport.h
+        source/Airport.cpp
         header/FlightInfo.h
         source/FlightInfo.cpp
+        header/FlightsTable.h
+        source/FlightsTable.cpp
+        header/FlyingEntity.h
+        source/FlyingEntity.cpp
+        header/Helicopter.h
+        source/Helicopter.cpp
+        header/HotAirBalloon.h
+        source/HotAirBalloon.cpp
+        header/Menu.h
+        source/Menu.cpp
         header/StateMachine.h
         source/StateMachine.cpp
         header/Waypoint.h
         source/Waypoint.cpp
-        source/utils.cpp
+        header/Weather.h
+        source/Weather.cpp
+        header/Window.h
+        source/Window.cpp
 )
 
 ###############################################################################

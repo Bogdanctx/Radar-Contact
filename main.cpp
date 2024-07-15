@@ -1,11 +1,5 @@
 /* TO DO
 
- !!!!!!!! Sa restructurez cumva API-ul astfel incat sa nu scriu mereu asta
-
-    (ResourcesManager::Instance().isMockingEnabled() ? DataAPI<MockAPI>::foo(window) : DataAPI<LiveAPI>::bar(window));
-
-    trebuie sa imi dea doar datele fara sa aleg din ce API !!!!!!!!!!!!!!!!!!!!
-
 -> Event-uri random pentru emergency-uri pentru avioane si elicoptere
 	-> Avioanele pot avea emergency-uri de tipul alarma cu bomba, engine fire, sanatate calator
 	-> Emergency-uri elicoptere: Engine fire (si sa isi schimbe de multe ori directia si sa
@@ -19,14 +13,13 @@ si in anumite cazuri entitatile sa aibe un timp pana la prabusire => pot fi prel
 
 */
 
-#include "./header/Math.h"
 #include "./header/ResourcesManager.h"
 #include "./header/StateMachine.h"
 
 int main() {
     try {
-        ResourcesManager::Instance().load();
 
+        ResourcesManager::Instance().load();
         StateMachine::Instance().run();
 
     } catch(ErrorResourcesManager &err) {

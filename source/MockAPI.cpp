@@ -4,12 +4,14 @@
 
 #include "../header/MockAPI.h"
 #include "../header/ResourcesManager.h"
+
 #include <fstream>
 
-nlohmann::json MockAPI::getArrivals() {
-    std::ifstream f("resources/mock_api/vatsim-data.json");
+nlohmann::json MockAPI::getFlyingEntities() {
+    const std::string region = ResourcesManager::Instance().getSelectedRegion();
+    std::ifstream f("resources/mock_api/" + region + "/flyingEntities.json");
 
-    nlohmann::json data = nlohmann::json::parse(f);
+    nlohmann::json data = nlohmann::json::parse(f)["ac"];
 
     return data;
 }
@@ -22,7 +24,7 @@ std::string MockAPI::getWeatherPath() {
     return data["radar"]["nowcast"].back()["path"];
 }
 
-std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow *window) {
+std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow* window) {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
     std::vector<sf::Texture> res{};
 
@@ -39,7 +41,8 @@ std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow *window) {
         res.push_back(temp);
 
         sf::Event tempEvent{};
-        window->pollEvent(tempEvent);
+        while(window->pollEvent(tempEvent)) {}
+
     }
 
     fin.close();

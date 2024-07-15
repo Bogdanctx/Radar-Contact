@@ -5,16 +5,16 @@
 #ifndef RADAR_CONTACT_MOCKAPI_H
 #define RADAR_CONTACT_MOCKAPI_H
 
-#include "API.h"
+#include "LiveAPI.h"
 
 #include <nlohmann/json.hpp>
 #include <SFML/Graphics.hpp>
 
 class MockAPI : public LiveAPI {
 public:
-    nlohmann::json getArrivals() override;
+    nlohmann::json getFlyingEntities() override;
     std::string getWeatherPath() override;
-    std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow *window) override;
+    std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow* window) override;
 };
 
 

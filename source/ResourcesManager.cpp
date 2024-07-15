@@ -45,7 +45,7 @@ bool ResourcesManager::isMockingEnabled() const {
     return m_usingMockApi;
 }
 
-void ResourcesManager::loadSounds(const std::string &sound_name) {
+void ResourcesManager::loadSounds(const std::string& sound_name) {
     const std::string path = "resources/sounds/" + sound_name;
     sf::SoundBuffer sound;
 
@@ -55,7 +55,7 @@ void ResourcesManager::loadSounds(const std::string &sound_name) {
     m_sounds[sound_name] = sound;
 }
 
-sf::SoundBuffer &ResourcesManager::getSound(const std::string &soundName) {
+sf::SoundBuffer& ResourcesManager::getSound(const std::string& soundName) {
     return m_sounds[soundName];
 }
 
@@ -97,10 +97,10 @@ std::string ResourcesManager::getSelectedRegion() const {
     return m_selectedRegion;
 }
 
-void ResourcesManager::loadLatLongBox(const std::string &region_name) {
+void ResourcesManager::loadLatLongBox() {
     m_regionBox.clear();
 
-    const std::string regionBox = "resources/regions/" + region_name + "/long_lat.txt";
+    const std::string regionBox = "resources/regions/" + m_selectedRegion + "/long_lat.txt";
 
     std::ifstream fin(regionBox);
     if(!fin.is_open()) {
@@ -115,17 +115,23 @@ void ResourcesManager::loadLatLongBox(const std::string &region_name) {
 
     fin >> m_regionZoomLevel;
 
+    fin >> m_regionRadius;
+
     fin.close();
+}
+
+int ResourcesManager::getRegionRadius() const {
+    return m_regionRadius;
 }
 
 int ResourcesManager::getRegionZoomLevel() const {
     return m_regionZoomLevel;
 }
 
-void ResourcesManager::loadAirports(const std::string &region_name) {
+void ResourcesManager::loadAirports() {
     m_airports.clear();
 
-    const std::string regionAirports = "resources/regions/" + region_name + "/airports.txt";
+    const std::string regionAirports = "resources/regions/" + m_selectedRegion + "/airports.txt";
 
     std::ifstream fin(regionAirports);
     if(!fin.is_open()) {
@@ -149,9 +155,9 @@ void ResourcesManager::loadAirports(const std::string &region_name) {
 void ResourcesManager::loadRegion(const std::string &region_name) {
     m_selectedRegion = region_name;
 
-    loadLatLongBox(region_name);
-    loadAirports(region_name);
-    loadWeatherTiles(region_name);
+    loadLatLongBox();
+    loadAirports();
+    loadWeatherTiles();
 
     // load region background
     const std::string region_texture = "resources/regions/" + region_name + "/" + region_name + ".png";
@@ -169,10 +175,10 @@ std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegion
     return m_airports;
 }
 
-void ResourcesManager::loadWeatherTiles(const std::string &region) {
+void ResourcesManager::loadWeatherTiles() {
     m_regionWeatherTiles.clear();
 
-    const std::string path = "resources/regions/" + region + "/weather_tiles.txt";
+    const std::string path = "resources/regions/" + m_selectedRegion + "/weather_tiles.txt";
 
     std::ifstream fin(path);
     if(!fin.is_open()) {

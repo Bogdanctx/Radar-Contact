@@ -12,11 +12,11 @@ Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
 
     m_coverage.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
     m_coverage.setFillColor(sf::Color(255, 223, 135, 100));
-    m_coverage.setPosition(position);
+    m_coverage.setPosition(static_cast<int>(position.x), static_cast<int>(position.y));
 
     bounds = m_labelICAO.getGlobalBounds();
     m_labelICAO.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
-    m_labelICAO.setPosition(position);
+    m_labelICAO.setPosition(static_cast<int>(position.x), static_cast<int>(position.y));
 }
 
 void swap(Airport& airport1, Airport& airport2) {

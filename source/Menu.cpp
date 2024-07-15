@@ -6,6 +6,9 @@
 #include "../header/Game.h"
 #include "../header/StateMachine.h"
 
+#include "../header/DataFetcher.h"
+#include "../header/MockAPI.h"
+
 Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
 {
     const std::vector<std::string> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
@@ -142,9 +145,17 @@ void Menu::handleEvent()
             {
                 for(const auto &regionButtons: m_regionsButtons) {
                     if(regionButtons.first.getGlobalBounds().contains(float_mouse_position)) {
+
+                        std::shared_ptr<LiveAPI> api = std::make_shared<LiveAPI>();
+
+                        if(ResourcesManager::Instance().isMockingEnabled()) {
+                            api = std::make_shared<MockAPI>();
+                        }
+
+                        DataFetcher::setAPI(api);
+
                         ResourcesManager::Instance().loadRegion(regionButtons.second);
-                        std::shared_ptr<Window> game = std::make_shared<Game>();
-                        StateMachine::Instance().pushState(game);
+                        StateMachine::Instance().pushState(std::make_shared<Game>());
 
                         m_window.close();
                     }

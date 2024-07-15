@@ -68,6 +68,7 @@ public:
     sf::SoundBuffer &getSound(const std::string &soundName);
     std::string getSelectedRegion() const;
     int getRegionZoomLevel() const;
+    int getRegionRadius() const;
 
     void loadRegion(const std::string &region);
     void load();
@@ -80,11 +81,11 @@ private:
 
     void loadTextures(const std::string &textureName);
     void loadFonts(const std::string &fontName);
-    void loadWeatherTiles(const std::string &region);
+    void loadWeatherTiles();
     void loadSounds(const std::string &sound_name);
 
-    void loadLatLongBox(const std::string &region_name);
-    void loadAirports(const std::string &region_name);
+    void loadLatLongBox();
+    void loadAirports();
 
     std::unordered_map<std::string, sf::Font>m_fonts{};
     std::unordered_map<std::string, sf::Texture>m_textures{};
@@ -96,6 +97,7 @@ private:
 
     std::string m_selectedRegion{};
     int m_regionZoomLevel{};
+    int m_regionRadius{};
     bool m_usingMockApi{};
 };
 

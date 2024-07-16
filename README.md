@@ -69,7 +69,7 @@ available on the map to add it to the current route. To reset the route, change 
 
 - [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
 - [RainViewer](https://www.rainviewer.com/) (Weather API)
-- [AIRPLANES.LIVE](https://airplanes.live/) (Air traffic)
+- [ADSB-One](https://github.com/ADSB-One/api) (Live air traffic)
 - [Google Fonts](https://fonts.google.com/specimen/Poppins) (Poppins)
 - [Google Fonts](https://fonts.google.com/specimen/Raleway?query=raleway) (Raleway)
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC)

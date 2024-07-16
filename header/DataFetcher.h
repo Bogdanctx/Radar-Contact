@@ -24,7 +24,6 @@
 #include "ResourcesManager.h"
 #include "Math.h"
 #include "utils.h"
-
 #include "LiveAPI.h"
 
 class DataFetcher {

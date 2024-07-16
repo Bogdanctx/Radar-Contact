@@ -2,8 +2,6 @@
 // Created by bgd on 15.07.2024.
 //
 
-#include <utility>
-
 #include "../header/DataFetcher.h"
 
 nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {

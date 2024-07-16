@@ -7,8 +7,8 @@
 
 #include "LiveAPI.h"
 
-#include <nlohmann/json.hpp>
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 
 class MockAPI : public LiveAPI {
 public:

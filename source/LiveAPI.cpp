@@ -2,12 +2,12 @@
 // Created by bgd on 18.05.2024.
 //
 
-#include <cpr/cpr.h>
-#include <SFML/Network.hpp>
-
 #include "../header/LiveAPI.h"
 #include "../header/ResourcesManager.h"
 #include "../header/utils.h"
+
+#include <cpr/cpr.h>
+#include <SFML/Network.hpp>
 
 nlohmann::json LiveAPI::getFlyingEntities() {
     const std::vector<float> bounds = ResourcesManager::Instance().getRegionBox();

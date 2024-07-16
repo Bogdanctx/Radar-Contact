@@ -220,33 +220,15 @@ void Game::checkInsideWeather() {
         const sf::Vector2i entityPosition(static_cast<int>(flyingEntity->getEntityPosition().x),
                                           static_cast<int>(flyingEntity->getEntityPosition().y));
 
-        bool insideWeather = false;
         for (sf::Sprite& sprite: weatherSprites) {
             const sf::FloatRect& spriteBounds = sprite.getGlobalBounds();
 
             if (spriteBounds.contains(static_cast<sf::Vector2f>(entityPosition))) {
                 int weatherDanger = Weather::getPixelColor(sprite, entityPosition);
 
-                switch (weatherDanger) {
-                    case Weather::RainDanger::Yellow:
-                        flyingEntity->setFallInWeather(1);
-                        break;
-                    case Weather::RainDanger::Red:
-                    case Weather::RainDanger::Pink:
-                        flyingEntity->setFallInWeather(2);
-                        break;
-                    default:
-                        flyingEntity->setFallInWeather(0);
-                        break;
-                }
-
-                insideWeather = true;
-                break; // Exit the loop once the entity is inside any weather sprite
+                flyingEntity->setFallInWeather(weatherDanger);
+                break;
             }
-        }
-
-        if (!insideWeather) {
-            flyingEntity->setFallInWeather(0);
         }
     }
 }
@@ -313,6 +295,15 @@ void Game::handleEvent()
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+                else if(key_code == sf::Keyboard::C) {
+                    std::vector<sf::Sprite> s = weather.getSprites();
+
+                    for(sf::Sprite& sprite: s) {
+                        if(sprite.getGlobalBounds().contains(floatMousePosition)) {
+                            Weather::getPixelColor(sprite, mousePosition);
                         }
                     }
                 }

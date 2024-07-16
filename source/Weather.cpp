@@ -6,7 +6,6 @@
 #include "../header/ResourcesManager.h"
 
 #include "../header/DataFetcher.h"
-#include "../header/LiveAPI.h"
 #include "../header/MockAPI.h"
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
@@ -43,13 +42,14 @@ int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
             {0, 118, 170},   // blue
             {189, 0, 0},     // red
             {255, 157, 255}, // pink
-            {0, 0, 0}        // nothing
+            {0, 0, 0},       // nothing
+            {206, 192, 138}  // not-dangerous yellow
     };
 
-    int minDistance = 1<<30;
-    int colorIndex = 4;
+    int minDistance = std::numeric_limits<int>::max();
+    int colorIndex = -1;
 
-    for (int i = 0; i < static_cast<int>(colors.size()); ++i) {
+    for (int i = 0; i < static_cast<int>(colors.size()); i++) {
         int dr = pixelColor.r - colors[i].r;
         int dg = pixelColor.g - colors[i].g;
         int db = pixelColor.b - colors[i].b;

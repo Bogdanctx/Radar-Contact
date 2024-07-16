@@ -14,6 +14,7 @@ class Weather {
 public:
     enum RainDanger {
         Yellow,
+        Blue,
         Red,
         Pink,
         Clear

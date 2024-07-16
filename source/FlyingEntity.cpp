@@ -5,6 +5,7 @@
 #include "../header/FlyingEntity.h"
 #include "../header/Math.h"
 #include "../header/ResourcesManager.h"
+#include "../header/Weather.h"
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
                            const std::string &callsign, sf::Vector2f position, const std::string &arrival) :
@@ -13,7 +14,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_altitude{altitude}, m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_fallInWeather{0},
+        m_fallInWeather{Weather::RainDanger::Clear},
         m_arrival{arrival},
         m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_squawk{squawk},
@@ -192,22 +193,30 @@ void FlyingEntity::update(bool force) {
         internalUpdate();
 
         switch (m_fallInWeather) {
-            case 1: // yellow
+            case Weather::RainDanger::Blue:
             {
-                m_altitude -= Utilities::randGen<int>(500, 800) / 100 * 100;
+                m_altitude += Utilities::randGen<int>(-100, 100) / 100 * 100;
+                m_heading += Utilities::randGen<int>(-2, 2);
+                m_speed += Utilities::randGen<int>(-2, 2);
+                break;
+            }
+            case Weather::RainDanger::Yellow:
+            {
+                m_altitude += Utilities::randGen<int>(-400, 200) / 100 * 100;
+                m_heading += Utilities::randGen<int>(-10, 10);
                 m_speed += Utilities::randGen<int>(-5, 5);
                 break;
             }
-            case 2: // red
+            case Weather::RainDanger::Red: // red
             {
-                m_altitude -= Utilities::randGen<int>(800, 1400) / 100 * 100;
+                m_altitude += Utilities::randGen<int>(-800, 100) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-15, 15);
                 m_speed += Utilities::randGen<int>(-10, 10);
                 break;
             }
-            case 3: // pink
+            case Weather::RainDanger::Pink: // pink
             {
-                m_altitude -= Utilities::randGen<int>(1400, 2000) / 100 * 100;
+                m_altitude += Utilities::randGen<int>(-1000, 0) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-25, 25);
                 m_speed += Utilities::randGen<int>(-16, 16);
 

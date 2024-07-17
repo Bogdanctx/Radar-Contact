@@ -4,7 +4,7 @@ Window::Window(const std::pair<int, int> resolution, const std::string &title) :
                 m_window(sf::VideoMode(resolution.first, resolution.second), title,
                          sf::Style::Close | sf::Style::Titlebar)
 {
-    m_window.setVerticalSyncEnabled(true);
+    m_window.setFramerateLimit(60);
 }
 
 void Window::run() {

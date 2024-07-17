@@ -34,7 +34,7 @@ Blue text represents new flight data, if any has been given.
 
 ![Alt Text](./preview/data_meaning.png)
 
-# Controls
+# Keybinds
 
 Change <b>heading</b> by pressing <b>LSHIFT</b> and <b>move your cursor around</b>.
 
@@ -42,17 +42,19 @@ Change <b>altitude</b> by pressing <b>LALT</b> and <b>UP / DOWN arrow</b>.
 
 Change <b>airspeed</b> by pressing <b>LCTRL</b> and <b>UP / DOWN arrow</b>.
 
+Add a waypoint to an aircraft route by pressing the <b>SPACE</b> key.
+
 Hide / show <b>flights table</b> by pressing <b>R</b>.
 
 Hide / show <b>waypoints</b> by pressing <b>T</b>.
 
 To go <b>back to menu</b> press <b>Enter</b>. 
 
-## Resources
+# Resources
 
-- [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
-- [RainViewer](https://www.rainviewer.com/) (Weather API)
+- [SFML](https://github.com/SFML/SFML/tree/2.6.1)
 - [AIRPLANES.LIVE](https://airplanes.live/get-started/) (Live air traffic)
+- [RainViewer](https://www.rainviewer.com/) (Weather API)
 - [Flightradar24](https://www.flightradar24.com) (Map images)
 
 

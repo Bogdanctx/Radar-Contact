@@ -1,7 +1,3 @@
-//
-// Created by bgd on 11.04.2024.
-//
-
 #include "../header/FlyingEntity.h"
 #include "../header/Math.h"
 #include "../header/ResourcesManager.h"
@@ -409,4 +405,8 @@ Waypoint FlyingEntity::getRouteCurrentWaypoint() const {
 
 bool FlyingEntity::getIsEntitySelected() const {
     return m_entitySelected;
+}
+
+std::string FlyingEntity::getCallsign() const {
+    return m_callsign;
 }

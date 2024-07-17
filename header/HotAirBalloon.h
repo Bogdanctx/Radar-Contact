@@ -1,7 +1,3 @@
-//
-// Created by bgd on 22.04.2024.
-//
-
 #ifndef OOP_HOTAIRBALLOON_H
 #define OOP_HOTAIRBALLOON_H
 
@@ -16,9 +12,6 @@ public:
         setClocks(Clocks(900, 1300, 850, 310));
     }
 
-    FlyingEntity* clone() const override {
-        return new HotAirBalloon(*this);
-    }
 private:
     void internalUpdate() override;
 };

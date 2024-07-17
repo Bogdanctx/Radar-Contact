@@ -1,7 +1,3 @@
-//
-// Created by bgd on 13.04.2024.
-//
-
 #ifndef OOP_WEATHER_H
 #define OOP_WEATHER_H
 
@@ -26,9 +22,7 @@ public:
     void render(sf::RenderWindow *window);
     void fetchWeatherImages(sf::RenderWindow* window);
 
-    std::vector<sf::Sprite>& getSprites() {
-        return m_sprites;
-    };
+    std::vector<sf::Sprite>& getSprites();
 
     static int getPixelColor(sf::Sprite& sprite, sf::Vector2i position);
 

@@ -1,7 +1,3 @@
-//
-// Created by bgd on 12.04.2024.
-//
-
 #ifndef OOP_AIRPORT_H
 #define OOP_AIRPORT_H
 
@@ -16,9 +12,6 @@
 class Airport {
 public:
     Airport(sf::Vector2f position, const std::string &airportICAO);
-    ~Airport() = default;
-
-    friend void swap(Airport& airport1, Airport& airport2);
 
     void render(sf::RenderWindow *window);
 

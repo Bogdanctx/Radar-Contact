@@ -1,7 +1,3 @@
-//
-// Created by bgd on 20.04.2024.
-//
-
 #ifndef RADAR_CONTACT_HELICOPTER_H
 #define RADAR_CONTACT_HELICOPTER_H
 
@@ -16,9 +12,6 @@ public:
         setClocks(Clocks(600, 750, 680, 70));
     }
 
-    FlyingEntity* clone() const override {
-        return new Helicopter(*this);
-    }
 private:
     void internalUpdate() override;
 };

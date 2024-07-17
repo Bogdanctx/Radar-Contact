@@ -1,7 +1,3 @@
-//
-// Created by bgd on 09.04.2024.
-//
-
 #include "../header/Game.h"
 #include "../header/Menu.h"
 #include "../header/StateMachine.h"
@@ -17,21 +13,7 @@ Game::Game() :
     loadElements();
     loadWaypoints();
 
-    flightsTable.update(m_flyingEntities); // on first run
-}
-
-[[maybe_unused]] Game::Game(const Game& other) : Window{{1280, 720}, "Radar Contact"},
-                                                m_renderFlightsTable{false},
-                                                m_renderWaypoints{true}
-{
-    for(const auto & flyingEntity: other.m_flyingEntities) {
-        m_flyingEntities.emplace_back(flyingEntity->clone());
-    }
-}
-
-Game &Game::operator=(Game other) {
-    swap(*this, other);
-    return *this;
+    flightsTable.update(m_flyingEntities); // update flightsTable on the first run of game
 }
 
 void Game::loadElements()
@@ -77,12 +59,6 @@ void Game::loadElements()
     }
 }
 
-void swap(Game& game1, Game& game2) {
-    using std::swap;
-
-    swap(game1.m_flyingEntities, game2.m_flyingEntities);
-}
-
 void Game::update()
 {
     checkForEntitiesCollisions();
@@ -107,12 +83,12 @@ void Game::update()
         m_flightTableClock.restart();
     }
 
-    if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) {
+    if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) { // fetch new weather every 5 minutes
         weather.fetchWeatherImages(&m_window);
         m_updateWeatherClock.restart();
     }
 
-    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 4*60)
+    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 8*60) // fetch new airplanes every 8 minutes
     {
         if(Utilities::randGen<int>(0, 100) >= 50) {
             addNewBalloons();
@@ -139,7 +115,8 @@ void Game::checkOutsideScreen() {
 }
 
 void Game::removeCrashedEntities() {
-    auto it1 = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(), [](auto &flyingEntity) {
+    auto it1 = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(),
+                                    [](auto &flyingEntity) {
         return flyingEntity->getCrashed();
     });
     m_flyingEntities.erase(it1, m_flyingEntities.end());
@@ -158,18 +135,18 @@ void Game::render()
         airport.render(&m_window);
     }
 
+    if(m_renderWaypoints) {
+        for(const auto& waypoint: m_waypoints) {
+            waypoint.render(&m_window);
+        }
+    }
+
     for(const auto &flyingEntity: m_flyingEntities) {
         flyingEntity->render(&m_window);
     }
 
     if (m_renderFlightsTable) {
         flightsTable.draw(&m_window);
-    }
-
-    if(m_renderWaypoints) {
-        for(const auto& waypoint: m_waypoints) {
-            waypoint.render(&m_window);
-        }
     }
 
     m_window.display();
@@ -263,54 +240,55 @@ void Game::handleEvent()
             flightsTable.handleEvent(gameEvent, floatMousePosition);
         }
 
-        switch(gameEvent.type)
-        {
+        switch(gameEvent.type) {
             case sf::Event::KeyPressed: {
                 const sf::Keyboard::Key key_code = gameEvent.key.code;
 
-                if (key_code == sf::Keyboard::Escape) {
-                    m_window.close();
-                }
-                else if (key_code == sf::Keyboard::Enter) {
-                    std::shared_ptr<Window> menu = std::make_shared<Menu>();
-                    StateMachine::Instance().pushState(menu);
-                    m_window.close();
-                }
-                else if (key_code == sf::Keyboard::R) {
-                    m_renderFlightsTable = !m_renderFlightsTable;
-                }
-                else if (key_code == sf::Keyboard::T) {
-                    m_renderWaypoints = !m_renderWaypoints;
-                }
-                else if (key_code == sf::Keyboard::Space) {
-                    if (m_renderWaypoints) {
-                        for (const Waypoint &wp: m_waypoints) {
-                            if (wp.getBounds().contains(floatMousePosition)) {
-                                for (const auto &flyingEntity: m_flyingEntities) {
-                                    if (flyingEntity->getIsEntitySelected()) {
-                                        if (flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
-                                            flyingEntity->addWaypointToRoute(wp);
-                                            break;
+                switch(key_code) {
+                    case sf::Keyboard::Escape: {
+                        m_window.close();
+                        break;
+                    }
+                    case sf::Keyboard::Enter: {
+                        std::shared_ptr<Window> menu = std::make_shared<Menu>();
+                        StateMachine::Instance().pushState(menu);
+                        m_window.close();
+
+                        break;
+                    }
+                    case sf::Keyboard::R: {
+                        m_renderFlightsTable = !m_renderFlightsTable;
+                        break;
+                    }
+                    case sf::Keyboard::T: {
+                        m_renderWaypoints = !m_renderWaypoints;
+                        break;
+                    }
+                    case sf::Keyboard::Space: {
+                        if (m_renderWaypoints) {
+                            for (const Waypoint &wp: m_waypoints) {
+                                if (wp.getBounds().contains(floatMousePosition)) {
+                                    for (const auto &flyingEntity: m_flyingEntities) {
+                                        if (flyingEntity->getIsEntitySelected()) {
+                                            if (flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
+                                                flyingEntity->addWaypointToRoute(wp);
+                                                break;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        break;
                     }
+                    default:
+                        break;
                 }
-                else if(key_code == sf::Keyboard::C) {
-                    std::vector<sf::Sprite> s = weather.getSprites();
 
-                    for(sf::Sprite& sprite: s) {
-                        if(sprite.getGlobalBounds().contains(floatMousePosition)) {
-                            Weather::getPixelColor(sprite, mousePosition);
-                        }
-                    }
-                }
+
                 break;
             }
-            case sf::Event::Closed:
-            {
+            case sf::Event::Closed: {
                 m_window.close();
 
                 break;
@@ -329,30 +307,16 @@ void Game::addNewBalloons() {
     const std::string callsign{"BALLOON" + std::to_string(Utilities::randGen<int>(1, 1000))};
 
     std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
+    std::vector<std::pair<std::string, sf::Vector2f>> airports;
 
-    const int numberOfAirports = (int) regionAirports.size();
-
-    int randomDepartureAirport = Utilities::randGen<int>(0, numberOfAirports - 1);
-    int randomDestination = Utilities::randGen<int>(0, numberOfAirports - 1);
-
-    if(randomDestination == randomDepartureAirport) {
-        randomDestination = (randomDepartureAirport + 1) % numberOfAirports;
+    for(const auto& [name, position]: regionAirports) {
+        airports.emplace_back(name, sf::Vector2f(static_cast<float>(position.first), static_cast<float>(position.second)));
     }
 
-    auto it = regionAirports.begin();
-    while(randomDepartureAirport > 0) {
-        randomDepartureAirport--;
-        it++;
-    }
-    const sf::Vector2f position{static_cast<float>(it->second.first), static_cast<float>(it->second.second)};
+    std::shuffle(airports.begin(), airports.end(), std::mt19937(std::random_device()()));
 
-    std::string arrival;
-    it = regionAirports.begin();
-    while(randomDestination > 0) {
-        randomDestination--;
-        it++;
-    }
-    arrival = it->first;
+    const std::string arrival = airports.back().first;
+    sf::Vector2f position = airports[0].second;
 
     HotAirBalloon balloon{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
@@ -368,12 +332,12 @@ void Game::addNewEntities()
 
     const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window);
 
-    const int number_of_arrivals = static_cast<int>(arrivals.size());
+    const int numberOfArrivals = static_cast<int>(arrivals.size());
 
     sf::Event tempEvent{};
-    m_window.pollEvent(tempEvent);
+    m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
 
-    for(int i = 0; i < number_of_arrivals; i++) {
+    for(int i = 0; i < numberOfArrivals; i++) {
         if(m_fetchedFlyingEntities.size() > 20) {
             break;
         }
@@ -390,7 +354,8 @@ void Game::addNewEntities()
         const int altitude = arrivals[i]["altitude"];
         const int airspeed = Math::AirspeedAtAltitude(altitude);
         const std::string squawk = arrivals[i]["squawk"];
-        const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"], ResourcesManager::Instance().getRegionBox());
+        const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"],
+                                                               ResourcesManager::Instance().getRegionBox());
         const std::string arrival = arrivals[i]["arrival"];
         const std::string type = arrivals[i]["type"];
 
@@ -421,7 +386,7 @@ void Game::initAirports() {
         const int x = airport.second.first;
         const int y = airport.second.second;
 
-        const Airport newAirport{sf::Vector2f(x, y), icao};
+        Airport newAirport{sf::Vector2f(x, y), icao};
         m_airports.push_back(newAirport);
     }
 

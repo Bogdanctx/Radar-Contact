@@ -1,7 +1,3 @@
-//
-// Created by bgd on 09.04.2024.
-//
-
 #ifndef OOP_GAME_H
 #define OOP_GAME_H
 
@@ -27,12 +23,7 @@
 class Game : public Window {
 public:
     Game();
-    [[maybe_unused]] Game(const Game& other);
-    ~Game() = default;
 
-    Game& operator=(Game other);
-
-    friend void swap(Game& game1, Game& game2);
 private:
     void render() override;
     void handleEvent() override;

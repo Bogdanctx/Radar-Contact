@@ -1,7 +1,3 @@
-//
-// Created by bgd on 12.04.2024.
-//
-
 #include "../header/Airport.h"
 
 Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
@@ -10,18 +6,18 @@ Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
 {
     sf::FloatRect bounds = m_coverage.getGlobalBounds();
 
-    m_coverage.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
-    m_coverage.setFillColor(sf::Color(255, 223, 135, 100));
-    m_coverage.setPosition(static_cast<int>(position.x), static_cast<int>(position.y));
+    m_coverage.setOrigin(static_cast<int>(bounds.left + bounds.width / 2.f), // cast to fix blurry text
+                         static_cast<int>(bounds.top + bounds.height / 2.f));
+
+    m_coverage.setFillColor(sf::Color(255, 223, 135, 100)); // yellow-ish color
+
+    m_coverage.setPosition(static_cast<int>(position.x),static_cast<int>(position.y)); // cast to fix blurry text
 
     bounds = m_labelICAO.getGlobalBounds();
-    m_labelICAO.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
-    m_labelICAO.setPosition(static_cast<int>(position.x), static_cast<int>(position.y));
-}
+    m_labelICAO.setOrigin(static_cast<int>(bounds.left + bounds.width / 2.f), // cast to fix blurry text
+                          static_cast<int>(bounds.top + bounds.height / 2.f));
 
-void swap(Airport& airport1, Airport& airport2) {
-    std::swap(airport1.m_coverage, airport2.m_coverage);
-    std::swap(airport1.m_labelICAO, airport2.m_labelICAO);
+    m_labelICAO.setPosition(static_cast<int>(position.x), static_cast<int>(position.y)); // cast to fix blurry text
 }
 
 void Airport::render(sf::RenderWindow *window) {

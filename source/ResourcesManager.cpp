@@ -1,7 +1,3 @@
-//
-// Created by bgd on 11.04.2024.
-//
-
 #include "../header/ResourcesManager.h"
 #include "../header/Math.h"
 
@@ -199,4 +195,9 @@ void ResourcesManager::loadWeatherTiles() {
 
 std::vector<std::pair<float, float>> ResourcesManager::getWeatherTiles() const {
     return m_regionWeatherTiles;
+}
+
+ResourcesManager& ResourcesManager::Instance() {
+    static ResourcesManager instance;
+    return instance;
 }

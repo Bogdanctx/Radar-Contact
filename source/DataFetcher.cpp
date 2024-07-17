@@ -1,7 +1,3 @@
-//
-// Created by bgd on 15.07.2024.
-//
-
 #include "../header/DataFetcher.h"
 
 nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
@@ -10,7 +6,8 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
     std::vector<std::string> airports;
     airports.reserve(regionAirports.size());
 
-    std::transform(regionAirports.begin(), regionAirports.end(), std::back_inserter(airports), [](const auto& elm) {
+    std::transform(regionAirports.begin(), regionAirports.end(), std::back_inserter(airports),
+                   [](const auto& elm) {
         return elm.first;
     });
 
@@ -39,8 +36,12 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
             item["squawk"] = std::to_string(Utilities::randGen<int>(1000, 9999));
         }
 
+        // remove the last 3 white spaces from the back of the callsign
+        std::string callsign = item["flight"];
+        callsign = callsign.substr(0, callsign.size() - 2);
+
         nlohmann::json flyingEntity = {
-                {"callsign", item["flight"]},
+                {"callsign", callsign},
                 {"altitude", altitude},
                 {"squawk",   item["squawk"]},
                 {"lon",      static_cast<float>(item["lon"])},
@@ -53,7 +54,7 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
         flyingEntities.push_back(flyingEntity);
 
         sf::Event tempEvent{};
-        while(window->pollEvent(tempEvent)) {}
+        while(window->pollEvent(tempEvent)) {} // poll through window events to prevent crashes
     }
 
     return flyingEntities;

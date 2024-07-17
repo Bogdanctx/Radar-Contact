@@ -1,7 +1,3 @@
-//
-// Created by bgd on 14.06.2024.
-//
-
 #include "../header/FlightInfo.h"
 
 FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
@@ -24,4 +20,12 @@ FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntit
 void FlightInfo::draw(sf::RenderWindow *window) {
     window->draw(m_body);
     window->draw(m_text);
+}
+
+sf::RectangleShape FlightInfo::getBody() const {
+    return m_body;
+}
+
+std::shared_ptr<FlyingEntity> FlightInfo::getFlyingEntityPtr() const {
+    return flyingEntityPtr;
 }

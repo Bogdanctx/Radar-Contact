@@ -1,7 +1,3 @@
-//
-// Created by bgd on 22.04.2024.
-//
-
 #include "../header/HotAirBalloon.h"
 #include "../header/Math.h"
 

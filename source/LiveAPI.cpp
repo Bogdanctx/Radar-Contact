@@ -1,7 +1,3 @@
-//
-// Created by bgd on 18.05.2024.
-//
-
 #include "../header/LiveAPI.h"
 #include "../header/ResourcesManager.h"
 #include "../header/utils.h"
@@ -12,10 +8,10 @@
 nlohmann::json LiveAPI::getFlyingEntities() {
     const std::vector<float> bounds = ResourcesManager::Instance().getRegionBox();
 
-    int latitudeAvg = static_cast<int>(bounds[0] + bounds[2]) / 2;
-    int longitudeAvg = static_cast<int>(bounds[1] + bounds[3]) / 2;
+    int latitudeAvg = static_cast<int>((bounds[0] + bounds[2]) / 2);
+    int longitudeAvg = static_cast<int>((bounds[1] + bounds[3]) / 2);
 
-    /*const std::string link = "https://api.airplanes.live/v2/point/" + std::to_string(latitudeAvg) + '/' \
+    const std::string link = "https://api.airplanes.live/v2/point/" + std::to_string(latitudeAvg) + '/' \
                             + std::to_string(longitudeAvg) + "/" + std::to_string(ResourcesManager::Instance().getRegionRadius());
 
     const cpr::Response res = cpr::Get(cpr::Url{link},
@@ -23,8 +19,7 @@ nlohmann::json LiveAPI::getFlyingEntities() {
                                        cpr::Parameters{{"anon", "true"}, {"key", "value"}});
 
     nlohmann::json data = nlohmann::json::parse(res.text)["ac"];
-    */
-    nlohmann::json data{};
+
     return data;
 }
 
@@ -64,8 +59,7 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
         res.push_back(temp_texture);
 
         sf::Event tempEvent{};
-        while(window->pollEvent(tempEvent)) {}
-
+        while(window->pollEvent(tempEvent)) {} // poll through window events to prevent crashes
     }
 
     return res;

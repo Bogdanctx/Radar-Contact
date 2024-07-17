@@ -1,7 +1,3 @@
-//
-// Created by bgd on 01.07.2024.
-//
-
 #ifndef OOP_WAYPOINT_H
 #define OOP_WAYPOINT_H
 

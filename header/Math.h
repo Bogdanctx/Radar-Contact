@@ -1,7 +1,3 @@
-//
-// Created by bgd on 11.04.2024.
-//
-
 #ifndef OOP_MATH_H
 #define OOP_MATH_H
 
@@ -23,6 +19,6 @@ public:
 private:
     constexpr static const float PI = 3.1415f;
 
-    static float degrees(float rad); // conversie din radiani in grade
-    static float radians(float deg); //  conversie din grade in radiani
+    static float degrees(float rad); // convert from radians to degrees
+    static float radians(float deg); //  convert from degrees to radians
 };

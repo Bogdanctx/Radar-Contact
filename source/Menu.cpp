@@ -1,7 +1,3 @@
-//
-// Created by bgd on 09.04.2024.
-//
-
 #include "../header/Menu.h"
 #include "../header/Game.h"
 #include "../header/StateMachine.h"
@@ -18,13 +14,13 @@ Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
     button.setOutlineThickness(2.3f);
 
 
-    for(int i = 0; i < (int) flags.size(); i++) {
+    for(int i = 0; i < static_cast<int>(flags.size()); i++) {
         sf::Texture texture;
         texture.loadFromFile("./resources/flags/" + flags[i] + ".png");
 
         sf::Text text(flags[i], ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 12);
 
-        float positionX = 50 + 95 * (float) (i % 5);
+        float positionX = 50 + 95 * (i % 5);
         float positionY = 140;
 
         if (5 <= i && i <= 9) {

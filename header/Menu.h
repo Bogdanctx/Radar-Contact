@@ -1,7 +1,3 @@
-//
-// Created by bgd on 09.04.2024.
-//
-
 #ifndef OOP_MENU_H
 #define OOP_MENU_H
 

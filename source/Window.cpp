@@ -1,7 +1,3 @@
-//
-// Created by bgd on 09.04.2024.
-//
-
 #include "../header/Window.h"
 
 Window::Window(const std::pair<int, int> resolution, const std::string &title) :

@@ -1,7 +1,3 @@
-//
-// Created by bgd on 17.05.2024.
-//
-
 #include "../header/FlightsTable.h"
 
 FlightsTable::FlightsTable() : m_poppins(ResourcesManager::Instance().getFont("Poppins-Regular.ttf")) {}

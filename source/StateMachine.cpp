@@ -1,7 +1,3 @@
-//
-// Created by bgd on 18.06.2024.
-//
-
 #include "../header/StateMachine.h"
 #include "../header/Menu.h"
 #include "../header/Game.h"

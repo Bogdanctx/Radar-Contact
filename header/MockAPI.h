@@ -1,7 +1,3 @@
-//
-// Created by bgd on 18.05.2024.
-//
-
 #ifndef RADAR_CONTACT_MOCKAPI_H
 #define RADAR_CONTACT_MOCKAPI_H
 

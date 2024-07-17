@@ -48,6 +48,21 @@ Hide / show <b>waypoints</b> by pressing <b>T</b>.
 
 To go <b>back to menu</b> press <b>Enter</b>. 
 
+## Resources
+
+- [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
+- [RainViewer](https://www.rainviewer.com/) (Weather API)
+- [AIRPLANES.LIVE](https://airplanes.live/get-started/) (Live air traffic)
+- [Flightradar24](https://www.flightradar24.com) (Map images)
+
+
+# Update [17 July 2024]
+
+### Attention all Air Traffic Controllers!
+
+From now on, your job just got even more realistic with <b>real air traffic integration</b>,
+thanks to <b>[AIRPLANES.LIVE](https://airplanes.live/get-started/)</b>.
+
 # Update [13 July 2024]
 
 ### Ladies and gentlemen, fasten your seatbelts!
@@ -64,13 +79,3 @@ To create a route for a flying entity, click on the flying entity, then press <b
 available on the map to add it to the current route. To reset the route, change the heading.
 
 ![Alt Text](./preview/route.gif)
-
-## Resources
-
-- [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
-- [RainViewer](https://www.rainviewer.com/) (Weather API)
-- [Google Fonts](https://fonts.google.com/specimen/Poppins) (Poppins)
-- [Google Fonts](https://fonts.google.com/specimen/Raleway?query=raleway) (Raleway)
-- [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC)
-- [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Landing sound)
-- [Flightradar24](https://www.flightradar24.com) (Map images)

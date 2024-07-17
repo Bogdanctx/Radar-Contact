@@ -1,7 +1,3 @@
-//
-// Created by bgd on 13.04.2024.
-//
-
 #include "../header/Weather.h"
 #include "../header/ResourcesManager.h"
 
@@ -85,4 +81,8 @@ void Weather::fetchWeatherImages(sf::RenderWindow* window) {
         temp_sprite.setPosition(projection);
         m_sprites.push_back(temp_sprite);
     }
+}
+
+std::vector<sf::Sprite>& Weather::getSprites() {
+    return m_sprites;
 }

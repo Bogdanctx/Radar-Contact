@@ -1,7 +1,3 @@
-//
-// Created by bgd on 11.04.2024.
-//
-
 #ifndef OOP_FLYINGENTITY_H
 #define OOP_FLYINGENTITY_H
 
@@ -35,12 +31,11 @@ protected:
     };
 
 public:
-    std::string getCallsign() const { return m_callsign; }
+    std::string getCallsign() const;
 
     FlyingEntity() = default;
-    FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
-                          const std::string &callsign, sf::Vector2f position, const std::string &arrival);
-    virtual FlyingEntity* clone() const = 0;
+    FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
+                 sf::Vector2f position, const std::string &arrival);
     virtual ~FlyingEntity() = default;
 
     void update(bool force = false);
@@ -66,9 +61,6 @@ public:
     void setFallInWeather(int degree);
 
 protected:
-    FlyingEntity(const FlyingEntity &other) = default;
-    FlyingEntity& operator=(const FlyingEntity& other) = default;
-
     void updateAltitudeData();
     void updateSpeedData();
     void updateHeadingData();
@@ -147,11 +139,6 @@ public:
         const std::string result = callsign + "     " + altitude + "     " + airspeed + "     " + arrival + "     " + waypointName;
 
         return result;
-    }
-
-    friend void swap(FlyingEntity_Decorator& decorator1, FlyingEntity_Decorator& decorator2) {
-        using std::swap;
-        swap(decorator1.m_component, decorator2.m_component);
     }
 private:
     std::shared_ptr<FlyingEntity> m_component{};

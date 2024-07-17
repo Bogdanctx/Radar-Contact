@@ -1,15 +1,11 @@
-//
-// Created by bgd on 12.04.2024.
-//
-
 #ifndef OOP_DATAAPI_H
 #define OOP_DATAAPI_H
 
-/////////////////////////////////////////////////
-//                                             //
-//      THIS CLASS FETCHES DATA FROM APIS      //
-//                                             //
-/////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+//                                                                //
+//      THIS CLASS BUILDS UP DATA REQUIRED BY GAME FROM APIS      //
+//                                                                //
+////////////////////////////////////////////////////////////////////
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>

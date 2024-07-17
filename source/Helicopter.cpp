@@ -1,7 +1,3 @@
-//
-// Created by bgd on 20.04.2024.
-//
-
 #include "../header/Helicopter.h"
 #include "../header/Math.h"
 

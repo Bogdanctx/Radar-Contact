@@ -1,7 +1,3 @@
-//
-// Created by bgd on 17.05.2024.
-//
-
 #ifndef OOP_FLIGHTSTABLE_H
 #define OOP_FLIGHTSTABLE_H
 

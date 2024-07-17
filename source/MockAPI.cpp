@@ -1,7 +1,3 @@
-//
-// Created by bgd on 18.05.2024.
-//
-
 #include "../header/MockAPI.h"
 #include "../header/ResourcesManager.h"
 
@@ -41,7 +37,7 @@ std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow* window) {
         res.push_back(temp);
 
         sf::Event tempEvent{};
-        while(window->pollEvent(tempEvent)) {}
+        while(window->pollEvent(tempEvent)) {} // loop through window events to prevent crashes
 
     }
 

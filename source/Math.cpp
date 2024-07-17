@@ -1,7 +1,3 @@
-//
-// Created by bgd on 11.04.2024.
-//
-
 #include "../header/Math.h"
 
 int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
@@ -14,20 +10,21 @@ int Math::DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
 }
 
 
-// f(speed) = 1 / 250 * altitude + 165;
+// f(altitude) = 1 / 250 * altitude + 165; -> this function returns what airspeed an airplane should have
+// at {altitude} altitude
 int Math::AirspeedAtAltitude(const int altitude) {
     const double a = 1.f / 250.f;
     const double b = 165;
 
     const double airspeed = a * altitude + b;
 
-    return (int) airspeed;
+    return static_cast<int>(airspeed);
 }
 
 int Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point)
 {
     const auto dir_radians = atan2(origin.y - point.y, origin.x - point.x);
-    int direction = (int) degrees((float)dir_radians) - 90;
+    int direction = static_cast<int>(degrees(static_cast<float>(dir_radians)) - 90);
 
     if(direction < 0) {
         direction += 360;
@@ -56,10 +53,7 @@ float Math::radians(const float deg)
     return deg * PI / 180;
 }
 
-// LINK BELOW IS DEPRECATED
-// https://stackoverflow.com/questions/2103924/mercator-longitude-and-latitude-calculations-to-x-and-y-on-a-cropped-map-of-the/10401734#10401734
-
-// https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box - CURRENT
+// https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box
 sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds)
 {
     const float north = radians(imgBounds[0]);

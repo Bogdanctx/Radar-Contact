@@ -1,7 +1,3 @@
-//
-// Created by bgd on 11.04.2024.
-//
-
 #ifndef OOP_RESOURCESMANAGER_H
 #define OOP_RESOURCESMANAGER_H
 
@@ -54,10 +50,7 @@ public:
     ResourcesManager(const ResourcesManager&) = delete;
     ResourcesManager& operator=(const ResourcesManager&) = delete;
 
-    static ResourcesManager& Instance() {
-        static ResourcesManager instance;
-        return instance;
-    }
+    static ResourcesManager& Instance();
 
     sf::Font &getFont(const std::string &key);
     sf::Texture& getTexture(const std::string &key);

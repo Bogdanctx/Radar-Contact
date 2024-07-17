@@ -1,7 +1,3 @@
-//
-// Created by bgd on 18.06.2024.
-//
-
 #ifndef OOP_STATEMACHINE_H
 #define OOP_STATEMACHINE_H
 

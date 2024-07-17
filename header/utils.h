@@ -1,7 +1,3 @@
-//
-// Created by bgd on 18.05.2024.
-//
-
 #ifndef OOP_UTILS_H
 #define OOP_UTILS_H
 

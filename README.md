@@ -54,7 +54,7 @@ To go <b>back to menu</b> press <b>Enter</b>.
 
 - [SFML](https://github.com/SFML/SFML/tree/2.6.1)
 - [AIRPLANES.LIVE](https://airplanes.live/get-started/) (Live air traffic)
-- [RainViewer](https://www.rainviewer.com/) (Weather API)
+- [RainViewer](https://www.rainviewer.com/api.html) (Weather API)
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC voice sound)
 - [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Loading screen landing sound)
 

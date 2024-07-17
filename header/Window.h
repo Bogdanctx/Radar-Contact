@@ -20,6 +20,8 @@ private:
     virtual void handleEvent() = 0;
     virtual void update() = 0;
     virtual void render() = 0;
+
+    sf::Image m_appIcon;
 };
 
 

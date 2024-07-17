@@ -5,8 +5,8 @@ Window::Window(const std::pair<int, int> resolution, const std::string &title) :
                          sf::Style::Close | sf::Style::Titlebar)
 {
     m_window.setFramerateLimit(60);
-    m_appIcon.loadFromFile("./resources/general_textures/radar.png");
-    m_window.setIcon(512, 512, m_appIcon.getPixelsPtr());
+    m_appIcon.loadFromFile("./resources/general_textures/icon.png");
+    m_window.setIcon(32, 32, m_appIcon.getPixelsPtr());
 }
 
 void Window::run() {

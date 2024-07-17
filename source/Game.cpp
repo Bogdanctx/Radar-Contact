@@ -40,13 +40,19 @@ void Game::loadElements()
     m_atcSound.setBuffer(ResourcesManager::Instance().getSound("atc.wav"));
     m_atcSound.setLoop(true);
 
+    // an initial draw of loading screen
+    m_window.draw(loadingScreen);
+    m_window.draw(randomFact);
+    m_window.display();
+    ////////////////////////////////////
+
     weather.fetchWeatherImages(&m_window);
 
     addNewEntities();
     initAirports();
 
-
     // if offline mode is enabled I would like the loading screen to be active for 2 seconds
+    // because offline mode loads things much faster
     while(m_loadingScreenDelay.getElapsedTime().asSeconds() <= 2) {
         m_window.clear();
 

@@ -18,8 +18,8 @@ public:
     bool isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity);
 
 private:
-    sf::CircleShape m_coverage{};
-    sf::Text m_labelICAO{};
+    sf::CircleShape m_coverage;
+    sf::Text m_labelICAO;
 };
 
 

@@ -24,7 +24,7 @@
 
 class DataFetcher {
 private:
-    inline static std::shared_ptr<LiveAPI> m_api{};
+    inline static std::shared_ptr<LiveAPI> m_api;
 public:
     static nlohmann::json getFlyingEntities(sf::RenderWindow* window);
     static std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow* window);

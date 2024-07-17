@@ -7,12 +7,11 @@
 
 Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
 {
-    const std::vector<std::string> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
+    const std::array<std::string, 10> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
                                             "UK", "Denmark", "France", "Spain", "Greece"};
 
     sf::RectangleShape button{sf::Vector2f(50,30)};
     button.setOutlineThickness(2.3f);
-
 
     for(int i = 0; i < static_cast<int>(flags.size()); i++) {
         sf::Texture texture;
@@ -63,8 +62,7 @@ Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
     localData.setCharacterSize(13);
 }
 
-void Menu::render()
-{
+void Menu::render() {
     m_window.clear();
 
     m_window.draw(m_background);
@@ -82,8 +80,7 @@ void Menu::render()
     m_window.display();
 }
 
-void Menu::update()
-{
+void Menu::update() {
     if(ResourcesManager::Instance().isMockingEnabled()) {
         liveData.setFillColor(sf::Color(209, 206, 199, 100));
         localData.setFillColor(sf::Color::Green);
@@ -96,13 +93,12 @@ void Menu::update()
     checkHovers();
 }
 
-void Menu::checkHovers()
-{
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
-    sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
+void Menu::checkHovers() {
+    sf::Vector2i intMousePosition = sf::Mouse::getPosition(m_window);
+    sf::Vector2f floatMousePosition = {static_cast<float>(intMousePosition.x), static_cast<float>(intMousePosition.y)};
 
     for(auto &regionsButton: m_regionsButtons) {
-        if(regionsButton.first.getGlobalBounds().contains(float_mouse_position)) {
+        if(regionsButton.first.getGlobalBounds().contains(floatMousePosition)) {
             regionsButton.first.setOutlineColor(sf::Color::White);
         }
         else {
@@ -111,36 +107,30 @@ void Menu::checkHovers()
     }
 }
 
-void Menu::handleEvent()
-{
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
-    sf::Vector2f float_mouse_position{(float) mouse_position.x, (float) mouse_position.y};
+void Menu::handleEvent() {
+    sf::Vector2i intMousePosition = sf::Mouse::getPosition(m_window);
+    sf::Vector2f floatMousePosition{static_cast<float>(intMousePosition.x), static_cast<float>(intMousePosition.y)};
     sf::Event menu_event{};
 
-    while(m_window.pollEvent(menu_event))
-    {
-        switch(menu_event.type)
-        {
+    while(m_window.pollEvent(menu_event)) {
+        switch(menu_event.type) {
             case sf::Event::Closed: {
                 m_window.close();
 
                 break;
             }
-            case sf::Event::KeyPressed:
-            {
+            case sf::Event::KeyPressed: {
                 const sf::Keyboard::Key key_code = menu_event.key.code;
 
-                if(key_code == sf::Keyboard::Escape)
-                {
+                if(key_code == sf::Keyboard::Escape) {
                     m_window.close();
                 }
 
                 break;
             }
-            case sf::Event::MouseButtonPressed:
-            {
+            case sf::Event::MouseButtonPressed: {
                 for(const auto &regionButtons: m_regionsButtons) {
-                    if(regionButtons.first.getGlobalBounds().contains(float_mouse_position)) {
+                    if(regionButtons.first.getGlobalBounds().contains(floatMousePosition)) {
 
                         std::shared_ptr<LiveAPI> api = std::make_shared<LiveAPI>();
 
@@ -157,10 +147,10 @@ void Menu::handleEvent()
                     }
                 }
 
-                if(liveData.getGlobalBounds().contains(float_mouse_position)) {
+                if(liveData.getGlobalBounds().contains(floatMousePosition)) {
                     ResourcesManager::Instance().setMocking(false);
                 }
-                else if(localData.getGlobalBounds().contains(float_mouse_position)) {
+                else if(localData.getGlobalBounds().contains(floatMousePosition)) {
                     ResourcesManager::Instance().setMocking(true);
                 }
 

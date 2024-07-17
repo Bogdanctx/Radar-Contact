@@ -43,6 +43,7 @@ private:
 
     void removeCrashedEntities();
 
+private:
     std::vector<Airport> m_airports{};
     std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities{};
     std::unordered_set<std::string> m_fetchedFlyingEntities;

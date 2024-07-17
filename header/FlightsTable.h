@@ -17,9 +17,9 @@ public:
     void handleEvent(sf::Event gameEvent, sf::Vector2f mousePosition);
 
 private:
-    sf::Font m_poppins{};
+    sf::Font m_poppins;
 
-    std::vector<FlightInfo> m_airplanesInfo{};
+    std::vector<FlightInfo> m_airplanesInfo;
 };
 
 #endif //OOP_FLIGHTSTABLE_H

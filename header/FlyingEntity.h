@@ -19,15 +19,15 @@ protected:
                                                                 m_speedInterval(speed),
                                                                 m_headingInterval(heading) {}
 
-        sf::Clock m_altitudeClock{};
-        sf::Clock m_speedClock{};
-        sf::Clock m_headingClock{};
-        sf::Clock m_updateClock{};
+        sf::Clock m_altitudeClock;
+        sf::Clock m_speedClock;
+        sf::Clock m_headingClock;
+        sf::Clock m_updateClock;
 
-        int m_updateInterval{};
-        int m_altitudeInterval{};
-        int m_speedInterval{};
-        int m_headingInterval{};
+        int m_updateInterval;
+        int m_altitudeInterval;
+        int m_speedInterval;
+        int m_headingInterval;
     };
 
 public:
@@ -75,53 +75,55 @@ protected:
 
     void setClocks(Clocks clocks);
 
+protected:
     std::deque<Waypoint> route;
-    sf::RectangleShape m_entity{};
-    bool m_entitySelected{};
-    sf::Text m_callsignText{};
+    sf::RectangleShape m_entity;
+    bool m_entitySelected;
+    sf::Text m_callsignText;
 
-    int m_heading{};
-    int m_speed{};
-    int m_altitude{};
+    int m_heading;
+    int m_speed;
+    int m_altitude;
 
-    int m_newHeading{};
-    int m_newAltitude{};
-    int m_newSpeed{};
+    int m_newHeading;
+    int m_newAltitude;
+    int m_newSpeed;
 private:
     virtual void internalUpdate() = 0;
 
+private:
     friend class FlyingEntity_Decorator;
 
     sf::Vector2f m_mousePosition;
 
-    int m_fallInWeather{};
+    int m_fallInWeather;
 
-    bool m_isCrashed{};
-    Clocks m_clocks{};
+    bool m_isCrashed;
+    Clocks m_clocks;
 
-    std::string m_arrival{};
-    sf::Text m_arrivalText{};
+    std::string m_arrival;
+    sf::Text m_arrivalText;
 
-    std::string m_squawk{};
-    sf::Text m_squawkText{};
+    std::string m_squawk;
+    sf::Text m_squawkText;
 
-    sf::Text m_routeWaypointsText{};
-    std::string m_routeWaypoints{};
+    sf::Text m_routeWaypointsText;
+    std::string m_routeWaypoints;
 
-    int m_minSpeed{}, m_maxSpeed{};
-    int m_minAltitude{}, m_maxAltitude{};
+    int m_minSpeed, m_maxSpeed;
+    int m_minAltitude, m_maxAltitude;
 
-    sf::Text m_headingText{};
-    sf::Text m_speedText{};
-    sf::Text m_altitudeText{};
+    sf::Text m_headingText;
+    sf::Text m_speedText;
+    sf::Text m_altitudeText;
 
-    sf::Text m_newHeadingText{};
-    sf::Text m_newSpeedText{};
-    sf::Text m_newAltitudeText{};
+    sf::Text m_newHeadingText;
+    sf::Text m_newSpeedText;
+    sf::Text m_newAltitudeText;
 
-    std::string m_callsign{};
+    std::string m_callsign;
 
-    sf::RectangleShape m_headingStick{};
+    sf::RectangleShape m_headingStick;
 };
 
 class FlyingEntity_Decorator {
@@ -141,7 +143,7 @@ public:
         return result;
     }
 private:
-    std::shared_ptr<FlyingEntity> m_component{};
+    std::shared_ptr<FlyingEntity> m_component;
 };
 
 #endif //OOP_FLYINGENTITY_H

@@ -19,6 +19,7 @@ public:
 private:
     constexpr static const float PI = 3.1415f;
 
+private:
     static float degrees(float rad); // convert from radians to degrees
     static float radians(float deg); //  convert from degrees to radians
 };

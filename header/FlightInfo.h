@@ -17,10 +17,10 @@ public:
     sf::RectangleShape getBody() const;
 
 private:
-    sf::RectangleShape m_body{};
+    sf::RectangleShape m_body;
     sf::Text m_text;
-    std::string m_info{};
-    std::shared_ptr<FlyingEntity> flyingEntityPtr{};
+    std::string m_info;
+    std::shared_ptr<FlyingEntity> flyingEntityPtr;
 };
 
 

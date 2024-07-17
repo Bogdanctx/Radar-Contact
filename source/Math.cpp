@@ -21,8 +21,7 @@ int Math::AirspeedAtAltitude(const int altitude) {
     return static_cast<int>(airspeed);
 }
 
-int Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point)
-{
+int Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point) {
     const auto dir_radians = atan2(origin.y - point.y, origin.x - point.x);
     int direction = static_cast<int>(degrees(static_cast<float>(dir_radians)) - 90);
 
@@ -33,8 +32,7 @@ int Math::DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point)
     return direction;
 }
 
-sf::Vector2f Math::TranslatePositionToPoint(float speed, float direction)
-{
+sf::Vector2f Math::TranslatePositionToPoint(float speed, float direction) {
     sf::Vector2f p{
         std::sin(radians(direction)) * speed / 100,
         std::cos(radians( direction + 180)) * speed / 100
@@ -43,19 +41,16 @@ sf::Vector2f Math::TranslatePositionToPoint(float speed, float direction)
     return p;
 }
 
-float Math::degrees(const float rad)
-{
+float Math::degrees(const float rad) {
     return rad * 180 / PI;
 }
 
-float Math::radians(const float deg)
-{
+float Math::radians(const float deg) {
     return deg * PI / 180;
 }
 
 // https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box
-sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds)
-{
+sf::Vector2f Math::MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds) {
     const float north = radians(imgBounds[0]);
     const float south = radians(imgBounds[2]);
     const float east = radians(imgBounds[1]);

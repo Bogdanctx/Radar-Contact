@@ -17,10 +17,12 @@ private:
 
     void checkHovers();
 
+private:
     sf::Texture m_texture;
     sf::Sprite m_background;
 
-    sf::Text liveData, localData;
+    sf::Text liveData;
+    sf::Text localData;
 
     std::array<std::pair<sf::RectangleShape, std::string>, 10> m_regionsButtons;
     std::array<sf::Texture, 10> m_flagsTexture;

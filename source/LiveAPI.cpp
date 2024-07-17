@@ -42,14 +42,15 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
     request.setField("Content-Type", "application/x-www-form-urlencoded");
 
     const std::string path = LiveAPI::getWeatherPath();
-    std::vector<sf::Texture> res{};
+    std::vector<sf::Texture> res;
     std::vector<std::pair<float, float>> tiles = ResourcesManager::Instance().getWeatherTiles();
 
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
 
-        std::string link = path + "/256/" + std::to_string(ResourcesManager::Instance().getRegionZoomLevel()) + "/" + std::to_string(tile.first) + '/' +
-                                 std::to_string(tile.second) + "/2/1_0.png";
+        std::string link = path + "/256/" + std::to_string(ResourcesManager::Instance().getRegionZoomLevel()) + "/" +
+                            std::to_string(tile.first) + '/' + std::to_string(tile.second) + "/2/1_0.png";
+
         request.setUri(link);
 
         api_response = http.sendRequest(request);

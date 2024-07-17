@@ -11,8 +11,7 @@ Window::Window(const std::pair<int, int> resolution, const std::string &title) :
 
 void Window::run() {
 
-    while(m_window.isOpen())
-    {
+    while(m_window.isOpen()) {
         handleEvent();
         update();
         render();
@@ -26,16 +25,12 @@ void Window::render() {
     m_window.display();
 }
 
-void Window::handleEvent()
-{
+void Window::handleEvent() {
     sf::Event window_event{};
 
-    while(m_window.pollEvent(window_event))
-    {
-        switch(window_event.type)
-        {
-            case sf::Event::Closed:
-            {
+    while(m_window.pollEvent(window_event)) {
+        switch(window_event.type) {
+            case sf::Event::Closed: {
                 m_window.close();
                 break;
             }

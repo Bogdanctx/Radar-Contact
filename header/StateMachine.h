@@ -19,6 +19,7 @@ public:
 private:
     StateMachine();
 
+private:
     std::shared_ptr<Window> m_currentState;
     std::stack<std::shared_ptr<Window>> m_states;
 };

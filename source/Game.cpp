@@ -16,8 +16,7 @@ Game::Game() :
     flightsTable.update(m_flyingEntities); // update flightsTable on the first run of game
 }
 
-void Game::loadElements()
-{
+void Game::loadElements() {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
     sf::Text randomFact{"Fact: " + facts[Utilities::randGen<int>(0, static_cast<int>(facts.size()) - 1)],
@@ -63,8 +62,7 @@ void Game::loadElements()
     }
 }
 
-void Game::update()
-{
+void Game::update() {
     checkForEntitiesCollisions();
     checkInsideWeather();
     checkInsideAirspace();
@@ -92,8 +90,7 @@ void Game::update()
         m_updateWeatherClock.restart();
     }
 
-    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 8*60) // fetch new airplanes every 8 minutes
-    {
+    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 8*60) { // fetch new airplanes every 8 minutes
         if(Utilities::randGen<int>(0, 100) >= 50) {
             addNewBalloons();
         }
@@ -126,16 +123,14 @@ void Game::removeCrashedEntities() {
     m_flyingEntities.erase(it1, m_flyingEntities.end());
 }
 
-void Game::render()
-{
+void Game::render() {
     m_window.clear();
 
     m_window.draw(m_backgroundRegion);
 
     weather.render(&m_window);
 
-    for(Airport &airport: m_airports)
-    {
+    for(Airport &airport: m_airports) {
         airport.render(&m_window);
     }
 
@@ -174,6 +169,9 @@ void Game::checkForEntitiesCollisions() {
             if(distance <= 5) {
                 A_flyingEntity->setCrashed();
                 B_flyingEntity->setCrashed();
+
+                m_fetchedFlyingEntities.erase(A_flyingEntity->getCallsign());
+                m_fetchedFlyingEntities.erase(B_flyingEntity->getCallsign());
             }
             else if (distance <= 15) {
                 conflictType = 2;
@@ -216,26 +214,22 @@ void Game::checkInsideWeather() {
 
 void Game::checkInsideAirspace() {
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
-    for(Airport &airport: m_airports)
-    {
-        for(auto &flyingEntity: m_flyingEntities)
-        {
-            if(airport.isFlyingEntityInside(flyingEntity))
-            {
+    for(Airport &airport: m_airports) {
+        for(auto &flyingEntity: m_flyingEntities) {
+            if(airport.isFlyingEntityInside(flyingEntity)) {
                 flyingEntity->setCrashed();
+                m_fetchedFlyingEntities.erase(flyingEntity->getCallsign());
             }
         }
     }
 }
 
-void Game::handleEvent()
-{
+void Game::handleEvent() {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
     sf::Vector2f floatMousePosition{(float) mousePosition.x, (float) mousePosition.y};
     sf::Event gameEvent{};
 
-    while(m_window.pollEvent(gameEvent))
-    {
+    while(m_window.pollEvent(gameEvent)) {
         for(auto &flyingEntity: m_flyingEntities) {
             flyingEntity->handleEvent(gameEvent, floatMousePosition);
         }
@@ -289,7 +283,6 @@ void Game::handleEvent()
                         break;
                 }
 
-
                 break;
             }
             case sf::Event::Closed: {
@@ -304,11 +297,11 @@ void Game::handleEvent()
 }
 
 void Game::addNewBalloons() {
-    const int altitude{(Utilities::randGen<int>(300, 2700)) / 100 * 100};
-    const int airspeed{Utilities::randGen<int>(50, 130)};
-    const int heading{Utilities::randGen<int>(0, 360)};
-    const std::string squawk{"7000"};
-    const std::string callsign{"BALLOON" + std::to_string(Utilities::randGen<int>(1, 1000))};
+    const int altitude = (Utilities::randGen<int>(300, 2700)) / 100 * 100;
+    const int airspeed = Utilities::randGen<int>(50, 130);
+    const int heading = Utilities::randGen<int>(0, 360);
+    const std::string squawk = "7000";
+    const std::string callsign = "BALLOON" + std::to_string(Utilities::randGen<int>(1, 1000));
 
     std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
     std::vector<std::pair<std::string, sf::Vector2f>> airports;
@@ -328,10 +321,13 @@ void Game::addNewBalloons() {
     m_flyingEntities.push_back(base);
 }
 
-void Game::addNewEntities()
-{
+void Game::addNewEntities() {
+    // more will be added
     const std::vector<std::string> helicopterTypes = {
-            "DH8D"
+        "EC45",
+        "S92",
+        "EC75",
+        "EC35"
     };
 
     const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window);
@@ -342,7 +338,7 @@ void Game::addNewEntities()
     m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++) {
-        if(m_fetchedFlyingEntities.size() > 20) {
+        if(m_fetchedFlyingEntities.size() > 15) {
             break;
         }
 

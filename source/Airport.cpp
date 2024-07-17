@@ -27,8 +27,7 @@ void Airport::render(sf::RenderWindow *window) {
 
 bool Airport::isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity) {
 
-    if(flyingEntity->getArrival() == m_labelICAO.getString())
-    {
+    if(flyingEntity->getArrival() == m_labelICAO.getString()) {
         sf::FloatRect bounds = m_coverage.getGlobalBounds();
 
         return flyingEntity->getAltitude() <= 10000 && flyingEntity->getAirspeed() <= 250 &&

@@ -53,7 +53,7 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
 
         flyingEntities.push_back(flyingEntity);
 
-        sf::Event tempEvent{};
+        sf::Event tempEvent;
         while(window->pollEvent(tempEvent)) {} // poll through window events to prevent crashes
     }
 

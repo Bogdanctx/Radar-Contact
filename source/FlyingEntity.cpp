@@ -3,27 +3,29 @@
 #include "../header/ResourcesManager.h"
 #include "../header/Weather.h"
 
-FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk,
-                           const std::string &callsign, sf::Vector2f position, const std::string &arrival) :
-        m_entitySelected{false}, m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
+                           sf::Vector2f position, const std::string &arrival) :
+        m_entitySelected{false},
+        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_heading{heading}, m_speed{speed},
         m_altitude{altitude}, m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
         m_fallInWeather{Weather::RainDanger::Clear},
+        m_isCrashed{false},
         m_arrival{arrival},
         m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_squawk{squawk},
-
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_routeWaypointsText{"", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_minSpeed{140}, m_maxSpeed{320},
+        m_minAltitude{2000}, m_maxAltitude{43000},
         m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-
         m_callsign{callsign},
         m_headingStick{sf::Vector2f(26, 1.2f)}
 {
@@ -87,8 +89,7 @@ void FlyingEntity::render(sf::RenderWindow *game_window) {
     game_window->draw(m_entity);
     game_window->draw(m_callsignText);
 
-    if(m_entitySelected)
-    {
+    if(m_entitySelected) {
         game_window->draw(m_arrivalText);
         game_window->draw(m_headingText);
         game_window->draw(m_speedText);
@@ -103,31 +104,25 @@ void FlyingEntity::render(sf::RenderWindow *game_window) {
     }
 }
 
-void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position)
-{
+void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position) {
     m_mousePosition = mouse_position;
 
-    if(m_entitySelected)
-    {
+    if(m_entitySelected) {
         checkAltitudeChange(); // check if user changed entity altitude
         checkSpeedChange(); // check if user changed entity speed
         checkHeadingChange(); // check if user changed entity heading
     }
 
-    switch(game_event.type)
-    {
-        case sf::Event::MouseButtonPressed:
-        {
+    switch(game_event.type) {
+        case sf::Event::MouseButtonPressed: {
             sf::FloatRect entity_bounds = m_entity.getGlobalBounds();
 
             // if an entity has been selected by user
-            if(entity_bounds.contains(mouse_position))
-            {
+            if(entity_bounds.contains(mouse_position)) {
                 m_entitySelected = true;
                 updateText(m_entity.getPosition());
             }
-            else
-            {
+            else {
                 m_entitySelected = false;
                 updateText(m_entity.getPosition());
             }
@@ -146,14 +141,11 @@ void FlyingEntity::addWaypointToRoute(const Waypoint& waypoint) {
 }
 
 void FlyingEntity::checkAltitudeChange() {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-    {
-        if(m_newAltitude + 100 <= m_maxAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
+        if(m_newAltitude + 100 <= m_maxAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             m_newAltitude += 100;
         }
-        if(m_newAltitude - 100 >= m_minAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
+        if(m_newAltitude - 100 >= m_minAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             m_newAltitude -= 100;
         }
 
@@ -164,8 +156,7 @@ void FlyingEntity::checkAltitudeChange() {
 }
 
 void FlyingEntity::checkSpeedChange() {
-    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LAlt)))
-    {
+    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LAlt))) {
         if(m_newSpeed + 1 <= m_maxSpeed && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             m_newSpeed++;
         }
@@ -184,34 +175,29 @@ void FlyingEntity::update(bool force) {
     updateSpeedData();
     updateHeadingData();
 
-    if(force || m_clocks.m_updateClock.getElapsedTime().asMilliseconds() >= m_clocks.m_updateInterval)
-    {
+    if(force || m_clocks.m_updateClock.getElapsedTime().asMilliseconds() >= m_clocks.m_updateInterval) {
         internalUpdate();
 
         switch (m_fallInWeather) {
-            case Weather::RainDanger::Blue:
-            {
+            case Weather::RainDanger::Blue: {
                 m_altitude += Utilities::randGen<int>(-100, 100) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-2, 2);
                 m_speed += Utilities::randGen<int>(-2, 2);
                 break;
             }
-            case Weather::RainDanger::Yellow:
-            {
+            case Weather::RainDanger::Yellow: {
                 m_altitude += Utilities::randGen<int>(-400, 200) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-10, 10);
                 m_speed += Utilities::randGen<int>(-5, 5);
                 break;
             }
-            case Weather::RainDanger::Red: // red
-            {
+            case Weather::RainDanger::Red: {
                 m_altitude += Utilities::randGen<int>(-800, 100) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-15, 15);
                 m_speed += Utilities::randGen<int>(-10, 10);
                 break;
             }
-            case Weather::RainDanger::Pink: // pink
-            {
+            case Weather::RainDanger::Pink: {
                 m_altitude += Utilities::randGen<int>(-1000, 0) / 100 * 100;
                 m_heading += Utilities::randGen<int>(-25, 25);
                 m_speed += Utilities::randGen<int>(-16, 16);
@@ -300,8 +286,7 @@ void FlyingEntity::setDanger(const int conflictType) {
 void FlyingEntity::updateAltitudeData() {
     bool shouldUpdateAltitude = m_clocks.m_altitudeClock.getElapsedTime().asMilliseconds() >= m_clocks.m_altitudeInterval;
 
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitude && shouldUpdateAltitude)
-    {
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) && m_altitude != m_newAltitude && shouldUpdateAltitude) {
         if(m_altitude < m_newAltitude) {
             m_altitude += 100;
         }
@@ -317,8 +302,7 @@ void FlyingEntity::updateAltitudeData() {
 void FlyingEntity::updateSpeedData() {
     bool shouldUpdateSpeed = m_clocks.m_speedClock.getElapsedTime().asMilliseconds() >= m_clocks.m_speedInterval;
 
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && m_newSpeed != m_speed && shouldUpdateSpeed)
-    {
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && m_newSpeed != m_speed && shouldUpdateSpeed) {
         if(m_speed < m_newSpeed) {
             m_speed++;
         }
@@ -338,11 +322,11 @@ void FlyingEntity::updateHeadingData() {
         m_newHeading = Math::DirectionToPoint(m_entity.getPosition(), route.front().getPosition());
     }
 
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading)
-    {
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading) {
         if ((m_newHeading - m_heading + 360) % 360 < 180) {
             m_heading++;
-        } else {
+        }
+        else {
             m_heading--;
         }
 

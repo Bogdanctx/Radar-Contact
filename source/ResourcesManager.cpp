@@ -17,10 +17,8 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "Concorde was a passenger airplane that flew faster than the speed of sound."
                                         },
                                         m_regionZoomLevel{},
-                                        m_usingMockApi(false)
-{
-
-}
+                                        m_regionRadius{0},
+                                        m_usingMockApi(false) {}
 
 void ResourcesManager::load() {
     loadTextures("menu.png");
@@ -136,8 +134,7 @@ void ResourcesManager::loadAirports() {
 
     int numberOfAirports;
     fin >> numberOfAirports;
-    for(int i = 0; i < numberOfAirports; i++)
-    {
+    for(int i = 0; i < numberOfAirports; i++) {
         std::string airportICAO;
         int x, y;
         fin >> x >> y >> airportICAO;

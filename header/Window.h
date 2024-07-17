@@ -16,11 +16,13 @@ public:
 
 protected:
     sf::RenderWindow m_window;
+
 private:
     virtual void handleEvent() = 0;
     virtual void update() = 0;
     virtual void render() = 0;
 
+private:
     sf::Image m_appIcon;
 };
 

@@ -17,32 +17,32 @@ class ErrorResourcesManager: public std::runtime_error {
 
 class ErrorSound: public ErrorResourcesManager {
 public:
-    explicit ErrorSound(const std::string &message) : ErrorResourcesManager("Sound Error: " + message) {};
+    explicit ErrorSound(const std::string &message) : ErrorResourcesManager("Sound Error: " + message) {}
 };
 
 class ErrorTexture: public ErrorResourcesManager {
 public:
-    explicit ErrorTexture(const std::string &message) : ErrorResourcesManager("Texture Error: " + message) {};
+    explicit ErrorTexture(const std::string &message) : ErrorResourcesManager("Texture Error: " + message) {}
 };
 
 class ErrorFont: public ErrorResourcesManager {
 public:
-    explicit ErrorFont(const std::string &message) : ErrorResourcesManager("Font Error: " + message) {};
+    explicit ErrorFont(const std::string &message) : ErrorResourcesManager("Font Error: " + message) {}
 };
 
 class ErrorLatLongBox: public ErrorResourcesManager {
 public:
-    explicit ErrorLatLongBox(const std::string &message) : ErrorResourcesManager("LatLong Box error: " + message) {};
+    explicit ErrorLatLongBox(const std::string &message) : ErrorResourcesManager("LatLong Box error: " + message) {}
 };
 
 class ErrorWeatherTiles: public ErrorResourcesManager {
 public:
-    explicit ErrorWeatherTiles(const std::string &message) : ErrorResourcesManager("Weather Tiles Error: " + message) {};
+    explicit ErrorWeatherTiles(const std::string &message) : ErrorResourcesManager("Weather Tiles Error: " + message) {}
 };
 
 class ErrorAirports: public ErrorResourcesManager {
 public:
-    explicit ErrorAirports(const std::string &message) : ErrorResourcesManager("Airports Error: " + message) {};
+    explicit ErrorAirports(const std::string &message) : ErrorResourcesManager("Airports Error: " + message) {}
 };
 
 class ResourcesManager {
@@ -80,18 +80,19 @@ private:
     void loadLatLongBox();
     void loadAirports();
 
-    std::unordered_map<std::string, sf::Font>m_fonts{};
-    std::unordered_map<std::string, sf::Texture>m_textures{};
-    std::vector<float> m_regionBox{};
-    std::unordered_map<std::string, std::pair<int, int>>m_airports{};
-    std::vector<std::pair<float, float>> m_regionWeatherTiles{};
-    std::unordered_map<std::string, sf::SoundBuffer> m_sounds{};
-    std::vector<std::string> m_randomFacts{};
+private:
+    std::unordered_map<std::string, sf::Font> m_fonts;
+    std::unordered_map<std::string, sf::Texture> m_textures;
+    std::vector<float> m_regionBox;
+    std::unordered_map<std::string, std::pair<int, int>> m_airports;
+    std::vector<std::pair<float, float>> m_regionWeatherTiles;
+    std::unordered_map<std::string, sf::SoundBuffer> m_sounds;
+    std::vector<std::string> m_randomFacts;
 
-    std::string m_selectedRegion{};
-    int m_regionZoomLevel{};
-    int m_regionRadius{};
-    bool m_usingMockApi{};
+    std::string m_selectedRegion;
+    int m_regionZoomLevel;
+    int m_regionRadius;
+    bool m_usingMockApi;
 };
 
 #endif //OOP_RESOURCESMANAGER_H

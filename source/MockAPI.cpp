@@ -5,11 +5,11 @@
 
 nlohmann::json MockAPI::getFlyingEntities() {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
-    std::ifstream f("resources/mock_api/" + region + "/flyingEntities.json");
+    std::ifstream f("resources/mock_api/" + region + "/airtraffic.json");
 
-    nlohmann::json data = nlohmann::json::parse(f)["ac"];
+    nlohmann::json data = nlohmann::json::parse(f);
 
-    return data;
+    return data["ac"];
 }
 
 std::string MockAPI::getWeatherPath() {

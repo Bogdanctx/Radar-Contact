@@ -18,7 +18,12 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
 
     for(auto& item : data) {
         if(item["flight"].is_null() || item["t"].is_null() || item["alt_baro"].is_null() || item["alt_baro"].is_string() ||
-           item["lon"].is_null() || item["lat"].is_null() || item["track"].is_null() || item["t"].is_null()) {
+           item["lon"].is_null() || item["lat"].is_null() || item["track"].is_null() || item["t"].is_null() || item["gs"].is_null()) {
+            continue;
+        }
+
+        int airspeed = item["gs"];
+        if(airspeed < 120) {
             continue;
         }
 

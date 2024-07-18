@@ -7,7 +7,7 @@ class Airplane : public FlyingEntity {
 public:
     template <typename... Args>
     explicit Airplane(Args... args) : FlyingEntity(args...) {
-        setSpeedConstraints(185, 335);
+        setSpeedConstraints(160, 335);
         setAltitudeConstraints(2000, 43000);
         setClocks(Clocks(1100, 750, 800, 190));
     }

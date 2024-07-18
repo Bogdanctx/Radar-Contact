@@ -180,12 +180,14 @@ set(SOURCES
     source/Window.cpp
 )
 
+# NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 if(MSVC)
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
 else()
     add_executable(${PROJECT_NAME} ${SOURCES})
 endif()
-    
+
+
 ###############################################################################
 
 # target definitions
@@ -223,9 +225,15 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/inc
 
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads)
+if(MSVC)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
+endif()
+
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
+
 
 if(APPLE)
 elseif(UNIX)

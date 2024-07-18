@@ -23,7 +23,6 @@ env:
   BUILD_TYPE: ${{ inputs.build_type || 'Debug' }}
   # NOTE: update executable name if it is changed in CMakeLists.txt
   EXECUTABLE_NAME: "radar_contact"
-  INPUT_FILENAME: "tastatura.txt"
   BUILD_DIR: "build"
   EXT_DIR: "ext"
   BIN_DIR: "bin"
@@ -302,7 +301,6 @@ jobs:
           mkdir ${{ env.ZIP_NAME }}
           mv artifacts/${{ env.BIN_DIR }}/* ${{ env.ZIP_NAME }}
           ls -la ${{ env.ZIP_NAME }}
-          cp "${INPUT_FILENAME}" ${{ env.ZIP_NAME }}
 
       - name: Patch macOS launcher
         if: runner.os == 'macOS'

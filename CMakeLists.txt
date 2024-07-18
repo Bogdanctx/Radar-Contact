@@ -140,7 +140,6 @@ endif()
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${PROJECT_NAME}
     main.cpp
-    generated/src/Helper.cpp
     env_fixes.h
         header/Math.h
         source/Math.cpp
@@ -212,8 +211,6 @@ set_custom_stdlib_and_sanitizers(${PROJECT_NAME} true)
 
 ###############################################################################
 
-# use SYSTEM so cppcheck/clang-tidy does not report warnings from these directories
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
 # target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${cpr_SOUCE_DIR}/include)

@@ -137,50 +137,55 @@ endif()
 
 ###############################################################################
 
-# NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
-add_executable(${PROJECT_NAME}
+set(SOURCES
     main.cpp
     env_fixes.h
-        header/Math.h
-        source/Math.cpp
-        header/ResourcesManager.h
-        source/ResourcesManager.cpp
-        header/DataFetcher.h
-        source/DataFetcher.cpp
-        header/LiveAPI.h
-        source/LiveAPI.cpp
-        header/utils.h
-        source/utils.cpp
-        header/MockAPI.h
-        source/MockAPI.cpp
-        header/Game.h
-        source/Game.cpp
-        header/Airplane.h
-        source/Airplane.cpp
-        header/Airport.h
-        source/Airport.cpp
-        header/FlightInfo.h
-        source/FlightInfo.cpp
-        header/FlightsTable.h
-        source/FlightsTable.cpp
-        header/FlyingEntity.h
-        source/FlyingEntity.cpp
-        header/Helicopter.h
-        source/Helicopter.cpp
-        header/HotAirBalloon.h
-        source/HotAirBalloon.cpp
-        header/Menu.h
-        source/Menu.cpp
-        header/StateMachine.h
-        source/StateMachine.cpp
-        header/Waypoint.h
-        source/Waypoint.cpp
-        header/Weather.h
-        source/Weather.cpp
-        header/Window.h
-        source/Window.cpp
+    header/Math.h
+    source/Math.cpp
+    header/ResourcesManager.h
+    source/ResourcesManager.cpp
+    header/DataFetcher.h
+    source/DataFetcher.cpp
+    header/LiveAPI.h
+    source/LiveAPI.cpp
+    header/utils.h
+    source/utils.cpp
+    header/MockAPI.h
+    source/MockAPI.cpp
+    header/Game.h
+    source/Game.cpp
+    header/Airplane.h
+    source/Airplane.cpp
+    header/Airport.h
+    source/Airport.cpp
+    header/FlightInfo.h
+    source/FlightInfo.cpp
+    header/FlightsTable.h
+    source/FlightsTable.cpp
+    header/FlyingEntity.h
+    source/FlyingEntity.cpp
+    header/Helicopter.h
+    source/Helicopter.cpp
+    header/HotAirBalloon.h
+    source/HotAirBalloon.cpp
+    header/Menu.h
+    source/Menu.cpp
+    header/StateMachine.h
+    source/StateMachine.cpp
+    header/Waypoint.h
+    source/Waypoint.cpp
+    header/Weather.h
+    source/Weather.cpp
+    header/Window.h
+    source/Window.cpp
 )
 
+if(MSVC)
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
+else()
+    add_executable(${PROJECT_NAME} ${SOURCES})
+endif()
+    
 ###############################################################################
 
 # target definitions
@@ -218,10 +223,9 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/inc
 
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads)
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
-
 
 if(APPLE)
 elseif(UNIX)

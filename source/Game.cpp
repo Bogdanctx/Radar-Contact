@@ -34,10 +34,12 @@ void Game::loadElements() {
     sf::Sound loadingSound;
     loadingSound.setBuffer(ResourcesManager::Instance().getSound("plane_landing.wav"));
     loadingSound.setPlayingOffset(sf::seconds(4));
+    loadingSound.setVolume(50);
     loadingSound.play();
 
     m_atcSound.setBuffer(ResourcesManager::Instance().getSound("atc.wav"));
     m_atcSound.setLoop(true);
+    m_atcSound.setVolume(60);
 
     // an initial draw of loading screen
     m_window.draw(loadingScreen);

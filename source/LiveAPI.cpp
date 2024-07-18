@@ -13,10 +13,7 @@ nlohmann::json LiveAPI::getFlyingEntities() {
 
     const std::string link = "https://api.airplanes.live/v2/point/" + std::to_string(latitudeAvg) + '/' \
                             + std::to_string(longitudeAvg) + "/" + std::to_string(ResourcesManager::Instance().getRegionRadius());
-
-                                    std::cout << link;
-    std::cout.flush();
-
+    
     const cpr::Response res = cpr::Get(cpr::Url{link},
                                        cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
                                        cpr::Parameters{{"anon", "true"}, {"key", "value"}});

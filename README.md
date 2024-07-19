@@ -10,14 +10,14 @@ France, Spain & Portugal, Greece</b>.
 ![Alt Text](./preview/menu.png)
 
 In case of a missing network connection or if you prefer <b>not to download live data</b>, you can play in <b>Offline mode</b> using 
-local data. To achieve this, press the <b>"Offline"</b> button.
+local data. To achieve this, press the <b>Offline</b> button.
 
 ![Alt Text](./preview/live_data.gif)
 
-After that, control your airspace! Give instructions to airplanes, helicopters and hot air balloons to arrive to their airports.
+After that, control your airspace! Avoid storms and give instructions to airplanes, helicopters and hot air balloons to arrive to their airport.
 
-A flying entity will disconnect from your frequency when it is <b>inside the arrival airport coverage area</b> (the yellow circles). 
-In order to disconnect, some conditions are required: <b>altitude must be below 10.000ft</b> and <b>airspeed below 250 knots</b>.
+An airplane will disconnect from your frequency when it is <b>inside the arrival airport coverage area</b> (the yellow circle)
+and if its <b>altitude is below 10.000ft</b> and <b>airspeed below 250 knots</b>.
 
 ![Alt Text](./preview/landing.gif)
 
@@ -28,7 +28,9 @@ Be careful! If 2 flying entities are at the same altitude they'll collide!
 
 ## Data of a flying entity
 
-Blue text represents new flight data, if any has been given. 
+The <b>blue text</b> indicates the flight data (<b>airspeed, heading, altitude</b>) that you have modified. When 
+you adjust the <b>airspeed, heading, or altitude</b> of an airplane, the corresponding <b>blue text will update</b> to reflect the changes you made. 
+As a result, <b>the airplane's current data will adjust according to these modifications</b>.
 
 ![Alt Text](./preview/data_meaning.png)
 

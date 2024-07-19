@@ -62,6 +62,7 @@ To go <b>back to menu</b> press <b>Enter</b>.
 
  <ul>
       <li>Fixed Iceland crash when playing in offline mode.</li>
+      <li>Fixed a bug that caused an airplane to move faster when it was repeatedly clicked on in flight table.</li>
       <li>Fixed airplanes callsign position.</li>
       <li>Fix for Cyprus air traffic.</li>
       <li>Added icon for game window.</li>

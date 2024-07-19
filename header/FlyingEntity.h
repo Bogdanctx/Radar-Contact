@@ -38,9 +38,12 @@ public:
                  sf::Vector2f position, const std::string &arrival);
     virtual ~FlyingEntity() = default;
 
-    void update(bool force = false);
-    virtual void render(sf::RenderWindow *game_window);
-    virtual void handleEvent(sf::Event game_event, sf::Vector2f mouse_position);
+    void update();
+    void updateText();
+    void updateCursorPosition(const sf::Vector2f position);
+
+    virtual void render(sf::RenderWindow *gameWindow);
+    virtual void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
 
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
@@ -64,11 +67,12 @@ protected:
     void updateAltitudeData();
     void updateSpeedData();
     void updateHeadingData();
-    void updateText(const sf::Vector2f &position);
 
     virtual void checkAltitudeChange();
     virtual void checkSpeedChange();
     virtual void checkHeadingChange();
+
+    virtual void internalUpdate() = 0;
 
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
@@ -88,8 +92,6 @@ protected:
     int m_newHeading;
     int m_newAltitude;
     int m_newSpeed;
-private:
-    virtual void internalUpdate() = 0;
 
 private:
     friend class FlyingEntity_Decorator;
@@ -128,22 +130,17 @@ private:
 
 class FlyingEntity_Decorator {
 public:
-    FlyingEntity_Decorator() = delete;
-    explicit FlyingEntity_Decorator(std::shared_ptr<FlyingEntity> component) : m_component(std::move(component)) {}
-
-    std::string to_text() {
-        const std::string callsign = m_component->m_callsign;
-        const std::string altitude = m_component->m_altitudeText.getString() + "ft";
-        const std::string airspeed = m_component->m_speedText.getString() + "kts";
-        const std::string arrival = m_component->m_arrival;
-        const std::string waypointName = m_component->getRouteCurrentWaypoint().getName();
+    static std::string toText(std::shared_ptr<FlyingEntity> component) {
+        const std::string callsign = component->m_callsign;
+        const std::string altitude = component->m_altitudeText.getString() + "ft";
+        const std::string airspeed = component->m_speedText.getString() + "kts";
+        const std::string arrival = component->m_arrival;
+        const std::string waypointName = component->getRouteCurrentWaypoint().getName();
 
         const std::string result = callsign + "     " + altitude + "     " + airspeed + "     " + arrival + "     " + waypointName;
 
         return result;
     }
-private:
-    std::shared_ptr<FlyingEntity> m_component;
 };
 
 #endif //OOP_FLYINGENTITY_H

@@ -43,11 +43,13 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_headingStick.setSize(sf::Vector2f(26.f, 1.2f));
     m_headingStick.setRotation(heading - 90);
 
-    updateText(position);
+    updateText();
 }
 
-void FlyingEntity::updateText(const sf::Vector2f &position) {
+void FlyingEntity::updateText() {
     if(m_entitySelected) {
+        const sf::Vector2f position = m_entity.getPosition();
+
         float xOffset;
 
         m_callsignText.setPosition(position.x - 8, position.y - 30);
@@ -81,50 +83,53 @@ void FlyingEntity::updateText(const sf::Vector2f &position) {
         m_headingStick.setPosition(position.x, position.y);
     }
     else {
+        const sf::Vector2f position = m_entity.getPosition();
+
         m_callsignText.setPosition(position.x - 5, position.y - 20);
     }
 }
 
-void FlyingEntity::render(sf::RenderWindow *game_window) {
-    game_window->draw(m_entity);
-    game_window->draw(m_callsignText);
+void FlyingEntity::render(sf::RenderWindow* gameWindow) {
+    gameWindow->draw(m_entity);
+    gameWindow->draw(m_callsignText);
 
     if(m_entitySelected) {
-        game_window->draw(m_arrivalText);
-        game_window->draw(m_headingText);
-        game_window->draw(m_speedText);
-        game_window->draw(m_altitudeText);
-        game_window->draw(m_squawkText);
-        game_window->draw(m_routeWaypointsText);
+        gameWindow->draw(m_arrivalText);
+        gameWindow->draw(m_headingText);
+        gameWindow->draw(m_speedText);
+        gameWindow->draw(m_altitudeText);
+        gameWindow->draw(m_squawkText);
+        gameWindow->draw(m_routeWaypointsText);
 
-        game_window->draw(m_newSpeedText);
-        game_window->draw(m_newAltitudeText);
-        game_window->draw(m_newHeadingText);
-        game_window->draw(m_headingStick);
+        gameWindow->draw(m_newSpeedText);
+        gameWindow->draw(m_newAltitudeText);
+        gameWindow->draw(m_newHeadingText);
+        gameWindow->draw(m_headingStick);
     }
 }
 
-void FlyingEntity::handleEvent(const sf::Event game_event, const sf::Vector2f mouse_position) {
-    m_mousePosition = mouse_position;
+void FlyingEntity::updateCursorPosition(const sf::Vector2f position) {
+    m_mousePosition = position;
+}
 
+void FlyingEntity::handleEvent(const sf::Event& gameEvent, const sf::Vector2f mousePosition) {
     if(m_entitySelected) {
-        checkAltitudeChange(); // check if user changed entity altitude
-        checkSpeedChange(); // check if user changed entity speed
-        checkHeadingChange(); // check if user changed entity heading
+        checkAltitudeChange(); // check if user is changing entity altitude
+        checkSpeedChange(); // check if user is changing entity speed
+        checkHeadingChange(); // check if user is changing entity heading
     }
 
-    switch(game_event.type) {
+    switch(gameEvent.type) {
         case sf::Event::MouseButtonPressed: {
-            sf::FloatRect entity_bounds = m_entity.getGlobalBounds();
+            sf::FloatRect entityBounds = m_entity.getGlobalBounds();
 
             // if an entity has been selected by user
-            if(entity_bounds.contains(mouse_position)) {
+            if(entityBounds.contains(mousePosition)) {
                 m_entitySelected = true;
-                updateText(m_entity.getPosition());
+                updateText();
             }
             else {
                 m_entitySelected = false;
-                updateText(m_entity.getPosition());
             }
         }
 
@@ -170,14 +175,16 @@ void FlyingEntity::checkSpeedChange() {
     }
 }
 
-void FlyingEntity::update(bool force) {
+void FlyingEntity::update() {
     updateAltitudeData();
     updateSpeedData();
     updateHeadingData();
-
-    if(force || m_clocks.m_updateClock.getElapsedTime().asMilliseconds() >= m_clocks.m_updateInterval) {
+    
+    if(m_clocks.m_updateClock.getElapsedTime().asMilliseconds() >= m_clocks.m_updateInterval) {
         internalUpdate();
-
+        
+        m_clocks.m_updateClock.restart();
+        
         switch (m_fallInWeather) {
             case Weather::RainDanger::Blue: {
                 m_altitude += Utilities::randGen<int>(-100, 100) / 100 * 100;
@@ -212,15 +219,11 @@ void FlyingEntity::update(bool force) {
             setCrashed();
         }
 
-        updateText(m_entity.getPosition());
+        updateText();
 
         // if no direction is choosen, then heading stick might be updated
         if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
             m_headingStick.setRotation(m_heading - 90);
-        }
-
-        if(!force) {
-            m_clocks.m_updateClock.restart();
         }
 
         if(!route.empty()) {
@@ -378,6 +381,7 @@ int FlyingEntity::getAirspeed() const {
 
 void FlyingEntity::setEntitySelected() {
     m_entitySelected = true;
+    updateText();
 }
 
 Waypoint FlyingEntity::getRouteCurrentWaypoint() const {

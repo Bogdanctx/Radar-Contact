@@ -104,6 +104,7 @@ void Game::update() {
     m_window.draw(m_backgroundRegion);
 
     for(auto& flyingEntity: m_flyingEntities) {
+        flyingEntity->updateCursorPosition(sf::Vector2f(sf::Mouse::getPosition(m_window)));
         flyingEntity->update();
     }
 }
@@ -228,7 +229,7 @@ void Game::checkInsideAirspace() {
 
 void Game::handleEvent() {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
-    sf::Vector2f floatMousePosition{(float) mousePosition.x, (float) mousePosition.y};
+    sf::Vector2f floatMousePosition(mousePosition);
     sf::Event gameEvent{};
 
     while(m_window.pollEvent(gameEvent)) {
@@ -242,9 +243,9 @@ void Game::handleEvent() {
 
         switch(gameEvent.type) {
             case sf::Event::KeyPressed: {
-                const sf::Keyboard::Key key_code = gameEvent.key.code;
+                const sf::Keyboard::Key keyCode = gameEvent.key.code;
 
-                switch(key_code) {
+                switch(keyCode) {
                     case sf::Keyboard::Escape: {
                         m_window.close();
                         break;
@@ -269,11 +270,9 @@ void Game::handleEvent() {
                             for (const Waypoint &wp: m_waypoints) {
                                 if (wp.getBounds().contains(floatMousePosition)) {
                                     for (const auto &flyingEntity: m_flyingEntities) {
-                                        if (flyingEntity->getIsEntitySelected()) {
-                                            if (flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
-                                                flyingEntity->addWaypointToRoute(wp);
-                                                break;
-                                            }
+                                        if (flyingEntity->getIsEntitySelected() && flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
+                                            flyingEntity->addWaypointToRoute(wp);
+                                            break;
                                         }
                                     }
                                 }

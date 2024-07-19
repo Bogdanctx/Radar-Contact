@@ -8,12 +8,12 @@ FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntit
     m_body.setFillColor(sf::Color(27, 28, 27, 110));
     m_body.setOutlineColor(sf::Color::White);
     m_body.setOutlineThickness(1.2f);
-    m_body.setPosition(0, (float)offset * 20);
+    m_body.setPosition(0, offset * 20);
 
     m_text.setFillColor(sf::Color::White);
     m_text.setCharacterSize(10);
     m_text.setString(strFormat);
-    m_text.setPosition(5, (float)offset * 20 + 4);
+    m_text.setPosition(5, offset * 20 + 5);
     m_text.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
 }
 

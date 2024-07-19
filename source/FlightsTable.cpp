@@ -9,27 +9,21 @@ void FlightsTable::draw(sf::RenderWindow *window) {
 }
 
 void FlightsTable::update(std::vector<std::shared_ptr<FlyingEntity>> &flyingEntities) {
-    int size = 0;
     m_airplanesInfo.clear();
 
     for(auto &flyingEntity: flyingEntities) {
-        FlyingEntity_Decorator flyingEntityDecorator{flyingEntity};
-
-        FlightInfo info(flyingEntityDecorator.to_text(), flyingEntity, size);
+        FlightInfo info(FlyingEntity_Decorator::toText(flyingEntity), flyingEntity, static_cast<int>(m_airplanesInfo.size()));
 
         m_airplanesInfo.emplace_back(info);
-
-        ++size;
     }
 }
 
-void FlightsTable::handleEvent(sf::Event gameEvent, sf::Vector2f mousePosition) {
+void FlightsTable::handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition) {
     switch(gameEvent.type) {
         case sf::Event::MouseButtonPressed: {
             for(auto &airplaneInfo: m_airplanesInfo) {
                 if(airplaneInfo.getBody().getGlobalBounds().contains(mousePosition)) {
                     airplaneInfo.getFlyingEntityPtr()->setEntitySelected();
-                    airplaneInfo.getFlyingEntityPtr()->update(true); // force update
                 }
             }
 

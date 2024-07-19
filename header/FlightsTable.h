@@ -14,7 +14,7 @@ public:
 
     void draw(sf::RenderWindow *window);
     void update(std::vector<std::shared_ptr<FlyingEntity>> &flyingEntities);
-    void handleEvent(sf::Event gameEvent, sf::Vector2f mousePosition);
+    void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
 
 private:
     sf::Font m_poppins;

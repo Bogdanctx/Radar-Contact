@@ -8,15 +8,6 @@
 
 class Weather {
 public:
-    enum RainDanger {
-        Yellow,
-        Blue,
-        Red,
-        Pink,
-        Clear
-    };
-
-public:
     Weather();
 
     void render(sf::RenderWindow *window);
@@ -27,6 +18,15 @@ public:
     static int getPixelColor(sf::Sprite& sprite, sf::Vector2i position);
 
 public:
+    enum RainDanger {
+        Yellow,
+        Blue,
+        Red,
+        Pink,
+        Clear
+    };
+
+private:
     std::vector<std::pair<float, float>> m_tiles;
     std::vector<sf::Texture> m_textures;
     std::vector<sf::Sprite> m_sprites;

@@ -9,7 +9,7 @@ public:
     explicit Airplane(Args... args) : FlyingEntity(args...) {
         setSpeedConstraints(160, 335);
         setAltitudeConstraints(2000, 43000);
-        setClocks(Clocks(1100, 750, 800, 190));
+        setClocks(Clocks(1100, 750, 800, 230));
     }
 
 private:

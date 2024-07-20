@@ -13,6 +13,7 @@ public:
     }
 
 private:
+    void hijackUpdateData() override;
     void internalUpdate() override;
 };
 

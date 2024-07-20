@@ -6,7 +6,7 @@
 #include <utility>
 #include <memory>
 #include <deque>
-
+#include <array>
 #include "utils.h"
 #include "Waypoint.h"
 
@@ -29,18 +29,27 @@ protected:
         int m_speedInterval;
         int m_headingInterval;
     };
+public:
+    enum Flags {
+        CLEAR,
+        WARNING_COLLISION,
+        DANGER_COLLISION,
+        LOW_FUEL,
+        LOST_COMMS,
+        HIJACK,
+        GENERAL_EMERGENCY,
+        LENGTH
+    };
 
 public:
     std::string getCallsign() const;
-
-    FlyingEntity() = default;
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
                  sf::Vector2f position, const std::string &arrival);
     virtual ~FlyingEntity() = default;
 
     void update();
     void updateText();
-    void updateCursorPosition(const sf::Vector2f position);
+    void updateCursorPosition(sf::Vector2f position);
 
     virtual void render(sf::RenderWindow *gameWindow);
     virtual void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
@@ -51,7 +60,6 @@ public:
 
     std::pair<sf::Clock, int> getUpdateClock() const;
 
-    void setDanger(int conflictType);
     void setCrashed();
     void setEntitySelected();
     bool getIsEntitySelected() const;
@@ -62,6 +70,9 @@ public:
     std::string getArrival() const;
 
     void setFallInWeather(int degree);
+    void setFlag(Flags flag);
+    void resetFlag(Flags flag);
+    bool isFlagActive(Flags flag);
 
 protected:
     void updateAltitudeData();
@@ -73,13 +84,28 @@ protected:
     virtual void checkHeadingChange();
 
     virtual void internalUpdate() = 0;
+    virtual void hijackUpdateData() = 0;
 
     void setAltitudeConstraints(int minAltitude, int maxAltitude);
     void setSpeedConstraints(int minSpeed, int maxSpeed);
 
     void setClocks(Clocks clocks);
 
+    // these functions set actual flying entities' data
+    void setHeading(int heading);
+    void setAltitude(int altitude);
+    void setSpeed(int speed);
+    //////////
+
+    // these functions will change the value of the blue textx
+    void setNewHeading(int newHeading);
+    void setNewAltitude(int newAltitude);
+    void setNewSpeed(int newSpeed);
+    ///////////////////////////
+
 protected:
+    std::array<bool, Flags::LENGTH> m_flags{};
+
     std::deque<Waypoint> route;
     sf::RectangleShape m_entity;
     bool m_entitySelected;
@@ -88,10 +114,13 @@ protected:
     int m_heading;
     int m_speed;
     int m_altitude;
+    Utilities::OneDecimalFloatingPoint m_fuel;
 
     int m_newHeading;
     int m_newAltitude;
     int m_newSpeed;
+private:
+    void updateFuel();
 
 private:
     friend class FlyingEntity_Decorator;
@@ -102,6 +131,16 @@ private:
 
     bool m_isCrashed;
     Clocks m_clocks;
+
+    sf::Clock m_hijackChangesClock;
+    int m_hijackChangesInterval;
+
+    sf::Clock m_lostCommsClock;
+    int m_lostCommsInterval;
+
+    sf::Clock m_fuelConsumptionClock;
+    double m_fuelConsumptionInterval;
+    bool hasFuel;
 
     std::string m_arrival;
     sf::Text m_arrivalText;
@@ -118,6 +157,7 @@ private:
     sf::Text m_headingText;
     sf::Text m_speedText;
     sf::Text m_altitudeText;
+    sf::Text m_fuelText;
 
     sf::Text m_newHeadingText;
     sf::Text m_newSpeedText;
@@ -130,7 +170,7 @@ private:
 
 class FlyingEntity_Decorator {
 public:
-    static std::string toText(std::shared_ptr<FlyingEntity> component) {
+    static std::string toText(const std::shared_ptr<FlyingEntity>& component) {
         const std::string callsign = component->m_callsign;
         const std::string altitude = component->m_altitudeText.getString() + "ft";
         const std::string airspeed = component->m_speedText.getString() + "kts";

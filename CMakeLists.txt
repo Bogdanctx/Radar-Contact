@@ -166,8 +166,6 @@ set(SOURCES
     source/FlyingEntity.cpp
     header/Helicopter.h
     source/Helicopter.cpp
-    header/HotAirBalloon.h
-    source/HotAirBalloon.cpp
     header/Menu.h
     source/Menu.cpp
     header/StateMachine.h

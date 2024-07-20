@@ -16,7 +16,6 @@
 #include "Airplane.h"
 #include "Helicopter.h"
 #include "Airport.h"
-#include "HotAirBalloon.h"
 #include "Weather.h"
 #include "FlightsTable.h"
 
@@ -32,7 +31,6 @@ private:
     void loadElements();
     void loadWaypoints();
 
-    void addNewBalloons();
     void addNewEntities();
 
     void initAirports();

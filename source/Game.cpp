@@ -93,10 +93,6 @@ void Game::update() {
     }
 
     if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 8*60) { // fetch new airplanes every 8 minutes
-        if(Utilities::randGen<int>(0, 100) >= 50) {
-            addNewBalloons();
-        }
-
         addNewEntities();
         m_newEntitiesInterval.restart();
     }
@@ -113,14 +109,14 @@ void Game::checkOutsideScreen() {
     for(auto& flyingEntity: m_flyingEntities) {
         if(!flyingEntity->isInsideScreen()) {
             flyingEntity->setCrashed();
-            m_fetchedFlyingEntities.erase(flyingEntity->getCallsign());
         }
     }
 }
 
 void Game::removeCrashedEntities() {
     auto it1 = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(),
-                                    [](auto &flyingEntity) {
+                                    [&](auto &flyingEntity) {
+        m_fetchedFlyingEntities.erase(flyingEntity->getCallsign());
         return flyingEntity->getCrashed();
     });
     m_flyingEntities.erase(it1, m_flyingEntities.end());
@@ -155,36 +151,43 @@ void Game::render() {
 }
 
 void Game::checkForEntitiesCollisions() {
-    for(auto &A_flyingEntity: m_flyingEntities) {
-        const sf::Vector2f& A_position = A_flyingEntity->getEntityPosition();
-        const int A_altitude = A_flyingEntity->getAltitude();
+    for(auto& flyingEntity: m_flyingEntities) {
+        FlyingEntity::Flags flag = FlyingEntity::Flags::CLEAR;
+        const std::string callsign = flyingEntity->getCallsign();
+        const int altitude = flyingEntity->getAltitude();
 
-        int conflictType = 0;
+        for(auto& otherFlyingEntity: m_flyingEntities) {
+            const std::string otherCallsign = otherFlyingEntity->getCallsign();
 
-        for(auto &B_flyingEntity: m_flyingEntities) {
-            if (A_flyingEntity == B_flyingEntity || A_altitude != B_flyingEntity->getAltitude()) {
+            if(callsign == otherCallsign) {
+                continue;
+            }
+            const int otherAltitude = otherFlyingEntity->getAltitude();
+            if(altitude != otherAltitude) {
                 continue;
             }
 
-            const sf::Vector2f& B_position = B_flyingEntity->getEntityPosition();
-            int distance = Math::DistanceBetweenTwoPoints(A_position, B_position);
+            int distance = Math::DistanceBetweenTwoPoints(flyingEntity->getEntityPosition(), otherFlyingEntity->getEntityPosition());
 
             if(distance <= 5) {
-                A_flyingEntity->setCrashed();
-                B_flyingEntity->setCrashed();
-
-                m_fetchedFlyingEntities.erase(A_flyingEntity->getCallsign());
-                m_fetchedFlyingEntities.erase(B_flyingEntity->getCallsign());
+                flyingEntity->setCrashed();
             }
             else if (distance <= 15) {
-                conflictType = 2;
+                flag = std::max(FlyingEntity::Flags::DANGER_COLLISION, flag);
             }
             else if (distance <= 35) {
-                conflictType = 1;
+                flag = std::max(FlyingEntity::Flags::WARNING_COLLISION, flag);
             }
         }
 
-        A_flyingEntity->setDanger(conflictType);
+        if(flag == FlyingEntity::Flags::CLEAR && (flyingEntity->isFlagActive(FlyingEntity::Flags::DANGER_COLLISION) ||
+                                                    flyingEntity->isFlagActive(FlyingEntity::Flags::WARNING_COLLISION))) {
+            flyingEntity->resetFlag(FlyingEntity::Flags::DANGER_COLLISION);
+            flyingEntity->resetFlag(FlyingEntity::Flags::WARNING_COLLISION);
+        }
+        else {
+            flyingEntity->setFlag(flag);
+        }
     }
 }
 
@@ -297,31 +300,6 @@ void Game::handleEvent() {
     }
 }
 
-void Game::addNewBalloons() {
-    const int altitude = (Utilities::randGen<int>(300, 2700)) / 100 * 100;
-    const int airspeed = Utilities::randGen<int>(50, 130);
-    const int heading = Utilities::randGen<int>(0, 360);
-    const std::string squawk = "7000";
-    const std::string callsign = "BALLOON" + std::to_string(Utilities::randGen<int>(1, 1000));
-
-    std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
-    std::vector<std::pair<std::string, sf::Vector2f>> airports;
-
-    for(const auto& [name, position]: regionAirports) {
-        airports.emplace_back(name, sf::Vector2f(static_cast<float>(position.first), static_cast<float>(position.second)));
-    }
-
-    std::shuffle(airports.begin(), airports.end(), std::mt19937(std::random_device()()));
-
-    const std::string arrival = airports.back().first;
-    sf::Vector2f position = airports[0].second;
-
-    HotAirBalloon balloon{altitude, airspeed, heading, squawk, callsign, position, arrival};
-
-    std::shared_ptr<FlyingEntity> base = std::make_shared<HotAirBalloon>(balloon);
-    m_flyingEntities.push_back(base);
-}
-
 void Game::addNewEntities() {
     // more will be added
     const std::vector<std::string> helicopterTypes = {
@@ -355,6 +333,7 @@ void Game::addNewEntities() {
         const int altitude = arrivals[i]["altitude"];
         const int airspeed = Math::AirspeedAtAltitude(altitude);
         const std::string squawk = arrivals[i]["squawk"];
+
         const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"],
                                                                ResourcesManager::Instance().getRegionBox());
         const std::string arrival = arrivals[i]["arrival"];

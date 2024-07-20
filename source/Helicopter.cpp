@@ -8,3 +8,9 @@ void Helicopter::internalUpdate() {
         m_entity.move(translationToPoint);
     }
 }
+
+void Helicopter::hijackUpdateData() {
+    setNewHeading(Utilities::randGen<int>(0, 360));
+    setNewSpeed(Utilities::randGen<int>(120, 270));
+    setNewAltitude(Utilities::randGen<int>(2000, 17000) / 100 * 100);
+}

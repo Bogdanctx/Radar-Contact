@@ -14,6 +14,7 @@ public:
 
 private:
     void internalUpdate() override;
+    void hijackUpdateData() override;
 };
 
 #endif //RADAR_CONTACT_HELICOPTER_H

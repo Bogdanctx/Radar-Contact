@@ -7,9 +7,11 @@
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
+            m_totalFetchedEntities{0},
             m_renderFlightsTable{false},
             m_renderWaypoints{true}
 {
+    DataFetcher::reset();
     loadElements();
     loadWaypoints();
 
@@ -73,7 +75,6 @@ void Game::update() {
     checkInsideWeather();
     checkInsideAirspace();
 
-
     // removed out of screen flying entities
     for(auto& flyingEntity: m_flyingEntities) {
         if(!flyingEntity->isInsideScreen()) {
@@ -117,13 +118,15 @@ void Game::update() {
 }
 
 void Game::removeCrashedEntities() {
-    auto it1 = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(),
+    auto it = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(),
                                     [&](auto &flyingEntity) {
-        m_fetchedFlyingEntities.erase(flyingEntity->getCallsign());
-        return flyingEntity->getCrashed();
-    });
-    m_flyingEntities.erase(it1, m_flyingEntities.end());
+                                                return flyingEntity->getCrashed();
+                                    });
+
+    m_flyingEntities.erase(it, m_flyingEntities.end());
 }
+
+
 
 void Game::render() {
     m_window.clear();
@@ -239,7 +242,6 @@ void Game::checkInsideAirspace() {
         for(auto &flyingEntity: m_flyingEntities) {
             if(airport.isFlyingEntityInside(flyingEntity)) {
                 flyingEntity->setCrashed();
-                m_fetchedFlyingEntities.erase(flyingEntity->getCallsign());
             }
         }
     }
@@ -327,7 +329,11 @@ void Game::addNewEntities() {
         "EC35"
     };
 
-    const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window);
+    const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window, m_totalFetchedEntities);
+
+    if(m_fetchedFlyingEntities.size() >= DataFetcher::getFlyingEntitiesLength()) {
+        m_fetchedFlyingEntities.clear();
+    }
 
     const int numberOfArrivals = static_cast<int>(arrivals.size());
 
@@ -335,7 +341,7 @@ void Game::addNewEntities() {
     m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++) {
-        if(m_fetchedFlyingEntities.size() > 8) {
+        if(m_flyingEntities.size() > 8) {
             break;
         }
 
@@ -373,6 +379,7 @@ void Game::addNewEntities() {
         }
 
         m_flyingEntities.push_back(base);
+        ++m_totalFetchedEntities;
     }
 }
 

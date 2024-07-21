@@ -3,7 +3,18 @@
 //-----------------------------------------------------------
 // Purpose: Build data based on APIs response
 //-----------------------------------------------------------
-nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
+nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window, int& fetchedCounter) {
+    // All data downloaded from API must be consumed before requesting new data from API
+    // This is to prevent spamming the API
+    if(m_flyingEntities.is_null() || fetchedCounter >= static_cast<int>(m_flyingEntities.size())) {
+        fetchedData = m_api->getFlyingEntities();
+        m_flyingEntities.clear();
+        fetchedCounter = 0;
+    }
+    else {
+        return m_flyingEntities;
+    }
+
     const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
     std::vector<std::string> airports;
@@ -14,12 +25,7 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
         return elm.first;
     });
 
-    nlohmann::json data = m_api->getFlyingEntities();
-    nlohmann::json flyingEntities{};
-
-    std::shuffle(data.begin(), data.end(), std::mt19937(std::random_device()()));
-
-    for(auto& item : data) {
+    for(auto& item : fetchedData) {
         if(item["flight"].is_null() || item["t"].is_null() || item["alt_baro"].is_null() || item["alt_baro"].is_string() ||
            item["lon"].is_null() || item["lat"].is_null() || item["track"].is_null() || item["t"].is_null() || item["gs"].is_null()) {
             continue;
@@ -59,13 +65,22 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
                 {"type",     item["t"]}
         };
 
-        flyingEntities.push_back(flyingEntity);
+        m_flyingEntities.push_back(flyingEntity);
 
-        sf::Event tempEvent;
+        sf::Event tempEvent{};
         while(window->pollEvent(tempEvent)) {} // poll through window events to prevent crashes
     }
 
-    return flyingEntities;
+    return m_flyingEntities;
+}
+
+void DataFetcher::reset() {
+    m_flyingEntities.clear();
+    fetchedData.clear();
+}
+
+size_t DataFetcher::getFlyingEntitiesLength() {
+    return m_flyingEntities.size();
 }
 
 //-----------------------------------------------------------

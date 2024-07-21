@@ -36,7 +36,6 @@ private:
     void initAirports();
     void checkForEntitiesCollisions();
     void checkInsideAirspace();
-    void checkOutsideScreen();
     void checkInsideWeather();
 
     void removeCrashedEntities();
@@ -57,6 +56,8 @@ private:
     FlightsTable flightsTable{};
 
     std::vector<Waypoint> m_waypoints{};
+
+    int m_totalFetchedEntities;
 
     bool m_renderFlightsTable{};
     bool m_renderWaypoints{};

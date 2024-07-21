@@ -58,7 +58,7 @@ To go <b>back to menu</b> press <b>Enter</b>.
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC voice sound)
 - [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Loading screen landing sound)
 
-## Update [21 July 2024]
+<!--## Update [21 July 2024]
 
 ### New critical scenarios ahead!
 
@@ -96,7 +96,7 @@ will <b>still listen to your instructions</b>.
 ![Alt Text](./preview/low_fuel.gif)
 
 
-### <b>Good luck and stay vigilant!</b>
+### <b>Good luck and stay vigilant!</b>-->
 
 ## Update [18 July 2024]
 

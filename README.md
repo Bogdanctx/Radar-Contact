@@ -66,11 +66,15 @@ Your job just got even more demanding. In addition to <b>weather
 control</b>, you now need to manage <b>emergencies</b> like <b>hijacking, lost communications
 or a general emergency</b>.
 
+<br>
+
 During a <b>hijacking, communication with the cockpit will be compromised</b>. 
 The airplane will <b>fly by itself, ignoring your instructions</b>, which could 
 lead to a <b>collision with another airplane</b>.
 
 ![Alt Text](./preview/hijack.gif)
+
+<br><br>
 
 During a <b>lost communications</b> emergency, the pilots will 
 <b>attempt to restore contact</b> with you. This will be the <b>only time</b>
@@ -78,10 +82,13 @@ you can <b>give instructions to that airplane</b>.
 
 ![Alt Text](./preview/lost_communications.gif)
 
+<br><br>
+
 Additionally, airplanes and helicopters have <b>fuel consumption</b>. 
 You must manage them <b>efficiently and fast</b> to ensure they reach their 
 destination airports before they <b>run out</b>, <b>preventing a crash</b>. The airplane
-will crash if speed is <b>below 140 knots</b> (the minimum speed) or <b>altitude is below 0</b>.
+will crash if speed is <b>below 140 knots</b> (the minimum speed) or <b>altitude is below 0</b> and
+fuel <b>quantity is below 2.0kgs</b>.
 
 When they run out of fuel, the airplane 
 will <b>still listen to your instructions</b>.

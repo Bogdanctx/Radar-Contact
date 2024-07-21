@@ -356,12 +356,15 @@ void Game::addNewEntities() {
         const int heading = arrivals[i]["heading"];
         const int altitude = arrivals[i]["altitude"];
         const int airspeed = Math::AirspeedAtAltitude(altitude);
-        const std::string squawk = arrivals[i]["squawk"];
-
+        std::string squawk = arrivals[i]["squawk"];
         const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"],
                                                                ResourcesManager::Instance().getRegionBox());
         const std::string arrival = arrivals[i]["arrival"];
         const std::string type = arrivals[i]["type"];
+
+        if(Utilities::randGen<int>(1, 100) >= 95) {
+            squawk = "7500";
+        }
 
         std::shared_ptr<FlyingEntity> base;
 

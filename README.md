@@ -58,6 +58,39 @@ To go <b>back to menu</b> press <b>Enter</b>.
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC voice sound)
 - [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Loading screen landing sound)
 
+## Update [21 July 2024]
+
+### New critical scenarios ahead!
+
+Your job just got even more demanding. In addition to <b>weather
+control</b>, you now need to manage <b>emergencies</b> like <b>hijacking, lost communications
+or a general emergency</b>.
+
+During a <b>hijacking, communication with the cockpit will be compromised</b>. 
+The airplane will <b>fly by itself, ignoring your instructions</b>, which could 
+lead to a <b>collision with another airplane</b>.
+
+![Alt Text](./preview/hijack.gif)
+
+During a <b>lost communications</b> emergency, the pilots will 
+<b>attempt to restore contact</b> with you. This will be the <b>only time</b>
+you can <b>give instructions to that airplane</b>.
+
+![Alt Text](./preview/lost_communications.gif)
+
+Additionally, airplanes and helicopters have <b>fuel consumption</b>. 
+You must manage them <b>efficiently and fast</b> to ensure they reach their 
+destination airports before they <b>run out</b>, <b>preventing a crash</b>. The airplane
+will crash if speed is <b>below 140 knots</b> (the minimum speed) or <b>altitude is below 0</b>.
+
+When they run out of fuel, the airplane 
+will <b>still listen to your instructions</b>.
+
+![Alt Text](./preview/low_fuel.gif)
+
+
+### <b>Good luck and stay vigilant!</b>
+
 ## Update [18 July 2024]
 
 ### Stability Fixes and Quality Enhancements
@@ -72,7 +105,6 @@ To go <b>back to menu</b> press <b>Enter</b>.
       <li>Lowered volume of loading screen and ATC voice.</li>
       <li>Other minor changes and optimizations.</li>
   </ul>
-
 
 ## Update [17 July 2024]
 

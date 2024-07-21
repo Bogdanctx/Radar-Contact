@@ -9,7 +9,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_heading{heading}, m_speed{speed},
         m_altitude{altitude},
-        m_fuel{Utilities::randGen<int>(12, 18), Utilities::randGen<int>(0, 9)},
+        m_fuel{Utilities::randGen<int>(12, 19), Utilities::randGen<int>(0, 9)},
         m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
@@ -332,14 +332,12 @@ void FlyingEntity::adjustFlightParametersBasedOnWeather() {
 // body color
 //-----------------------------------------------------------
 void FlyingEntity::updateEntityColor() {
-    if(isFlagActive(Flags::DANGER_COLLISION) || isFlagActive(Flags::HIJACK) || isFlagActive(Flags::LOST_COMMS)) {
+    if(isFlagActive(Flags::DANGER_COLLISION) || isFlagActive(Flags::HIJACK) || isFlagActive(Flags::LOST_COMMS) ||
+            isFlagActive(Flags::LOW_FUEL)) {
         m_entity.setFillColor(sf::Color::Red);
     }
     else if(isFlagActive(Flags::WARNING_COLLISION) || isFlagActive(Flags::GENERAL_EMERGENCY)) {
         m_entity.setFillColor(sf::Color(230, 140, 44));
-    }
-    else if(isFlagActive(Flags::LOW_FUEL)) {
-        m_entity.setFillColor(sf::Color(209, 138, 138));
     }
     else {
         m_entity.setFillColor(sf::Color::White);
@@ -427,11 +425,11 @@ void FlyingEntity::updateFuel() {
         m_fuelText.setString(m_fuel.asString());
         m_fuelConsumptionClock.restart();
 
-        if(m_fuel <= Utilities::OneDecimalFloatingPoint(3, 0)) {
+        if(m_fuel <= Utilities::OneDecimalFloatingPoint(2, 0)) {
             setFlag(Flags::LOW_FUEL);
         }
 
-        if(m_fuel == Utilities::OneDecimalFloatingPoint(0, 0)) {
+        if(m_fuel <= Utilities::OneDecimalFloatingPoint(0, 0)) {
             hasFuel = false;
             m_altitude -= 100;
             m_speed--;
@@ -535,7 +533,7 @@ void FlyingEntity::updateSpeedData() {
 
     if(m_clocks.m_speedClock.getElapsedTime().asMilliseconds() >= m_clocks.m_speedInterval) {
         if(!hasFuel) {
-            setSpeed(m_speed - Utilities::randGen<int>(1, 14));
+            setSpeed(m_speed - Utilities::randGen<int>(1, 5));
         }
         else {
             if(m_speed < m_newSpeed) {

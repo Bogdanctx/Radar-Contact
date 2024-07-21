@@ -104,7 +104,7 @@ void Game::update() {
         m_updateWeatherClock.restart();
     }
 
-    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 8*60) { // fetch new airplanes every 8 minutes
+    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 6*60) { // fetch new airplanes every 6 minutes
         addNewEntities();
         m_newEntitiesInterval.restart();
     }
@@ -341,7 +341,7 @@ void Game::addNewEntities() {
     m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++) {
-        if(m_flyingEntities.size() > 8) {
+        if(m_flyingEntities.size() > 0) {
             break;
         }
 

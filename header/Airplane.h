@@ -9,7 +9,7 @@ public:
     explicit Airplane(Args... args) : FlyingEntity(args...) {
         setClocks(Clocks(1100, 750, 800, 160));
 
-        m_minSpeed = 160;
+        m_minSpeed = 140;
         m_maxSpeed = 335;
 
         m_minAltitude = 2000;

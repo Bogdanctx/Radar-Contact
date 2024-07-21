@@ -62,7 +62,7 @@ To go <b>back to menu</b> press <b>Enter</b>.
 
 ### New critical scenarios ahead!
 
-Your job just got even more demanding. In addition to <b>weather
+Your job just got <b>even more demanding</b>. In addition to <b>weather
 control</b>, you now need to manage <b>emergencies</b> like <b>hijacking, lost communications
 or a general emergency</b>.
 

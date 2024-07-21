@@ -84,10 +84,7 @@ protected:
     virtual void checkHeadingChange();
 
     virtual void internalUpdate() = 0;
-    virtual void hijackUpdateData() = 0;
-
-    void setAltitudeConstraints(int minAltitude, int maxAltitude);
-    void setSpeedConstraints(int minSpeed, int maxSpeed);
+    virtual void hijackUpdateData();
 
     void setClocks(Clocks clocks);
 
@@ -119,8 +116,14 @@ protected:
     int m_newHeading;
     int m_newAltitude;
     int m_newSpeed;
+
+    int m_minSpeed{}, m_maxSpeed{};
+    int m_minAltitude{}, m_maxAltitude{};
 private:
     void updateFuel();
+    void updateEntityColor();
+    void adjustFlightParametersBasedOnWeather();
+    void handleSpecialFlightConditions();
 
 private:
     friend class FlyingEntity_Decorator;
@@ -133,10 +136,10 @@ private:
     Clocks m_clocks;
 
     sf::Clock m_hijackChangesClock;
-    int m_hijackChangesInterval;
+    int m_hijackChangesInterval{};
 
     sf::Clock m_lostCommsClock;
-    int m_lostCommsInterval;
+    int m_lostCommsInterval{};
 
     sf::Clock m_fuelConsumptionClock;
     double m_fuelConsumptionInterval;
@@ -150,9 +153,6 @@ private:
 
     sf::Text m_routeWaypointsText;
     std::string m_routeWaypoints;
-
-    int m_minSpeed, m_maxSpeed;
-    int m_minAltitude, m_maxAltitude;
 
     sf::Text m_headingText;
     sf::Text m_speedText;

@@ -16,6 +16,10 @@ Game::Game() :
     flightsTable.update(m_flyingEntities); // update flightsTable on the first run of game
 }
 
+//-----------------------------------------------------------
+// Purpose: Used to load loading screen elements, sounds and
+// prepare the map for play
+//-----------------------------------------------------------
 void Game::loadElements() {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
@@ -68,7 +72,14 @@ void Game::update() {
     checkForEntitiesCollisions();
     checkInsideWeather();
     checkInsideAirspace();
-    checkOutsideScreen();
+
+
+    // removed out of screen flying entities
+    for(auto& flyingEntity: m_flyingEntities) {
+        if(!flyingEntity->isInsideScreen()) {
+            flyingEntity->setCrashed();
+        }
+    }
 
     removeCrashedEntities();
 
@@ -102,14 +113,6 @@ void Game::update() {
     for(auto& flyingEntity: m_flyingEntities) {
         flyingEntity->updateCursorPosition(sf::Vector2f(sf::Mouse::getPosition(m_window)));
         flyingEntity->update();
-    }
-}
-
-void Game::checkOutsideScreen() {
-    for(auto& flyingEntity: m_flyingEntities) {
-        if(!flyingEntity->isInsideScreen()) {
-            flyingEntity->setCrashed();
-        }
     }
 }
 
@@ -150,6 +153,11 @@ void Game::render() {
     m_window.display();
 }
 
+
+//-----------------------------------------------------------
+// Purpose: Used to check collisions between flying entities
+// and to toggle specific flags
+//-----------------------------------------------------------
 void Game::checkForEntitiesCollisions() {
     for(auto& flyingEntity: m_flyingEntities) {
         FlyingEntity::Flags flag = FlyingEntity::Flags::CLEAR;
@@ -191,7 +199,10 @@ void Game::checkForEntitiesCollisions() {
     }
 }
 
-
+//-----------------------------------------------------------
+// Purpose: Used to check if a flying entity is inside a storm
+// and toggle specific flags
+//-----------------------------------------------------------
 void Game::checkInsideWeather() {
     std::vector<sf::Sprite> weatherSprites = weather.getSprites();
 
@@ -218,6 +229,10 @@ void Game::checkInsideWeather() {
     }
 }
 
+//-----------------------------------------------------------
+// Purpose: Used to check if a flying entity is inside its
+// airport destination coverage area
+//-----------------------------------------------------------
 void Game::checkInsideAirspace() {
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
     for(Airport &airport: m_airports) {
@@ -268,7 +283,7 @@ void Game::handleEvent() {
                         m_renderWaypoints = !m_renderWaypoints;
                         break;
                     }
-                    case sf::Keyboard::Space: {
+                    case sf::Keyboard::Space: { // add a waypoint to a flying entity's route
                         if (m_renderWaypoints) {
                             for (const Waypoint &wp: m_waypoints) {
                                 if (wp.getBounds().contains(floatMousePosition)) {
@@ -300,6 +315,9 @@ void Game::handleEvent() {
     }
 }
 
+//-----------------------------------------------------------
+// Purpose: Used to populate the game with real air traffic
+//-----------------------------------------------------------
 void Game::addNewEntities() {
     // more will be added
     const std::vector<std::string> helicopterTypes = {
@@ -317,7 +335,7 @@ void Game::addNewEntities() {
     m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++) {
-        if(m_fetchedFlyingEntities.size() > 15) {
+        if(m_fetchedFlyingEntities.size() > 8) {
             break;
         }
 
@@ -358,6 +376,9 @@ void Game::addNewEntities() {
     }
 }
 
+//-----------------------------------------------------------
+// Purpose: Used to add airports in game
+//-----------------------------------------------------------
 void Game::initAirports() {
     std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports();
 
@@ -372,6 +393,9 @@ void Game::initAirports() {
 
 }
 
+//-----------------------------------------------------------
+// Purpose: Used to load the region waypoints
+//-----------------------------------------------------------
 void Game::loadWaypoints() {
     const std::string waypoints = "resources/regions/" + ResourcesManager::Instance().getSelectedRegion() + "/waypoints.txt";
 

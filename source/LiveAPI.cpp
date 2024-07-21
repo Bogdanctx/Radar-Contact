@@ -5,6 +5,9 @@
 #include <cpr/cpr.h>
 #include <SFML/Network.hpp>
 
+//-----------------------------------------------------------
+// Purpose: Download live data from API
+//-----------------------------------------------------------
 nlohmann::json LiveAPI::getFlyingEntities() {
     const std::vector<float> bounds = ResourcesManager::Instance().getRegionBox();
 
@@ -23,6 +26,9 @@ nlohmann::json LiveAPI::getFlyingEntities() {
     return data;
 }
 
+//-----------------------------------------------------------
+// Purpose: This call returns the 'path' to the latest fetched weather data
+//-----------------------------------------------------------
 std::string LiveAPI::getWeatherPath() {
     const std::string link = "https://api.rainviewer.com/public/weather-maps.json";
     const cpr::Response res = cpr::Get(cpr::Url{link});
@@ -32,6 +38,10 @@ std::string LiveAPI::getWeatherPath() {
     return data["radar"]["nowcast"].back()["path"];
 }
 
+//-----------------------------------------------------------
+// Purpose: Used to download latest weather data based on the
+// getWeatherPath() 'path'
+//-----------------------------------------------------------
 std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
     sf::Http http{"http://tilecache.rainviewer.com"};
     sf::Http::Request request;

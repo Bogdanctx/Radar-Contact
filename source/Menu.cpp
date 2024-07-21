@@ -93,6 +93,9 @@ void Menu::update() {
     checkHovers();
 }
 
+//-----------------------------------------------------------
+// Purpose: Check if a flag is hovered
+//-----------------------------------------------------------
 void Menu::checkHovers() {
     sf::Vector2i intMousePosition = sf::Mouse::getPosition(m_window);
     sf::Vector2f floatMousePosition = {static_cast<float>(intMousePosition.x), static_cast<float>(intMousePosition.y)};

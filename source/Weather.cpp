@@ -15,6 +15,9 @@ void Weather::render(sf::RenderWindow *window) {
     }
 }
 
+//-----------------------------------------------------------
+// Purpose: Return the color of a pixel inside a specific sprite
+//-----------------------------------------------------------
 int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
     sf::Vector2i spritePosition(static_cast<int>(sprite.getGlobalBounds().left), static_cast<int>(sprite.getGlobalBounds().top));
 
@@ -61,6 +64,9 @@ int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
     return colorIndex;
 }
 
+//-----------------------------------------------------------
+// Purpose: Fetch weather textures from APIs and set them to sprites
+//-----------------------------------------------------------
 void Weather::fetchWeatherImages(sf::RenderWindow* window) {
     m_sprites.clear();
 

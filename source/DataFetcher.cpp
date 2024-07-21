@@ -1,5 +1,8 @@
 #include "../header/DataFetcher.h"
 
+//-----------------------------------------------------------
+// Purpose: Build data based on APIs response
+//-----------------------------------------------------------
 nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
     const std::unordered_map<std::string, std::pair<int, int>> regionAirports = ResourcesManager::Instance().getRegionAirports();
 
@@ -65,10 +68,16 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window) {
     return flyingEntities;
 }
 
+//-----------------------------------------------------------
+// Purpose: Get textures fetched from APIs
+//-----------------------------------------------------------
 std::vector<sf::Texture> DataFetcher::getWeatherTextures(sf::RenderWindow* window) {
     return m_api->getWeatherTextures(window);
 }
 
+//-----------------------------------------------------------
+// Purpose: Set m_api to be either LiveAPI or MockAPI
+//-----------------------------------------------------------
 void DataFetcher::setAPI(std::shared_ptr<LiveAPI> api) {
     m_api = std::move(api);
 }

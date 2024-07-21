@@ -3,6 +3,10 @@
 
 #include <fstream>
 
+
+//-----------------------------------------------------------
+// Purpose: Download air traffic from local data
+//-----------------------------------------------------------
 nlohmann::json MockAPI::getFlyingEntities() {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
     std::ifstream f("resources/mock_api/" + region + "/airtraffic.json");
@@ -12,6 +16,10 @@ nlohmann::json MockAPI::getFlyingEntities() {
     return data["ac"];
 }
 
+
+//-----------------------------------------------------------
+// Purpose: This call returns the 'path' to the latest fetched weather data
+//-----------------------------------------------------------
 std::string MockAPI::getWeatherPath() {
     std::ifstream f("resources/mock_api/weahter-maps.json");
 
@@ -20,6 +28,11 @@ std::string MockAPI::getWeatherPath() {
     return data["radar"]["nowcast"].back()["path"];
 }
 
+
+//-----------------------------------------------------------
+// Purpose: Used to download latest weather data based on the
+// getWeatherPath() 'path'
+//-----------------------------------------------------------
 std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow* window) {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
     std::vector<sf::Texture> res{};

@@ -25,6 +25,9 @@ void Airport::render(sf::RenderWindow *window) {
     window->draw(m_labelICAO);
 }
 
+//-----------------------------------------------------------
+// Purpose: Check if a flying entity is inside the yellow circle
+//-----------------------------------------------------------
 bool Airport::isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity) {
 
     if(flyingEntity->getArrival() == m_labelICAO.getString()) {

@@ -91,6 +91,10 @@ std::string ResourcesManager::getSelectedRegion() const {
     return m_selectedRegion;
 }
 
+//-----------------------------------------------------------
+// Purpose: Load the regions latitude and longitude bounds,
+// zoom level and the radius used to fetch airplanes based on a point
+//-----------------------------------------------------------
 void ResourcesManager::loadLatLongBox() {
     m_regionBox.clear();
 
@@ -168,6 +172,9 @@ std::unordered_map<std::string, std::pair<int, int>> ResourcesManager::getRegion
     return m_airports;
 }
 
+//-----------------------------------------------------------
+// Purpose: Load latitude and longitude of weather tiles coordinates
+//-----------------------------------------------------------
 void ResourcesManager::loadWeatherTiles() {
     m_regionWeatherTiles.clear();
 

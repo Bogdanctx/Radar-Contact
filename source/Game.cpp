@@ -341,7 +341,7 @@ void Game::addNewEntities() {
     m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++) {
-        if(m_flyingEntities.size() > 0) {
+        if(m_flyingEntities.size() > 9) {
             break;
         }
 
@@ -355,6 +355,7 @@ void Game::addNewEntities() {
 
         const int heading = arrivals[i]["heading"];
         const int altitude = arrivals[i]["altitude"];
+        //const int altitude = 15000;
         const int airspeed = Math::AirspeedAtAltitude(altitude);
         std::string squawk = arrivals[i]["squawk"];
         const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"],

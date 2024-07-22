@@ -425,7 +425,7 @@ void FlyingEntity::updateFuel() {
         m_fuelText.setString(m_fuel.asString());
         m_fuelConsumptionClock.restart();
 
-        if(m_fuel <= Utilities::OneDecimalFloatingPoint(2, 0)) {
+        if(m_fuel <= Utilities::OneDecimalFloatingPoint(2, 5)) {
             setFlag(Flags::LOW_FUEL);
         }
 
@@ -507,7 +507,7 @@ void FlyingEntity::updateAltitudeData() {
 
     if(m_clocks.m_altitudeClock.getElapsedTime().asMilliseconds() >= m_clocks.m_altitudeInterval) {
         if(!hasFuel) {
-            setAltitude(m_altitude - Utilities::randGen<int>(100, 1000) / 100 * 100);
+            setAltitude(m_altitude - Utilities::randGen<int>(100, 300) / 100 * 100);
         }
         else {
             if(m_altitude < m_newAltitude) {
@@ -530,10 +530,21 @@ void FlyingEntity::updateSpeedData() {
     if(m_newSpeed == m_speed || sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) {
         return;
     }
+    if(!hasFuel) {
+        m_clocks.m_speedInterval = 1700;
+    }
 
     if(m_clocks.m_speedClock.getElapsedTime().asMilliseconds() >= m_clocks.m_speedInterval) {
         if(!hasFuel) {
-            setSpeed(m_speed - Utilities::randGen<int>(1, 5));
+
+            // slower speed decreasing at high altitudes
+            if(m_altitude <= 2000) {
+                setSpeed(m_speed - Utilities::randGen<int>(1, 5));
+            }
+            else {
+                setSpeed(m_speed - 1);
+            }
+
         }
         else {
             if(m_speed < m_newSpeed) {

@@ -58,9 +58,9 @@ To go <b>back to menu</b> press <b>Enter</b>.
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC voice sound)
 - [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Loading screen landing sound)
 
-<!--## Update [21 July 2024]
+## Update [21 July 2024]
 
-### New critical scenarios ahead!
+### Mayday, mayday, mayday!
 
 Your job just got <b>even more demanding</b>. In addition to <b>weather
 control</b>, you now need to manage <b>emergencies</b> like <b>hijacking, lost communications
@@ -78,7 +78,8 @@ lead to a <b>collision with another airplane</b>.
 
 During a <b>lost communications</b> emergency, the pilots will 
 <b>attempt to restore contact</b> with you. This will be the <b>only time</b>
-you can <b>give instructions to that airplane</b>.
+you can <b>give instructions to that airplane</b>. When contact is restored, the <b>airplane's color will turn 
+back to white</b>. Each time the airplane loses contact, it will be <b>marked as red</b>.
 
 ![Alt Text](./preview/lost_communications.gif)
 
@@ -86,9 +87,10 @@ you can <b>give instructions to that airplane</b>.
 
 Additionally, airplanes and helicopters have <b>fuel consumption</b>. 
 You must manage them <b>efficiently and fast</b> to ensure they reach their 
-destination airports before they <b>run out</b>, <b>preventing a crash</b>. The airplane
+destination airports before they <b>run out</b>, <b>preventing a crash</b>. An airplane
 will crash if speed is <b>below 140 knots</b> (the minimum speed) or <b>altitude is below 0</b> and
-fuel <b>quantity is below 2.0kgs</b>.
+fuel <b>quantity is below 2.5kgs</b>. For helicopters <b>same conditions apply</b>, having <b>minimum
+speed of 120 knots</b>.
 
 When they run out of fuel, the airplane 
 will <b>still listen to your instructions</b>.
@@ -96,7 +98,7 @@ will <b>still listen to your instructions</b>.
 ![Alt Text](./preview/low_fuel.gif)
 
 
-### <b>Good luck and stay vigilant!</b>-->
+### <b>Good luck and stay vigilant!</b>
 
 ## Update [18 July 2024]
 

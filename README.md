@@ -14,7 +14,7 @@ local data. To achieve this, press the <b>Offline</b> button.
 
 ![Alt Text](./preview/live_data.gif)
 
-After that, control your airspace! Avoid storms and give instructions to airplanes, helicopters and hot air balloons to arrive to their airport.
+After that, control your airspace! Avoid storms and give instructions to airplanes and helicopters to arrive to their airport.
 
 An airplane will disconnect from your frequency when it is <b>inside the arrival airport coverage area</b> (the yellow circle)
 and if its <b>altitude is below 10.000ft</b> and <b>airspeed below 250 knots</b>.

@@ -139,42 +139,41 @@ endif()
 
 set(SOURCES
     source/main.cpp
-    source/env_fixes.h
-    source/Math.h
+    source/Math.hpp
     source/Math.cpp
-    source/ResourcesManager.h
+    source/ResourcesManager.hpp
     source/ResourcesManager.cpp
-    source/DataFetcher.h
+    source/DataFetcher.hpp
     source/DataFetcher.cpp
-    source/LiveAPI.h
+    source/LiveAPI.hpp
     source/LiveAPI.cpp
-    source/utils.h
+    source/utils.hpp
     source/utils.cpp
-    source/MockAPI.h
+    source/MockAPI.hpp
     source/MockAPI.cpp
-    source/Game.h
+    source/Game.hpp
     source/Game.cpp
-    source/Airplane.h
+    source/Airplane.hpp
     source/Airplane.cpp
-    source/Airport.h
+    source/Airport.hpp
     source/Airport.cpp
-    source/FlightInfo.h
+    source/FlightInfo.hpp
     source/FlightInfo.cpp
-    source/FlightsTable.h
+    source/FlightsTable.hpp
     source/FlightsTable.cpp
-    source/FlyingEntity.h
+    source/FlyingEntity.hpp
     source/FlyingEntity.cpp
-    source/Helicopter.h
+    source/Helicopter.hpp
     source/Helicopter.cpp
-    source/Menu.h
+    source/Menu.hpp
     source/Menu.cpp
-    source/StateMachine.h
+    source/StateMachine.hpp
     source/StateMachine.cpp
-    source/Waypoint.h
+    source/Waypoint.hpp
     source/Waypoint.cpp
-    source/Weather.h
+    source/Weather.hpp
     source/Weather.cpp
-    source/Window.h
+    source/Window.hpp
     source/Window.cpp
 )
 

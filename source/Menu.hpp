@@ -5,7 +5,7 @@
 
 #include <array>
 
-#include "Window.h"
+#include "Window.hpp"
 
 class Menu : public Window {
 public:

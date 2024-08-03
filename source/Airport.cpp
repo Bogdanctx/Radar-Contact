@@ -1,4 +1,4 @@
-#include "../header/Airport.h"
+#include "Airport.hpp"
 
 Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
                 m_coverage(16),

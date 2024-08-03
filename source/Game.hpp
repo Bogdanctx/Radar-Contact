@@ -12,12 +12,12 @@
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 
-#include "Window.h"
-#include "Airplane.h"
-#include "Helicopter.h"
-#include "Airport.h"
-#include "Weather.h"
-#include "FlightsTable.h"
+#include "Window.hpp"
+#include "Airplane.hpp"
+#include "Helicopter.hpp"
+#include "Airport.hpp"
+#include "Weather.hpp"
+#include "FlightsTable.hpp"
 
 class Game : public Window {
 public:

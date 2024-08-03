@@ -7,8 +7,9 @@
 #include <memory>
 #include <deque>
 #include <array>
-#include "utils.h"
-#include "Waypoint.h"
+
+#include "utils.hpp"
+#include "Waypoint.hpp"
 
 class FlyingEntity {
 protected:

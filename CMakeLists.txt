@@ -138,43 +138,43 @@ endif()
 ###############################################################################
 
 set(SOURCES
-    main.cpp
-    env_fixes.h
-    header/Math.h
+    source/main.cpp
+    source/env_fixes.h
+    source/Math.h
     source/Math.cpp
-    header/ResourcesManager.h
+    source/ResourcesManager.h
     source/ResourcesManager.cpp
-    header/DataFetcher.h
+    source/DataFetcher.h
     source/DataFetcher.cpp
-    header/LiveAPI.h
+    source/LiveAPI.h
     source/LiveAPI.cpp
-    header/utils.h
+    source/utils.h
     source/utils.cpp
-    header/MockAPI.h
+    source/MockAPI.h
     source/MockAPI.cpp
-    header/Game.h
+    source/Game.h
     source/Game.cpp
-    header/Airplane.h
+    source/Airplane.h
     source/Airplane.cpp
-    header/Airport.h
+    source/Airport.h
     source/Airport.cpp
-    header/FlightInfo.h
+    source/FlightInfo.h
     source/FlightInfo.cpp
-    header/FlightsTable.h
+    source/FlightsTable.h
     source/FlightsTable.cpp
-    header/FlyingEntity.h
+    source/FlyingEntity.h
     source/FlyingEntity.cpp
-    header/Helicopter.h
+    source/Helicopter.h
     source/Helicopter.cpp
-    header/Menu.h
+    source/Menu.h
     source/Menu.cpp
-    header/StateMachine.h
+    source/StateMachine.h
     source/StateMachine.cpp
-    header/Waypoint.h
+    source/Waypoint.h
     source/Waypoint.cpp
-    header/Weather.h
+    source/Weather.h
     source/Weather.cpp
-    header/Window.h
+    source/Window.h
     source/Window.cpp
 )
 

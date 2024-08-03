@@ -1,4 +1,4 @@
-#include "../header/FlightInfo.h"
+#include "FlightInfo.hpp"
 
 FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
                             m_body(sf::Vector2f(235, 20)),

@@ -1,7 +1,7 @@
 #ifndef RADAR_CONTACT_MOCKAPI_H
 #define RADAR_CONTACT_MOCKAPI_H
 
-#include "LiveAPI.h"
+#include "LiveAPI.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>

@@ -1,7 +1,7 @@
 #ifndef OOP_AIRPLANE_H
 #define OOP_AIRPLANE_H
 
-#include "FlyingEntity.h"
+#include "FlyingEntity.hpp"
 
 class Airplane : public FlyingEntity {
 public:

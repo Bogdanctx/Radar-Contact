@@ -1,5 +1,5 @@
-#include "../header/MockAPI.h"
-#include "../header/ResourcesManager.h"
+#include "MockAPI.hpp"
+#include "ResourcesManager.hpp"
 
 #include <fstream>
 

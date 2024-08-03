@@ -1,5 +1,5 @@
-#include "../header/Helicopter.h"
-#include "../header/Math.h"
+#include "Helicopter.hpp"
+#include "Math.hpp"
 
 //-----------------------------------------------------------
 // Purpose: Used for specific updates

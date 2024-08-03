@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Waypoint.h"
+#include "Waypoint.hpp"
 
 #include <unordered_map>
 #include <fstream>

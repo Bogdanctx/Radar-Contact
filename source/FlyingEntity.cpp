@@ -1,7 +1,7 @@
-#include "../header/FlyingEntity.h"
-#include "../header/Math.h"
-#include "../header/ResourcesManager.h"
-#include "../header/Weather.h"
+#include "FlyingEntity.hpp"
+#include "Math.hpp"
+#include "ResourcesManager.hpp"
+#include "Weather.hpp"
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
                            sf::Vector2f position, const std::string &arrival) :

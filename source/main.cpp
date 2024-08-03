@@ -1,5 +1,5 @@
-#include "./header/ResourcesManager.h"
-#include "./header/StateMachine.h"
+#include "ResourcesManager.hpp"
+#include "StateMachine.hpp"
 
 int main() {
     try {

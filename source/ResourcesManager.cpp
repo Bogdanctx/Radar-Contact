@@ -1,5 +1,5 @@
-#include "../header/ResourcesManager.h"
-#include "../header/Math.h"
+#include "ResourcesManager.hpp"
+#include "Math.hpp"
 
 ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "Planes can fly with only one engine.",

@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-#include "FlyingEntity.h"
-#include "ResourcesManager.h"
+#include "FlyingEntity.hpp"
+#include "ResourcesManager.hpp"
 
 class FlightInfo {
 public:

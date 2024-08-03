@@ -1,6 +1,6 @@
-#include "../header/LiveAPI.h"
-#include "../header/ResourcesManager.h"
-#include "../header/utils.h"
+#include "LiveAPI.hpp"
+#include "ResourcesManager.hpp"
+#include "utils.hpp"
 
 #include <cpr/cpr.h>
 #include <SFML/Network.hpp>

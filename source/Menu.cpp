@@ -1,9 +1,9 @@
-#include "../header/Menu.h"
-#include "../header/Game.h"
-#include "../header/StateMachine.h"
+#include "Menu.hpp"
+#include "Game.hpp"
+#include "StateMachine.hpp"
 
-#include "../header/DataFetcher.h"
-#include "../header/MockAPI.h"
+#include "DataFetcher.hpp"
+#include "MockAPI.hpp"
 
 Menu::Menu() : Window({512, 512}, "Radar Contact - Menu")
 {

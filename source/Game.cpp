@@ -1,9 +1,9 @@
-#include "../header/Game.h"
-#include "../header/Menu.h"
-#include "../header/StateMachine.h"
+#include "Game.hpp"
+#include "Menu.hpp"
+#include "StateMachine.hpp"
 
-#include "../header/DataFetcher.h"
-#include "../header/MockAPI.h"
+#include "DataFetcher.hpp"
+#include "MockAPI.hpp"
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},

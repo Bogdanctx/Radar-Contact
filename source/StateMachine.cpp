@@ -1,6 +1,6 @@
-#include "../header/StateMachine.h"
-#include "../header/Menu.h"
-#include "../header/Game.h"
+#include "StateMachine.hpp"
+#include "Menu.hpp"
+#include "Game.hpp"
 
 StateMachine::StateMachine() {
     std::shared_ptr<Window> state = std::make_shared<Menu>();

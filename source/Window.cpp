@@ -1,4 +1,4 @@
-#include "../header/Window.h"
+#include "Window.hpp"
 
 Window::Window(const std::pair<int, int> resolution, const std::string &title) :
                 m_window(sf::VideoMode(resolution.first, resolution.second), title,

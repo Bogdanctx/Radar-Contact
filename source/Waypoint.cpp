@@ -1,5 +1,5 @@
-#include "../header/Waypoint.h"
-#include "../header/ResourcesManager.h"
+#include "Waypoint.hpp"
+#include "ResourcesManager.hpp"
 
 Waypoint::Waypoint(sf::Vector2f position, const std::string& label) :
         m_body(4, 3),

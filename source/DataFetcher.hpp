@@ -17,10 +17,10 @@
 #include <unordered_set>
 #include <utility>
 
-#include "ResourcesManager.h"
-#include "Math.h"
-#include "utils.h"
-#include "LiveAPI.h"
+#include "ResourcesManager.hpp"
+#include "Math.hpp"
+#include "utils.hpp"
+#include "LiveAPI.hpp"
 
 class DataFetcher {
 public:

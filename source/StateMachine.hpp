@@ -1,7 +1,7 @@
 #ifndef OOP_STATEMACHINE_H
 #define OOP_STATEMACHINE_H
 
-#include "Window.h"
+#include "Window.hpp"
 
 #include <memory>
 #include <stack>

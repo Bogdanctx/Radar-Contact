@@ -1,7 +1,7 @@
 #ifndef RADAR_CONTACT_HELICOPTER_H
 #define RADAR_CONTACT_HELICOPTER_H
 
-#include "FlyingEntity.h"
+#include "FlyingEntity.hpp"
 
 class Helicopter : public FlyingEntity {
 public:

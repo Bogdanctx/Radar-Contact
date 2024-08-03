@@ -1,5 +1,5 @@
-#include "../header/Airplane.h"
-#include "../header/Math.h"
+#include "Airplane.hpp"
+#include "Math.hpp"
 
 //-----------------------------------------------------------
 // Purpose: Used for specific updates

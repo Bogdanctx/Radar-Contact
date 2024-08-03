@@ -1,8 +1,8 @@
-#include "../header/Weather.h"
-#include "../header/ResourcesManager.h"
+#include "Weather.hpp"
+#include "ResourcesManager.hpp"
 
-#include "../header/DataFetcher.h"
-#include "../header/MockAPI.h"
+#include "DataFetcher.hpp"
+#include "MockAPI.hpp"
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png

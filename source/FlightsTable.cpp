@@ -1,4 +1,4 @@
-#include "../header/FlightsTable.h"
+#include "FlightsTable.hpp"
 
 FlightsTable::FlightsTable() : m_poppins(ResourcesManager::Instance().getFont("Poppins-Regular.ttf")) {}
 

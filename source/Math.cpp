@@ -1,4 +1,4 @@
-#include "../header/Math.h"
+#include "Math.hpp"
 
 //-----------------------------------------------------------
 // Purpose: Calculate the euclidian distance between 2 points

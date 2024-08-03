@@ -4,9 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-#include "FlyingEntity.h"
-#include "ResourcesManager.h"
-#include "FlightInfo.h"
+#include "FlyingEntity.hpp"
+#include "ResourcesManager.hpp"
+#include "FlightInfo.hpp"
 
 class FlightsTable {
 public:

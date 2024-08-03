@@ -6,8 +6,8 @@
 #include <memory>
 #include <utility>
 
-#include "ResourcesManager.h"
-#include "FlyingEntity.h"
+#include "ResourcesManager.hpp"
+#include "FlyingEntity.hpp"
 
 class Airport {
 public:

@@ -24,6 +24,7 @@ runs:
         cd cppcheck
         sudo cmake --install build
 
+
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
       uses: ./.github/actions/install-linux-deps

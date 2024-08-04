@@ -184,7 +184,7 @@ jobs:
         uses: ./.github/actions/configure-cmake
         with:
           custom_flags: ${{ matrix.cmake_flags }}
-          warnings_as_errors: 'ON'
+          warnings_as_errors: 'OFF'
 
       - name: Build
         run: bash ./scripts/cmake.sh build

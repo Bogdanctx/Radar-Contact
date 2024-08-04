@@ -34,6 +34,7 @@ configure() {
             -i (install dir prefix)\n\
             -s (source dir)\n\
             -t (build type)\n" "${opt}"
+            echo "cmake.sh configure exit 1"
           exit 1
         ;;
       esac
@@ -65,6 +66,7 @@ build() {
             -b (build dir)\n\
             -j (number of jobs for parallel build)\n\
             -t (build type)\n" "${opt}"
+            echo "cmake.sh build exit 1"
           exit 1
         ;;
         *)
@@ -94,6 +96,7 @@ install() {
             -b (build dir)\n\
             -i (install dir prefix)\n\
             -t (build type)\n" "${opt}"
+            echo "cmake.sh install exit 1"
           exit 1
         ;;
       esac
@@ -121,6 +124,7 @@ case "$1" in
         configure\n\
         build\n\
         install\n" "${opt}"
+        echo "cmake.sh exit 1"
       exit 1
 esac
 

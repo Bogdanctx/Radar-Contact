@@ -1,0 +1,45 @@
+name: 'Install packages'
+description: 'Install required packages'
+
+runs:
+  using: "composite"
+  steps:
+    # Common Linux dependencies
+    - name: Install common Linux Dependencies
+      if: runner.os == 'Linux'
+      uses: ./.github/actions/install-linux-deps
+
+    - name: More Linux Dependencies
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get install ninja-build xdotool \
+          openbox \
+          libxkbcommon-x11-0 \
+          libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
+
+        # https://github.com/llvm/llvm-project/issues/78354
+        sudo sysctl vm.mmap_rnd_bits=28
+
+    # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
+    # - name: Install Clang ${{ matrix.clang_ver }}
+    #   shell: bash
+    #   if: runner.os == 'Linux' && matrix.runs_msan == true
+    #   run: |
+    #     wget https://apt.llvm.org/llvm.sh
+    #     chmod +x ./llvm.sh
+    #     sudo ./llvm.sh ${{ matrix.clang_ver }}
+
+    # - name: Install libc++ (Linux Clang ${{ matrix.clang_ver }})
+    #   shell: bash
+    #   if: runner.os == 'Linux' && matrix.runs_msan == true
+    #   run: |
+    #     # sudo apt-get update
+    #     sudo apt-get install --no-install-recommends libc++-${{ matrix.clang_ver }}-dev libc++abi-${{ matrix.clang_ver }}-dev
+
+    - name: Install valgrind
+      shell: bash
+      if: runner.os == 'Linux' && matrix.runs_valgrind == true
+      run: |
+        # sudo apt-get update
+        sudo apt-get install --no-install-recommends valgrind

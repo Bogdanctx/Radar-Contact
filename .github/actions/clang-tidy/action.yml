@@ -1,0 +1,46 @@
+name: 'Run clang-tidy'
+description: 'Install and run clang-tidy'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      uses: ./.github/actions/install-linux-deps
+
+    - name: Setup compiler env vars
+      shell: bash
+      run: |
+        echo "CC=clang-${CLANG_VER}" >> $GITHUB_ENV
+        echo "CXX=clang++-${CLANG_VER}" >> $GITHUB_ENV
+
+    # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
+    - name: Install Clang ${{ env.CLANG_VER }}
+      shell: bash
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x ./llvm.sh
+        sudo ./llvm.sh ${CLANG_VER}
+
+    - name: Install clang-tidy
+      shell: bash
+      run: |
+        sudo apt-get install --no-install-recommends clang-tidy-${{ env.CLANG_VER }} libc++-${{ env.CLANG_VER }}-dev libc++abi-${{ env.CLANG_VER }}-dev
+
+    - name: Configure CMake
+      uses: ./.github/actions/configure-cmake
+      with:
+        custom_flags: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+
+    - name: Clang-Tidy
+      continue-on-error: true
+      shell: bash
+      # clang-tidy is not able to follow symbolic links: https://bugs.llvm.org/show_bug.cgi?id=47460
+      # need to use | as sed separator because / is used in paths
+      run: |
+        sed -i "s|$(which ${CXX})|$(realpath $(which ${CXX}))|g" "${BUILD_DIR}"/compile_commands.json
+
+        cat "${BUILD_DIR}"/compile_commands.json |
+          jq -r '.[] | .file' |                    # select source file paths from CMake project; -r to strip quotes
+          grep -v "/${BUILD_DIR}/_deps/" |         # ignore external dependencies
+          xargs clang-tidy-${{ env.CLANG_VER }} -p "${BUILD_DIR}"

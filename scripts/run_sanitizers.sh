@@ -1,6 +1,4 @@
-./"${ZIP_NAME}"/"${EXECUTABLE_NAME}" &
-sleep 3 && xdotool search --name "${APP_WINDOW}" key X &&
-sleep 1 && xdotool search --name "${APP_WINDOW}" key Y &&
-sleep 1 && xdotool search --name "${APP_WINDOW}" key X &&
-sleep 1 && xdotool search --name "${APP_WINDOW}" key Z &&
-sleep 2 && xdotool search --name "${APP_WINDOW}" key Alt+F4
+#!/usr/bin/bash
+
+cat "${INPUT_FILENAME}" | tr -d '\r' | ./"${ZIP_NAME}"/"${EXECUTABLE_NAME}" &
+bash ./scripts/run_test.sh 3 1 2

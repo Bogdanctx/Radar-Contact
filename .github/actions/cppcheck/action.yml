@@ -1,0 +1,41 @@
+name: 'Run cppcheck'
+description: 'Install and run cppcheck'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      uses: ./.github/actions/install-linux-deps
+
+    - name: Cache cppcheck
+      uses: actions/cache@v4
+      id: cache-cppcheck
+      with:
+        path: cppcheck
+        key: cppcheck-${{ env.CPPCHECK_VER }}
+
+    - name: Build cppcheck
+      shell: bash
+      if: steps.cache-cppcheck.outputs.cache-hit != 'true'
+      run: |
+        bash ./scripts/build_cppcheck.sh -v ${CPPCHECK_VER}
+
+    - name: Install cppcheck
+      shell: bash
+      # this step is fast, no need for caching
+      run: |
+        cd cppcheck
+        sudo cmake --install build
+
+    # The flag CMAKE_EXPORT_COMPILE_COMMANDS generates compile_commands.json
+    # which is used by cppcheck and clang-tidy
+    - name: Configure CMake
+      uses: ./.github/actions/configure-cmake
+      with:
+        custom_flags: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+
+    - name: Cppcheck
+      shell: bash
+      run: |
+        bash ./scripts/run_cppcheck.sh

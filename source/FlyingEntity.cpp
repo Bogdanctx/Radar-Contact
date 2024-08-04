@@ -68,11 +68,10 @@ void FlyingEntity::updateText() {
     }
 
     const sf::Vector2f position = m_entity.getPosition();
-    float xOffset;
 
     m_callsignText.setPosition(position.x - 8, position.y - 30);
 
-    xOffset = position.x - 8 + m_callsignText.getLocalBounds().width + 5;
+    float xOffset = position.x - 8 + m_callsignText.getLocalBounds().width + 5;
     m_squawkText.setPosition(xOffset, position.y - 30);
     xOffset += m_squawkText.getLocalBounds().width + 5;
     m_arrivalText.setPosition(xOffset, position.y - 30);
@@ -425,11 +424,11 @@ void FlyingEntity::updateFuel() {
         m_fuelText.setString(m_fuel.asString());
         m_fuelConsumptionClock.restart();
 
-        if(m_fuel <= Utilities::OneDecimalFloatingPoint(2, 5)) {
+        if(m_fuel <= OneDecimalFloatingPoint(2, 5)) {
             setFlag(Flags::LOW_FUEL);
         }
 
-        if(m_fuel <= Utilities::OneDecimalFloatingPoint(0, 0)) {
+        if(m_fuel <= OneDecimalFloatingPoint(0, 0)) {
             hasFuel = false;
             m_altitude -= 100;
             m_speed--;
@@ -622,7 +621,7 @@ sf::Vector2f FlyingEntity::getEntityPosition() const {
     return m_entity.getPosition();
 }
 
-std::string FlyingEntity::getArrival() const {
+const std::string& FlyingEntity::getArrival() const {
     return m_arrival;
 }
 
@@ -646,7 +645,7 @@ bool FlyingEntity::getIsEntitySelected() const {
     return m_entitySelected;
 }
 
-std::string FlyingEntity::getCallsign() const {
+const std::string& FlyingEntity::getCallsign() const {
     return m_callsign;
 }
 
@@ -658,6 +657,6 @@ void FlyingEntity::resetFlag(FlyingEntity::Flags flag) {
     m_flags[flag] = false;
 }
 
-bool FlyingEntity::isFlagActive(FlyingEntity::Flags flag) {
+bool FlyingEntity::isFlagActive(FlyingEntity::Flags flag) const {
     return m_flags[flag];
 }

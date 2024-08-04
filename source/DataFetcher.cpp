@@ -1,4 +1,6 @@
 #include "DataFetcher.hpp"
+#include "ResourcesManager.hpp"
+#include "utils.hpp"
 
 //-----------------------------------------------------------
 // Purpose: Build data based on APIs response
@@ -52,7 +54,7 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window, int& fet
 
         // remove the last 3 white spaces from the back of the callsign
         std::string callsign = item["flight"];
-        callsign = callsign.substr(0, callsign.size() - 2);
+        callsign.resize(callsign.size() - 2);
 
         nlohmann::json flyingEntity = {
                 {"callsign", callsign},

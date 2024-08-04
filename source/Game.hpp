@@ -1,20 +1,15 @@
-#ifndef OOP_GAME_H
-#define OOP_GAME_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
 #include <vector>
 #include <memory>
-#include <utility>
-#include <typeinfo>
 
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 
 #include "Window.hpp"
-#include "Airplane.hpp"
-#include "Helicopter.hpp"
 #include "Airport.hpp"
 #include "Weather.hpp"
 #include "FlightsTable.hpp"
@@ -62,6 +57,3 @@ private:
     bool m_renderFlightsTable{};
     bool m_renderWaypoints{};
 };
-
-
-#endif //OOP_GAME_H

@@ -1,5 +1,4 @@
-#ifndef OOP_DATAAPI_H
-#define OOP_DATAAPI_H
+#pragma once
 
 ////////////////////////////////////////////////////////////////////
 //                                                                //
@@ -8,18 +7,10 @@
 ////////////////////////////////////////////////////////////////////
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 
-#include <random>
-#include <unordered_set>
-#include <utility>
-
-#include "ResourcesManager.hpp"
-#include "Math.hpp"
-#include "utils.hpp"
 #include "LiveAPI.hpp"
 
 class DataFetcher {
@@ -36,6 +27,3 @@ private:
     inline static nlohmann::json fetchedData;
     inline static nlohmann::json m_flyingEntities;
 };
-
-
-#endif //OOP_DATAAPI_H

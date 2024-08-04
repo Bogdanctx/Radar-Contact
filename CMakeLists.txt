@@ -62,7 +62,6 @@ endif()
 set(SOURCES
         source/main.cpp
         source/Math.hpp
-        source/Math.cpp
         source/ResourcesManager.hpp
         source/ResourcesManager.cpp
         source/DataFetcher.hpp
@@ -97,6 +96,7 @@ set(SOURCES
         source/Weather.cpp
         source/Window.hpp
         source/Window.cpp
+        source/OneDecimalFloatingPoint.h
 )
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here

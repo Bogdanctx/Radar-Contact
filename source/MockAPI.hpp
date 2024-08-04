@@ -1,5 +1,4 @@
-#ifndef RADAR_CONTACT_MOCKAPI_H
-#define RADAR_CONTACT_MOCKAPI_H
+#pragma once
 
 #include "LiveAPI.hpp"
 
@@ -12,6 +11,3 @@ public:
     std::string getWeatherPath() override;
     std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow* window) override;
 };
-
-
-#endif //RADAR_CONTACT_MOCKAPI_H

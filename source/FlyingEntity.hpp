@@ -1,5 +1,4 @@
-#ifndef OOP_FLYINGENTITY_H
-#define OOP_FLYINGENTITY_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -10,6 +9,7 @@
 
 #include "utils.hpp"
 #include "Waypoint.hpp"
+#include "OneDecimalFloatingPoint.h"
 
 class FlyingEntity {
 protected:
@@ -25,10 +25,10 @@ protected:
         sf::Clock m_headingClock;
         sf::Clock m_updateClock;
 
-        int m_updateInterval;
-        int m_altitudeInterval;
-        int m_speedInterval;
-        int m_headingInterval;
+        int m_updateInterval{};
+        int m_altitudeInterval{};
+        int m_speedInterval{};
+        int m_headingInterval{};
     };
 public:
     enum Flags {
@@ -43,7 +43,6 @@ public:
     };
 
 public:
-    std::string getCallsign() const;
     FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
                  sf::Vector2f position, const std::string &arrival);
     virtual ~FlyingEntity() = default;
@@ -68,12 +67,13 @@ public:
     Waypoint getRouteCurrentWaypoint() const;
     bool getCrashed() const;
     bool isInsideScreen() const;
-    std::string getArrival() const;
+    const std::string& getArrival() const;
+    const std::string& getCallsign() const;
 
     void setFallInWeather(int degree);
     void setFlag(Flags flag);
     void resetFlag(Flags flag);
-    bool isFlagActive(Flags flag);
+    bool isFlagActive(Flags flag) const;
 
 protected:
     void updateAltitudeData();
@@ -112,7 +112,7 @@ protected:
     int m_heading;
     int m_speed;
     int m_altitude;
-    Utilities::OneDecimalFloatingPoint m_fuel;
+    OneDecimalFloatingPoint m_fuel;
 
     int m_newHeading;
     int m_newAltitude;
@@ -183,5 +183,3 @@ public:
         return result;
     }
 };
-
-#endif //OOP_FLYINGENTITY_H

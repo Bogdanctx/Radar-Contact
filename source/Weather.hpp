@@ -1,8 +1,6 @@
-#ifndef OOP_WEATHER_H
-#define OOP_WEATHER_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 
 #include <utility>
 
@@ -31,6 +29,3 @@ private:
     std::vector<sf::Texture> m_textures;
     std::vector<sf::Sprite> m_sprites;
 };
-
-
-#endif //OOP_WEATHER_H

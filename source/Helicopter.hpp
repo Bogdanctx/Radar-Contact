@@ -1,5 +1,4 @@
-#ifndef RADAR_CONTACT_HELICOPTER_H
-#define RADAR_CONTACT_HELICOPTER_H
+#pragma once
 
 #include "FlyingEntity.hpp"
 
@@ -20,4 +19,3 @@ private:
     void internalUpdate() override;
 };
 
-#endif //RADAR_CONTACT_HELICOPTER_H

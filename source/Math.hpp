@@ -1,25 +1,100 @@
-#ifndef OOP_MATH_H
-#define OOP_MATH_H
-
-#endif //OOP_MATH_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
-
 #include <cmath>
 
-class Math
+#define PI 3.14159265
+
+namespace Math
 {
-public:
-    static int DirectionToPoint(sf::Vector2f origin, sf::Vector2f point);
-    static sf::Vector2f TranslatePositionToPoint(float speed, float direction);
-    static sf::Vector2f MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds);
-    static int DistanceBetweenTwoPoints(sf::Vector2f A, sf::Vector2f B);
-    static int AirspeedAtAltitude(int altitude);
+    //-----------------------------------------------------------
+    // Purpose: Convert radians to degrees
+    //-----------------------------------------------------------
+    inline float degrees(const float rad) {
+        return rad * 180 / PI;
+    }
 
-private:
-    constexpr static const float PI = 3.1415f;
+    //-----------------------------------------------------------
+    // Purpose: Convert degrees to radians
+    //-----------------------------------------------------------
+    inline float radians(const float deg) {
+        return deg * PI / 180;
+    }
 
-private:
-    static float degrees(float rad); // convert from radians to degrees
-    static float radians(float deg); //  convert from degrees to radians
-};
+    //-----------------------------------------------------------
+    // Purpose: Calculate the euclidian distance between 2 points
+    //-----------------------------------------------------------
+    inline int DistanceBetweenTwoPoints(const sf::Vector2f A, const sf::Vector2f B) {
+        float xSquare = (B.x - A.x) * (B.x - A.x);
+        float ySquare = (B.y - A.y) * (B.y - A.y);
+
+        float distance = std::sqrt(xSquare + ySquare);
+
+        return static_cast<int>(distance);
+    }
+
+
+    //-----------------------------------------------------------
+    // Purpose: Calculate a flying entitie's speed based on altitude
+    //-----------------------------------------------------------
+    // f(altitude) = 1 / 250 * altitude + 165; -> this function returns what airspeed an airplane should have
+    // at {altitude} altitude
+    inline int AirspeedAtAltitude(const int altitude) {
+        const double a = 1.f / 250.f;
+        const double b = 165;
+
+        const double airspeed = a * altitude + b;
+
+        return static_cast<int>(airspeed);
+    }
+
+    //-----------------------------------------------------------
+    // Purpose: Calculate the direction from origin to point
+    //-----------------------------------------------------------
+    inline int DirectionToPoint(const sf::Vector2f origin, const sf::Vector2f point) {
+        const auto dir_radians = atan2(origin.y - point.y, origin.x - point.x);
+        int direction = static_cast<int>(degrees(static_cast<float>(dir_radians)) - 90);
+
+        if(direction < 0) {
+            direction += 360;
+        }
+
+        return direction;
+    }
+
+    //-----------------------------------------------------------
+    // Purpose: Calculate the new position of an entity based on
+    // speed and direction
+    //-----------------------------------------------------------
+    inline sf::Vector2f TranslatePositionToPoint(float speed, float direction) {
+        return {std::sin(radians(direction)) * speed / 100, std::cos(radians( direction + 180)) * speed / 100};
+    }
+
+    //-----------------------------------------------------------
+    // Purpose: Used to calculate (X,Y) position based on longitude and latitude
+    //-----------------------------------------------------------
+    // https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box
+    inline sf::Vector2f MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds) {
+        const float north = radians(imgBounds[0]);
+        const float south = radians(imgBounds[2]);
+        const float east = radians(imgBounds[1]);
+        const float west = radians(imgBounds[3]);
+
+        const float map_width = 1280;
+        const float map_height = 720;
+
+        crtLatitude = radians(crtLatitude);
+        crtLongitude = radians(crtLongitude);
+
+        const float ymin = std::log(std::tan(south / 2 + PI / 4));
+        const float ymax = std::log(std::tan(north / 2 + PI / 4));
+
+        const float x_factor = map_width / (east - west);
+        const float y_factor = map_height / (ymax - ymin);
+
+        const float x = (crtLongitude - west) * x_factor * 0.998f;
+        const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor * 0.995f;
+
+        return {x,y};
+    }
+}

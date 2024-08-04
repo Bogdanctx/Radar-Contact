@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "ResourcesManager.hpp"
 #include "StateMachine.hpp"
 

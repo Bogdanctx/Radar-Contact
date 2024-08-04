@@ -1,9 +1,6 @@
-#ifndef OOP_WAYPOINT_H
-#define OOP_WAYPOINT_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
-#include <memory>
-
 class Waypoint {
 public:
     Waypoint() = default;
@@ -20,5 +17,3 @@ private:
     sf::Text m_label;
 };
 
-
-#endif //OOP_WAYPOINT_H

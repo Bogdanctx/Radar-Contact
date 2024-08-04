@@ -1,5 +1,4 @@
-#ifndef OOP_MENU_H
-#define OOP_MENU_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -28,6 +27,3 @@ private:
     std::array<sf::Texture, 10> m_flagsTexture;
     std::array<sf::Text, 10> m_flagsLabel;
 };
-
-
-#endif //OOP_MENU_H

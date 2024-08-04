@@ -1,5 +1,4 @@
-#ifndef OOP_AIRPLANE_H
-#define OOP_AIRPLANE_H
+#pragma once
 
 #include "FlyingEntity.hpp"
 
@@ -19,6 +18,3 @@ public:
 private:
     void internalUpdate() override;
 };
-
-
-#endif //OOP_AIRPLANE_H

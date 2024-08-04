@@ -1,6 +1,7 @@
 #include "FlightInfo.hpp"
+#include "ResourcesManager.hpp"
 
-FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
+FlightInfo::FlightInfo(const std::string& strFormat, const std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
                             m_body(sf::Vector2f(235, 20)),
                             flyingEntityPtr(flyingEntity)
 
@@ -17,7 +18,7 @@ FlightInfo::FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntit
     m_text.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
 }
 
-void FlightInfo::draw(sf::RenderWindow *window) {
+void FlightInfo::render(sf::RenderWindow *window) const {
     window->draw(m_body);
     window->draw(m_text);
 }

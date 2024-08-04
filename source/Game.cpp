@@ -1,9 +1,11 @@
 #include "Game.hpp"
 #include "Menu.hpp"
 #include "StateMachine.hpp"
-
+#include "Helicopter.hpp"
+#include "Airplane.hpp"
 #include "DataFetcher.hpp"
-#include "MockAPI.hpp"
+#include "ResourcesManager.hpp"
+#include "Math.hpp"
 
 Game::Game() :
             Window{{1280, 720}, "Radar Contact"},
@@ -135,7 +137,7 @@ void Game::render() {
 
     weather.render(&m_window);
 
-    for(Airport &airport: m_airports) {
+    for(const Airport &airport: m_airports) {
         airport.render(&m_window);
     }
 
@@ -150,7 +152,7 @@ void Game::render() {
     }
 
     if (m_renderFlightsTable) {
-        flightsTable.draw(&m_window);
+        flightsTable.render(&m_window);
     }
 
     m_window.display();
@@ -167,7 +169,7 @@ void Game::checkForEntitiesCollisions() {
         const std::string callsign = flyingEntity->getCallsign();
         const int altitude = flyingEntity->getAltitude();
 
-        for(auto& otherFlyingEntity: m_flyingEntities) {
+        for(const auto& otherFlyingEntity: m_flyingEntities) {
             const std::string otherCallsign = otherFlyingEntity->getCallsign();
 
             if(callsign == otherCallsign) {
@@ -238,7 +240,7 @@ void Game::checkInsideWeather() {
 //-----------------------------------------------------------
 void Game::checkInsideAirspace() {
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
-    for(Airport &airport: m_airports) {
+    for(const Airport &airport: m_airports) {
         for(auto &flyingEntity: m_flyingEntities) {
             if(airport.isFlyingEntityInside(flyingEntity)) {
                 flyingEntity->setCrashed();
@@ -263,9 +265,8 @@ void Game::handleEvent() {
 
         switch(gameEvent.type) {
             case sf::Event::KeyPressed: {
-                const sf::Keyboard::Key keyCode = gameEvent.key.code;
 
-                switch(keyCode) {
+                switch(gameEvent.key.code) {
                     case sf::Keyboard::Escape: {
                         m_window.close();
                         break;

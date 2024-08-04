@@ -1,5 +1,4 @@
-#ifndef OOP_STATEMACHINE_H
-#define OOP_STATEMACHINE_H
+#pragma once
 
 #include "Window.hpp"
 
@@ -23,6 +22,3 @@ private:
     std::shared_ptr<Window> m_currentState;
     std::stack<std::shared_ptr<Window>> m_states;
 };
-
-
-#endif //OOP_STATEMACHINE_H

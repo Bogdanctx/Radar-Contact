@@ -1,5 +1,4 @@
-#ifndef OOP_WINDOW_H
-#define OOP_WINDOW_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -25,6 +24,3 @@ private:
 private:
     sf::Image m_appIcon;
 };
-
-
-#endif //OOP_WINDOW_H

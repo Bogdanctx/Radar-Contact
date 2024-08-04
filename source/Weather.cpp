@@ -3,6 +3,7 @@
 
 #include "DataFetcher.hpp"
 #include "MockAPI.hpp"
+#include "Math.hpp"
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png

@@ -1,4 +1,5 @@
 #include "Airport.hpp"
+#include "ResourcesManager.hpp"
 
 Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
                 m_coverage(16),
@@ -20,7 +21,7 @@ Airport::Airport(sf::Vector2f position, const std::string &airportICAO) :
     m_labelICAO.setPosition(static_cast<int>(position.x), static_cast<int>(position.y)); // cast to fix blurry text
 }
 
-void Airport::render(sf::RenderWindow *window) {
+void Airport::render(sf::RenderWindow *window) const {
     window->draw(m_coverage);
     window->draw(m_labelICAO);
 }
@@ -28,7 +29,7 @@ void Airport::render(sf::RenderWindow *window) {
 //-----------------------------------------------------------
 // Purpose: Check if a flying entity is inside the yellow circle
 //-----------------------------------------------------------
-bool Airport::isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity) {
+bool Airport::isFlyingEntityInside(const std::shared_ptr<FlyingEntity> &flyingEntity) const {
 
     if(flyingEntity->getArrival() == m_labelICAO.getString()) {
         sf::FloatRect bounds = m_coverage.getGlobalBounds();

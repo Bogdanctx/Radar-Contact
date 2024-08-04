@@ -1,17 +1,15 @@
-#ifndef OOP_FLIGHTINFO_H
-#define OOP_FLIGHTINFO_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <memory>
 
 #include "FlyingEntity.hpp"
-#include "ResourcesManager.hpp"
 
 class FlightInfo {
 public:
-    FlightInfo(const std::string& strFormat, std::shared_ptr<FlyingEntity>& flyingEntity, int offset);
+    FlightInfo(const std::string& strFormat, const std::shared_ptr<FlyingEntity>& flyingEntity, int offset);
 
-    void draw(sf::RenderWindow* window);
+    void render(sf::RenderWindow* window) const;
 
     std::shared_ptr<FlyingEntity> getFlyingEntityPtr() const;
     sf::RectangleShape getBody() const;
@@ -22,6 +20,3 @@ private:
     std::string m_info;
     std::shared_ptr<FlyingEntity> flyingEntityPtr;
 };
-
-
-#endif //OOP_FLIGHTINFO_H

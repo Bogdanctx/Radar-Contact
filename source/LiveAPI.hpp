@@ -1,5 +1,4 @@
-#ifndef OOP_API_H
-#define OOP_API_H
+#pragma once
 
 #include <nlohmann/json.hpp>
 #include <vector>
@@ -13,6 +12,3 @@ public:
     virtual std::string getWeatherPath();
     virtual std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow* window);
 };
-
-
-#endif //OOP_API_H

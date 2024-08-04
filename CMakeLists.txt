@@ -155,4 +155,4 @@ endif()
 
 include(cmake/CopyHelper.cmake)
 
-install(DIRECTORY resources DESTINATION bin)
+file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

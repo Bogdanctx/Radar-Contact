@@ -8,7 +8,7 @@
 #include "Math.hpp"
 
 Game::Game() :
-            Window{{1280, 720}, "Radar Contact"},
+            Window{1280, 720},
             m_totalFetchedEntities{0},
             m_renderFlightsTable{false},
             m_renderWaypoints{true}

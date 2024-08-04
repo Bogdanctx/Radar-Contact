@@ -3,12 +3,11 @@
 #include <SFML/Graphics.hpp>
 
 #include <utility>
-#include <memory>
 
 class Window {
 public:
     Window() = delete;
-    Window(std::pair<int, int> resolution, const std::string &title);
+    Window(int width, int height);
     virtual ~Window() = default;
 
     virtual void run();

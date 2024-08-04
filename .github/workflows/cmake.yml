@@ -27,7 +27,7 @@ env:
   BUILD_DIR: "build"
   EXT_DIR: "ext"
   GEN_DIR: "generated"
-  APP_WINDOW: "My Window"
+  APP_WINDOW: "Radar Contact"
 
 defaults:
   run:

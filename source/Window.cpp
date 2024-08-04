@@ -1,8 +1,7 @@
 #include "Window.hpp"
 
-Window::Window(const std::pair<int, int> resolution, const std::string &title) :
-                m_window(sf::VideoMode(resolution.first, resolution.second), title,
-                         sf::Style::Close | sf::Style::Titlebar)
+Window::Window(int width, int height) :
+                m_window(sf::VideoMode(width, height), "Radar Contact", sf::Style::Close | sf::Style::Titlebar)
 {
     m_window.setFramerateLimit(60);
     m_appIcon.loadFromFile("./resources/general_textures/icon.png");

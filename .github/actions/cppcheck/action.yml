@@ -4,6 +4,10 @@ description: 'Install and run cppcheck'
 runs:
   using: "composite"
   steps:
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      uses: ./.github/actions/install-linux-deps
+
     - name: Cache cppcheck
       uses: actions/cache@v4
       id: cache-cppcheck
@@ -21,13 +25,8 @@ runs:
       shell: bash
       # this step is fast, no need for caching
       run: |
-        cd cppcheck
-        sudo cmake --install build
-
-
-    - name: Install Linux Dependencies
-      if: runner.os == 'Linux'
-      uses: ./.github/actions/install-linux-deps
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends cppcheck
 
     # The flag CMAKE_EXPORT_COMPILE_COMMANDS generates compile_commands.json
     # which is used by cppcheck and clang-tidy

@@ -41,39 +41,18 @@ jobs:
   cppcheck:
     name: "Cppcheck"
     runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    env:
+      # check https://github.com/danmar/cppcheck/releases for latest version
+      # NOTE: consider updating this value in scripts/build_cppcheck.sh:4 when changing this value
+      CPPCHECK_VER: "2.14.2"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install cppcheck
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends cppcheck
+      - name: Run cppcheck
+        uses: ./.github/actions/cppcheck
 
-      - name: Install Linux Dependencies
-        if: runner.os == 'Linux'
-        uses: ./.github/actions/install-linux-deps
-
-      # The flag CMAKE_EXPORT_COMPILE_COMMANDS generates compile_commands.json
-      # which is used by cppcheck and clang-tidy
-      - name: Configure CMake
-        uses: ./.github/actions/configure-cmake
-        with:
-          custom_flags: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
-
-      - name: Cppcheck
-        run: |
-          cppcheck --enable=all \
-                   --inline-suppr \
-                   --project="${BUILD_DIR}"/compile_commands.json \
-                   -i"${BUILD_DIR}" --suppress='*:"${BUILD_DIR}"/*' \
-                   -i"${EXT_DIR}" --suppress='*:"${EXT_DIR}"/*' \
-                   -i"${GEN_DIR}" --suppress='*:"${GEN_DIR}"/*' \
-                   --suppress=missingIncludeSystem \
-                   --suppress=unmatchedSuppression \
-                   --suppress=useStlAlgorithm \
-                   --suppress=unusedFunction \
-                   --error-exitcode=1
 
   clang-tidy:
     name: "Clang-Tidy"

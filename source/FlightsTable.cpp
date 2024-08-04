@@ -12,7 +12,7 @@ void FlightsTable::render(sf::RenderWindow *window) const {
 //-----------------------------------------------------------
 // Purpose: Update the top-left table with flying entities
 //-----------------------------------------------------------
-void FlightsTable::update(std::vector<std::shared_ptr<FlyingEntity>> &flyingEntities) {
+void FlightsTable::update(const std::vector<std::shared_ptr<FlyingEntity>> &flyingEntities) {
     m_airplanesInfo.clear();
 
     for(const auto &flyingEntity: flyingEntities) {

@@ -4,7 +4,7 @@
 // Purpose: Used to create numbers with 1 decimal and output them
 // because std::to_string takes multiple decimals
 //-----------------------------------------------------------
-class OneDecimalFloatingPoint { // 1 decimal floating point because std::to_string cannot be formated
+class OneDecimalFloatingPoint {
     int m_integer;
     int m_fractional;
 public:

@@ -156,5 +156,7 @@ if (WIN32 AND SFML_BUILD_AUDIO)
     )
 endif()
 
-
-file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+include(cmake/CopyHelper.cmake)
+# copy_files(FILES tastatura.txt)
+# copy_files(FILES tastatura.txt config.json DIRECTORY images sounds)
+copy_files(DIRECTORY resources)

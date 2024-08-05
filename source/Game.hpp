@@ -9,12 +9,12 @@
 #include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 
-#include "Window.hpp"
+#include "AppWindow.hpp"
 #include "Airport.hpp"
 #include "Weather.hpp"
 #include "FlightsTable.hpp"
 
-class Game : public Window {
+class Game : public AppWindow {
 public:
     Game();
 

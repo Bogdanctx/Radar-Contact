@@ -1,6 +1,6 @@
-#include "Window.hpp"
+#include "AppWindow.hpp"
 
-Window::Window(int width, int height) :
+AppWindow::AppWindow(int width, int height) :
                 m_window(sf::VideoMode(width, height), "Radar Contact", sf::Style::Close | sf::Style::Titlebar)
 {
     m_window.setFramerateLimit(60);
@@ -8,7 +8,7 @@ Window::Window(int width, int height) :
     m_window.setIcon(32, 32, m_appIcon.getPixelsPtr());
 }
 
-void Window::run() {
+void AppWindow::run() {
 
     while(m_window.isOpen()) {
         handleEvent();
@@ -18,13 +18,13 @@ void Window::run() {
 
 }
 
-void Window::render() {
+void AppWindow::render() {
     m_window.clear();
 
     m_window.display();
 }
 
-void Window::handleEvent() {
+void AppWindow::handleEvent() {
     sf::Event window_event{};
 
     while(m_window.pollEvent(window_event)) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Window.hpp"
+#include "AppWindow.hpp"
 
 #include <memory>
 #include <stack>
@@ -13,12 +13,12 @@ public:
     static StateMachine& Instance();
 
     void run();
-    void pushState(const std::shared_ptr<Window>& window);
+    void pushState(const std::shared_ptr<AppWindow>& window);
 
 private:
     StateMachine();
 
 private:
-    std::shared_ptr<Window> m_currentState;
-    std::stack<std::shared_ptr<Window>> m_states;
+    std::shared_ptr<AppWindow> m_currentState;
+    std::stack<std::shared_ptr<AppWindow>> m_states;
 };

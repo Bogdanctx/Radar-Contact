@@ -5,7 +5,7 @@
 #include "MockAPI.hpp"
 #include "ResourcesManager.hpp"
 
-Menu::Menu() : Window(512, 512)
+Menu::Menu() : AppWindow(512, 512)
 {
     const std::array<std::string, 10> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
                                             "UK", "Denmark", "France", "Spain", "Greece"};

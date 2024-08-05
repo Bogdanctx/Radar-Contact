@@ -2,13 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <utility>
-
-class Window {
+class AppWindow {
 public:
-    Window() = delete;
-    Window(int width, int height);
-    virtual ~Window() = default;
+    AppWindow() = delete;
+    AppWindow(int width, int height);
+    virtual ~AppWindow() = default;
 
     virtual void run();
 

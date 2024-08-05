@@ -31,11 +31,19 @@ FetchContent_Declare(
     GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
 )
 
+FetchContent_MakeAvailable(SFML)
+
+
+
 FetchContent_Declare(
         cpr
         GIT_REPOSITORY https://github.com/libcpr/cpr.git
         GIT_TAG 1.10.5
 )
+
+FetchContent_MakeAvailable(cpr)
+
+
 
 FetchContent_Declare(
         json
@@ -43,8 +51,6 @@ FetchContent_Declare(
         GIT_TAG v3.11.3
 )
 
-FetchContent_MakeAvailable(SFML)
-FetchContent_MakeAvailable(cpr)
 FetchContent_MakeAvailable(json)
 
 ###############################################################################
@@ -61,6 +67,7 @@ endif()
 
 set(SOURCES
         source/main.cpp
+        source/env_fixes.h
         source/Math.hpp
         source/ResourcesManager.hpp
         source/ResourcesManager.cpp
@@ -94,43 +101,37 @@ set(SOURCES
         source/Waypoint.cpp
         source/Weather.hpp
         source/Weather.cpp
-        source/Window.hpp
-        source/Window.cpp
-        source/OneDecimalFloatingPoint.h
+        source/AppWindow.hpp
+        source/AppWindow.cpp
 )
 
-# NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 if(MSVC)
+    # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
 else()
+    # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
     add_executable(${PROJECT_NAME} ${SOURCES})
 endif()
+
 
 include(cmake/CompilerFlags.cmake)
 
 ###############################################################################
 
 # use SYSTEM so cppcheck and clang-tidy do not report warnings from these directories
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
-# target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_link_directories(${PROJECT_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)
 
-if(MSVC)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-system sfml-audio sfml-network Threads::Threads)
-else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio sfml-network Threads::Threads)
-endif()
-
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${cpr_SOURCE_DIR}/include)
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/include)
-
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
+
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
-if(APPLE)
+if(MSVC OR WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
 elseif(UNIX)
-    target_link_libraries(${PROJECT_NAME} PRIVATE X11)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads X11)
 endif()
 
 ###############################################################################
@@ -153,6 +154,5 @@ if (WIN32 AND SFML_BUILD_AUDIO)
     )
 endif()
 
-include(cmake/CopyHelper.cmake)
 
 file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

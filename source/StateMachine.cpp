@@ -4,7 +4,7 @@
 #include "ResourcesManager.hpp"
 
 StateMachine::StateMachine() {
-    std::shared_ptr<Window> state = std::make_shared<Menu>();
+    std::shared_ptr<AppWindow> state = std::make_shared<Menu>();
     m_states.push(state);
 }
 
@@ -29,6 +29,6 @@ void StateMachine::run() {
     }
 }
 
-void StateMachine::pushState(const std::shared_ptr<Window>& window) {
+void StateMachine::pushState(const std::shared_ptr<AppWindow>& window) {
     m_states.push(window);
 }

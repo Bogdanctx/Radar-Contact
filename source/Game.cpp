@@ -8,7 +8,7 @@
 #include "Math.hpp"
 
 Game::Game() :
-            Window{1280, 720},
+            AppWindow{1280, 720},
             m_totalFetchedEntities{0},
             m_renderFlightsTable{false},
             m_renderWaypoints{true}
@@ -272,7 +272,7 @@ void Game::handleEvent() {
                         break;
                     }
                     case sf::Keyboard::Enter: {
-                        std::shared_ptr<Window> menu = std::make_shared<Menu>();
+                        std::shared_ptr<AppWindow> menu = std::make_shared<Menu>();
                         StateMachine::Instance().pushState(menu);
                         m_window.close();
 

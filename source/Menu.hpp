@@ -4,9 +4,9 @@
 
 #include <array>
 
-#include "Window.hpp"
+#include "AppWindow.hpp"
 
-class Menu : public Window {
+class Menu : public AppWindow {
 public:
     Menu();
 private:

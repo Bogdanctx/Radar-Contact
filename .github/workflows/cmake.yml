@@ -23,12 +23,10 @@ env:
   BUILD_TYPE: ${{ inputs.build_type || 'Debug' }}
   # NOTE: update executable name if it is changed in CMakeLists.txt
   EXECUTABLE_NAME: "radar_contact"
-  INPUT_FILENAME: "input.txt"
+  INPUT_FILENAME: "tastatura.txt"
   BIN_DIR: "bin"       # update in cmake/Options.cmake:6 if changing name here
   BUILD_DIR: "build"
   EXT_DIR: "ext"
-  GEN_DIR: "generated"
-  APP_WINDOW: "Radar Contact"
 
 defaults:
   run:
@@ -52,7 +50,6 @@ jobs:
 
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
-
 
   clang-tidy:
     name: "Clang-Tidy"
@@ -82,9 +79,6 @@ jobs:
       CXX: ${{ matrix.cxx }}
       VSCMD_SKIP_SENDTELEMETRY: 1
 
-      # NOTE: also update in CMakeLists FetchContent
-      SFML_VERSION: "2023-11-04-2.6.1"
-
       # NOTE: replace with another version if this one does not work
       # For more versions, see https://winlibs.com or
       # https://github.com/brechtsanders/winlibs_mingw/releases/
@@ -99,22 +93,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - os: ubuntu-22.04
-          #   c: clang-18
-          #   cxx: clang++-18
-          #   clang_ver: "18"
-          #   clang_ver_full: "18.1.8"
-          #   name: "MSan: Ubuntu 22.04 Clang 18"
-          #   cmake_flags: "-DUSE_MSAN=ON -DBUILD_SHARED_LIBS=FALSE"
-          #   cmake_generator: Ninja
-          #   # This env runs memory sanitizers
-          #   runs_msan: true
+          - os: ubuntu-22.04
+            c: clang-18
+            cxx: clang++-18
+            clang_ver: "18"
+            clang_ver_full: "18.1.8"
+            name: "MSan: Ubuntu 22.04 Clang 18"
+            cmake_flags: "-DUSE_MSAN=ON"
+            cmake_generator: Ninja
+            # This env runs memory sanitizers
+            runs_msan: true
 
           - os: ubuntu-22.04
             c: gcc-12
             cxx: g++-12
             name: "ASan: Ubuntu 22.04 GCC 12"
-            cmake_flags: "-DUSE_ASAN=ON -DBUILD_SHARED_LIBS=FALSE"
+            cmake_flags: "-DUSE_ASAN=ON"
             cmake_generator: Ninja
             # This env runs address sanitizers
             runs_asan: true
@@ -125,7 +119,7 @@ jobs:
             c: gcc-12
             cxx: g++-12
             name: "Valgrind: Ubuntu 22.04 GCC 12"
-            cmake_flags: -DBUILD_SHARED_LIBS=FALSE
+            # cmake_flags:
             cmake_generator: Ninja
             # This env runs valgrind
             runs_valgrind: true
@@ -134,34 +128,34 @@ jobs:
             c: clang
             cxx: clang++
             name: "ASan: macOS 14 Apple Clang 15"
-            cmake_flags: "-DUSE_ASAN=ON -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
+            cmake_flags: "-DUSE_ASAN=ON"
             # cmake_generator:
             # This env runs address sanitizers
-            # runs_asan: true
+            runs_asan: true
 
-          # - os: macos-14
-          #   c: gcc-13
-          #   cxx: g++-13
-          #   name: "macOS 14 GCC 13"
-          #   cmake_flags:
-          #   cmake_generator: Ninja
+          - os: macos-14
+            c: gcc-13
+            cxx: g++-13
+            name: "macOS 14 GCC 13"
+            # cmake_flags:
+            # cmake_generator: Ninja
 
           - os: windows-2022
             c: cl
             cxx: cl
             name: "ASan: Windows 2022 MSVC 19.40"
-            cmake_flags: "-DUSE_ASAN=ON -DBUILD_SHARED_LIBS=TRUE"
+            cmake_flags: "-DUSE_ASAN=ON"
             # Ninja is not faster on MSVC because... MSVC
             # cmake_generator: "Ninja"
             # cmake_generator: "Ninja Multi-Config"
             # This env runs address sanitizers
-            # runs_asan: true
+            runs_asan: true
 
           - os: windows-2022
             c: gcc
             cxx: g++
             name: "Windows 2022 MinGW GCC 13"
-            cmake_flags: -DBUILD_SHARED_LIBS=TRUE
+            # cmake_flags:
             cmake_generator: Ninja
 
     steps:

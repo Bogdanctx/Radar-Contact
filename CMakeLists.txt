@@ -130,8 +130,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
 if(MSVC OR WIN32)
     target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
-elseif(UNIX)
+elseif(LINUX)
     target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads X11)
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
 endif()
 
 ###############################################################################

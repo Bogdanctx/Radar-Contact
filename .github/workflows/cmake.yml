@@ -23,11 +23,9 @@ env:
   BUILD_TYPE: ${{ inputs.build_type || 'Debug' }}
   # NOTE: update executable name if it is changed in CMakeLists.txt
   EXECUTABLE_NAME: "radar_contact"
-  INPUT_FILENAME: "tastatura.txt"
   BIN_DIR: "bin"       # update in cmake/Options.cmake:6 if changing name here
   BUILD_DIR: "build"
   EXT_DIR: "ext"
-  GEN_DIR: "generated"
   APP_WINDOW: "Radar Contact"
 
 defaults:
@@ -45,7 +43,7 @@ jobs:
     env:
       # check https://github.com/danmar/cppcheck/releases for latest version
       # NOTE: consider updating this value in scripts/build_cppcheck.sh:4 when changing this value
-      CPPCHECK_VER: "2.14.2"
+      CPPCHECK_VER: "2.13.0"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

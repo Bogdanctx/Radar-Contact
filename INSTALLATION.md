@@ -1,8 +1,23 @@
 # Installation guide
 
 ### Prerequisites
-#### [CMake](https://cmake.org/) version at least 3.26.
-#### GCC or Clang version at least 10.
+#### 1) [CMake](https://cmake.org/) version at least 3.26.
+#### 2) GCC or Clang version at least 10.
+#### 3) To run on Linux the following libraries are required:
+```
+libxrandr-dev
+libxcursor-dev
+libudev-dev
+libopenal-dev
+libflac-dev
+libvorbis-dev
+libgl1-mesa-dev
+libegl1-mesa-dev
+libdrm-dev
+libgbm-dev
+libfreetype6-dev
+```
+
 <br>
 
 ### Step 1
@@ -47,8 +62,10 @@ Install the build with this command: ```cmake --install build```
 
 ### Step 7
 
-To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.exe```
+To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.exe``` <br>
 ![](./installation/step7.png)
 <br><br>
-To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact```
+To run the game on <b>Linux</b> use ```./install_dir/bin/radar_contact``` <br>
 ![](./installation/step7.1.png)
+<br><br>
+To run the game on <b>macOS</b> use ```cd ./install_dir/bin && open -a radar_contact``` (not tested)

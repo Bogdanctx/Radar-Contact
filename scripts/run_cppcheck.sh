@@ -10,3 +10,9 @@ cppcheck --enable=all \
     --suppress=unmatchedSuppression \
     --suppress=useStlAlgorithm \
     --error-exitcode=1
+
+if errorlevel 1 (
+echo Failure Reason Given is %errorlevel%
+pause
+exit /b %errorlevel%
+)

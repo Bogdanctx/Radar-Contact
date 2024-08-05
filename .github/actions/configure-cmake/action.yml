@@ -13,14 +13,14 @@ runs:
   using: "composite"
   steps:
     # Uncomment when using external dependencies, so they will be cached
-    # - name: Cache deps
-    #   uses: actions/cache@v4
-    #   id: cache-deps
-    #   # make the key depend on the dependency version
-    #   with:
-    #     path: |
-    #       ${{ env.BUILD_DIR }}/_deps
-    #     key: cache-${{ matrix.cmake_generator }}-${{ matrix.os }}-${{ env.CXX }}-${{ env.BUILD_TYPE }}
+    - name: Cache deps
+      uses: actions/cache@v4
+      id: cache-deps
+      # make the key depend on the dependency version
+      with:
+        path: |
+          ${{ env.BUILD_DIR }}/_deps
+        key: cache-${{ matrix.cmake_generator }}-${{ matrix.os }}-${{ matrix.cxx }}-${{ env.BUILD_TYPE }}-${{ env.SFML_VERSION }}
 
     # NOTE: GH Actions does not allow updating the cache yet
     # Using the workaround found here: https://github.com/actions/cache/issues/171
@@ -68,7 +68,7 @@ runs:
         bash ./scripts/cmake.sh configure -s ${GITHUB_WORKSPACE} -b ${{ env.BUILD_DIR }} \
           -t ${{ env.BUILD_TYPE }} \
           -i ${GITHUB_WORKSPACE}/artifacts \
-          -c "-DWARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}"
+          -c "-DPROJECT_WARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}"
 
     - name: Configure CMake
       shell: bash
@@ -78,7 +78,7 @@ runs:
         bash ./scripts/cmake.sh configure -s ${GITHUB_WORKSPACE} -b ${{ env.BUILD_DIR }} \
           -t ${{ env.BUILD_TYPE }} \
           -i ${GITHUB_WORKSPACE}/artifacts \
-          -c "-DWARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}"
+          -c "-DPROJECT_WARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}"
 
 # https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 # https://github.com/GuillaumeFalourd/poc-github-actions/blob/main/.github/workflows/36-local-action.yml

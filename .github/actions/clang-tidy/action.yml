@@ -4,6 +4,10 @@ description: 'Install and run clang-tidy'
 runs:
   using: "composite"
   steps:
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      uses: ./.github/actions/install-linux-deps
+
     - name: Setup compiler env vars
       shell: bash
       run: |
@@ -21,7 +25,6 @@ runs:
     - name: Install clang-tidy
       shell: bash
       run: |
-        sudo apt-get update
         sudo apt-get install --no-install-recommends clang-tidy-${{ env.CLANG_VER }} libc++-${{ env.CLANG_VER }}-dev libc++abi-${{ env.CLANG_VER }}-dev
 
     - name: Configure CMake

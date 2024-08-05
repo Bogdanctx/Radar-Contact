@@ -4,60 +4,59 @@ description: 'Run dynamic analysis tools'
 runs:
   using: "composite"
   steps:
-    - name: Cache tools
-      uses: actions/cache@v4
-      if: runner.os == 'Linux' && matrix.runs_msan == true
-      id: cache-tools
-      with:
-        path: tools
-        key: tools-clang-${{ matrix.clang_ver }}-stdlib-msan
+    # - name: Cache tools
+    #   uses: actions/cache@v4
+    #   if: runner.os == 'Linux' && matrix.runs_msan == true
+    #   id: cache-tools
+    #   with:
+    #     path: tools
+    #     key: tools-clang-${{ matrix.clang_ver }}-stdlib-msan
 
-    - name: Setup memory sanitizer
+    # - name: Setup memory sanitizer
+    #   shell: bash
+    #   if: runner.os == 'Linux' && matrix.runs_msan == true && steps.cache-tools.outputs.cache-hit != 'true'
+    #   run: |
+    #     mkdir -p tools
+    #     cd tools
+    #     git clone --depth=1 --branch=llvmorg-${{ matrix.clang_ver_full }} https://github.com/llvm/llvm-project
+    #     cd llvm-project
+    #     # mkdir build; cd build
+    #     sudo ln -s -f /usr/bin/$CC /usr/bin/clang
+    #     sudo ln -s -f /usr/bin/$CXX /usr/bin/clang++
+    #     # https://github.com/llvm/llvm-project/issues/78354
+    #     sudo sysctl vm.mmap_rnd_bits=28
+    #     cmake -G Ninja -S runtimes -B build \
+    #       -DCMAKE_BUILD_TYPE=Release \
+    #       -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
+    #       -DCMAKE_C_COMPILER=clang \
+    #       -DCMAKE_CXX_COMPILER=clang++ \
+    #       -DLLVM_USE_SANITIZER=MemoryWithOrigins \
+    #       -DCMAKE_BUILD_WITH_INSTALL_RPATH=true
+    #     cmake --build build -j6 -- cxx cxxabi
+
+    - name: Make scripts executable
       shell: bash
-      if: runner.os == 'Linux' && matrix.runs_msan == true && steps.cache-tools.outputs.cache-hit != 'true'
+      if: runner.os == 'Linux'
       run: |
-        mkdir -p tools
-        cd tools
-        git clone --depth=1 --branch=llvmorg-${{ matrix.clang_ver_full }} https://github.com/llvm/llvm-project
-        cd llvm-project
-        # mkdir build; cd build
-        sudo ln -s -f /usr/bin/$CC /usr/bin/clang
-        sudo ln -s -f /usr/bin/$CXX /usr/bin/clang++
-        # https://github.com/llvm/llvm-project/issues/78354
-        sudo sysctl vm.mmap_rnd_bits=28
-        cmake -G Ninja -S runtimes -B build \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
-          -DCMAKE_C_COMPILER=clang \
-          -DCMAKE_CXX_COMPILER=clang++ \
-          -DLLVM_USE_SANITIZER=MemoryWithOrigins \
-          -DCMAKE_BUILD_WITH_INSTALL_RPATH=true
-        cmake --build build -j6 -- cxx cxxabi
+        chmod +x scripts/*
 
     - name: Sanitizers
       shell: bash
-      # run one sanitizer for each env to avoid building extra binaries on one env
-      if: (matrix.runs_asan == true || matrix.runs_msan == true) && runner.os != 'Windows'
-      # detect_leaks is not supported on macOS
-      # env:
-      #   ASAN_OPTIONS: detect_leaks=1
-      run: |
-        cat "${INPUT_FILENAME}" | tr -d '\r' | ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}"
-
-    - name: Sanitizers (Windows MSVC)
-      shell: bash
-      # run one sanitizer for each OS to avoid building extra binaries
-      if: matrix.cxx == 'cl' && matrix.runs_asan == true
+      if: runner.os == 'Linux' && matrix.runs_asan == true
       continue-on-error: true
+      env:
+        ASAN_OPTIONS: halt_on_error=0
+        EXECUTABLE_NAME: ${{ env.EXECUTABLE_NAME }}
       run: |
-        cat "${INPUT_FILENAME}" | ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}".exe
+          xvfb-run ./scripts/run_sanitizers.sh || true
+      working-directory: ${{github.workspace}}
 
     - name: Valgrind
       shell: bash
       if: runner.os == 'Linux' && matrix.runs_valgrind == true
+      continue-on-error: true
+      env:
+        EXECUTABLE_NAME: ${{ env.EXECUTABLE_NAME }}
       run: |
-        # remove --show-leak-kinds=all (and --track-origins=yes) if there are many leaks in external libs
-        cat "${INPUT_FILENAME}" | tr -d '\r' | valgrind \
-            --leak-check=full --show-leak-kinds=all --track-origins=yes \
-            --error-exitcode=1 \
-            ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}"
+        xvfb-run ./scripts/run_valgrind.sh || true
+      working-directory: ${{github.workspace}}

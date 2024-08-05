@@ -17,7 +17,6 @@ while getopts ":b:o:v:" opt; do
         -b (build dir)\n\
         -o (cmake opts)\n\
         -v (cppcheck version)\n" "${opt}"
-        echo "build_cppcheck.sh::20 exit 1"
       exit 1
     ;;
   esac

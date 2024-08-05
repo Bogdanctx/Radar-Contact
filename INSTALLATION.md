@@ -1,53 +1,54 @@
 # Installation guide
 
 ### Prerequisites
-#### CMake version must be at least 3.26
-
-# Windows
+#### [CMake](https://cmake.org/) version at least 3.26.
+#### GCC or Clang version at least 10.
+<br>
 
 ### Step 1
 
 Download the source code as ZIP from [here](https://github.com/Bogdanctx/Radar-Contact) by presing the
 green button marked in the image below.
 
-![](./installation/windows_step1.png)
+![](./installation/step1.png)
 
 ### Step 2
 
 Press <b>Download ZIP</b> button and then extract the content.
-
-![](./installation/windows_step2.png)
+![](./installation/step2.png)
 
 ### Step 3
 
 Go inside the extracted folder (the folder name should be Radar-Contact-main)
 
-![](./installation/windows_step3.png)
+![](./installation/step3.png)
 
 ### Step 4
 
-Open your OS terminal inside the extracted folder and type following 
-command: <b>cmake -S . -B build</b>. Then wait until the whole
+Open your OS terminal inside the extracted folder and type the following 
+command: ```cmake -S . -B build```. Then wait until the whole
 process is finished (it may take a while).
 
-![](./installation/windows_step4.png)
+![](./installation/step4.png)
 
 ### Step 5
 
 After the previous step finished type the following command 
-inside terminal: <b>cmake --build build --config Debug -parallel 6</b> (could be any number; --parallel X means the number of
-cores to be used to build the project, this is used to make the process faster).
+in terminal: ```cmake --build build -j6``` (```--j6``` is the number of
+threads used to build the project - this is used to make the process faster).
 
-![](./installation/windows_step5.png)
+![](./installation/step5.png)
 
 ### Step 6
 
-Install the project using this command: <b>cmake --install build --config Debug --prefix install_dir</b>
+Install the build with this command: ```cmake --install build```
 
-![](./installation/windows_step6.png)
+![](./installation/step6.png)
 
 ### Step 7
 
-Finally, run the game using <b>start ./install_dir/bin/radar_contact.exe</b>
-
-![](./installation/windows_step7.png)
+To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.exe```
+![](./installation/step7.png)
+<br><br>
+To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact```
+![](./installation/step7.1.png)

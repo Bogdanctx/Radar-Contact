@@ -1,3 +1,6 @@
+## [Changelog](./CHANGELOG.md)
+
+
 ## Download
 
 Click on the latest tag available in <b>Releases</b> tab, then select the version (Windows, Ubuntu, macOS) that match your specifications.
@@ -51,8 +54,6 @@ Hide / show <b>flights table</b> by pressing <b>R</b>.
 Hide / show <b>waypoints</b> by pressing <b>T</b>.
 
 To go <b>back to menu</b> press <b>Enter</b>. 
-
-[CHANGELOG](./CHANGELOG.md)
 
 ## Resources
 

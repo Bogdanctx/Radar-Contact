@@ -43,7 +43,7 @@ jobs:
     env:
       # check https://github.com/danmar/cppcheck/releases for latest version
       # NOTE: consider updating this value in scripts/build_cppcheck.sh:4 when changing this value
-      CPPCHECK_VER: "2.13.0"
+      CPPCHECK_VER: "2.14.2"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

@@ -65,7 +65,11 @@ Install the build with this command: ```cmake --install build```
 To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.exe``` <br>
 ![](./installation/step7.png)
 <br><br>
-To run the game on <b>Linux</b> use ```./install_dir/bin/radar_contact``` <br>
+To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact``` <br>
 ![](./installation/step7.1.png)
-<br><br>
-To run the game on <b>macOS</b> use ```cd ./install_dir/bin && open -a radar_contact``` (not tested)
+
+
+### Possible errors on macOS
+
+1) ```dyld[12713]: Library not loaded: @rpath/../Frameworks/freetype.framework/Versions/A/freetype```
+  #### Fix: radar-contact-main % sudo cp -r ./build/_deps/sfml-src/extlibs/libs-osx/frameworks/ /library/frameworks

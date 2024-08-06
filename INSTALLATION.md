@@ -71,5 +71,7 @@ To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact``
 
 ### Possible errors on macOS
 
-1) ```dyld[12713]: Library not loaded: @rpath/../Frameworks/freetype.framework/Versions/A/freetype```
-  #### Fix: radar-contact-main % sudo cp -r ./build/_deps/sfml-src/extlibs/libs-osx/frameworks/ /library/frameworks
+
+1) ```dyld[]: Library not loaded: @rpath/../Frameworks/freetype.framework/Versions/A/freetype```
+#### Fix: Run the following command inside <b>radar-contact-main</b> directory ```sudo cp -r ./build/_deps/sfml-src/extlibs/libs-osx/frameworks/ /library/frameworks```
+![](./installation/macos_error_1.png)

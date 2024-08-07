@@ -40,7 +40,7 @@ bool ResourcesManager::isMockingEnabled() const {
 }
 
 void ResourcesManager::loadSounds(const std::string& sound_name) {
-    const std::string path = "resources/sounds/" + sound_name;
+    const std::string path = "./resources/sounds/" + sound_name;
     sf::SoundBuffer sound;
 
     if(!sound.loadFromFile(path)) {
@@ -58,7 +58,7 @@ const std::vector<std::string>& ResourcesManager::getFacts() const {
 }
 
 void ResourcesManager::loadFonts(const std::string &fontName) {
-    const std::string fontPath = "resources/fonts/" + fontName;
+    const std::string fontPath = "./resources/fonts/" + fontName;
     sf::Font font;
 
     if(!font.loadFromFile(fontPath)) {
@@ -73,7 +73,7 @@ sf::Font &ResourcesManager::getFont(const std::string &key) {
 }
 
 void ResourcesManager::loadTextures(const std::string &textureName) {
-    const std::string texturePath = "resources/general_textures/" + textureName;
+    const std::string texturePath = "./resources/general_textures/" + textureName;
     sf::Texture texture;
 
     if(!texture.loadFromFile(texturePath)) {
@@ -98,7 +98,7 @@ const std::string& ResourcesManager::getSelectedRegion() const {
 void ResourcesManager::loadLatLongBox() {
     m_regionBox.clear();
 
-    const std::string regionBox = "resources/regions/" + m_selectedRegion + "/long_lat.txt";
+    const std::string regionBox = "./resources/regions/" + m_selectedRegion + "/long_lat.txt";
 
     std::ifstream fin(regionBox);
     if(!fin.is_open()) {
@@ -129,7 +129,7 @@ int ResourcesManager::getRegionZoomLevel() const {
 void ResourcesManager::loadAirports() {
     m_airports.clear();
 
-    const std::string regionAirports = "resources/regions/" + m_selectedRegion + "/airports.txt";
+    const std::string regionAirports = "./resources/regions/" + m_selectedRegion + "/airports.txt";
 
     std::ifstream fin(regionAirports);
     if(!fin.is_open()) {
@@ -157,7 +157,7 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     loadWeatherTiles();
 
     // load region background
-    const std::string region_texture = "resources/regions/" + region_name + "/" + region_name + ".png";
+    const std::string region_texture = "./resources/regions/" + region_name + "/" + region_name + ".png";
     if(!m_textures[region_name].loadFromFile(region_texture)) {
         throw ErrorTexture(region_name + " missing or corrupted.\n");
     }
@@ -178,7 +178,7 @@ const std::unordered_map<std::string, std::pair<int, int>>& ResourcesManager::ge
 void ResourcesManager::loadWeatherTiles() {
     m_regionWeatherTiles.clear();
 
-    const std::string path = "resources/regions/" + m_selectedRegion + "/weather_tiles.txt";
+    const std::string path = "./resources/regions/" + m_selectedRegion + "/weather_tiles.txt";
 
     std::ifstream fin(path);
     if(!fin.is_open()) {

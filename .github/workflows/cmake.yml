@@ -192,6 +192,9 @@ jobs:
         # Use CMake to "install" build artifacts (only interested in CMake registered targets) to our custom artifacts directory
         run: |
           bash ./scripts/cmake.sh install -i artifacts
+          ls
+          echo Acum voi rula
+          ./install_dir/bin/radar_contact
 
       - name: Move artifacts
         run: |

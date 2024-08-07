@@ -196,6 +196,12 @@ jobs:
           echo Acum voi rula
           ./build/radar_contact
 
+      - name: Ruleaza radar contact
+        run: |
+          ls
+          ls ./build
+          
+
       - name: Move artifacts
         run: |
           mkdir ${{ env.ZIP_NAME }}

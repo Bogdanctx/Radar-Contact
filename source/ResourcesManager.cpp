@@ -21,8 +21,8 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
                                         m_usingMockApi(false) {}
 
 void ResourcesManager::load() {
-    loadTextures("menu.png");
-    loadTextures("loading_screen.png");
+    //loadTextures("menu.png");
+    //loadTextures("loading_screen.png");
 
     loadSounds("plane_landing.wav");
     loadSounds("atc.wav");

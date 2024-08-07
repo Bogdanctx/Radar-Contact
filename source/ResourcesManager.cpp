@@ -1,6 +1,8 @@
 #include "ResourcesManager.hpp"
 #include "Math.hpp"
 
+#include <filesystem>
+
 ResourcesManager::ResourcesManager() : m_randomFacts{
                                         "Planes can fly with only one engine.",
                                         "Pilots and copilots typically eat different meals.",
@@ -21,8 +23,8 @@ ResourcesManager::ResourcesManager() : m_randomFacts{
                                         m_usingMockApi(false) {}
 
 void ResourcesManager::load() {
-    //loadTextures("menu.png");
-    //loadTextures("loading_screen.png");
+    loadTextures("menu.png");
+    loadTextures("loading_screen.png");
 
     loadSounds("plane_landing.wav");
     loadSounds("atc.wav");
@@ -40,10 +42,11 @@ bool ResourcesManager::isMockingEnabled() const {
 }
 
 void ResourcesManager::loadSounds(const std::string& sound_name) {
-    const std::string path = "./resources/sounds/" + sound_name;
+    const std::filesystem::path path = std::filesystem::path("resources") / "sounds" / sound_name;
+
     sf::SoundBuffer sound;
 
-    if(!sound.loadFromFile(path)) {
+    if(!sound.loadFromFile(path.string())) {
         throw ErrorSound(sound_name + " missing or corrupted\n");
     }
     m_sounds[sound_name] = sound;
@@ -58,10 +61,10 @@ const std::vector<std::string>& ResourcesManager::getFacts() const {
 }
 
 void ResourcesManager::loadFonts(const std::string &fontName) {
-    const std::string fontPath = "./resources/fonts/" + fontName;
+    const std::filesystem::path path =  std::filesystem::path("resources") / "fonts" / fontName;
     sf::Font font;
 
-    if(!font.loadFromFile(fontPath)) {
+    if(!font.loadFromFile(path.string())) {
         throw ErrorFont(fontName + " missing or corrupted.\n");
     }
 
@@ -73,10 +76,10 @@ sf::Font &ResourcesManager::getFont(const std::string &key) {
 }
 
 void ResourcesManager::loadTextures(const std::string &textureName) {
-    const std::string texturePath = "./resources/general_textures/" + textureName;
+    const std::filesystem::path path =  std::filesystem::path("resources") / "general_textures" / textureName;
     sf::Texture texture;
 
-    if(!texture.loadFromFile(texturePath)) {
+    if(!texture.loadFromFile(path.string())) {
         throw ErrorTexture(textureName + " missing or corrupted.\n");
     }
 
@@ -98,9 +101,9 @@ const std::string& ResourcesManager::getSelectedRegion() const {
 void ResourcesManager::loadLatLongBox() {
     m_regionBox.clear();
 
-    const std::string regionBox = "./resources/regions/" + m_selectedRegion + "/long_lat.txt";
+    const std::filesystem::path path =  std::filesystem::path("resources") / "regions" / m_selectedRegion / "long_lat.txt";
 
-    std::ifstream fin(regionBox);
+    std::ifstream fin(path);
     if(!fin.is_open()) {
         throw ErrorLatLongBox("Could not open long_lat.txt. It may be missing or corrupted\n");
     }
@@ -129,9 +132,9 @@ int ResourcesManager::getRegionZoomLevel() const {
 void ResourcesManager::loadAirports() {
     m_airports.clear();
 
-    const std::string regionAirports = "./resources/regions/" + m_selectedRegion + "/airports.txt";
+    const std::filesystem::path path =  std::filesystem::path("resources") / "regions" / m_selectedRegion / "airports.txt";
 
-    std::ifstream fin(regionAirports);
+    std::ifstream fin(path);
     if(!fin.is_open()) {
         throw ErrorAirports("Could not open airports.txt. It may be missing or corrupted.\n");
     }
@@ -157,8 +160,9 @@ void ResourcesManager::loadRegion(const std::string &region_name) {
     loadWeatherTiles();
 
     // load region background
-    const std::string region_texture = "./resources/regions/" + region_name + "/" + region_name + ".png";
-    if(!m_textures[region_name].loadFromFile(region_texture)) {
+    const std::filesystem::path path =  std::filesystem::path("resources") / "regions" / region_name / std::string(region_name + ".png");
+
+    if(!m_textures[region_name].loadFromFile(path.string())) {
         throw ErrorTexture(region_name + " missing or corrupted.\n");
     }
     //////
@@ -178,7 +182,7 @@ const std::unordered_map<std::string, std::pair<int, int>>& ResourcesManager::ge
 void ResourcesManager::loadWeatherTiles() {
     m_regionWeatherTiles.clear();
 
-    const std::string path = "./resources/regions/" + m_selectedRegion + "/weather_tiles.txt";
+    const std::filesystem::path path =  std::filesystem::path("resources") / "regions" / m_selectedRegion / "weather_tiles.txt";
 
     std::ifstream fin(path);
     if(!fin.is_open()) {

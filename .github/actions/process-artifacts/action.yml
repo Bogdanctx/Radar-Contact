@@ -16,6 +16,7 @@ runs:
       if: runner.os == 'macOS' && matrix.cxx == 'clang++'
       run: |
         mkdir lib
+        clang -v
         if [[ "${BUILD_TYPE}" =~ "Deb" ]]; then
           cp /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib lib
           install_name_tool -change @rpath/libclang_rt.asan_osx_dynamic.dylib @executable_path/lib/libclang_rt.asan_osx_dynamic.dylib ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }}

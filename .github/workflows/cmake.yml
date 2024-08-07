@@ -26,6 +26,7 @@ env:
   BIN_DIR: "bin"       # update in cmake/Options.cmake:6 if changing name here
   BUILD_DIR: "build"
   EXT_DIR: "ext"
+  GEN_DIR: "generated"
   APP_WINDOW: "Radar Contact"
 
 defaults:
@@ -127,10 +128,10 @@ jobs:
             # This env runs valgrind
             runs_valgrind: true
 
-          - os: macos-12
+          - os: macos-14
             c: clang
             cxx: clang++
-            name: "ASan: macOS 12 Apple Clang 14"
+            name: "ASan: macOS 14 Apple Clang 15"
             cmake_flags: "-DUSE_ASAN=ON -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
             # cmake_generator:
             # This env runs address sanitizers
@@ -193,9 +194,8 @@ jobs:
         run: |
           bash ./scripts/cmake.sh install -i artifacts
 
-      - name: Ruleaza radar contact
+      - name: Ruleaza
         run: ./build/radar_contact
-          
 
       - name: Move artifacts
         run: |

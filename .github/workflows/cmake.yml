@@ -194,9 +194,7 @@ jobs:
           bash ./scripts/cmake.sh install -i artifacts
 
       - name: Ruleaza radar contact
-        run: |
-          ls
-          ls ./build
+        run: ./build/radar_contact
           
 
       - name: Move artifacts

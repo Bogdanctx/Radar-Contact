@@ -194,7 +194,7 @@ jobs:
           bash ./scripts/cmake.sh install -i artifacts
           ls
           echo Acum voi rula
-          ./install_dir/bin/radar_contact
+          ./build/radar_contact
 
       - name: Move artifacts
         run: |

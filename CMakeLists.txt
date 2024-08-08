@@ -162,3 +162,7 @@ include(cmake/CopyHelper.cmake)
 # copy_files(FILES tastatura.txt)
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds)
 copy_files(DIRECTORY resources)
+
+if(APPLE)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} detect_container_overflow=0")
+endif()

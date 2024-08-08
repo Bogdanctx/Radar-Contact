@@ -21,6 +21,8 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 # din cauza SFML
 set(WARNINGS_AS_ERRORS OFF)
 
+set(CMAKE_CXX_FLAGS "-Wl -ld_classic")
+
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:84
 FetchContent_Declare(
     SFML

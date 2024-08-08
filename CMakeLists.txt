@@ -21,8 +21,6 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 # din cauza SFML
 set(WARNINGS_AS_ERRORS OFF)
 
-set(CMAKE_CXX_FLAGS "-Wl -ld_classic")
-
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:84
 FetchContent_Declare(
     SFML
@@ -157,6 +155,8 @@ if (WIN32 AND SFML_BUILD_AUDIO)
          $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 endif()
+
+add_compile_options(-stdlib=libc++)
 
 include(cmake/CopyHelper.cmake)
 # copy_files(FILES tastatura.txt)

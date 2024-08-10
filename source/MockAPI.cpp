@@ -9,7 +9,7 @@
 //-----------------------------------------------------------
 nlohmann::json MockAPI::getFlyingEntities() {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
-    std::ifstream f("resources/mock_api/" + region + "/airtraffic.json");
+    std::ifstream f(std::filesystem::path("resources") / "mock_api" / region / "airtraffic.json");
 
     nlohmann::json data = nlohmann::json::parse(f);
 
@@ -18,10 +18,10 @@ nlohmann::json MockAPI::getFlyingEntities() {
 
 
 //-----------------------------------------------------------
-// Purpose: This call returns the 'path' to the latest fetched weather data
+// Purpose: This function returns the 'path' to the latest fetched weather data
 //-----------------------------------------------------------
 std::string MockAPI::getWeatherPath() {
-    std::ifstream f("resources/mock_api/weahter-maps.json");
+    std::ifstream f(std::filesystem::path("resources") / "mock_api" / "weather-maps.json");
 
     nlohmann::json data = nlohmann::json::parse(f);
 
@@ -37,7 +37,7 @@ std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow* window) {
     const std::string region = ResourcesManager::Instance().getSelectedRegion();
     std::vector<sf::Texture> res{};
 
-    std::ifstream fin("./resources/mock_api/" + region + "/links.txt");
+    std::ifstream fin(std::filesystem::path("resources") / "mock_api" / region / "links.txt");
     int numberOfLinks;
     fin >> numberOfLinks;
 
@@ -46,12 +46,13 @@ std::vector<sf::Texture> MockAPI::getWeatherTextures(sf::RenderWindow* window) {
         fin >> link;
 
         sf::Texture temp;
-        temp.loadFromFile("./resources/mock_api/" + region + '/' + link);
+        const std::filesystem::path loadPath = std::filesystem::path("resources") / "mock_api" / region / link;
+
+        temp.loadFromFile(loadPath.string());
         res.push_back(temp);
 
         sf::Event tempEvent{};
         while(window->pollEvent(tempEvent)) {} // loop through window events to prevent crashes
-
     }
 
     fin.close();

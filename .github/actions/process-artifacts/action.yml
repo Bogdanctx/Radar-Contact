@@ -8,7 +8,7 @@ runs:
       shell: bash
       if: runner.os == 'macOS'
       run: |
-        sed -i '' -e "s/oop/${EXECUTABLE_NAME}/" "${{ env.ZIP_NAME }}/launcher.command"
+        sed -i '' -e "s/radar_contact/${EXECUTABLE_NAME}/" "${{ env.ZIP_NAME }}/launcher.command"
         chmod +x "${{ env.ZIP_NAME }}/launcher.command"
 
     - name: Copy missing dylibs
@@ -17,7 +17,7 @@ runs:
       run: |
         mkdir lib
         if [[ "${BUILD_TYPE}" =~ "Deb" ]]; then
-          cp /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib lib
+          cp /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib lib
           install_name_tool -change @rpath/libclang_rt.asan_osx_dynamic.dylib @executable_path/lib/libclang_rt.asan_osx_dynamic.dylib ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }}
         fi
         ls -1 artifacts/lib | grep framework | xargs -I% ls artifacts/lib/%/Versions/A | grep -v "Resources" | xargs -I% cp artifacts/lib/%.framework/% lib

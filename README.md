@@ -5,6 +5,9 @@
 
 Click on the latest tag available in <b>Releases</b> tab, then select the version (Windows, Ubuntu, macOS) that match your specifications.
 
+<<< <b>For macOS users: </b> after downloading the latest release version, use ```launch.command``` to run the game.</b> A crash was occuring
+due to container overflow (probably false positive), so this detection has been disabled. >>>
+
 #### Or compile the game yourself by following [this tutorial](./INSTALLATION.md).
 
 ## How to play?

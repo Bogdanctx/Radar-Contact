@@ -68,10 +68,13 @@ To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.e
 To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact``` <br>
 ![](./installation/step7.1.png)
 
-
 ### Possible errors on macOS
 
 
 1) ```dyld[]: Library not loaded: @rpath/../Frameworks/freetype.framework/Versions/A/freetype```
-#### Fix: Run the following command inside <b>radar-contact-main</b> directory ```sudo cp -r ./build/_deps/sfml-src/extlibs/libs-osx/frameworks/ /library/frameworks```
+#### Fix: Run the following command inside <b>radar-contact-main</b> directory ```sudo cp -r ./build/_deps/sfml-src/extlibs/libs-osx/frameworks/ /library/frameworks```. 
+
+This error is because of <b>FLAC</b>, <b>freetype</b>, <b>ogg</b>, <b>OpenAL</b>, <b>vorbis</b>, <b>vorbisenc</b> and 
+<b>vorbisfile</b> frameworks missing, so this command will copy them to ```/library/frameworks```.
+
 ![](./installation/macos_error_1.png)

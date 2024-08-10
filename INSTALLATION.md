@@ -49,7 +49,7 @@ process is finished (it may take a while).
 ### Step 5
 
 After the previous step finished type the following command 
-in terminal: ```cmake --build build -j6``` (```--j6``` is the number of
+in terminal: ```cmake --build build -j6``` (```-j6``` is the number of
 threads used to build the project - this is used to make the process faster).
 
 ![](./installation/step5.png)

@@ -3,7 +3,7 @@
 #include "AppWindow.hpp"
 
 #include <memory>
-#include <stack>
+#include <queue>
 
 class StateMachine {
 public:
@@ -20,5 +20,5 @@ private:
 
 private:
     std::shared_ptr<AppWindow> m_currentState;
-    std::stack<std::shared_ptr<AppWindow>> m_states;
+    std::queue<std::shared_ptr<AppWindow>> m_states;
 };

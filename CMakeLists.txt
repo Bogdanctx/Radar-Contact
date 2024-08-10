@@ -23,12 +23,12 @@ set(WARNINGS_AS_ERRORS OFF)
 
 # NOTE: Also update SFML_VERSION env var in .github/workflows/cmake.yml:84
 FetchContent_Declare(
-    SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG        2.6.1
-    # GIT_TAG        69ea0cd863aed1d4092b970b676924a716ff718b # 2.6.1
-    # GIT_TAG        origin/master
-    GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG        2.6.1
+        # GIT_TAG        69ea0cd863aed1d4092b970b676924a716ff718b # 2.6.1
+        # GIT_TAG        origin/master
+        GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
 )
 
 FetchContent_MakeAvailable(SFML)
@@ -128,12 +128,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE cpr)
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
-if(MSVC OR WIN32)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
+if(MSVC)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads)
 elseif(LINUX)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads X11)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads X11)
 else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads)
 endif()
 
 ###############################################################################
@@ -150,13 +150,12 @@ endif()
 # remove this if not using audio or if using SFML 3
 if (WIN32 AND SFML_BUILD_AUDIO)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-         ${SFML_SOURCE_DIR}/extlibs/bin/x64/openal32.dll
-         $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${SFML_SOURCE_DIR}/extlibs/bin/x64/openal32.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
     )
 endif()
 
 include(cmake/CopyHelper.cmake)
-# copy_files(FILES tastatura.txt)
-# copy_files(FILES tastatura.txt config.json DIRECTORY images sounds)
+
 copy_files(DIRECTORY resources)

@@ -15,7 +15,7 @@ StateMachine& StateMachine::Instance() {
 
 void StateMachine::run() {
     while(!m_states.empty()) {
-        m_currentState = m_states.top();
+        m_currentState = m_states.front();
         m_states.pop();
 
         m_currentState->run();

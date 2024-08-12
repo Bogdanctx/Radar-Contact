@@ -1,5 +1,6 @@
 ## [Changelog](./CHANGELOG.md)
 
+#### Before running the game, please read the [installation guide](https://github.com/bogdanctx/INSTALLATION.md).
 
 ## Download
 

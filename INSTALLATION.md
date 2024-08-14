@@ -15,7 +15,7 @@ Press on the latest release available.
 
 ### Step 2
 
-Download the source code as **.zip** or **.tar.gz** from [here](https://github.com/Bogdanctx/Radar-Contact/releases) by pressing on one of the last 2 archieves available in the lastest release.
+Download the source code as **.zip** or **.tar.gz** from [here](https://github.com/Bogdanctx/Radar-Contact/releases) by pressing on one of the last 2 archieves available in the latest release.
 
 ![](./installation/step2.png)
 
@@ -27,8 +27,7 @@ Go inside the extracted folder.
 
 ### Step 3
 
-Open your OS terminal inside the extracted folder and type the following 
-command: ```cmake -S . -B build```. Then wait until the whole
+Open your OS terminal inside the extracted folder and type: ```cmake -S . -B build```. Then wait until the whole
 process is finished (it may take a while).
 
 ![](./installation/step4.png)

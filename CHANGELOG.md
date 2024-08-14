@@ -1,3 +1,10 @@
+## Update [14 August 2024]
+
+### Pan-pan, pan-pan, pan-pan!
+
+**Radar Contact** is not available on **macOS** anymore. To play on **macOS** you have to build the project on your
+system.
+
 ## Update [21 July 2024]
 
 ### Mayday, mayday, mayday!

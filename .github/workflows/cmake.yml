@@ -127,28 +127,6 @@ jobs:
             # This env runs valgrind
             runs_valgrind: true
 
-          - os: macos-14
-            c: clang
-            cxx: clang++
-            name: "ASan: macOS 14 Apple Clang 15"
-            cmake_flags: "-DUSE_ASAN=ON -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
-
-          - os: macos-12
-            c: clang
-            cxx: clang++
-            name: "ASan: macOS 12 Apple Clang 14"
-            cmake_flags: "-DUSE_ASAN=ON -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
-            # cmake_generator:
-            # This env runs address sanitizers
-            # runs_asan: true
-
-          # - os: macos-14
-          #   c: gcc-13
-          #   cxx: g++-13
-          #   name: "macOS 14 GCC 13"
-          #   cmake_flags:
-          #   cmake_generator: Ninja
-
           - os: windows-2022
             c: cl
             cxx: cl

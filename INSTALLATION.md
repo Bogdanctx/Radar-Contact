@@ -2,8 +2,7 @@
 
 ### Prerequisites
 #### 1) [CMake](https://cmake.org/) version at least 3.26. (if you're not compiling the source code skip this)
-#### 2) i) Radar Contact for Ubuntu requires at least GCC 11.
-#### 2) ii) Radar Contact for macOS requires at least Clang 14.
+#### 2) Radar Contact for Ubuntu requires at least GCC 11.
 #### 3) To run on Linux the following libraries are required: ```libxrandr-dev  libxcursor-dev  libudev-dev  libopenal-dev  libflac-dev  libvorbis-dev libgl1  mesa-dev  libegl1-mesa-dev  libdrm-dev  libgbm-dev  libfreetype6-dev```. To install them paste the lines below in the terminal:
 ```
 sudo apt-get update
@@ -71,14 +70,3 @@ To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.e
 <br><br>
 To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact``` <br>
 ![](./installation/step7.1.png)
-
-### Possible errors on macOS
-
-
-1) ```dyld[]: Library not loaded: @rpath/../Frameworks/freetype.framework/Versions/A/freetype```
-#### Fix: Run the following command inside <b>radar-contact-main</b> directory ```sudo cp -r ./build/_deps/sfml-src/extlibs/libs-osx/frameworks/ /library/frameworks```. 
-
-This error is because of <b>FLAC</b>, <b>freetype</b>, <b>ogg</b>, <b>OpenAL</b>, <b>vorbis</b>, <b>vorbisenc</b> and 
-<b>vorbisfile</b> frameworks missing, so this command will copy them to ```/library/frameworks```.
-
-![](./installation/macos_error_1.png)

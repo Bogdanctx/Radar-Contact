@@ -2,7 +2,7 @@
 
 ### Prerequisites
 #### 1) [CMake](https://cmake.org/) version at least 3.26. (if you're not compiling the source code skip this)
-#### 2) Radar Contact for Ubuntu requires at least GCC 11.
+#### 2) Radar Contact for Ubuntu requires at least GCC 12.
 #### 3) To run on Linux the following libraries are required: ```libxrandr-dev  libxcursor-dev  libudev-dev  libopenal-dev  libflac-dev  libvorbis-dev libgl1  mesa-dev  libegl1-mesa-dev  libdrm-dev  libgbm-dev  libfreetype6-dev```. To install them paste the lines below in the terminal:
 ```
 sudo apt-get update

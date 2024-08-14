@@ -127,6 +127,12 @@ jobs:
             # This env runs valgrind
             runs_valgrind: true
 
+          - os: macos-14
+            c: clang
+            cxx: clang++
+            name: "ASan: macOS 12 Apple Clang 15"
+            cmake_flags: "-DUSE_ASAN=ON -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
+
           - os: macos-12
             c: clang
             cxx: clang++

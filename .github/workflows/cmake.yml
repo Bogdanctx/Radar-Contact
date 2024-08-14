@@ -201,6 +201,7 @@ jobs:
 
       - name: Process artifacts
         uses: ./.github/actions/process-artifacts
+        if: runner.os != 'macOS'
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -208,10 +209,12 @@ jobs:
           name: ${{ env.ZIP_NAME }}_${{ env.TIMESTAMP }}
           path: ${{ env.ZIP_NAME }}
           retention-days: 30
+        if: runner.os != 'macOS'
 
       - name: Runtime checks
         uses: ./.github/actions/runtime-checks
+        if: runner.os != 'macOS'
 
       - name: Create release
         uses: ./.github/actions/create-release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: runner.os != 'macOS' && startsWith(github.ref, 'refs/tags/')

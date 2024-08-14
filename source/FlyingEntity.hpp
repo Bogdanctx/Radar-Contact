@@ -66,7 +66,6 @@ public:
     void addWaypointToRoute(const Waypoint& waypoint);
     Waypoint getRouteCurrentWaypoint() const;
     bool getCrashed() const;
-    bool isInsideScreen() const;
     const std::string& getArrival() const;
     const std::string& getCallsign() const;
 

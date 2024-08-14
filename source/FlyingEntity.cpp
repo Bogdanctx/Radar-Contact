@@ -590,18 +590,6 @@ void FlyingEntity::setFallInWeather(int degree) {
 }
 
 //-----------------------------------------------------------
-// Purpose: This function checks if this flying entity is still
-// inside the screen
-// Obs: it is not needed to check for 1280x720 resolution since the
-// flying entity will disappear earlier from screen
-//-----------------------------------------------------------
-bool FlyingEntity::isInsideScreen() const {
-    sf::Vector2f position = m_entity.getPosition();
-
-    return position.x >= -20 && position.x <= 1305 && position.y >= -20 && position.y <= 750;
-}
-
-//-----------------------------------------------------------
 // Purpose: This function sets the m_isCrashed parameter
 // Obs: This is used to erase crashed entities from game
 //-----------------------------------------------------------

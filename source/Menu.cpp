@@ -97,11 +97,10 @@ void Menu::update() {
 // Purpose: Check if a flag is hovered
 //-----------------------------------------------------------
 void Menu::checkHovers() {
-    sf::Vector2i intMousePosition = sf::Mouse::getPosition(m_window);
-    sf::Vector2f floatMousePosition = {static_cast<float>(intMousePosition.x), static_cast<float>(intMousePosition.y)};
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
 
     for(auto &regionsButton: m_regionsButtons) {
-        if(regionsButton.first.getGlobalBounds().contains(floatMousePosition)) {
+        if(regionsButton.first.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
             regionsButton.first.setOutlineColor(sf::Color::White);
         }
         else {
@@ -111,19 +110,18 @@ void Menu::checkHovers() {
 }
 
 void Menu::handleEvent() {
-    sf::Vector2i intMousePosition = sf::Mouse::getPosition(m_window);
-    sf::Vector2f floatMousePosition{static_cast<float>(intMousePosition.x), static_cast<float>(intMousePosition.y)};
-    sf::Event menu_event{};
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
+    sf::Event event{};
 
-    while(m_window.pollEvent(menu_event)) {
-        switch(menu_event.type) {
+    while(m_window.pollEvent(event)) {
+        switch(event.type) {
             case sf::Event::Closed: {
                 m_window.close();
 
                 break;
             }
             case sf::Event::KeyPressed: {
-                const sf::Keyboard::Key key_code = menu_event.key.code;
+                const sf::Keyboard::Key key_code = event.key.code;
 
                 if(key_code == sf::Keyboard::Escape) {
                     m_window.close();
@@ -131,10 +129,14 @@ void Menu::handleEvent() {
 
                 break;
             }
+            case sf::Event::Resized:
+            {
+                updateWindowView(event.size.width, event.size.height);
+                break;
+            }
             case sf::Event::MouseButtonPressed: {
                 for(const auto &regionButtons: m_regionsButtons) {
-                    if(regionButtons.first.getGlobalBounds().contains(floatMousePosition)) {
-
+                    if(regionButtons.first.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
                         std::shared_ptr<LiveAPI> api = std::make_shared<LiveAPI>();
 
                         if(ResourcesManager::Instance().isMockingEnabled()) {
@@ -150,10 +152,10 @@ void Menu::handleEvent() {
                     }
                 }
 
-                if(liveData.getGlobalBounds().contains(floatMousePosition)) {
+                if(liveData.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
                     ResourcesManager::Instance().setMocking(false);
                 }
-                else if(localData.getGlobalBounds().contains(floatMousePosition)) {
+                else if(localData.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
                     ResourcesManager::Instance().setMocking(true);
                 }
 

@@ -9,9 +9,7 @@
 
 Game::Game() :
             AppWindow{1280, 720},
-            m_totalFetchedEntities{0},
-            m_renderFlightsTable{false},
-            m_renderWaypoints{true}
+            m_totalFetchedEntities{0}
 {
     DataFetcher::reset();
     loadElements();
@@ -79,7 +77,11 @@ void Game::update() {
 
     // removed out of screen flying entities
     for(auto& flyingEntity: m_flyingEntities) {
-        if(!flyingEntity->isInsideScreen()) {
+        const sf::Vector2f position = positionRelativeToView(flyingEntity->getEntityPosition());
+        const sf::Vector2u windowSize = m_window.getSize();
+        const bool insideScreen = 0 <= position.x && position.x <= windowSize.x && 0 <= position.y && position.y <= windowSize.y;
+
+        if(!insideScreen) {
             flyingEntity->setCrashed();
         }
     }
@@ -114,7 +116,7 @@ void Game::update() {
     m_window.draw(m_backgroundRegion);
 
     for(auto& flyingEntity: m_flyingEntities) {
-        flyingEntity->updateCursorPosition(sf::Vector2f(sf::Mouse::getPosition(m_window)));
+        flyingEntity->updateCursorPosition(positionRelativeToView(sf::Mouse::getPosition(m_window)));
         flyingEntity->update();
     }
 }
@@ -251,22 +253,21 @@ void Game::checkInsideAirspace() {
 
 void Game::handleEvent() {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
-    sf::Vector2f floatMousePosition(mousePosition);
-    sf::Event gameEvent{};
+    sf::Event event{};
 
-    while(m_window.pollEvent(gameEvent)) {
+    while(m_window.pollEvent(event)) {
         for(auto &flyingEntity: m_flyingEntities) {
-            flyingEntity->handleEvent(gameEvent, floatMousePosition);
+            flyingEntity->handleEvent(event, positionRelativeToView(mousePosition));
         }
 
         if(m_renderFlightsTable) {
-            flightsTable.handleEvent(gameEvent, floatMousePosition);
+            flightsTable.handleEvent(event, positionRelativeToView(mousePosition));
         }
 
-        switch(gameEvent.type) {
+        switch(event.type) {
             case sf::Event::KeyPressed: {
 
-                switch(gameEvent.key.code) {
+                switch(event.key.code) {
                     case sf::Keyboard::Escape: {
                         m_window.close();
                         break;
@@ -289,7 +290,7 @@ void Game::handleEvent() {
                     case sf::Keyboard::Space: { // add a waypoint to a flying entity's route
                         if (m_renderWaypoints) {
                             for (const Waypoint &wp: m_waypoints) {
-                                if (wp.getBounds().contains(floatMousePosition)) {
+                                if (wp.getBounds().contains(positionRelativeToView(mousePosition))) {
                                     for (const auto &flyingEntity: m_flyingEntities) {
                                         if (flyingEntity->getIsEntitySelected() && flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
                                             flyingEntity->addWaypointToRoute(wp);
@@ -304,6 +305,12 @@ void Game::handleEvent() {
                     default:
                         break;
                 }
+
+                break;
+            }
+            case sf::Event::Resized:
+            {
+                updateWindowView(event.size.width, event.size.height);
 
                 break;
             }

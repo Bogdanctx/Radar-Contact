@@ -1,9 +1,72 @@
 # Installation guide
 
 ### Prerequisites
-#### 1) [CMake](https://cmake.org/) version at least 3.26. (if you're not compiling the source code skip this)
-#### 2) Radar Contact for Ubuntu requires at least GCC 12.
-#### 3) To run on Linux the following libraries are required: ```libxrandr-dev  libxcursor-dev  libudev-dev  libopenal-dev  libflac-dev  libvorbis-dev libgl1  mesa-dev  libegl1-mesa-dev  libdrm-dev  libgbm-dev  libfreetype6-dev```. To install them paste the lines below in the terminal:
+#### => [CMake](https://cmake.org/) version at least 3.26. (needed if you build the project)
+#### => Radar Contact for Ubuntu requires at least GCC 12.
+#### => For macOS users: Clang 15 & macOS 14.
+
+### If you're not building the project on your local system then you can [go back](https://github.com/bogdanctx/radar-contact).
+
+### Step 1
+
+Press on the latest release available.
+
+![](./installation/step1.png)
+
+### Step 2
+
+Download the source code as **.zip** or **.tar.gz** from [here](https://github.com/Bogdanctx/Radar-Contact/releases) by pressing on one of the last 2 archieves available in the lastest release.
+
+![](./installation/step2.png)
+
+### Step 2
+
+Go inside the extracted folder.
+
+![](./installation/step3.png)
+
+### Step 3
+
+Open your OS terminal inside the extracted folder and type the following 
+command: ```cmake -S . -B build```. Then wait until the whole
+process is finished (it may take a while).
+
+![](./installation/step4.png)
+
+### Step 4
+
+Type in terminal: ```cmake --build build -j6``` (```-j6``` is the number of
+threads used to build the project - this is used to make the process faster).
+
+![](./installation/step5.png)
+
+### Step 5
+
+Install the build with this command: ```cmake --install build```.
+
+![](./installation/step6.png)
+
+### Step 6
+
+The app can be found in this directory: ```install_dir/bin```.
+
+To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.exe``` <br>
+![](./installation/step7.png)
+<br><br>
+To run the game on <b>Linux</b> use ```./install_dir/bin/radar_contact``` <br>
+![](./installation/step7.1.png)
+
+### Common errors on Linux
+
+1) ```./radar_contact: error while loading shared libraries: libasan.so.8: cannot open shared object file: No such file or directory```
+
+Make sure to have GCC-12 installed. Install GCC-12 using ```sudo apt-get install gcc-12```.
+
+
+2) ```./radar_contact: error while loading shared libraries: libopenal.so.1: cannot open shared object file: No such file or directory```
+
+Make sure that you have these libraries installed: ```libxrandr-dev  libxcursor-dev  libudev-dev  libopenal-dev  libflac-dev  libvorbis-dev libgl1  mesa-dev  libegl1-mesa-dev  libdrm-dev  libgbm-dev  libfreetype6-dev```.
+Paste the commands below in terminal to install them:
 ```
 sudo apt-get update
 sudo apt-get install \
@@ -20,53 +83,3 @@ libgbm-dev \
 libfreetype6-dev \
 xorg
 ```
-
-### If you don't compile the source code then you can [go back](https://github.com/bogdanctx/radar-contact).
-
-### Step 1
-
-Download the source code as ZIP from [here](https://github.com/Bogdanctx/Radar-Contact) by presing the
-green button marked in the image below.
-
-![](./installation/step1.png)
-
-### Step 2
-
-Press <b>Download ZIP</b> button and then extract the content.
-![](./installation/step2.png)
-
-### Step 3
-
-Go inside the extracted folder (the folder name should be Radar-Contact-main)
-
-![](./installation/step3.png)
-
-### Step 4
-
-Open your OS terminal inside the extracted folder and type the following 
-command: ```cmake -S . -B build```. Then wait until the whole
-process is finished (it may take a while).
-
-![](./installation/step4.png)
-
-### Step 5
-
-After the previous step finished type the following command 
-in terminal: ```cmake --build build -j6``` (```-j6``` is the number of
-threads used to build the project - this is used to make the process faster).
-
-![](./installation/step5.png)
-
-### Step 6
-
-Install the build with this command: ```cmake --install build```
-
-![](./installation/step6.png)
-
-### Step 7
-
-To run the game on <b>Windows</b> use ```start ./install_dir/bin/radar_contact.exe``` <br>
-![](./installation/step7.png)
-<br><br>
-To run the game on <b>Linux / macOS</b> use ```./install_dir/bin/radar_contact``` <br>
-![](./installation/step7.1.png)

@@ -1,9 +1,13 @@
-## Update [14 August 2024]
+## Update [15 August 2024]
 
 ### Pan-pan, pan-pan, pan-pan!
 
+Changed altitude and speed buttons to match description.
+
+Radar Contact can be played in fullscreen mode.
+
 **Radar Contact** is not available on **macOS** anymore. To play on **macOS** you have to build the project on your
-system.
+system. [Installation guide](./INSTALLATION.md) may be helpful.
 
 ## Update [21 July 2024]
 

@@ -10,8 +10,9 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_arrival{arrival}, m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_squawk{squawk}, m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
+        m_fuelConsumption(4500), m_arrival{arrival},
+        m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}, m_squawk{squawk},
+        m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_routeWaypointsText{"", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
@@ -19,9 +20,8 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_fuelText{m_fuel.asString(), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_callsign{callsign}, m_headingStick{sf::Vector2f(26, 1.2f)},
-        m_fuelConsumption(4500)
+        m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}, m_callsign{callsign},
+        m_headingStick{sf::Vector2f(26, 1.2f)}
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);

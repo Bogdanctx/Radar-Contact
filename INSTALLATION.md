@@ -19,33 +19,33 @@ Download the source code as **.zip** or **.tar.gz** from [here](https://github.c
 
 ![](./installation/step2.png)
 
-### Step 2
+### Step 3
 
 Go inside the extracted folder.
 
 ![](./installation/step3.png)
 
-### Step 3
+### Step 4
 
 Open your OS terminal inside the extracted folder and type: ```cmake -S . -B build```. Then wait until the whole
 process is finished (it may take a while).
 
 ![](./installation/step4.png)
 
-### Step 4
+### Step 5
 
 Type in terminal: ```cmake --build build -j6``` (```-j6``` is the number of
 threads used to build the project - this is used to make the process faster).
 
 ![](./installation/step5.png)
 
-### Step 5
+### Step 6
 
 Install the build with this command: ```cmake --install build```.
 
 ![](./installation/step6.png)
 
-### Step 6
+### Step 7
 
 The app can be found in this directory: ```install_dir/bin```.
 

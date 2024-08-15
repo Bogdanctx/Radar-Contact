@@ -67,7 +67,7 @@ void Game::loadElements() {
         m_window.display();
     }
 }
-#include <iostream>
+
 void Game::update() {
     checkForEntitiesCollisions();
     checkInsideWeather();
@@ -327,7 +327,8 @@ void Game::addNewEntities() {
         "EC45",
         "S92",
         "EC75",
-        "EC35"
+        "EC35",
+        "A189"
     };
 
     const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window, m_totalFetchedEntities);

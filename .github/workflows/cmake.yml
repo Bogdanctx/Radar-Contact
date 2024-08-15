@@ -174,7 +174,7 @@ jobs:
 
           # or use only the repo name (github does not have a predefined environment variable for this)
           # the regex splits by / and keeps everything after / without the / character
-          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
+          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
 
       - name: Install packages
         uses: ./.github/actions/install-packages

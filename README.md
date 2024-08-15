@@ -6,7 +6,7 @@
 
 Click on the latest tag available in <b>Releases</b> tab, then select the version (Windows, Ubuntu) that match your specifications.
 
-#### Or compile the game yourself by following [this tutorial](./INSTALLATION.md).
+#### Or build the game yourself by following [this tutorial](./INSTALLATION.md).
 
 ## How to play?
 

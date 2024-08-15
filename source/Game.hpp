@@ -52,7 +52,7 @@ private:
 
     std::vector<Waypoint> m_waypoints{};
 
-    int m_totalFetchedEntities;
+    int m_totalFetchedEntities = 0;
 
     bool m_renderFlightsTable{};
     bool m_renderWaypoints{};

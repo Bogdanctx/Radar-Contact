@@ -17,7 +17,7 @@ protected:
     sf::Vector2f positionRelativeToView(sf::Vector2f position) const;
     sf::Vector2f positionRelativeToView(sf::Vector2i position) const;
 
-    void updateWindowView(int width, int height);
+    void updateWindowView(unsigned int width, unsigned int height);
 
 private:
     virtual void handleEvent() = 0;

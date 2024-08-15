@@ -10,25 +10,24 @@
 #include "utils.hpp"
 #include "Waypoint.hpp"
 #include "OneDecimalFloatingPoint.h"
+#include "Weather.hpp"
 
-class FlyingEntity {
-protected:
-    struct Clocks {
-        Clocks() = default;
-        explicit Clocks(int update, int altitude = 0, int speed = 0, int heading = 0) : m_updateInterval(update),
-                                                                m_altitudeInterval(altitude),
-                                                                m_speedInterval(speed),
-                                                                m_headingInterval(heading) {}
+class FlyingEntity
+{
+private:
+    struct Timer {
+        Timer() = default;
+        explicit Timer(double frequency) : interval(frequency) {}
 
-        sf::Clock m_altitudeClock;
-        sf::Clock m_speedClock;
-        sf::Clock m_headingClock;
-        sf::Clock m_updateClock;
+        [[nodiscard]] bool passedDelay() const {
+            return clock.getElapsedTime().asMilliseconds() >= interval;
+        }
+        void restart() {
+            clock.restart();
+        }
 
-        int m_updateInterval{};
-        int m_altitudeInterval{};
-        int m_speedInterval{};
-        int m_headingInterval{};
+        sf::Clock clock;
+        double interval = 0;
     };
 public:
     enum Flags {
@@ -47,9 +46,8 @@ public:
                  sf::Vector2f position, const std::string &arrival);
     virtual ~FlyingEntity() = default;
 
-    void update();
+    void update(sf::Vector2f mousePosition);
     void updateText();
-    void updateCursorPosition(sf::Vector2f position);
 
     virtual void render(sf::RenderWindow *gameWindow);
     virtual void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
@@ -58,7 +56,7 @@ public:
     int getAltitude() const;
     int getAirspeed() const;
 
-    std::pair<sf::Clock, int> getUpdateClock() const;
+    bool canUpdate() const;
 
     void setCrashed();
     void setEntitySelected();
@@ -86,8 +84,6 @@ protected:
     virtual void internalUpdate() = 0;
     virtual void hijackUpdateData();
 
-    void setClocks(Clocks clocks);
-
     // these functions set actual flying entities' data
     void setHeading(int heading);
     void setAltitude(int altitude);
@@ -105,13 +101,13 @@ protected:
 
     std::deque<Waypoint> route;
     sf::RectangleShape m_entity;
-    bool m_entitySelected;
+    bool m_entitySelected = false;
     sf::Text m_callsignText;
 
     int m_heading;
     int m_speed;
     int m_altitude;
-    OneDecimalFloatingPoint m_fuel;
+    OneDecimalFloatingPoint m_fuel = OneDecimalFloatingPoint(Utilities::randGen<int>(12, 19), Utilities::randGen<int>(0, 9));
 
     int m_newHeading;
     int m_newAltitude;
@@ -119,6 +115,12 @@ protected:
 
     int m_minSpeed{}, m_maxSpeed{};
     int m_minAltitude{}, m_maxAltitude{};
+
+    Timer m_updateTimer;
+    Timer m_speedTimer;
+    Timer m_headingTimer;
+    Timer m_altitudeTimer;
+
 private:
     void updateFuel();
     void updateEntityColor();
@@ -126,24 +128,24 @@ private:
     void handleSpecialFlightConditions();
 
 private:
+    sf::Keyboard::Key m_altitudeButton = sf::Keyboard::LAlt;
+    sf::Keyboard::Key m_speedButton = sf::Keyboard::LControl;
+    sf::Keyboard::Key m_headingButton = sf::Keyboard::LShift;
+
     friend class FlyingEntity_Decorator;
 
     sf::Vector2f m_mousePosition;
 
-    int m_fallInWeather;
+    int m_fallInWeather = Weather::RainDanger::Clear;
 
-    bool m_isCrashed;
-    Clocks m_clocks;
+    bool m_isCrashed = false;
 
-    sf::Clock m_hijackChangesClock;
-    int m_hijackChangesInterval{};
+    Timer m_hijack;
+    Timer m_lostComms;
+    Timer m_fuelConsumption;
 
-    sf::Clock m_lostCommsClock;
-    int m_lostCommsInterval{};
 
-    sf::Clock m_fuelConsumptionClock;
-    double m_fuelConsumptionInterval;
-    bool hasFuel;
+    bool hasFuel = true;
 
     std::string m_arrival;
     sf::Text m_arrivalText;

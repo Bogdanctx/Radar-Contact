@@ -7,8 +7,7 @@
 
 // https://tilecache.rainviewer.com/v2/radar/1713089400/256/6/55.776575/-5.624999/2/1_0.png
 // https://tilecache.rainviewer.com/v2/radar/1713041400/512/5/55.776575/-11.249998/1/1_0.png
-Weather::Weather() : m_tiles{ResourcesManager::Instance().getWeatherTiles()}
-{}
+Weather::Weather() : m_tiles{ResourcesManager::Instance().getWeatherTiles()} {}
 
 void Weather::render(sf::RenderWindow *window) {
     for(const sf::Sprite& sprite: m_sprites) {
@@ -19,8 +18,9 @@ void Weather::render(sf::RenderWindow *window) {
 //-----------------------------------------------------------
 // Purpose: Return the color of a pixel inside a specific sprite
 //-----------------------------------------------------------
-int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position) {
-    sf::Vector2i spritePosition(static_cast<int>(sprite.getGlobalBounds().left), static_cast<int>(sprite.getGlobalBounds().top));
+int Weather::getPixelColor(sf::Sprite& sprite, sf::Vector2i position)
+{
+    sf::Vector2i spritePosition = static_cast<sf::Vector2i>(sf::Vector2f(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top));
 
     sf::Vector2u pixelPosition(position.x - spritePosition.x, position.y - spritePosition.y);
 

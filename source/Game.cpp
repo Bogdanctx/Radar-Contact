@@ -7,9 +7,7 @@
 #include "ResourcesManager.hpp"
 #include "Math.hpp"
 
-Game::Game() :
-            AppWindow{1280, 720},
-            m_totalFetchedEntities{0}
+Game::Game() : AppWindow{1280, 720}
 {
     DataFetcher::reset();
     loadElements();
@@ -69,7 +67,7 @@ void Game::loadElements() {
         m_window.display();
     }
 }
-
+#include <iostream>
 void Game::update() {
     checkForEntitiesCollisions();
     checkInsideWeather();
@@ -77,9 +75,8 @@ void Game::update() {
 
     // removed out of screen flying entities
     for(auto& flyingEntity: m_flyingEntities) {
-        const sf::Vector2f position = positionRelativeToView(flyingEntity->getEntityPosition());
-        const sf::Vector2u windowSize = m_window.getSize();
-        const bool insideScreen = 0 <= position.x && position.x <= windowSize.x && 0 <= position.y && position.y <= windowSize.y;
+        const sf::Vector2f position = flyingEntity->getEntityPosition();
+        const bool insideScreen = 0 <= position.x && position.x <= 1280 && 0 <= position.y && position.y <= 720;
 
         if(!insideScreen) {
             flyingEntity->setCrashed();
@@ -116,8 +113,7 @@ void Game::update() {
     m_window.draw(m_backgroundRegion);
 
     for(auto& flyingEntity: m_flyingEntities) {
-        flyingEntity->updateCursorPosition(positionRelativeToView(sf::Mouse::getPosition(m_window)));
-        flyingEntity->update();
+        flyingEntity->update(positionRelativeToView(sf::Mouse::getPosition(m_window)));
     }
 }
 
@@ -214,14 +210,11 @@ void Game::checkInsideWeather() {
     std::vector<sf::Sprite> weatherSprites = weather.getSprites();
 
     for (auto& flyingEntity : m_flyingEntities) {
-        std::pair<sf::Clock, int> updateTimer = flyingEntity->getUpdateClock();
-
-        if(updateTimer.first.getElapsedTime().asMilliseconds() < updateTimer.second) {
+        if(!flyingEntity->canUpdate()) {
             continue;
         }
 
-        const sf::Vector2i entityPosition(static_cast<int>(flyingEntity->getEntityPosition().x),
-                                          static_cast<int>(flyingEntity->getEntityPosition().y));
+        const sf::Vector2i entityPosition = static_cast<sf::Vector2i>(flyingEntity->getEntityPosition());
 
         for (sf::Sprite& sprite: weatherSprites) {
             const sf::FloatRect& spriteBounds = sprite.getGlobalBounds();
@@ -346,7 +339,7 @@ void Game::addNewEntities() {
     const int numberOfArrivals = static_cast<int>(arrivals.size());
 
     sf::Event tempEvent{};
-    m_window.pollEvent(tempEvent); // loop through window events to prevent crashes
+    while(m_window.pollEvent(tempEvent)) {}; // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++) {
         if(m_flyingEntities.size() > 8) {

@@ -24,10 +24,10 @@ sf::Vector2f AppWindow::positionRelativeToView(sf::Vector2i position) const
 
 
 // https://github.com/SFML/SFML/wiki/Source%3A-Letterbox-effect-using-a-view
-void AppWindow::updateWindowView(int width, int height)
+void AppWindow::updateWindowView(unsigned int width, unsigned int height)
 {
-    float windowRatio = (float) width / (float) height;
-    float viewRatio = m_view.getSize().x / (float) m_view.getSize().y;
+    float windowRatio = static_cast<float>(width) / static_cast<float>(height);
+    float viewRatio = m_view.getSize().x / m_view.getSize().y;
     float sizeX = 1;
     float sizeY = 1;
     float posX = 0;

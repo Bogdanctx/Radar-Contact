@@ -1,22 +1,15 @@
 #include "FlyingEntity.hpp"
 #include "Math.hpp"
 #include "ResourcesManager.hpp"
-#include "Weather.hpp"
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
                            sf::Vector2f position, const std::string &arrival) :
-        m_entitySelected{false},
         m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_heading{heading}, m_speed{speed},
         m_altitude{altitude},
-        m_fuel{Utilities::randGen<int>(12, 19), Utilities::randGen<int>(0, 9)},
         m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_fallInWeather{Weather::RainDanger::Clear},
-        m_isCrashed{false},
-        m_fuelConsumptionInterval{4.5},
-        hasFuel{true},
         m_arrival{arrival}, m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_squawk{squawk}, m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_routeWaypointsText{"", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
@@ -27,7 +20,8 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_callsign{callsign}, m_headingStick{sf::Vector2f(26, 1.2f)}
+        m_callsign{callsign}, m_headingStick{sf::Vector2f(26, 1.2f)},
+        m_fuelConsumption(4500)
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
@@ -126,14 +120,6 @@ void FlyingEntity::render(sf::RenderWindow* gameWindow) {
     }
 }
 
-//-----------------------------------------------------------
-// Purpose: Needed to set heading stick rotation when the player
-// is giving a flying entity a new direction
-//-----------------------------------------------------------
-void FlyingEntity::updateCursorPosition(const sf::Vector2f position) {
-    m_mousePosition = position;
-}
-
 void FlyingEntity::handleEvent(const sf::Event& gameEvent, const sf::Vector2f mousePosition) {
     if(m_entitySelected) {
         checkAltitudeChange(); // check if user is changing entity altitude
@@ -177,7 +163,7 @@ void FlyingEntity::checkAltitudeChange() {
         return;
     }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
+    if(sf::Keyboard::isKeyPressed(m_altitudeButton)) {
         if(m_newAltitude + 100 <= m_maxAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             setNewAltitude(m_newAltitude + 100);
         }
@@ -196,7 +182,7 @@ void FlyingEntity::checkSpeedChange() {
         return;
     }
 
-    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LAlt))) {
+    if(sf::Keyboard::isKeyPressed((m_speedButton))) {
         if(m_newSpeed + 1 <= m_maxSpeed && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             setNewSpeed(m_newSpeed + 1);
         }
@@ -220,7 +206,9 @@ void FlyingEntity::hijackUpdateData() {
 //-----------------------------------------------------------
 // Purpose: Update flying entity data, variables, etc.
 //-----------------------------------------------------------
-void FlyingEntity::update() {
+void FlyingEntity::update(sf::Vector2f mousePosition) {
+    m_mousePosition = mousePosition;
+
     updateAltitudeData();
     updateSpeedData();
     updateHeadingData();
@@ -229,7 +217,7 @@ void FlyingEntity::update() {
 
     handleSpecialFlightConditions();
 
-    if(m_clocks.m_updateClock.getElapsedTime().asMilliseconds() >= m_clocks.m_updateInterval) {
+    if(m_updateTimer.passedDelay()) {
         internalUpdate();
         adjustFlightParametersBasedOnWeather();
 
@@ -240,7 +228,7 @@ void FlyingEntity::update() {
         updateText();
 
         // if no direction is choosen, then heading stick might be updated
-        if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+        if(!sf::Keyboard::isKeyPressed(m_headingButton)) {
             m_headingStick.setRotation(m_heading - 90);
         }
 
@@ -257,7 +245,7 @@ void FlyingEntity::update() {
             m_routeWaypointsText.setString(m_routeWaypoints);
         }
 
-        m_clocks.m_updateClock.restart();
+        m_updateTimer.restart();
     }
 }
 
@@ -266,23 +254,23 @@ void FlyingEntity::update() {
 // entity is being hijacked or has lost communication with ATC
 //-----------------------------------------------------------
 void FlyingEntity::handleSpecialFlightConditions() {
-    if(isFlagActive(Flags::HIJACK) && m_hijackChangesClock.getElapsedTime().asSeconds() >= m_hijackChangesInterval) {
+    if(isFlagActive(Flags::HIJACK) && m_hijack.passedDelay()) {
         hijackUpdateData();
 
-        m_hijackChangesInterval = Utilities::randGen<int>(14, 28);
-        m_hijackChangesClock.restart();
+        m_hijack.interval = Utilities::randGen<int>(1400, 2800);
+        m_hijack.restart();
     }
 
     // squawk = 7600 -> lost communications
-    if(m_squawk == "7600" && m_lostCommsClock.getElapsedTime().asSeconds() >= m_lostCommsInterval) {
+    if(m_squawk == "7600" && m_lostComms.passedDelay()) {
         if(isFlagActive(Flags::LOST_COMMS)) {
             resetFlag(Flags::LOST_COMMS);
         }
         else {
             setFlag(Flags::LOST_COMMS);
         }
-        m_lostCommsInterval = Utilities::randGen<int>(9, 18);
-        m_lostCommsClock.restart();
+        m_lostComms.interval = Utilities::randGen<int>(9000, 1800);
+        m_lostComms.restart();
     }
 }
 
@@ -419,10 +407,9 @@ void FlyingEntity::updateFuel() {
         return;
     }
 
-    if(m_fuelConsumptionClock.getElapsedTime().asSeconds() >= m_fuelConsumptionInterval) {
+    if(m_fuelConsumption.passedDelay()) {
         --m_fuel;
         m_fuelText.setString(m_fuel.asString());
-        m_fuelConsumptionClock.restart();
 
         if(m_fuel <= OneDecimalFloatingPoint(2, 5)) {
             setFlag(Flags::LOW_FUEL);
@@ -433,24 +420,26 @@ void FlyingEntity::updateFuel() {
             m_altitude -= 100;
             m_speed--;
         }
+
+        m_fuelConsumption.restart();
     }
 
     if (m_speed <= m_newSpeed) { // is reducing speed
         if (m_altitude < m_newAltitude) { // is descending
-            m_fuelConsumptionInterval = 2.5; // Less fuel needed when reducing speed and descending
+            m_fuelConsumption.interval = 2500; // Less fuel needed when reducing speed and descending
         } else {
-            m_fuelConsumptionInterval = 3.5; // Moderate fuel needed when reducing speed and maintaining/climbing
+            m_fuelConsumption.interval = 3500; // Moderate fuel needed when reducing speed and maintaining/climbing
         }
     } else { // is increasing speed
         if (m_altitude <= m_newAltitude) {
-            m_fuelConsumptionInterval = 3.8; // Moderate fuel needed when increasing speed and descending/maintaining
+            m_fuelConsumption.interval = 3800; // Moderate fuel needed when increasing speed and descending/maintaining
         } else {
-            m_fuelConsumptionInterval = 7.0; // More fuel needed when increasing speed and climbing
+            m_fuelConsumption.interval = 7000; // More fuel needed when increasing speed and climbing
         }
     }
 
     if (m_speed == m_newSpeed && m_altitude == m_newAltitude) {
-        m_fuelConsumptionInterval = 4.5; // Moderate fuel consumption when maintaining speed and altitude
+        m_fuelConsumption.interval = 4500; // Moderate fuel consumption when maintaining speed and altitude
     }
 
 }
@@ -465,7 +454,7 @@ void FlyingEntity::checkHeadingChange() {
         return;
     }
 
-    if(sf::Keyboard::isKeyPressed((sf::Keyboard::LShift))) {
+    if(sf::Keyboard::isKeyPressed((m_headingButton))) {
         int dir = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);
         m_headingStick.setRotation(dir - 90);
         setNewHeading(dir);
@@ -484,15 +473,8 @@ void FlyingEntity::checkHeadingChange() {
 // Obs: Used to check in other files if this flying entity must be
 // updated or not
 //-----------------------------------------------------------
-std::pair<sf::Clock, int> FlyingEntity::getUpdateClock() const {
-    return std::make_pair(m_clocks.m_updateClock, m_clocks.m_updateInterval);
-}
-
-//-----------------------------------------------------------
-// Purpose: This function sets the clocks for this flying entity
-//-----------------------------------------------------------
-void FlyingEntity::setClocks(const FlyingEntity::Clocks clocks) {
-    m_clocks = clocks;
+bool FlyingEntity::canUpdate() const {
+    return m_updateTimer.passedDelay();
 }
 
 //-----------------------------------------------------------
@@ -500,11 +482,11 @@ void FlyingEntity::setClocks(const FlyingEntity::Clocks clocks) {
 // flying entity based on the {newAltitude} value.
 //-----------------------------------------------------------
 void FlyingEntity::updateAltitudeData() {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || m_altitude == m_newAltitude) {
+    if(sf::Keyboard::isKeyPressed(m_altitudeButton) || m_altitude == m_newAltitude) {
         return;
     }
 
-    if(m_clocks.m_altitudeClock.getElapsedTime().asMilliseconds() >= m_clocks.m_altitudeInterval) {
+    if(m_altitudeTimer.passedDelay()) {
         if(!hasFuel) {
             setAltitude(m_altitude - Utilities::randGen<int>(100, 300) / 100 * 100);
         }
@@ -517,7 +499,7 @@ void FlyingEntity::updateAltitudeData() {
             }
         }
 
-        m_clocks.m_altitudeClock.restart();
+        m_altitudeTimer.restart();
     }
 }
 
@@ -526,14 +508,14 @@ void FlyingEntity::updateAltitudeData() {
 // flying entity based on the {newSpeed} value.
 //-----------------------------------------------------------
 void FlyingEntity::updateSpeedData() {
-    if(m_newSpeed == m_speed || sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) {
+    if(m_newSpeed == m_speed || sf::Keyboard::isKeyPressed(m_speedButton)) {
         return;
     }
     if(!hasFuel) {
-        m_clocks.m_speedInterval = 1700;
+        m_speedTimer.interval = 1700;
     }
 
-    if(m_clocks.m_speedClock.getElapsedTime().asMilliseconds() >= m_clocks.m_speedInterval) {
+    if(m_speedTimer.passedDelay()) {
         if(!hasFuel) {
 
             // slower speed decreasing at high altitudes
@@ -554,7 +536,7 @@ void FlyingEntity::updateSpeedData() {
             }
         }
 
-        m_clocks.m_speedClock.restart();
+        m_speedTimer.restart();
     }
 }
 
@@ -563,13 +545,11 @@ void FlyingEntity::updateSpeedData() {
 // flying entity based on the {newHeading} value.
 //-----------------------------------------------------------
 void FlyingEntity::updateHeadingData() {
-    bool shouldUpdateHeading = m_clocks.m_headingClock.getElapsedTime().asMilliseconds() >= m_clocks.m_headingInterval;
-
     if(!route.empty()) { // if waypoints were given to a flying entity
         setNewHeading(Math::DirectionToPoint(m_entity.getPosition(), route.front().getPosition()));
     }
 
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && m_heading != m_newHeading && shouldUpdateHeading) {
+    if(!sf::Keyboard::isKeyPressed(m_headingButton) && m_heading != m_newHeading && m_headingTimer.passedDelay()) {
         if ((m_newHeading - m_heading + 360) % 360 < 180) {
             setHeading(m_heading + 1);
         }
@@ -577,7 +557,7 @@ void FlyingEntity::updateHeadingData() {
             setHeading(m_heading - 1);
         }
 
-        m_clocks.m_headingClock.restart();
+        m_headingTimer.restart();
     }
 }
 

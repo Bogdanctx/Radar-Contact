@@ -1,11 +1,7 @@
 # Installation guide
 
 ### Prerequisites
-#### => [CMake](https://cmake.org/) version at least 3.26. (needed if you build the project)
-#### => Radar Contact for Ubuntu requires at least GCC 12.
-#### => For macOS users: Clang 15 & macOS 14.
-
-### If you're not building the project on your local system then you can [go back](https://github.com/bogdanctx/radar-contact).
+#### => [CMake](https://cmake.org/) version at least 3.26.
 
 ### Step 1
 

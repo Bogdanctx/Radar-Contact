@@ -1,12 +1,17 @@
-## [Changelog](./CHANGELOG.md)
-
-#### Before running the game, please read the [installation guide](./INSTALLATION.md).
-
 ## Download
 
-Click on the latest tag available in <b>Releases</b> tab, then select the version (Windows, Ubuntu) that match your specifications.
+Click on the [latest version](https://github.com/Bogdanctx/Radar-Contact/releases/tag/v3.2) available in the [Releases](https://github.com/Bogdanctx/Radar-Contact/releases) tab and 
+download either [Windows](https://github.com/Bogdanctx/Radar-Contact/releases/download/v3.2/Radar-Contact_windows.zip) or [Ubuntu](https://github.com/Bogdanctx/Radar-Contact/releases/download/v3.2/Radar-Contact_ubuntu-22.04.zip) version.
 
-#### Or build the game yourself by following [this tutorial](./INSTALLATION.md).
+#### => Playing on Ubuntu-22.04 requires GCC 12. Please read the <i>[Common errors on Linux](https://github.com/Bogdanctx/Radar-Contact/blob/main/INSTALLATION.md#common-errors-on-linux)</i> section of the [installation guide](./INSTALLATION.md).
+#### => Playing on Windows requires [Microsoft Visual C++](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version).
+
+<br>
+
+#### If you're playing on an unsupported OS (e.g. macOS) you have to build the project on your PC. To do this follow [this tutorial](./INSTALLATION.md).
+
+## Updates
+#### Check [changelog](./CHANGELOG.md) for the latest updates.
 
 ## How to play?
 
@@ -42,6 +47,8 @@ As a result, <b>the airplane's current data will adjust according to these modif
 
 ## Keybinds
 
+To select an airplane press <b>Left Click</b>.
+
 Change <b>heading</b> by pressing <b>LSHIFT</b> and <b>move your cursor around</b>.
 
 Change <b>altitude</b> by pressing <b>LALT</b> and <b>UP / DOWN arrow</b>.
@@ -54,7 +61,7 @@ Hide / show <b>flights table</b> by pressing <b>R</b>.
 
 Hide / show <b>waypoints</b> by pressing <b>T</b>.
 
-To go <b>back to menu</b> press <b>Enter</b>. 
+To go <b>back to menu</b> press <b>Enter</b>.
 
 ## Resources
 

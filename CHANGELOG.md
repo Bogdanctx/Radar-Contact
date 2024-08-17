@@ -1,3 +1,12 @@
+<!--
+## Update [xx August 2024]
+
+### Player, Development Tower, radar contact.
+
+Altitude and speed can be changed using mouse scroll wheel - [#9](https://github.com/Bogdanctx/Radar-Contact/issues/9)
+
+-->
+
 ## Update [15 August 2024]
 
 ### Pan-pan, pan-pan, pan-pan!

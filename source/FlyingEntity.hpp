@@ -50,7 +50,7 @@ public:
     void updateText();
 
     virtual void render(sf::RenderWindow *gameWindow);
-    virtual void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
+    virtual void handleEvent(const sf::Event& event, sf::Vector2f mousePosition);
 
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
@@ -77,12 +77,12 @@ protected:
     void updateSpeedData();
     void updateHeadingData();
 
-    virtual void checkAltitudeChange();
-    virtual void checkSpeedChange();
-    virtual void checkHeadingChange();
+    void checkAltitudeChange(int scrollUsed = 0);
+    void checkSpeedChange(int scrollUsed = 0);
+    void checkHeadingChange();
 
     virtual void internalUpdate() = 0;
-    virtual void hijackUpdateData();
+    void hijackUpdateData();
 
     // these functions set actual flying entities' data
     void setHeading(int heading);

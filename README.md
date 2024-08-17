@@ -47,21 +47,21 @@ As a result, <b>the airplane's current data will adjust according to these modif
 
 ## Keybinds
 
-To select an airplane press <b>Left Click</b>.
+To select an airplane press **Left Click**.
 
-Change <b>heading</b> by pressing <b>LSHIFT</b> and <b>move your cursor around</b>.
+Change **heading** by pressing **LSHIFT** and **move your cursor around**.
 
-Change <b>altitude</b> by pressing <b>LALT</b> and <b>UP / DOWN arrow</b>.
+Change **altitude** by pressing **LALT** and **UP / DOWN** arrow or **scroll up**.
 
-Change <b>airspeed</b> by pressing <b>LCTRL</b> and <b>UP / DOWN arrow</b>.
+Change **airspeed** by pressing **LCTRL** and **UP / DOWN arrow** or **scroll down**.
 
-Add a waypoint to an aircraft route by pressing the <b>SPACE</b> key.
+Add a waypoint to an aircraft route by pressing the **SPACE** key.
 
-Hide / show <b>flights table</b> by pressing <b>R</b>.
+Hide / show **flights table** by pressing **R**.
 
-Hide / show <b>waypoints</b> by pressing <b>T</b>.
+Hide / show **waypoints** by pressing **T**.
 
-To go <b>back to menu</b> press <b>Enter</b>.
+To go **back to menu** press **Enter**.
 
 ## Resources
 

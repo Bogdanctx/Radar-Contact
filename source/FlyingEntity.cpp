@@ -120,14 +120,8 @@ void FlyingEntity::render(sf::RenderWindow* gameWindow) {
     }
 }
 
-void FlyingEntity::handleEvent(const sf::Event& gameEvent, const sf::Vector2f mousePosition) {
-    if(m_entitySelected) {
-        checkAltitudeChange(); // check if user is changing entity altitude
-        checkSpeedChange(); // check if user is changing entity speed
-        checkHeadingChange(); // check if user is changing entity heading
-    }
-
-    switch(gameEvent.type) {
+void FlyingEntity::handleEvent(const sf::Event& event, const sf::Vector2f mousePosition) {
+    switch(event.type) {
         case sf::Event::MouseButtonPressed: {
             sf::FloatRect entityBounds = m_entity.getGlobalBounds();
 
@@ -140,6 +134,14 @@ void FlyingEntity::handleEvent(const sf::Event& gameEvent, const sf::Vector2f mo
                 m_entitySelected = false;
                 updateText();
             }
+            break;
+        }
+        case sf::Event::MouseWheelMoved:
+        {
+            checkAltitudeChange(event.mouseWheel.delta);
+            checkSpeedChange(event.mouseWheel.delta);
+
+            break;
         }
 
         default:
@@ -158,16 +160,16 @@ void FlyingEntity::addWaypointToRoute(const Waypoint& waypoint) {
 // Purpose: This function checks if player wants to change the
 // altitude of current flying entity by pressing LCTRL
 //-----------------------------------------------------------
-void FlyingEntity::checkAltitudeChange() {
+void FlyingEntity::checkAltitudeChange(int scrollUsed) {
     if(isFlagActive(Flags::LOST_COMMS) || isFlagActive(Flags::HIJACK)) {
         return;
     }
 
     if(sf::Keyboard::isKeyPressed(m_altitudeButton)) {
-        if(m_newAltitude + 100 <= m_maxAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if(m_newAltitude + 100 <= m_maxAltitude && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || scrollUsed > 0)) {
             setNewAltitude(m_newAltitude + 100);
         }
-        if(m_newAltitude - 100 >= m_minAltitude && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        if(m_newAltitude - 100 >= m_minAltitude && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || scrollUsed < 0)) {
             setNewAltitude(m_newAltitude - 100);
         }
     }
@@ -177,16 +179,16 @@ void FlyingEntity::checkAltitudeChange() {
 // Purpose: This function checks if player wants to change the
 // altitude of current flying entity by pressing LCTRL
 //-----------------------------------------------------------
-void FlyingEntity::checkSpeedChange() {
+void FlyingEntity::checkSpeedChange(int scrollUsed) {
     if(isFlagActive(Flags::LOST_COMMS) || isFlagActive(Flags::HIJACK)) {
         return;
     }
 
     if(sf::Keyboard::isKeyPressed((m_speedButton))) {
-        if(m_newSpeed + 1 <= m_maxSpeed && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if(m_newSpeed + 1 <= m_maxSpeed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || scrollUsed > 0)) {
             setNewSpeed(m_newSpeed + 1);
         }
-        if(m_newSpeed - 1 >= m_minSpeed && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+        if(m_newSpeed - 1 >= m_minSpeed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || scrollUsed < 0)) {
             setNewSpeed(m_newSpeed - 1);
         }
     }
@@ -208,6 +210,12 @@ void FlyingEntity::hijackUpdateData() {
 //-----------------------------------------------------------
 void FlyingEntity::update(sf::Vector2f mousePosition) {
     m_mousePosition = mousePosition;
+
+    if(m_entitySelected) {
+        checkAltitudeChange(); // check if user is changing entity altitude
+        checkSpeedChange(); // check if user is changing entity speed
+        checkHeadingChange(); // check if user is changing entity heading
+    }
 
     updateAltitudeData();
     updateSpeedData();

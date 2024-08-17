@@ -6,7 +6,7 @@
 // Purpose: Build data based on APIs response
 //-----------------------------------------------------------
 nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window, int& fetchedCounter) {
-    // All data downloaded from API must be consumed before requesting new data from API
+    // All data downloaded from API must be used before requesting new data from API
     // This is to prevent spamming the API
     if(m_flyingEntities.is_null() || fetchedCounter >= static_cast<int>(m_flyingEntities.size())) {
         fetchedData = m_api->getFlyingEntities();
@@ -26,6 +26,11 @@ nlohmann::json DataFetcher::getFlyingEntities(sf::RenderWindow* window, int& fet
                    [](const auto& elm) {
         return elm.first;
     });
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(fetchedData.begin(), fetchedData.end(), g);
 
     for(auto& item : fetchedData) {
         if(item["flight"].is_null() || item["t"].is_null() || item["alt_baro"].is_null() || item["alt_baro"].is_string() ||

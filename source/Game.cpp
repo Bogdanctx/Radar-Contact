@@ -6,9 +6,17 @@
 #include "ResourcesManager.hpp"
 #include "Math.hpp"
 
-Game::Game(const std::string& selectedRegion, const std::shared_ptr<LiveAPI>& api) : AppWindow(1280, 720),
-                                                m_region(selectedRegion), m_api(api)
+Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(1280, 720),
+                                                m_region(selectedRegion)
 {
+    if(usingLiveAPI)
+    {
+        m_api = std::make_shared<LiveAPI>(m_region);
+    }
+    else {
+        m_api = std::make_shared<MockAPI>(m_region);
+    }
+
     loadElements();
     loadWaypoints();
 

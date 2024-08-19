@@ -136,21 +136,9 @@ void Menu::handleEvent() {
             case sf::Event::MouseButtonPressed: {
                 for(const std::pair<sf::RectangleShape, std::string>& regionButton: m_regionsButtons) {
                     if(regionButton.first.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
-                        Region region(regionButton.second);
-
-                        std::shared_ptr<LiveAPI> api;
-
-                        if(m_liveApi) {
-                            api = std::make_shared<LiveAPI>(region);
-                        }
-                        else
-                        {
-                            api = std::make_shared<MockAPI>(region);
-                        }
-
-                        StateMachine::Instance().pushState(std::make_shared<Game>(regionButton.second, api));
-
                         m_window.close();
+
+                        StateMachine::Instance().pushState(std::make_shared<Game>(regionButton.second, m_liveApi));
                     }
                 }
 

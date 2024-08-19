@@ -7,7 +7,6 @@
 
 class MockAPI : public LiveAPI {
 public:
-    MockAPI() = default;
     explicit MockAPI(const Region& region) : LiveAPI(region) {}
 
     nlohmann::json downloadFlyingEntities() override;

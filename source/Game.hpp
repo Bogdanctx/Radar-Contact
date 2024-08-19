@@ -20,7 +20,7 @@
 class Game : public AppWindow {
 public:
     Game() = delete;
-    Game(const std::string &selectedRegion, const std::shared_ptr<LiveAPI>& api);
+    Game(const std::string &selectedRegion, bool usingLiveAPI);
 
 private:
     void render() override;

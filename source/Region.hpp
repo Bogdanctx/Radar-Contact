@@ -15,7 +15,7 @@ public:
     std::vector<std::pair<float, float>>& getWeatherTiles();
     int getZoomLevel() const;
     int getRadius() const;
-    std::string getName() const;
+    const std::string& getName();
 
     void render(sf::RenderWindow* window) const;
 

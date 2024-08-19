@@ -17,7 +17,7 @@ void Region::render(sf::RenderWindow* window) const
     window->draw(m_regionSprite);
 }
 
-std::string Region::getName() const
+const std::string& Region::getName()
 {
     return m_regionName;
 }

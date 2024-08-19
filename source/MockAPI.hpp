@@ -7,7 +7,10 @@
 
 class MockAPI : public LiveAPI {
 public:
-    nlohmann::json getFlyingEntities() override;
+    MockAPI() = default;
+    explicit MockAPI(const Region& region) : LiveAPI(region) {}
+
+    nlohmann::json downloadFlyingEntities() override;
     std::string getWeatherPath() override;
-    std::vector<sf::Texture> getWeatherTextures(sf::RenderWindow* window) override;
+    std::vector<sf::Texture>& downloadWeatherTextures(sf::RenderWindow* window) override;
 };

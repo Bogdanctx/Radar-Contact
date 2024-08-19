@@ -13,10 +13,14 @@
 #include "Airport.hpp"
 #include "Weather.hpp"
 #include "FlightsTable.hpp"
+#include "Region.hpp"
+#include "LiveAPI.hpp"
+#include "MockAPI.hpp"
 
 class Game : public AppWindow {
 public:
-    Game();
+    Game() = delete;
+    Game(const std::string &selectedRegion, const std::shared_ptr<LiveAPI>& api);
 
 private:
     void render() override;
@@ -33,27 +37,33 @@ private:
     void checkInsideAirspace();
     void checkInsideWeather();
 
+    nlohmann::json fetchNewFlyingEntities();
+
     void removeCrashedEntities();
 
 private:
-    std::vector<Airport> m_airports{};
-    std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities{};
+    nlohmann::json m_downloadedFlyingEntities;
+    nlohmann::json m_incomingFlyingEntities;
+    int m_usedDownloadedData = 0;
+
+    std::vector<Airport> m_airports;
+    std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities;
     std::unordered_set<std::string> m_fetchedFlyingEntities;
 
-    sf::Clock m_updateWeatherClock{};
-    sf::Clock m_newEntitiesInterval{};
-    sf::Clock m_flightTableClock{};
-    sf::Clock m_loadingScreenDelay{};
-    sf::Sprite m_backgroundRegion{};
-    sf::Sound m_atcSound{};
+    sf::Clock m_updateWeatherClock;
+    sf::Clock m_newEntitiesInterval;
+    sf::Clock m_flightTableClock;
+    sf::Clock m_loadingScreenDelay;
+    sf::Sprite m_backgroundRegion;
+    sf::Sound m_atcSound;
 
-    Weather weather{};
-    FlightsTable flightsTable{};
+    Weather weather;
+    FlightsTable flightsTable;
+    Region m_region;
+    std::shared_ptr<LiveAPI> m_api;
 
-    std::vector<Waypoint> m_waypoints{};
+    std::vector<Waypoint> m_waypoints;
 
-    int m_totalFetchedEntities = 0;
-
-    bool m_renderFlightsTable{};
-    bool m_renderWaypoints{};
+    bool m_renderFlightsTable = true;
+    bool m_renderWaypoints = true;
 };

@@ -6,10 +6,9 @@
 
 class Weather {
 public:
-    Weather();
-
     void render(sf::RenderWindow *window);
-    void fetchWeatherImages(sf::RenderWindow* window);
+    void fetchWeatherImages(const std::vector<sf::Texture>& textures, const std::vector<float>& regionBoundaries,
+                            const std::vector<std::pair<float, float>>& tiles);
 
     std::vector<sf::Sprite>& getSprites();
 
@@ -25,7 +24,7 @@ public:
     };
 
 private:
-    std::vector<std::pair<float, float>> m_tiles;
+    const std::vector<std::pair<float, float>> m_tiles;
     std::vector<sf::Texture> m_textures;
     std::vector<sf::Sprite> m_sprites;
 };

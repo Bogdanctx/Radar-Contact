@@ -3,13 +3,12 @@
 #include "StateMachine.hpp"
 #include "Helicopter.hpp"
 #include "Airplane.hpp"
-#include "DataFetcher.hpp"
 #include "ResourcesManager.hpp"
 #include "Math.hpp"
 
-Game::Game() : AppWindow{1280, 720}
+Game::Game(const std::string& selectedRegion, const std::shared_ptr<LiveAPI>& api) : AppWindow(1280, 720),
+                                                m_region(selectedRegion), m_api(api)
 {
-    DataFetcher::reset();
     loadElements();
     loadWaypoints();
 
@@ -32,9 +31,6 @@ void Game::loadElements() {
 
     sf::Sprite loadingScreen{ResourcesManager::Instance().getTexture("loading_screen.png")};
 
-    const std::string selectedRegion = ResourcesManager::Instance().getSelectedRegion();
-    m_backgroundRegion.setTexture(ResourcesManager::Instance().getTexture(selectedRegion));
-
     sf::Sound loadingSound;
     loadingSound.setBuffer(ResourcesManager::Instance().getSound("plane_landing.wav"));
     loadingSound.setPlayingOffset(sf::seconds(4));
@@ -51,7 +47,7 @@ void Game::loadElements() {
     m_window.display();
     ////////////////////////////////////
 
-    weather.fetchWeatherImages(&m_window);
+    weather.fetchWeatherImages(m_api->downloadWeatherTextures(&m_window), m_region.getBoundaries(), m_region.getWeatherTiles());
 
     addNewEntities();
     initAirports();
@@ -70,7 +66,7 @@ void Game::loadElements() {
 
 void Game::update() {
     checkForEntitiesCollisions();
-    checkInsideWeather();
+    //checkInsideWeather();
     checkInsideAirspace();
 
     // removed out of screen flying entities
@@ -101,7 +97,8 @@ void Game::update() {
     }
 
     if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) { // fetch new weather every 5 minutes
-        weather.fetchWeatherImages(&m_window);
+        weather.fetchWeatherImages(m_api->downloadWeatherTextures(&m_window), m_region.getBoundaries(), m_region.getWeatherTiles());
+
         m_updateWeatherClock.restart();
     }
 
@@ -131,7 +128,7 @@ void Game::removeCrashedEntities() {
 void Game::render() {
     m_window.clear();
 
-    m_window.draw(m_backgroundRegion);
+    m_region.render(&m_window);
 
     weather.render(&m_window);
 
@@ -233,59 +230,90 @@ void Game::checkInsideWeather() {
 // Purpose: Used to check if a flying entity is inside its
 // airport destination coverage area
 //-----------------------------------------------------------
-void Game::checkInsideAirspace() {
+void Game::checkInsideAirspace()
+{
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
-    for(const Airport &airport: m_airports) {
-        for(auto &flyingEntity: m_flyingEntities) {
-            if(airport.isFlyingEntityInside(flyingEntity)) {
-                flyingEntity->setCrashed();
+    for(const std::shared_ptr<FlyingEntity> &flyingEntity: m_flyingEntities)
+    {
+        if(flyingEntity->getAltitude() <= 10000 && flyingEntity->getAirspeed() <= 250)
+        {
+            for(const Airport &airport: m_airports)
+            {
+                if(flyingEntity->getArrival() == airport.getIcao())
+                {
+                    if(airport.getBounds().contains(flyingEntity->getEntityPosition()))
+                    {
+                        flyingEntity->setCrashed();
+                    }
+                }
             }
         }
     }
 }
 
-void Game::handleEvent() {
+void Game::handleEvent()
+{
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
     sf::Event event{};
 
-    while(m_window.pollEvent(event)) {
-        for(auto &flyingEntity: m_flyingEntities) {
+    while(m_window.pollEvent(event))
+    {
+        for(auto &flyingEntity: m_flyingEntities)
+        {
             flyingEntity->handleEvent(event, positionRelativeToView(mousePosition));
         }
 
-        if(m_renderFlightsTable) {
+        if(m_renderFlightsTable)
+        {
             flightsTable.handleEvent(event, positionRelativeToView(mousePosition));
         }
 
-        switch(event.type) {
-            case sf::Event::KeyPressed: {
+        switch(event.type)
+        {
+            case sf::Event::KeyPressed:
+            {
 
-                switch(event.key.code) {
-                    case sf::Keyboard::Escape: {
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Escape:
+                    {
                         m_window.close();
                         break;
                     }
-                    case sf::Keyboard::Enter: {
+
+                    case sf::Keyboard::Enter:
+                    {
                         std::shared_ptr<AppWindow> menu = std::make_shared<Menu>();
                         StateMachine::Instance().pushState(menu);
                         m_window.close();
 
                         break;
                     }
-                    case sf::Keyboard::R: {
+
+                    case sf::Keyboard::R:
+                    {
                         m_renderFlightsTable = !m_renderFlightsTable;
                         break;
                     }
-                    case sf::Keyboard::T: {
+
+                    case sf::Keyboard::T:
+                    {
                         m_renderWaypoints = !m_renderWaypoints;
                         break;
                     }
-                    case sf::Keyboard::Space: { // add a waypoint to a flying entity's route
-                        if (m_renderWaypoints) {
-                            for (const Waypoint &wp: m_waypoints) {
-                                if (wp.getBounds().contains(positionRelativeToView(mousePosition))) {
-                                    for (const auto &flyingEntity: m_flyingEntities) {
-                                        if (flyingEntity->getIsEntitySelected() && flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName()) {
+
+                    case sf::Keyboard::Space:
+                    { // add a waypoint to a flying entity's route
+                        if (m_renderWaypoints)
+                        {
+                            for (const Waypoint &wp: m_waypoints)
+                            {
+                                if (wp.getBounds().contains(positionRelativeToView(mousePosition)))
+                                {
+                                    for (const auto &flyingEntity: m_flyingEntities)
+                                    {
+                                        if (flyingEntity->getIsEntitySelected() && flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName())
+                                        {
                                             flyingEntity->addWaypointToRoute(wp);
                                             break;
                                         }
@@ -293,8 +321,10 @@ void Game::handleEvent() {
                                 }
                             }
                         }
+
                         break;
                     }
+
                     default:
                         break;
                 }
@@ -307,7 +337,8 @@ void Game::handleEvent() {
 
                 break;
             }
-            case sf::Event::Closed: {
+            case sf::Event::Closed:
+            {
                 m_window.close();
 
                 break;
@@ -321,7 +352,8 @@ void Game::handleEvent() {
 //-----------------------------------------------------------
 // Purpose: Used to populate the game with real air traffic
 //-----------------------------------------------------------
-void Game::addNewEntities() {
+void Game::addNewEntities()
+{
     // more will be added
     const std::vector<std::string> helicopterTypes = {
         "EC45",
@@ -331,25 +363,24 @@ void Game::addNewEntities() {
         "A189"
     };
 
-    const nlohmann::json arrivals = DataFetcher::getFlyingEntities(&m_window, m_totalFetchedEntities);
-
-    if(m_fetchedFlyingEntities.size() >= DataFetcher::getFlyingEntitiesLength()) {
-        m_fetchedFlyingEntities.clear();
-    }
+    const nlohmann::json arrivals = fetchNewFlyingEntities();
 
     const int numberOfArrivals = static_cast<int>(arrivals.size());
 
     sf::Event tempEvent{};
     while(m_window.pollEvent(tempEvent)) {}; // loop through window events to prevent crashes
 
-    for(int i = 0; i < numberOfArrivals; i++) {
-        if(m_flyingEntities.size() > 8) {
+    for(int i = 0; i < numberOfArrivals; i++)
+    {
+        if(m_flyingEntities.size() > 8)
+        {
             break;
         }
 
         const std::string callsign = arrivals[i]["callsign"];
 
-        if(m_fetchedFlyingEntities.contains(callsign)) {
+        if(m_fetchedFlyingEntities.contains(callsign))
+        {
             continue;
         }
 
@@ -360,42 +391,129 @@ void Game::addNewEntities() {
         const int airspeed = Math::AirspeedAtAltitude(altitude);
         std::string squawk = arrivals[i]["squawk"];
         const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"],
-                                                               ResourcesManager::Instance().getRegionBox());
+                                                               m_region.getBoundaries());
         const std::string arrival = arrivals[i]["arrival"];
         const std::string type = arrivals[i]["type"];
 
-        // hijacks in real life are extremly rare, so I have sometimes to force them in game
-        if(Utilities::randGen<int>(1, 100) >= 97) {
+        // even though the squawk of other airplanes is real I want to force an hijacking scenario sometimes
+        if(Utilities::randGen<int>(1, 100) >= 97)
+        {
             squawk = "7500";
         }
 
         std::shared_ptr<FlyingEntity> base;
+        bool helicopterAdded = false;
 
-        for(const std::string& helicopterType: helicopterTypes) {
-            if(helicopterType == type) {
+        for(const std::string& helicopterType: helicopterTypes)
+        {
+            if(helicopterType == type)
+            {
                 Helicopter helicopter{altitude, airspeed, heading, squawk, callsign, position, arrival};
 
                 base = std::make_shared<Helicopter>(helicopter);
-            }
-            else {
-                Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
-
-                base = std::make_shared<Airplane>(airplane);
+                helicopterAdded = true;
             }
         }
 
+        if(!helicopterAdded)
+        {
+            Airplane airplane{altitude, airspeed, heading, squawk, callsign, position, arrival};
+
+            base = std::make_shared<Airplane>(airplane);
+        }
+
+        m_usedDownloadedData++;
         m_flyingEntities.push_back(base);
-        ++m_totalFetchedEntities;
     }
 }
+
+nlohmann::json Game::fetchNewFlyingEntities()
+{
+    // All data downloaded from API must be used before requesting new data from API
+    // This is to prevent spamming the API
+    if(m_downloadedFlyingEntities.is_null() || m_usedDownloadedData >= static_cast<int>(m_incomingFlyingEntities.size())) {
+        m_downloadedFlyingEntities = m_api->downloadFlyingEntities();
+        m_incomingFlyingEntities.clear();
+        m_usedDownloadedData = 0;
+    }
+    else {
+        return m_incomingFlyingEntities;
+    }
+
+    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = m_region.getAirports();
+
+    std::vector<std::string> airports;
+    airports.resize(regionAirports.size());
+
+    std::transform(regionAirports.begin(), regionAirports.end(), std::back_inserter(airports),
+                   [](const auto& elm) {
+        return elm.first;
+    });
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(m_downloadedFlyingEntities.begin(), m_downloadedFlyingEntities.end(), g);
+
+    for(auto& item : m_downloadedFlyingEntities) {
+        if(item["flight"].is_null() || item["t"].is_null() || item["alt_baro"].is_null() || item["alt_baro"].is_string() ||
+           item["lon"].is_null() || item["lat"].is_null() || item["track"].is_null() || item["t"].is_null() || item["gs"].is_null()) {
+            continue;
+        }
+
+        int airspeed = item["gs"];
+        if(airspeed < 120) {
+            continue;
+        }
+
+        int altitude = item["alt_baro"];
+        altitude = altitude / 1000 * 1000;
+
+        if(altitude < 2000) {
+            continue;
+        }
+
+        int randomIndex = Utilities::randGen<int>(0, static_cast<int>(airports.size()) - 1);
+        const std::string randomAirport = airports[randomIndex];
+
+        if(item["squawk"].is_null()) {
+            item["squawk"] = std::to_string(Utilities::randGen<int>(1000, 9999));
+        }
+
+        // remove the last 3 white spaces from the back of the callsign
+        std::string callsign = item["flight"];
+        callsign.resize(callsign.size() - 2);
+
+        nlohmann::json flyingEntity = {
+                {"callsign", callsign},
+                {"altitude", altitude},
+                {"squawk",   item["squawk"]},
+                {"lon",      static_cast<float>(item["lon"])},
+                {"lat",      static_cast<float>(item["lat"])},
+                {"heading",  static_cast<int>(item["track"])},
+                {"arrival",  randomAirport},
+                {"type",     item["t"]}
+        };
+
+        m_incomingFlyingEntities.push_back(flyingEntity);
+
+        sf::Event tempEvent{};
+        while(m_window.pollEvent(tempEvent)) {} // poll through window events to prevent crashes
+    }
+
+    return m_incomingFlyingEntities;
+}
+
 
 //-----------------------------------------------------------
 // Purpose: Used to add airports in game
 //-----------------------------------------------------------
-void Game::initAirports() {
-    std::unordered_map<std::string, std::pair<int, int>> airports = ResourcesManager::Instance().getRegionAirports();
+void Game::initAirports()
+{
+    std::unordered_map<std::string, std::pair<int, int>> airports = m_region.getAirports();
 
-    for(const auto &airport: airports) {
+    for(const auto &airport: airports)
+    {
         const std::string icao = airport.first;
         const int x = airport.second.first;
         const int y = airport.second.second;
@@ -409,15 +527,17 @@ void Game::initAirports() {
 //-----------------------------------------------------------
 // Purpose: Used to load the region waypoints
 //-----------------------------------------------------------
-void Game::loadWaypoints() {
-    const std::string waypoints = "resources/regions/" + ResourcesManager::Instance().getSelectedRegion() + "/waypoints.txt";
+void Game::loadWaypoints()
+{
+    const std::string waypoints = "resources/regions/" + m_region.getName() + "/waypoints.txt";
 
     std::ifstream fin(waypoints);
 
     int numberOfWaypoints;
     fin >> numberOfWaypoints;
 
-    for(int i = 0; i < numberOfWaypoints; i++) {
+    for(int i = 0; i < numberOfWaypoints; i++)
+    {
         std::string pointName;
         int x, y;
 

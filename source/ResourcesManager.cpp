@@ -30,14 +30,6 @@ void ResourcesManager::load() {
     loadFonts("Raleway-Regular.ttf");
 }
 
-void ResourcesManager::setMocking(bool status) {
-    m_usingMockApi = status;
-}
-
-bool ResourcesManager::isMockingEnabled() const {
-    return m_usingMockApi;
-}
-
 void ResourcesManager::loadSounds(const std::string& sound_name) {
     const std::filesystem::path path = std::filesystem::path("resources") / "sounds" / sound_name;
     sf::SoundBuffer sound;
@@ -84,120 +76,6 @@ void ResourcesManager::loadTextures(const std::string &textureName) {
 
 sf::Texture &ResourcesManager::getTexture(const std::string &key) {
     return m_textures.at(key);
-}
-
-const std::string& ResourcesManager::getSelectedRegion() const {
-    return m_selectedRegion;
-}
-
-//-----------------------------------------------------------
-// Purpose: Load the regions latitude and longitude bounds,
-// zoom level and the radius used to fetch airplanes based on a point
-//-----------------------------------------------------------
-void ResourcesManager::loadLatLongBox() {
-    m_regionBox.clear();
-
-    const std::filesystem::path path = std::filesystem::path("resources") / "regions" / m_selectedRegion / "long_lat.txt";
-
-    std::ifstream fin(path);
-    if(!fin.is_open()) {
-        throw ErrorLatLongBox("Could not open long_lat.txt. It may be missing or corrupted\n");
-    }
-
-    for(int i = 0; i < 4; i++) {
-        float coordinate;
-        fin>>coordinate;
-        m_regionBox.push_back(coordinate);
-    }
-
-    fin >> m_regionZoomLevel;
-
-    fin >> m_regionRadius;
-
-    fin.close();
-}
-
-int ResourcesManager::getRegionRadius() const {
-    return m_regionRadius;
-}
-
-int ResourcesManager::getRegionZoomLevel() const {
-    return m_regionZoomLevel;
-}
-
-void ResourcesManager::loadAirports() {
-    m_airports.clear();
-
-    const std::filesystem::path path = std::filesystem::path("resources") / "regions" / m_selectedRegion / "airports.txt";
-
-    std::ifstream fin(path);
-    if(!fin.is_open()) {
-        throw ErrorAirports("Could not open airports.txt. It may be missing or corrupted.\n");
-    }
-
-    int numberOfAirports;
-    fin >> numberOfAirports;
-    for(int i = 0; i < numberOfAirports; i++) {
-        std::string airportICAO;
-        int x, y;
-        fin >> x >> y >> airportICAO;
-
-        m_airports[airportICAO] = {x, y};
-    }
-
-    fin.close();
-}
-
-void ResourcesManager::loadRegion(const std::string &region_name) {
-    m_selectedRegion = region_name;
-
-    loadLatLongBox();
-    loadAirports();
-    loadWeatherTiles();
-
-    // load region background
-    const std::filesystem::path path = std::filesystem::path("resources") / "regions" / region_name / (region_name + ".png");
-    if(!m_textures[region_name].loadFromFile(path.string())) {
-        throw ErrorTexture(region_name + " missing or corrupted.\n");
-    }
-    //////
-}
-
-const std::vector<float>& ResourcesManager::getRegionBox() {
-    return m_regionBox;
-}
-
-const std::unordered_map<std::string, std::pair<int, int>>& ResourcesManager::getRegionAirports() const {
-    return m_airports;
-}
-
-//-----------------------------------------------------------
-// Purpose: Load latitude and longitude of weather tiles coordinates
-//-----------------------------------------------------------
-void ResourcesManager::loadWeatherTiles() {
-    m_regionWeatherTiles.clear();
-
-    const std::filesystem::path path = std::filesystem::path("resources") / "regions" / m_selectedRegion / "weather_tiles.txt";
-
-    std::ifstream fin(path);
-    if(!fin.is_open()) {
-        throw ErrorWeatherTiles("Could not open weather_tiles.txt. It may be missing or corrupted.\n");
-    }
-
-    int numberOfTiles;
-    fin >> numberOfTiles;
-
-    for(int i = 0; i < numberOfTiles; i++) {
-        float longitude, latitude;
-        fin >> longitude >> latitude;
-        m_regionWeatherTiles.emplace_back(latitude, longitude);
-    }
-
-    fin.close();
-}
-
-const std::vector<std::pair<float, float>>& ResourcesManager::getWeatherTiles() const {
-    return m_regionWeatherTiles;
 }
 
 ResourcesManager& ResourcesManager::Instance() {

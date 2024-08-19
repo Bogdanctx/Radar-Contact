@@ -75,26 +75,26 @@ namespace Math
     //-----------------------------------------------------------
     // https://stackoverflow.com/questions/41557891/convert-lat-long-to-x-y-position-within-a-bounding-box
     inline sf::Vector2f MercatorProjection(float crtLatitude, float crtLongitude, const std::vector<float> &imgBounds) {
-        const float north = radians(imgBounds[0]);
-        const float south = radians(imgBounds[2]);
-        const float east = radians(imgBounds[1]);
-        const float west = radians(imgBounds[3]);
+        const double north = radians(imgBounds[0]);
+        const double south = radians(imgBounds[2]);
+        const double east = radians(imgBounds[1]);
+        const double west = radians(imgBounds[3]);
 
-        const float map_width = 1280;
-        const float map_height = 720;
+        const double map_width = 1280;
+        const double map_height = 720;
 
         crtLatitude = radians(crtLatitude);
         crtLongitude = radians(crtLongitude);
 
-        const float ymin = std::log(std::tan(south / 2 + PI / 4));
-        const float ymax = std::log(std::tan(north / 2 + PI / 4));
+        const double ymin = std::log(std::tan(south / 2 + PI / 4));
+        const double ymax = std::log(std::tan(north / 2 + PI / 4));
 
-        const float x_factor = map_width / (east - west);
-        const float y_factor = map_height / (ymax - ymin);
+        const double x_factor = map_width / (east - west);
+        const double y_factor = map_height / (ymax - ymin);
 
-        const float x = (crtLongitude - west) * x_factor * 0.998f;
-        const float y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor * 0.995f;
+        const double x = (crtLongitude - west) * x_factor * 0.998;
+        const double y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor * 0.998;
 
-        return {x,y};
+        return {static_cast<float>(x), static_cast<float>(y)};
     }
 }

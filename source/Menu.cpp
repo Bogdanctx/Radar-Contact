@@ -1,7 +1,6 @@
 #include "Menu.hpp"
 #include "Game.hpp"
 #include "StateMachine.hpp"
-#include "DataFetcher.hpp"
 #include "MockAPI.hpp"
 #include "ResourcesManager.hpp"
 
@@ -81,7 +80,7 @@ void Menu::render() {
 }
 
 void Menu::update() {
-    if(ResourcesManager::Instance().isMockingEnabled()) {
+    if(!m_liveApi) {
         liveData.setFillColor(sf::Color(209, 206, 199, 100));
         localData.setFillColor(sf::Color::Green);
     }
@@ -123,6 +122,8 @@ void Menu::handleEvent() {
             case sf::Event::KeyPressed: {
                 const sf::Keyboard::Key key_code = event.key.code;
 
+                printf("%d\n", key_code);
+
                 if(key_code == sf::Keyboard::Escape) {
                     m_window.close();
                 }
@@ -135,28 +136,33 @@ void Menu::handleEvent() {
                 break;
             }
             case sf::Event::MouseButtonPressed: {
-                for(const auto &regionButtons: m_regionsButtons) {
-                    if(regionButtons.first.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
-                        std::shared_ptr<LiveAPI> api = std::make_shared<LiveAPI>();
+                for(const std::pair<sf::RectangleShape, std::string>& regionButton: m_regionsButtons) {
+                    if(regionButton.first.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
+                        Region region(regionButton.second);
 
-                        if(ResourcesManager::Instance().isMockingEnabled()) {
-                            api = std::make_shared<MockAPI>();
+                        std::shared_ptr<LiveAPI> api;
+
+                        if(m_liveApi) {
+                            printf("created live\n");
+                            api = std::make_shared<LiveAPI>(region);
+                        }
+                        else
+                        {
+                            printf("created mock\n");
+                            api = std::make_shared<MockAPI>(region);
                         }
 
-                        DataFetcher::setAPI(api);
-
-                        ResourcesManager::Instance().loadRegion(regionButtons.second);
-                        StateMachine::Instance().pushState(std::make_shared<Game>());
+                        StateMachine::Instance().pushState(std::make_shared<Game>(regionButton.second, api));
 
                         m_window.close();
                     }
                 }
 
                 if(liveData.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
-                    ResourcesManager::Instance().setMocking(false);
+                    m_liveApi = true;
                 }
                 else if(localData.getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
-                    ResourcesManager::Instance().setMocking(true);
+                    m_liveApi = false;
                 }
 
                 break;

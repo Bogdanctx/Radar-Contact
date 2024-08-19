@@ -55,7 +55,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
 // or just update the position callsign
 //-----------------------------------------------------------
 void FlyingEntity::updateText() {
-    if(!m_entitySelected) {
+    if(!m_isEntitySelected) {
         const sf::Vector2f position = m_entity.getPosition();
         m_callsignText.setPosition(position.x - 5, position.y - 20);
         return;
@@ -104,7 +104,7 @@ void FlyingEntity::render(sf::RenderWindow* gameWindow) {
     gameWindow->draw(m_entity);
     gameWindow->draw(m_callsignText);
 
-    if(m_entitySelected) {
+    if(m_isEntitySelected) {
         gameWindow->draw(m_arrivalText);
         gameWindow->draw(m_headingText);
         gameWindow->draw(m_speedText);
@@ -127,19 +127,20 @@ void FlyingEntity::handleEvent(const sf::Event& event, const sf::Vector2f mouseP
 
             // if an entity has been selected by user
             if(entityBounds.contains(mousePosition)) {
-                m_entitySelected = true;
+                m_isEntitySelected = true;
                 updateText();
             }
             else {
-                m_entitySelected = false;
+                m_isEntitySelected = false;
                 updateText();
             }
             break;
         }
-        case sf::Event::MouseWheelMoved:
-        {
-            checkAltitudeChange(event.mouseWheel.delta);
-            checkSpeedChange(event.mouseWheel.delta);
+        case sf::Event::MouseWheelMoved: {
+            if(m_isEntitySelected) {
+                checkAltitudeChange(event.mouseWheel.delta);
+                checkSpeedChange(event.mouseWheel.delta);
+            }
 
             break;
         }
@@ -211,7 +212,7 @@ void FlyingEntity::hijackUpdateData() {
 void FlyingEntity::update(sf::Vector2f mousePosition) {
     m_mousePosition = mousePosition;
 
-    if(m_entitySelected) {
+    if(m_isEntitySelected) {
         checkAltitudeChange(); // check if user is changing entity altitude
         checkSpeedChange(); // check if user is changing entity speed
         checkHeadingChange(); // check if user is changing entity heading
@@ -606,7 +607,7 @@ int FlyingEntity::getAirspeed() const {
 }
 
 void FlyingEntity::setEntitySelected() {
-    m_entitySelected = true;
+    m_isEntitySelected = true;
     updateText();
 }
 
@@ -618,7 +619,7 @@ Waypoint FlyingEntity::getRouteCurrentWaypoint() const {
 }
 
 bool FlyingEntity::getIsEntitySelected() const {
-    return m_entitySelected;
+    return m_isEntitySelected;
 }
 
 const std::string& FlyingEntity::getCallsign() const {

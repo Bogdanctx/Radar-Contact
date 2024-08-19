@@ -1,6 +1,5 @@
 #include "LiveAPI.hpp"
 #include "ResourcesManager.hpp"
-#include "utils.hpp"
 
 #include <cpr/cpr.h>
 #include <SFML/Network.hpp>
@@ -8,15 +7,17 @@
 //-----------------------------------------------------------
 // Purpose: Download live data from API
 //-----------------------------------------------------------
-nlohmann::json LiveAPI::getFlyingEntities() {
-    const std::vector<float> bounds = ResourcesManager::Instance().getRegionBox();
+nlohmann::json LiveAPI::downloadFlyingEntities()
+{
+    const std::vector<float>& bounds = m_region.getBoundaries();
+    int regionRadius = m_region.getRadius();
 
     int latitudeAvg = static_cast<int>((bounds[0] + bounds[2]) / 2);
     int longitudeAvg = static_cast<int>((bounds[1] + bounds[3]) / 2);
 
     const std::string link = "https://api.airplanes.live/v2/point/" + std::to_string(latitudeAvg) + '/' \
-                            + std::to_string(longitudeAvg) + "/" + std::to_string(ResourcesManager::Instance().getRegionRadius());
-    
+                            + std::to_string(longitudeAvg) + "/" + std::to_string(regionRadius);
+
     const cpr::Response res = cpr::Get(cpr::Url{link},
                                        cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
                                        cpr::Parameters{{"anon", "true"}, {"key", "value"}});
@@ -25,6 +26,7 @@ nlohmann::json LiveAPI::getFlyingEntities() {
 
     return data;
 }
+
 
 //-----------------------------------------------------------
 // Purpose: This call returns the 'path' to the latest fetched weather data
@@ -42,7 +44,12 @@ std::string LiveAPI::getWeatherPath() {
 // Purpose: Used to download latest weather data based on the
 // getWeatherPath() 'path'
 //-----------------------------------------------------------
-std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
+std::vector<sf::Texture>& LiveAPI::downloadWeatherTextures(sf::RenderWindow* window)
+{
+    const std::vector<std::pair<float, float>>& tiles = m_region.getWeatherTiles();
+    int regionZoomLevel = m_region.getZoomLevel();
+    m_downloadedWeatherTextures.clear();
+
     sf::Http http{"http://tilecache.rainviewer.com"};
     sf::Http::Request request;
     sf::Http::Response api_response;
@@ -52,13 +59,11 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
     request.setField("Content-Type", "application/x-www-form-urlencoded");
 
     const std::string path = LiveAPI::getWeatherPath();
-    std::vector<sf::Texture> res;
-    std::vector<std::pair<float, float>> tiles = ResourcesManager::Instance().getWeatherTiles();
 
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
 
-        std::string link = path + "/256/" + std::to_string(ResourcesManager::Instance().getRegionZoomLevel()) + "/" +
+        std::string link = path + "/256/" + std::to_string(regionZoomLevel) + "/" +
                             std::to_string(tile.first) + '/' + std::to_string(tile.second) + "/2/1_0.png";
 
         request.setUri(link);
@@ -67,11 +72,11 @@ std::vector<sf::Texture> LiveAPI::getWeatherTextures(sf::RenderWindow* window) {
 
         temp_texture.loadFromMemory(api_response.getBody().data(), api_response.getBody().size());
 
-        res.push_back(temp_texture);
+        m_downloadedWeatherTextures.push_back(temp_texture);
 
         sf::Event tempEvent{};
         while(window->pollEvent(tempEvent)) {} // poll through window events to prevent crashes
     }
 
-    return res;
+    return m_downloadedWeatherTextures;
 }

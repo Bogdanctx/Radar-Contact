@@ -71,8 +71,6 @@ set(SOURCES
         source/Math.hpp
         source/ResourcesManager.hpp
         source/ResourcesManager.cpp
-        source/DataFetcher.hpp
-        source/DataFetcher.cpp
         source/LiveAPI.hpp
         source/LiveAPI.cpp
         source/utils.hpp
@@ -103,6 +101,8 @@ set(SOURCES
         source/Weather.cpp
         source/AppWindow.hpp
         source/AppWindow.cpp
+        source/Region.cpp
+        source/Region.hpp
 )
 
 if(MSVC)

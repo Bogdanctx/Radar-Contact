@@ -29,6 +29,7 @@ private:
         sf::Clock clock;
         double interval = 0;
     };
+
 public:
     enum Flags {
         CLEAR,
@@ -101,17 +102,18 @@ protected:
 
     std::deque<Waypoint> route;
     sf::RectangleShape m_entity;
-    bool m_entitySelected = false;
+    bool m_isEntitySelected = false;
     sf::Text m_callsignText;
 
-    int m_heading;
-    int m_speed;
-    int m_altitude;
-    OneDecimalFloatingPoint m_fuel = OneDecimalFloatingPoint(Utilities::randGen<int>(12, 19), Utilities::randGen<int>(0, 9));
+    int m_heading{};
+    int m_speed{};
+    int m_altitude{};
+    OneDecimalFloatingPoint m_fuel = OneDecimalFloatingPoint(Utilities::randGen<int>(12, 19),
+                                                            Utilities::randGen<int>(0, 9));
 
-    int m_newHeading;
-    int m_newAltitude;
-    int m_newSpeed;
+    int m_newHeading{};
+    int m_newAltitude{};
+    int m_newSpeed{};
 
     int m_minSpeed{}, m_maxSpeed{};
     int m_minAltitude{}, m_maxAltitude{};

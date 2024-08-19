@@ -17,23 +17,23 @@ void Region::render(sf::RenderWindow* window) const
     window->draw(m_regionSprite);
 }
 
-std::string Region::getName() const
+std::string& Region::getName()
 {
     return m_regionName;
 }
 
 
-std::vector<float> Region::getBoundaries() const
+std::vector<float>& Region::getBoundaries()
 {
     return m_boundaries;
 }
 
-std::unordered_map<std::string, std::pair<int, int>> Region::getAirports() const
+std::unordered_map<std::string, std::pair<int, int>>& Region::getAirports()
 {
     return m_airports;
 }
 
-std::vector<std::pair<float, float>> Region::getWeatherTiles() const
+std::vector<std::pair<float, float>>& Region::getWeatherTiles()
 {
     return m_weatherTiles;
 }

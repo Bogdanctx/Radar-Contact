@@ -10,12 +10,12 @@ class Region {
 public:
     explicit Region(const std::string &region);
 
-    std::vector<float> getBoundaries() const;
-    std::unordered_map<std::string, std::pair<int, int>> getAirports() const;
-    std::vector<std::pair<float, float>> getWeatherTiles() const;
+    std::vector<float>& getBoundaries();
+    std::unordered_map<std::string, std::pair<int, int>>& getAirports();
+    std::vector<std::pair<float, float>>& getWeatherTiles();
     int getZoomLevel() const;
     int getRadius() const;
-    std::string getName() const;
+    std::string& getName();
 
     void render(sf::RenderWindow* window) const;
 

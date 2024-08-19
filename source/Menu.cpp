@@ -122,8 +122,6 @@ void Menu::handleEvent() {
             case sf::Event::KeyPressed: {
                 const sf::Keyboard::Key key_code = event.key.code;
 
-                printf("%d\n", key_code);
-
                 if(key_code == sf::Keyboard::Escape) {
                     m_window.close();
                 }
@@ -143,12 +141,10 @@ void Menu::handleEvent() {
                         std::shared_ptr<LiveAPI> api;
 
                         if(m_liveApi) {
-                            printf("created live\n");
                             api = std::make_shared<LiveAPI>(region);
                         }
                         else
                         {
-                            printf("created mock\n");
                             api = std::make_shared<MockAPI>(region);
                         }
 

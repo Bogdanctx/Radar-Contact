@@ -11,6 +11,5 @@ public:
     explicit MockAPI(const Region& region) : LiveAPI(region) {}
 
     nlohmann::json downloadFlyingEntities() override;
-    std::string getWeatherPath() override;
     std::vector<sf::Texture>& downloadWeatherTextures(sf::RenderWindow* window) override;
 };

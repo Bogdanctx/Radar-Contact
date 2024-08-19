@@ -68,7 +68,7 @@ void Weather::fetchWeatherImages(const std::vector<sf::Texture>& textures, const
 {
     m_sprites.clear();
 
-    for(int i = 0; i < static_cast<int>(textures.size()); i++) {
+    for(int i = 0; i < 15; i++) {
         sf::Sprite temp_sprite(textures[i]);
 
         sf::Color color = temp_sprite.getColor();

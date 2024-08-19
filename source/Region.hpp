@@ -34,6 +34,6 @@ private:
     std::vector<std::pair<float, float>> m_weatherTiles;
     std::unordered_map<std::string, std::pair<int, int>> m_airports;
     std::vector<float> m_boundaries;
-    int m_zoomLevel;
-    int m_radius;
+    int m_zoomLevel{};
+    int m_radius{};
 };

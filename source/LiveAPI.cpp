@@ -59,7 +59,6 @@ std::vector<sf::Texture>& LiveAPI::downloadWeatherTextures(sf::RenderWindow* win
     request.setField("Content-Type", "application/x-www-form-urlencoded");
 
     const std::string path = LiveAPI::getWeatherPath();
-
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
 

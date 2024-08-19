@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-Region::Region(const std::string& region) : path(std::filesystem::path("resources") / "regions" / region), m_regionName(region)
+Region::Region(const std::string& region) : m_regionName(region), path(std::filesystem::path("resources") / "regions" / region)
 {
     loadBoundary();
     loadAirports();
@@ -89,10 +89,7 @@ void Region::loadWeatherTiles()
 {
     std::ifstream fin(path / "weather_tiles.txt");
 
-    int numberOfTiles;
-    fin >> numberOfTiles;
-
-    for(int i = 0; i < numberOfTiles; i++) {
+    for(int i = 0; i < 15; i++) {
         float longitude, latitude;
         fin >> longitude >> latitude;
         m_weatherTiles.emplace_back(latitude, longitude);

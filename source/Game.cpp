@@ -66,7 +66,7 @@ void Game::loadElements() {
 
 void Game::update() {
     checkForEntitiesCollisions();
-    //checkInsideWeather();
+    checkInsideWeather();
     checkInsideAirspace();
 
     // removed out of screen flying entities
@@ -368,7 +368,7 @@ void Game::addNewEntities()
     const int numberOfArrivals = static_cast<int>(arrivals.size());
 
     sf::Event tempEvent{};
-    while(m_window.pollEvent(tempEvent)) {}; // loop through window events to prevent crashes
+    while(m_window.pollEvent(tempEvent)) {} // loop through window events to prevent crashes
 
     for(int i = 0; i < numberOfArrivals; i++)
     {
@@ -395,7 +395,7 @@ void Game::addNewEntities()
         const std::string arrival = arrivals[i]["arrival"];
         const std::string type = arrivals[i]["type"];
 
-        // even though the squawk of other airplanes is real I want to force an hijacking scenario sometimes
+        // even though the squawk of other airplanes is real I want to force a hijacking scenario sometimes
         if(Utilities::randGen<int>(1, 100) >= 97)
         {
             squawk = "7500";
@@ -474,7 +474,7 @@ nlohmann::json Game::fetchNewFlyingEntities()
         }
 
         int randomIndex = Utilities::randGen<int>(0, static_cast<int>(airports.size()) - 1);
-        const std::string randomAirport = airports[randomIndex];
+        const std::string& randomAirport = airports[randomIndex];
 
         if(item["squawk"].is_null()) {
             item["squawk"] = std::to_string(Utilities::randGen<int>(1000, 9999));

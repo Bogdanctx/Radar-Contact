@@ -92,8 +92,8 @@ namespace Math
         const double x_factor = map_width / (east - west);
         const double y_factor = map_height / (ymax - ymin);
 
-        const double x = (crtLongitude - west) * x_factor * 0.998;
-        const double y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor * 0.998;
+        const double x = (crtLongitude - west) * x_factor;
+        const double y = (ymax - std::log(std::tan(crtLatitude / 2 + PI / 4))) * y_factor;
 
         return {static_cast<float>(x), static_cast<float>(y)};
     }

@@ -28,10 +28,23 @@ std::vector<float>& Region::getBoundaries()
     return m_boundaries;
 }
 
-std::unordered_map<std::string, std::pair<int, int>>& Region::getAirports()
+std::vector<std::string> Region::getAirportsIcao() const
+{
+    std::vector<std::string> airports;
+
+    std::transform(m_airports.begin(), m_airports.end(), std::back_inserter(airports),
+                   [](const auto& elm) {
+        return elm.first;
+    });
+
+    return airports;
+}
+
+std::unordered_map<std::string, std::pair<int, int>> Region::getAirports() const
 {
     return m_airports;
 }
+
 
 std::vector<std::pair<float, float>>& Region::getWeatherTiles()
 {

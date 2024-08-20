@@ -448,20 +448,7 @@ nlohmann::json Game::fetchNewFlyingEntities()
         return m_incomingFlyingEntities;
     }
 
-    const std::unordered_map<std::string, std::pair<int, int>> regionAirports = m_region.getAirports();
-
-    std::vector<std::string> airports;
-    airports.resize(regionAirports.size());
-
-    std::transform(regionAirports.begin(), regionAirports.end(), std::back_inserter(airports),
-                   [](const auto& elm) {
-        return elm.first;
-    });
-
-    std::random_device rd;
-    std::mt19937 g(rd());
-
-    std::shuffle(m_downloadedFlyingEntities.begin(), m_downloadedFlyingEntities.end(), g);
+    const std::vector<std::string> regionAirports = m_region.getAirportsIcao();
 
     for(auto& item : m_downloadedFlyingEntities) {
         if(item["flight"].is_null() || item["t"].is_null() || item["alt_baro"].is_null() || item["alt_baro"].is_string() ||
@@ -481,8 +468,8 @@ nlohmann::json Game::fetchNewFlyingEntities()
             continue;
         }
 
-        int randomIndex = Utilities::randGen<int>(0, static_cast<int>(airports.size()) - 1);
-        const std::string& randomAirport = airports[randomIndex];
+        int randomIndex = Utilities::randGen<int>(0, static_cast<int>(regionAirports.size() - 1));
+        const std::string& randomAirport = regionAirports[randomIndex];
 
         if(item["squawk"].is_null()) {
             item["squawk"] = std::to_string(Utilities::randGen<int>(1000, 9999));
@@ -518,18 +505,17 @@ nlohmann::json Game::fetchNewFlyingEntities()
 //-----------------------------------------------------------
 void Game::initAirports()
 {
-    std::unordered_map<std::string, std::pair<int, int>> airports = m_region.getAirports();
+    const std::unordered_map<std::string, std::pair<int, int>> airports = m_region.getAirports();
 
-    for(const auto &airport: airports)
+    for(const auto& [airportIcao, position]: airports)
     {
-        const std::string icao = airport.first;
-        const int x = airport.second.first;
-        const int y = airport.second.second;
+        const std::string icao = airportIcao;
+        const int x = position.first;
+        const int y = position.second;
 
         Airport newAirport{sf::Vector2f(x, y), icao};
         m_airports.push_back(newAirport);
     }
-
 }
 
 //-----------------------------------------------------------

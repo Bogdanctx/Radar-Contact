@@ -129,11 +129,11 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/inc
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
 if(MSVC)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-audio sfml-system Threads::Threads)
 elseif(LINUX)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads X11)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-system Threads::Threads X11)
 else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-network sfml-system Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-system Threads::Threads)
 endif()
 
 ###############################################################################

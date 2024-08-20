@@ -12,7 +12,7 @@ public:
 
     std::vector<float>& getBoundaries();
     std::vector<std::string> getAirportsIcao() const;
-    std::unordered_map<std::string, std::pair<int, int>> getAirports() const;
+    const std::unordered_map<std::string, std::pair<int, int>>& getAirports() const;
     std::vector<std::pair<float, float>>& getWeatherTiles();
     int getZoomLevel() const;
     int getRadius() const;

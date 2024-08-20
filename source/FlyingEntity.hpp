@@ -142,9 +142,10 @@ private:
 
     bool m_isCrashed = false;
 
-    Timer m_hijack;
-    Timer m_lostComms;
-    Timer m_fuelConsumption;
+    Timer m_hijackTimer;
+    Timer m_lostCommsTimer;
+    Timer m_fuelConsumptionTimer;
+    Timer m_buttonDelayTimer;
 
 
     bool hasFuel = true;

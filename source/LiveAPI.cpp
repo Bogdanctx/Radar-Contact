@@ -1,8 +1,6 @@
 #include "LiveAPI.hpp"
 #include "ResourcesManager.hpp"
-
 #include <cpr/cpr.h>
-#include <SFML/Network.hpp>
 
 //-----------------------------------------------------------
 // Purpose: Download live data from API
@@ -18,9 +16,7 @@ nlohmann::json LiveAPI::downloadFlyingEntities()
     const std::string link = "https://api.airplanes.live/v2/point/" + std::to_string(latitudeAvg) + '/' \
                             + std::to_string(longitudeAvg) + "/" + std::to_string(regionRadius);
 
-    const cpr::Response res = cpr::Get(cpr::Url{link},
-                                       cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
-                                       cpr::Parameters{{"anon", "true"}, {"key", "value"}});
+    const cpr::Response res = cpr::Get(cpr::Url(link));
 
     nlohmann::json data = nlohmann::json::parse(res.text)["ac"];
 
@@ -33,7 +29,7 @@ nlohmann::json LiveAPI::downloadFlyingEntities()
 //-----------------------------------------------------------
 std::string LiveAPI::getWeatherPath() {
     const std::string link = "https://api.rainviewer.com/public/weather-maps.json";
-    const cpr::Response res = cpr::Get(cpr::Url{link});
+    const cpr::Response res = cpr::Get(cpr::Url(link));
 
     nlohmann::json data = nlohmann::json::parse(res.text);
 
@@ -50,26 +46,19 @@ std::vector<sf::Texture>& LiveAPI::downloadWeatherTextures(sf::RenderWindow* win
     int regionZoomLevel = m_region.getZoomLevel();
     m_downloadedWeatherTextures.clear();
 
-    sf::Http http{"http://tilecache.rainviewer.com"};
-    sf::Http::Request request;
-    sf::Http::Response api_response;
-
-    request.setMethod(sf::Http::Request::Post);
-    request.setHttpVersion(1, 1);
-    request.setField("Content-Type", "application/x-www-form-urlencoded");
-
     const std::string path = LiveAPI::getWeatherPath();
+
     for(const std::pair<float, float> &tile: tiles) {
         sf::Texture temp_texture;
 
-        std::string link = path + "/256/" + std::to_string(regionZoomLevel) + "/" +
+        std::string link = "https://tilecache.rainviewer.com" + path + "/256/" + std::to_string(regionZoomLevel) + "/" +
                             std::to_string(tile.first) + '/' + std::to_string(tile.second) + "/2/1_0.png";
 
-        request.setUri(link);
+        // reserve size because images are large string and request will be slow
+        // https://docs.libcpr.org/advanced-usage.html#large-responses
+        const cpr::Response res = cpr::Get(cpr::Url(link), cpr::ReserveSize(256 * 256));
 
-        api_response = http.sendRequest(request);
-
-        temp_texture.loadFromMemory(api_response.getBody().data(), api_response.getBody().size());
+        temp_texture.loadFromMemory(res.text.data(), res.text.size());
 
         m_downloadedWeatherTextures.push_back(temp_texture);
 

@@ -10,7 +10,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_fuelConsumption(4500), m_arrival{arrival},
+        m_fuelConsumptionTimer(4500), m_arrival{arrival},
         m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}, m_squawk{squawk},
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
         m_routeWaypointsText{"", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
@@ -21,7 +21,8 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}, m_callsign{callsign},
-        m_headingStick{sf::Vector2f(26, 1.2f)}
+        m_headingStick{sf::Vector2f(26, 1.2f)},
+        m_buttonDelayTimer(50)
 {
     m_entity.setSize(sf::Vector2f(10, 10));
     m_entity.setFillColor(sf::Color::White);
@@ -167,11 +168,13 @@ void FlyingEntity::checkAltitudeChange(int scrollUsed) {
     }
 
     if(sf::Keyboard::isKeyPressed(m_altitudeButton)) {
-        if(m_newAltitude + 100 <= m_maxAltitude && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || scrollUsed > 0)) {
+        if(m_newAltitude + 100 <= m_maxAltitude && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_buttonDelayTimer.passedDelay()) || scrollUsed > 0)) {
             setNewAltitude(m_newAltitude + 100);
+            m_buttonDelayTimer.restart();
         }
-        if(m_newAltitude - 100 >= m_minAltitude && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || scrollUsed < 0)) {
+        if(m_newAltitude - 100 >= m_minAltitude && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_buttonDelayTimer.passedDelay()) || scrollUsed < 0)) {
             setNewAltitude(m_newAltitude - 100);
+            m_buttonDelayTimer.restart();
         }
     }
 }
@@ -186,11 +189,13 @@ void FlyingEntity::checkSpeedChange(int scrollUsed) {
     }
 
     if(sf::Keyboard::isKeyPressed((m_speedButton))) {
-        if(m_newSpeed + 1 <= m_maxSpeed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || scrollUsed > 0)) {
+        if(m_newSpeed + 1 <= m_maxSpeed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_buttonDelayTimer.passedDelay() || scrollUsed > 0)) {
             setNewSpeed(m_newSpeed + 1);
+            m_buttonDelayTimer.restart();
         }
-        if(m_newSpeed - 1 >= m_minSpeed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || scrollUsed < 0)) {
+        if(m_newSpeed - 1 >= m_minSpeed && (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_buttonDelayTimer.passedDelay() || scrollUsed < 0)) {
             setNewSpeed(m_newSpeed - 1);
+            m_buttonDelayTimer.restart();
         }
     }
 }
@@ -263,23 +268,23 @@ void FlyingEntity::update(sf::Vector2f mousePosition) {
 // entity is being hijacked or has lost communication with ATC
 //-----------------------------------------------------------
 void FlyingEntity::handleSpecialFlightConditions() {
-    if(isFlagActive(Flags::HIJACK) && m_hijack.passedDelay()) {
+    if(isFlagActive(Flags::HIJACK) && m_hijackTimer.passedDelay()) {
         hijackUpdateData();
 
-        m_hijack.interval = Utilities::randGen<int>(1400, 2800);
-        m_hijack.restart();
+        m_hijackTimer.interval = Utilities::randGen<int>(1400, 2800);
+        m_hijackTimer.restart();
     }
 
     // squawk = 7600 -> lost communications
-    if(m_squawk == "7600" && m_lostComms.passedDelay()) {
+    if(m_squawk == "7600" && m_lostCommsTimer.passedDelay()) {
         if(isFlagActive(Flags::LOST_COMMS)) {
             resetFlag(Flags::LOST_COMMS);
         }
         else {
             setFlag(Flags::LOST_COMMS);
         }
-        m_lostComms.interval = Utilities::randGen<int>(9000, 1800);
-        m_lostComms.restart();
+        m_lostCommsTimer.interval = Utilities::randGen<int>(9000, 1800);
+        m_lostCommsTimer.restart();
     }
 }
 
@@ -416,7 +421,7 @@ void FlyingEntity::updateFuel() {
         return;
     }
 
-    if(m_fuelConsumption.passedDelay()) {
+    if(m_fuelConsumptionTimer.passedDelay()) {
         --m_fuel;
         m_fuelText.setString(m_fuel.asString());
 
@@ -430,25 +435,25 @@ void FlyingEntity::updateFuel() {
             m_speed--;
         }
 
-        m_fuelConsumption.restart();
+        m_fuelConsumptionTimer.restart();
     }
 
     if (m_speed <= m_newSpeed) { // is reducing speed
         if (m_altitude < m_newAltitude) { // is descending
-            m_fuelConsumption.interval = 2500; // Less fuel needed when reducing speed and descending
+            m_fuelConsumptionTimer.interval = 2500; // Less fuel needed when reducing speed and descending
         } else {
-            m_fuelConsumption.interval = 3500; // Moderate fuel needed when reducing speed and maintaining/climbing
+            m_fuelConsumptionTimer.interval = 3500; // Moderate fuel needed when reducing speed and maintaining/climbing
         }
     } else { // is increasing speed
         if (m_altitude <= m_newAltitude) {
-            m_fuelConsumption.interval = 3800; // Moderate fuel needed when increasing speed and descending/maintaining
+            m_fuelConsumptionTimer.interval = 3800; // Moderate fuel needed when increasing speed and descending/maintaining
         } else {
-            m_fuelConsumption.interval = 7000; // More fuel needed when increasing speed and climbing
+            m_fuelConsumptionTimer.interval = 7000; // More fuel needed when increasing speed and climbing
         }
     }
 
     if (m_speed == m_newSpeed && m_altitude == m_newAltitude) {
-        m_fuelConsumption.interval = 4500; // Moderate fuel consumption when maintaining speed and altitude
+        m_fuelConsumptionTimer.interval = 4500; // Moderate fuel consumption when maintaining speed and altitude
     }
 
 }
@@ -615,7 +620,7 @@ Waypoint FlyingEntity::getRouteCurrentWaypoint() const {
     if(route.empty()) {
         return {sf::Vector2f(0, 0), ""};
     }
-    return route.back();
+    return route.front();
 }
 
 bool FlyingEntity::getIsEntitySelected() const {

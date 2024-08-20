@@ -40,7 +40,7 @@ std::vector<std::string> Region::getAirportsIcao() const
     return airports;
 }
 
-std::unordered_map<std::string, std::pair<int, int>> Region::getAirports() const
+const std::unordered_map<std::string, std::pair<int, int>>& Region::getAirports() const
 {
     return m_airports;
 }

@@ -5,6 +5,7 @@
 #include "Airplane.hpp"
 #include "ResourcesManager.hpp"
 #include "Math.hpp"
+#include "MockAPI.hpp"
 
 Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(1280, 720),
                                                 m_region(selectedRegion)
@@ -123,15 +124,13 @@ void Game::update() {
 }
 
 void Game::removeCrashedEntities() {
-    auto it = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(),
-                                    [&](auto &flyingEntity) {
-                                                return flyingEntity->getCrashed();
-                                    });
+    auto [ret, last] = std::ranges::remove_if(m_flyingEntities, [&](auto &flyingEntity)
+    {
+        return flyingEntity->getCrashed();
+    });
 
-    m_flyingEntities.erase(it, m_flyingEntities.end());
+    m_flyingEntities.erase(ret, last);
 }
-
-
 
 void Game::render() {
     m_window.clear();
@@ -318,13 +317,16 @@ void Game::handleEvent()
                             {
                                 if (wp.getBounds().contains(positionRelativeToView(mousePosition)))
                                 {
-                                    for (const auto &flyingEntity: m_flyingEntities)
+                                    auto ret = std::ranges::find_if(m_flyingEntities.begin(), m_flyingEntities.end(),
+                                        [&wp](const std::shared_ptr<FlyingEntity>& flyingEntity)
                                     {
-                                        if (flyingEntity->getIsEntitySelected() && flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName())
-                                        {
-                                            flyingEntity->addWaypointToRoute(wp);
-                                            break;
-                                        }
+                                        return flyingEntity->getIsEntitySelected() &&
+                                            flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName();
+                                    });
+
+                                    if(ret != m_flyingEntities.end())
+                                    {
+                                        (*ret)->addWaypointToRoute(wp);
                                     }
                                 }
                             }

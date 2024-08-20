@@ -174,7 +174,8 @@ jobs:
 
           # or use only the repo name (github does not have a predefined environment variable for this)
           # the regex splits by / and keeps everything after / without the / character
-          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
+          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
+          echo "CUSTOM_NAME=$(echo "Radar-Contact")" >> ${GITHUB_ENV}      
 
       - name: Install packages
         uses: ./.github/actions/install-packages
@@ -201,7 +202,6 @@ jobs:
 
       - name: Process artifacts
         uses: ./.github/actions/process-artifacts
-        if: runner.os != 'macOS'
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -209,12 +209,10 @@ jobs:
           name: ${{ env.ZIP_NAME }}_${{ env.TIMESTAMP }}
           path: ${{ env.ZIP_NAME }}
           retention-days: 30
-        if: runner.os != 'macOS'
 
       - name: Runtime checks
         uses: ./.github/actions/runtime-checks
-        if: runner.os != 'macOS'
 
       - name: Create release
         uses: ./.github/actions/create-release
-        if: runner.os != 'macOS' && startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')

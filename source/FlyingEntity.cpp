@@ -10,7 +10,6 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
         m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_fuelConsumptionTimer(4500), m_buttonDelayTimer(50),
         m_arrival{arrival}, m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
         m_squawk{squawk},
         m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
@@ -179,6 +178,12 @@ void FlyingEntity::checkAltitudeChange(int scrollUsed) {
     }
 }
 
+OneDecimalFloatingPoint FlyingEntity::getFuel() const
+{
+    return m_fuel;
+}
+
+
 //-----------------------------------------------------------
 // Purpose: This function checks if player wants to change the
 // altitude of current flying entity by pressing LCTRL
@@ -206,9 +211,9 @@ void FlyingEntity::checkSpeedChange(int scrollUsed) {
 // (an experienced pilot :) )
 //-----------------------------------------------------------
 void FlyingEntity::hijackUpdateData() {
-    setNewHeading(Utilities::randGen<int>(0, 360));
-    setNewSpeed(Utilities::randGen<int>(m_minSpeed, m_maxSpeed));
-    setNewAltitude(Utilities::randGen<int>(m_minAltitude, m_maxAltitude) / 100 * 100);
+    setNewHeading(Utility::randomNumber(0, 360));
+    setNewSpeed(Utility::randomNumber(m_minSpeed, m_maxSpeed));
+    setNewAltitude(Utility::randomNumber(m_minAltitude, m_maxAltitude) / 100 * 100);
 }
 
 //-----------------------------------------------------------
@@ -271,7 +276,7 @@ void FlyingEntity::handleSpecialFlightConditions() {
     if(isFlagActive(Flags::HIJACK) && m_hijackTimer.passedDelay()) {
         hijackUpdateData();
 
-        m_hijackTimer.interval = Utilities::randGen<int>(1400, 2800);
+        m_hijackTimer.interval = Utility::randomNumber(1400, 2800);
         m_hijackTimer.restart();
     }
 
@@ -283,7 +288,7 @@ void FlyingEntity::handleSpecialFlightConditions() {
         else {
             setFlag(Flags::LOST_COMMS);
         }
-        m_lostCommsTimer.interval = Utilities::randGen<int>(9000, 1800);
+        m_lostCommsTimer.interval = Utility::randomNumber(9000, 1800);
         m_lostCommsTimer.restart();
     }
 }
@@ -296,30 +301,30 @@ void FlyingEntity::handleSpecialFlightConditions() {
 void FlyingEntity::adjustFlightParametersBasedOnWeather() {
     switch (m_fallInWeather) {
         case Weather::RainDanger::Blue: {
-            setAltitude(m_altitude + Utilities::randGen<int>(-100, 100) / 100 * 100);
-            setHeading(m_heading + Utilities::randGen<int>(-2, 2));
-            setSpeed(m_speed + Utilities::randGen<int>(-2, 2));
+            setAltitude(m_altitude + Utility::randomNumber(-100, 100) / 100 * 100);
+            setHeading(m_heading + Utility::randomNumber(-2, 2));
+            setSpeed(m_speed + Utility::randomNumber(-2, 2));
 
             break;
         }
         case Weather::RainDanger::Yellow: {
-            setAltitude(m_altitude + Utilities::randGen<int>(-400, 200) / 100 * 100);
-            setHeading(m_heading + Utilities::randGen<int>(-10, 10));
-            setSpeed(m_speed + Utilities::randGen<int>(-5, 5));
+            setAltitude(m_altitude + Utility::randomNumber(-400, 200) / 100 * 100);
+            setHeading(m_heading + Utility::randomNumber(-10, 10));
+            setSpeed(m_speed + Utility::randomNumber(-5, 5));
 
             break;
         }
         case Weather::RainDanger::Red: {
-            setAltitude(m_altitude + Utilities::randGen<int>(-800, 100) / 100 * 100);
-            setHeading(m_heading + Utilities::randGen<int>(-15, 15));
-            setSpeed(m_speed + Utilities::randGen<int>(-10, 10));
+            setAltitude(m_altitude + Utility::randomNumber(-800, 100) / 100 * 100);
+            setHeading(m_heading + Utility::randomNumber(-15, 15));
+            setSpeed(m_speed + Utility::randomNumber(-10, 10));
 
             break;
         }
         case Weather::RainDanger::Pink: {
-            setAltitude(m_altitude + Utilities::randGen<int>(-1000, 0) / 100 * 100);
-            setHeading(m_heading + Utilities::randGen<int>(-25, 25));
-            setSpeed(m_speed + Utilities::randGen<int>(-16, 16));
+            setAltitude(m_altitude + Utility::randomNumber(-1000, 0) / 100 * 100);
+            setHeading(m_heading + Utility::randomNumber(-25, 25));
+            setSpeed(m_speed + Utility::randomNumber(-16, 16));
 
             break;
         }
@@ -438,24 +443,33 @@ void FlyingEntity::updateFuel() {
         m_fuelConsumptionTimer.restart();
     }
 
-    if (m_speed <= m_newSpeed) { // is reducing speed
-        if (m_altitude < m_newAltitude) { // is descending
-            m_fuelConsumptionTimer.interval = 2500; // Less fuel needed when reducing speed and descending
-        } else {
-            m_fuelConsumptionTimer.interval = 3500; // Moderate fuel needed when reducing speed and maintaining/climbing
+    if (m_speed <= m_newSpeed)
+    { // is reducing speed
+        if (m_altitude < m_newAltitude)
+        { // is descending
+            m_fuelConsumptionTimer.interval = 5200; // Less fuel needed when reducing speed and descending
         }
-    } else { // is increasing speed
-        if (m_altitude <= m_newAltitude) {
-            m_fuelConsumptionTimer.interval = 3800; // Moderate fuel needed when increasing speed and descending/maintaining
-        } else {
-            m_fuelConsumptionTimer.interval = 7000; // More fuel needed when increasing speed and climbing
+        else
+        {
+            m_fuelConsumptionTimer.interval = 4300; // Moderate fuel needed when reducing speed and maintaining/climbing
+        }
+    }
+    else
+    { // is increasing speed
+        if (m_altitude <= m_newAltitude)
+        {
+            m_fuelConsumptionTimer.interval = 3600; // Moderate fuel needed when increasing speed and descending/maintaining
+        }
+        else
+        {
+            m_fuelConsumptionTimer.interval = 2800; // More fuel needed when increasing speed and climbing
         }
     }
 
-    if (m_speed == m_newSpeed && m_altitude == m_newAltitude) {
-        m_fuelConsumptionTimer.interval = 4500; // Moderate fuel consumption when maintaining speed and altitude
+    if (m_speed == m_newSpeed && m_altitude == m_newAltitude)
+    {
+        m_fuelConsumptionTimer.interval = 4000; // Moderate fuel consumption when maintaining speed and altitude
     }
-
 }
 
 //-----------------------------------------------------------
@@ -502,7 +516,7 @@ void FlyingEntity::updateAltitudeData() {
 
     if(m_altitudeTimer.passedDelay()) {
         if(!hasFuel) {
-            setAltitude(m_altitude - Utilities::randGen<int>(100, 300) / 100 * 100);
+            setAltitude(m_altitude - Utility::randomNumber(100, 300) / 100 * 100);
         }
         else {
             if(m_altitude < m_newAltitude) {
@@ -534,7 +548,7 @@ void FlyingEntity::updateSpeedData() {
 
             // slower speed decreasing at high altitudes
             if(m_altitude <= 2000) {
-                setSpeed(m_speed - Utilities::randGen<int>(1, 5));
+                setSpeed(m_speed - Utility::randomNumber(1, 5));
             }
             else {
                 setSpeed(m_speed - 1);

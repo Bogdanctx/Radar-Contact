@@ -10,7 +10,7 @@ class Region {
 public:
     explicit Region(const std::string &region);
 
-    std::vector<float>& getBoundaries();
+    std::vector<float>& getBounds();
     std::vector<std::string> getAirportsIcao() const;
     const std::unordered_map<std::string, std::pair<int, int>>& getAirports() const;
     std::vector<std::pair<float, float>>& getWeatherTiles();

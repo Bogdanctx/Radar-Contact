@@ -25,7 +25,11 @@ public:
         return m_integer == other.m_integer && m_fractional == other.m_fractional;
     }
     bool operator<=(const OneDecimalFloatingPoint& other) const {
-        return m_integer <= other.m_integer && m_fractional <= other.m_fractional;
+        if(m_integer < other.m_integer)
+        {
+            return true;
+        }
+        return m_integer == other.m_integer && m_fractional <= other.m_fractional;
     }
 
     [[nodiscard]] std::string asString() const {

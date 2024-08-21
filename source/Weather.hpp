@@ -7,13 +7,12 @@
 class Weather {
 public:
     void render(sf::RenderWindow *window);
-    void fetchWeatherImages(const std::vector<sf::Texture>& textures, const std::vector<float>& regionBoundaries,
+    void updateImages(const std::vector<sf::Texture>& textures, const std::vector<float>& regionBoundaries,
                             const std::vector<std::pair<float, float>>& tiles);
 
     std::vector<sf::Sprite>& getSprites();
 
-    static int getPixelColor(sf::Sprite& sprite, sf::Vector2i position);
-
+    static int getPixelColor(const sf::Sprite& sprite, sf::Vector2i position);
 public:
     enum RainDanger {
         Yellow,

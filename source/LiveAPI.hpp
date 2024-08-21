@@ -12,7 +12,9 @@ public:
 
     virtual nlohmann::json downloadFlyingEntities();
     virtual std::string getWeatherPath();
-    virtual std::vector<sf::Texture>& downloadWeatherTextures(sf::RenderWindow* window);
+    virtual void downloadWeatherTextures();
+    virtual const std::vector<sf::Texture>& getWeatherTextures() const;
+
 protected:
     Region m_region;
 

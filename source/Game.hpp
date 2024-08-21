@@ -15,6 +15,7 @@
 #include "FlightsTable.hpp"
 #include "Region.hpp"
 #include "LiveAPI.hpp"
+#include "utils.hpp"
 
 class Game : public AppWindow {
 public:
@@ -49,10 +50,13 @@ private:
     std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities;
     std::unordered_set<std::string> m_fetchedFlyingEntities;
 
-    sf::Clock m_updateWeatherClock;
-    sf::Clock m_newEntitiesInterval;
-    sf::Clock m_flightTableClock;
-    sf::Clock m_loadingScreenDelay;
+    bool weatherThreadLaunched = false;
+    bool airtrafficThreadLaunched = false;
+
+    Utility::Timer m_updateWeatherClock{5 * 60 * 1000}; // 5 minutes
+    Utility::Timer m_newEntitiesInterval{6 * 60 * 1000}; // 6 minutes
+    Utility::Timer m_flightTableClock{3000};
+
     sf::Sprite m_backgroundRegion;
     sf::Sound m_atcSound;
 

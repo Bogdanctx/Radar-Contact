@@ -19,7 +19,7 @@ nlohmann::json MockAPI::downloadFlyingEntities()
 // Purpose: Used to download latest weather data based on the
 // getWeatherPath() 'path'
 //-----------------------------------------------------------
-std::vector<sf::Texture>& MockAPI::downloadWeatherTextures(sf::RenderWindow* window)
+void MockAPI::downloadWeatherTextures()
 {
     m_downloadedWeatherTextures.clear();
 
@@ -30,10 +30,5 @@ std::vector<sf::Texture>& MockAPI::downloadWeatherTextures(sf::RenderWindow* win
 
         temp.loadFromFile(loadPath.string());
         m_downloadedWeatherTextures.push_back(temp);
-
-        sf::Event tempEvent{};
-        while(window->pollEvent(tempEvent)) {} // loop through window events to prevent crashes
     }
-
-    return m_downloadedWeatherTextures;
 }

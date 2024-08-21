@@ -74,7 +74,6 @@ set(SOURCES
         source/LiveAPI.hpp
         source/LiveAPI.cpp
         source/utils.hpp
-        source/utils.cpp
         source/MockAPI.hpp
         source/MockAPI.cpp
         source/Game.hpp

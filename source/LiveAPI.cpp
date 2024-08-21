@@ -7,7 +7,7 @@
 //-----------------------------------------------------------
 nlohmann::json LiveAPI::downloadFlyingEntities()
 {
-    const std::vector<float>& bounds = m_region.getBoundaries();
+    const std::vector<float>& bounds = m_region.getBounds();
     int regionRadius = m_region.getRadius();
 
     int latitudeAvg = static_cast<int>((bounds[0] + bounds[2]) / 2);
@@ -40,16 +40,20 @@ std::string LiveAPI::getWeatherPath() {
 // Purpose: Used to download latest weather data based on the
 // getWeatherPath() 'path'
 //-----------------------------------------------------------
-std::vector<sf::Texture>& LiveAPI::downloadWeatherTextures(sf::RenderWindow* window)
+void LiveAPI::downloadWeatherTextures()
 {
     const std::vector<std::pair<float, float>>& tiles = m_region.getWeatherTiles();
     int regionZoomLevel = m_region.getZoomLevel();
-    m_downloadedWeatherTextures.clear();
+
+    if(m_downloadedWeatherTextures.empty())
+    {
+        m_downloadedWeatherTextures.resize(15);
+    }
 
     const std::string path = LiveAPI::getWeatherPath();
 
-    for(const std::pair<float, float> &tile: tiles) {
-        sf::Texture temp_texture;
+    for(int i = 0; i < 15; i++) {
+        const std::pair<float, float> tile = tiles[i];
 
         std::string link = "https://tilecache.rainviewer.com" + path + "/256/" + std::to_string(regionZoomLevel) + "/" +
                             std::to_string(tile.first) + '/' + std::to_string(tile.second) + "/2/1_0.png";
@@ -58,13 +62,12 @@ std::vector<sf::Texture>& LiveAPI::downloadWeatherTextures(sf::RenderWindow* win
         // https://docs.libcpr.org/advanced-usage.html#large-responses
         const cpr::Response res = cpr::Get(cpr::Url(link), cpr::ReserveSize(256 * 256));
 
-        temp_texture.loadFromMemory(res.text.data(), res.text.size());
-
-        m_downloadedWeatherTextures.push_back(temp_texture);
-
-        sf::Event tempEvent{};
-        while(window->pollEvent(tempEvent)) {} // poll through window events to prevent crashes
+        m_downloadedWeatherTextures[i].loadFromMemory(res.text.data(), res.text.size());
     }
+}
 
+const std::vector<sf::Texture>& LiveAPI::getWeatherTextures() const
+{
     return m_downloadedWeatherTextures;
 }
+

@@ -1,3 +1,13 @@
+## Update [21 August 2024]
+
+### Attention all Air Traffic Controllers!
+
+No more freezes when downloading data.
+
+A new requirement has been added for an airplane to land at its destination: fuel quantity must be below <= 10.0 tons.
+
+Optimizations and bug fixes.
+
 ## Update [20 August 2024]
 
 ### Players, Development Tower, radar contact.
@@ -60,7 +70,7 @@ will <b>still listen to your instructions</b>.
 
 ## Update [18 July 2024]
 
-### Stability Fixes and Quality Enhancements
+### Stability Fixes and quality enhancements
 
  <ul>
       <li>Fixed Iceland crash when playing in offline mode.</li>

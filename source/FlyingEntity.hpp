@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <utility>
 #include <memory>
 #include <deque>
 #include <array>
@@ -14,22 +13,6 @@
 
 class FlyingEntity
 {
-private:
-    struct Timer {
-        Timer() = default;
-        explicit Timer(double frequency) : interval(frequency) {}
-
-        [[nodiscard]] bool passedDelay() const {
-            return clock.getElapsedTime().asMilliseconds() >= interval;
-        }
-        void restart() {
-            clock.restart();
-        }
-
-        sf::Clock clock;
-        double interval = 0;
-    };
-
 public:
     enum Flags {
         CLEAR,
@@ -67,6 +50,7 @@ public:
     bool getCrashed() const;
     const std::string& getArrival() const;
     const std::string& getCallsign() const;
+    OneDecimalFloatingPoint getFuel() const;
 
     void setFallInWeather(int degree);
     void setFlag(Flags flag);
@@ -108,8 +92,8 @@ protected:
     int m_heading{};
     int m_speed{};
     int m_altitude{};
-    OneDecimalFloatingPoint m_fuel = OneDecimalFloatingPoint(Utilities::randGen<int>(12, 19),
-                                                            Utilities::randGen<int>(0, 9));
+    OneDecimalFloatingPoint m_fuel = OneDecimalFloatingPoint(Utility::randomNumber(13, 18),
+                                                            Utility::randomNumber(0, 9));
 
     int m_newHeading{};
     int m_newAltitude{};
@@ -118,10 +102,10 @@ protected:
     int m_minSpeed{}, m_maxSpeed{};
     int m_minAltitude{}, m_maxAltitude{};
 
-    Timer m_updateTimer;
-    Timer m_speedTimer;
-    Timer m_headingTimer;
-    Timer m_altitudeTimer;
+    Utility::Timer m_updateTimer;
+    Utility::Timer m_speedTimer;
+    Utility::Timer m_headingTimer;
+    Utility::Timer m_altitudeTimer;
 
 private:
     void updateFuel();
@@ -142,10 +126,10 @@ private:
 
     bool m_isCrashed = false;
 
-    Timer m_hijackTimer;
-    Timer m_lostCommsTimer;
-    Timer m_fuelConsumptionTimer;
-    Timer m_buttonDelayTimer;
+    Utility::Timer m_hijackTimer;
+    Utility::Timer m_lostCommsTimer;
+    Utility::Timer m_fuelConsumptionTimer{4500};
+    Utility::Timer m_buttonDelayTimer{50};
 
 
     bool hasFuel = true;

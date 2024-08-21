@@ -23,7 +23,7 @@ const std::string& Region::getName()
 }
 
 
-std::vector<float>& Region::getBoundaries()
+std::vector<float>& Region::getBounds()
 {
     return m_boundaries;
 }

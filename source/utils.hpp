@@ -1,27 +1,43 @@
 #pragma once
 
 #include <random>
-#include <chrono>
 
-class Utilities {
-public:
-    template<typename T>
-    static T randGen(T minVal, T maxVal) {
-        T randomNumber = 0;
+namespace Utility
+{
+    inline int randomNumber(int minVal, int maxVal)
+    {
+        std::random_device rd;
+        std::mt19937 rng(rd());
 
-        if(std::is_integral_v<T>) {
-            std::uniform_int_distribution<> uid(minVal, maxVal);
-            randomNumber = uid(rng);
-        }
-        else if(std::is_floating_point_v<T>) {
-            std::uniform_real_distribution<> urd(minVal, maxVal);
-            randomNumber = urd(rng);
-        }
+        std::uniform_int_distribution<> uid(minVal, maxVal);
+        int number = uid(rng);
 
-        return randomNumber;
+        return number;
     }
 
-private:
-    static std::random_device rd;
-    static std::mt19937 rng;
-};
+    inline double randomNumber(double minVal, double maxVal)
+    {
+        std::random_device rd;
+        std::mt19937 rng(rd());
+
+        std::uniform_real_distribution<> urd(minVal, maxVal);
+        double number = urd(rng);
+
+        return number;
+    }
+
+    struct Timer {
+        Timer() = default;
+        explicit Timer(double miliseconds) : interval(miliseconds) {}
+
+        [[nodiscard]] bool passedDelay() const {
+            return clock.getElapsedTime().asMilliseconds() >= interval;
+        }
+        void restart() {
+            clock.restart();
+        }
+
+        sf::Clock clock;
+        double interval = 0;
+    };
+}

@@ -6,6 +6,7 @@
 #include "ResourcesManager.hpp"
 #include "Math.hpp"
 #include "MockAPI.hpp"
+#include "OneDecimalFloatingPoint.h"
 
 Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(1280, 720),
                                                 m_region(selectedRegion)
@@ -31,7 +32,7 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
 void Game::loadElements() {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
-    sf::Text randomFact{"Fact: " + facts[Utilities::randGen<int>(0, static_cast<int>(facts.size()) - 1)],
+    sf::Text randomFact{"Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)],
                         ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
 
     sf::FloatRect factBounds = randomFact.getLocalBounds();
@@ -56,14 +57,19 @@ void Game::loadElements() {
     m_window.display();
     ////////////////////////////////////
 
-    weather.fetchWeatherImages(m_api->downloadWeatherTextures(&m_window), m_region.getBoundaries(), m_region.getWeatherTiles());
+    auto future = std::async(std::launch::async, [this]()
+    {
+        m_api->downloadWeatherTextures();
+        weather.updateImages(m_api->getWeatherTextures(), m_region.getBounds(), m_region.getWeatherTiles());
+        addNewEntities();
+    });
 
-    addNewEntities();
     initAirports();
 
     // if offline mode is enabled I would like the loading screen to be active for 2 seconds
     // because offline mode loads things much faster
-    while(m_loadingScreenDelay.getElapsedTime().asSeconds() <= 2) {
+    Utility::Timer m_loadingScreenDelay(2000);
+    while(!m_loadingScreenDelay.passedDelay() || future.wait_for(std::chrono::milliseconds(5)) != std::future_status::ready) {
         m_window.clear();
 
         m_window.draw(loadingScreen);
@@ -99,20 +105,37 @@ void Game::update() {
         }
     }
 
-    if(m_flightTableClock.getElapsedTime().asSeconds() >= 5) {
+    if(m_flightTableClock.passedDelay()) {
         flightsTable.update(m_flyingEntities);
 
         m_flightTableClock.restart();
     }
 
-    if(m_updateWeatherClock.getElapsedTime().asSeconds() >= 5*60) { // fetch new weather every 5 minutes
-        weather.fetchWeatherImages(m_api->downloadWeatherTextures(&m_window), m_region.getBoundaries(), m_region.getWeatherTiles());
+    if(m_updateWeatherClock.passedDelay() && !weatherThreadLaunched) { // change weather every 5 minutes
+        weatherThreadLaunched = true;
+
+        // using thread because std::async is shortly freezing the UI
+        std::thread([this]()
+        {
+            m_api->downloadWeatherTextures();
+            weather.updateImages(m_api->getWeatherTextures(), m_region.getBounds(), m_region.getWeatherTiles());
+            weatherThreadLaunched = false;
+        }).detach();
 
         m_updateWeatherClock.restart();
     }
 
-    if(m_newEntitiesInterval.getElapsedTime().asSeconds() >= 6*60) { // fetch new airplanes every 6 minutes
-        addNewEntities();
+
+    if(m_newEntitiesInterval.passedDelay() && !airtrafficThreadLaunched) { // add new airplanes every 6 minutes
+        airtrafficThreadLaunched = true;
+
+        std::thread([this]()
+        {
+            addNewEntities();
+
+            airtrafficThreadLaunched = false;
+        }).detach();
+
         m_newEntitiesInterval.restart();
     }
 
@@ -122,6 +145,7 @@ void Game::update() {
         flyingEntity->update(positionRelativeToView(sf::Mouse::getPosition(m_window)));
     }
 }
+
 
 void Game::removeCrashedEntities() {
     auto [ret, last] = std::ranges::remove_if(m_flyingEntities, [&](auto &flyingEntity)
@@ -248,7 +272,8 @@ void Game::checkInsideAirspace()
             {
                 if(flyingEntity->getArrival() == airport.getIcao())
                 {
-                    if(airport.getBounds().contains(flyingEntity->getEntityPosition()))
+                    if(airport.getBounds().contains(flyingEntity->getEntityPosition()) &&
+                        flyingEntity->getFuel() <= OneDecimalFloatingPoint(10, 0))
                     {
                         flyingEntity->setCrashed();
                     }
@@ -373,12 +398,14 @@ void Game::addNewEntities()
         "A189"
     };
 
-    const nlohmann::json arrivals = fetchNewFlyingEntities();
+    const nlohmann::json fetched = fetchNewFlyingEntities();
+    std::vector<nlohmann::json> arrivals(fetched.begin(), fetched.end());
 
     const int numberOfArrivals = static_cast<int>(arrivals.size());
 
-    sf::Event tempEvent{};
-    while(m_window.pollEvent(tempEvent)) {} // loop through window events to prevent crashes
+    std::random_device rd;
+    std::mt19937 rng(rd());
+    std::shuffle(arrivals.begin(), arrivals.end(), rng);
 
     for(int i = 0; i < numberOfArrivals; i++)
     {
@@ -401,12 +428,12 @@ void Game::addNewEntities()
         const int airspeed = Math::AirspeedAtAltitude(altitude);
         std::string squawk = arrivals[i]["squawk"];
         const sf::Vector2f position = Math::MercatorProjection(arrivals[i]["lat"], arrivals[i]["lon"],
-                                                               m_region.getBoundaries());
+                                                               m_region.getBounds());
         const std::string arrival = arrivals[i]["arrival"];
         const std::string type = arrivals[i]["type"];
 
         // even though the squawk of other airplanes is real I want to force a hijacking scenario sometimes
-        if(Utilities::randGen<int>(1, 100) >= 97)
+        if(Utility::randomNumber(1, 100) >= 97)
         {
             squawk = "7500";
         }
@@ -470,11 +497,11 @@ nlohmann::json Game::fetchNewFlyingEntities()
             continue;
         }
 
-        int randomIndex = Utilities::randGen<int>(0, static_cast<int>(regionAirports.size() - 1));
+        int randomIndex = Utility::randomNumber(0, static_cast<int>(regionAirports.size() - 1));
         const std::string& randomAirport = regionAirports[randomIndex];
 
         if(item["squawk"].is_null()) {
-            item["squawk"] = std::to_string(Utilities::randGen<int>(1000, 9999));
+            item["squawk"] = std::to_string(Utility::randomNumber(1000, 9999));
         }
 
         // remove the last 3 white spaces from the back of the callsign

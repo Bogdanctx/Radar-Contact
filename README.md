@@ -28,7 +28,7 @@ local data. To achieve this, press the <b>Offline</b> button.
 After that, control your airspace! Avoid storms and give instructions to airplanes and helicopters to arrive to their airport.
 
 An airplane will disconnect from your frequency when it is <b>inside the arrival airport coverage area</b> (the yellow circle)
-and if its <b>altitude is below 10.000ft</b> and <b>airspeed below 250 knots</b>.
+and if its **altitude is below 10.000ft**, **airspeed below 250 knots** and **fuel quantity below 10.0 tons**.
 
 ![Alt Text](./preview/landing.gif)
 

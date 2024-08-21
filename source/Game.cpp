@@ -69,7 +69,7 @@ void Game::loadElements() {
     // if offline mode is enabled I would like the loading screen to be active for 2 seconds
     // because offline mode loads things much faster
     Utility::Timer m_loadingScreenDelay(2000);
-    while(!m_loadingScreenDelay.passedDelay() || future.wait_for(std::chrono::milliseconds(5)) != std::future_status::ready) {
+    while(!m_loadingScreenDelay.passedDelay() || future.wait_for(std::chrono::milliseconds(1)) != std::future_status::ready) {
         m_window.clear();
 
         m_window.draw(loadingScreen);

@@ -4,7 +4,7 @@
 
 No more freezes when downloading data.
 
-A new requirement has been added for an airplane to land at its destination: fuel quantity must be below <= 10.0 tons.
+A new requirement has been added for an airplane to land at its destination: fuel quantity must be below 10.0 tons.
 
 Optimizations and bug fixes.
 

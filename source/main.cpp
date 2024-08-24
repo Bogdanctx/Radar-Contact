@@ -19,7 +19,7 @@ int main() {
     try {
         ResourcesManager::Instance().load();
         StateMachine::Instance().run();
-    } catch(ErrorResourcesManager &err) {
+    } catch(std::runtime_error &err) {
         std::cout << err.what();
     }
 }

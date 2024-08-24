@@ -45,23 +45,33 @@ As a result, <b>the airplane's current data will adjust according to these modif
 
 ![Alt Text](./preview/data_meaning.png)
 
-## Keybinds
+# Keybinds
 
-To select an airplane press **Left Click**.
+=> Press **Escape** to exit from **menu** or **game**.
 
-Change **heading** by pressing **LSHIFT** and **move your cursor around**.
+### Menu
 
-Change **altitude** by pressing **LALT** and **UP / DOWN** arrow or **scroll up**.
+=> Press **Left click** on **Live Data** or **Offline** text on bottom left corner of the screen to switch between **live** or **offline** mode. (or press **T**)
 
-Change **airspeed** by pressing **LCTRL** and **UP / DOWN arrow** or **scroll down**.
+=> Press **Left click** on a **flag** to select a region and start the game. (or press **R** to select a random region)
 
-Add a waypoint to an aircraft route by pressing the **SPACE** key.
+### Game
 
-Hide / show **flights table** by pressing **R**.
+=> To select an airplane press **Left Click**.
 
-Hide / show **waypoints** by pressing **T**.
+=> Change **heading** by pressing **LSHIFT** and **move your cursor around**.
 
-To go **back to menu** press **Enter**.
+=> Change **altitude** by pressing **LALT** and **UP / DOWN** arrow or **scroll up**.
+
+=> Change **airspeed** by pressing **LCTRL** and **UP / DOWN arrow** or **scroll down**.
+
+=> Add a waypoint to an aircraft route by pressing the **SPACE** key.
+
+=> Hide / show **flights table** by pressing **R**.
+
+=> Hide / show **waypoints** by pressing **T**.
+
+=> To go **back to menu** press **Enter**.
 
 ## Resources
 

@@ -7,30 +7,6 @@
 #include <fstream>
 #include <stdexcept>
 
-class ErrorResourcesManager: public std::runtime_error {
-    using std::runtime_error::runtime_error;
-};
-
-class ErrorSound: public ErrorResourcesManager {
-public:
-    explicit ErrorSound(const std::string &message) : ErrorResourcesManager("Sound Error: " + message) {}
-};
-
-class ErrorTexture: public ErrorResourcesManager {
-public:
-    explicit ErrorTexture(const std::string &message) : ErrorResourcesManager("Texture Error: " + message) {}
-};
-
-class ErrorFont: public ErrorResourcesManager {
-public:
-    explicit ErrorFont(const std::string &message) : ErrorResourcesManager("Font Error: " + message) {}
-};
-
-class ErrorAirports: public ErrorResourcesManager {
-public:
-    explicit ErrorAirports(const std::string &message) : ErrorResourcesManager("Airports Error: " + message) {}
-};
-
 class ResourcesManager {
 public:
     ResourcesManager(const ResourcesManager&) = delete;

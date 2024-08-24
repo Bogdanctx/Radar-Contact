@@ -35,7 +35,7 @@ void ResourcesManager::loadSounds(const std::string& sound_name) {
     sf::SoundBuffer sound;
 
     if(!sound.loadFromFile(path.string())) {
-        throw ErrorSound(sound_name + " missing or corrupted\n");
+        throw std::runtime_error(sound_name + " missing or corrupted\n");
     }
     m_sounds[sound_name] = sound;
 }
@@ -53,7 +53,7 @@ void ResourcesManager::loadFonts(const std::string &fontName) {
     sf::Font font;
 
     if(!font.loadFromFile(path.string())) {
-        throw ErrorFont(fontName + " missing or corrupted.\n");
+        throw std::runtime_error(fontName + " missing or corrupted.\n");
     }
 
     m_fonts[fontName] = font;
@@ -68,7 +68,7 @@ void ResourcesManager::loadTextures(const std::string &textureName) {
     sf::Texture texture;
 
     if(!texture.loadFromFile(path.string())) {
-        throw ErrorTexture(textureName + " missing or corrupted.\n");
+        throw std::runtime_error(textureName + " missing or corrupted.\n");
     }
 
     m_textures[textureName] = texture;

@@ -120,10 +120,30 @@ void Menu::handleEvent() {
                 break;
             }
             case sf::Event::KeyPressed: {
-                const sf::Keyboard::Key key_code = event.key.code;
 
-                if(key_code == sf::Keyboard::Escape) {
-                    m_window.close();
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Escape:
+                    {
+                        m_window.close();
+                        break;
+                    }
+                    case sf::Keyboard::R: // select a random region
+                    {
+                        m_window.close();
+
+                        StateMachine::Instance().pushState(std::make_shared<Game>(m_regionsButtons[Utility::randomNumber(0, 10)].second,
+                                        m_liveApi));
+                        break;
+                    }
+                    case sf::Keyboard::T: // select between live/offline mode
+                    {
+                        m_liveApi = !m_liveApi;
+                        break;
+                    }
+
+                    default:
+                        break;
                 }
 
                 break;

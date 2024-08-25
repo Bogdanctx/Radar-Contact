@@ -27,7 +27,7 @@ private:
     void handleEvent() override;
     void update() override;
 
-    void loadElements(bool usingLiveAPI);
+    void loadElements();
     void loadWaypoints();
 
     void addNewEntities();

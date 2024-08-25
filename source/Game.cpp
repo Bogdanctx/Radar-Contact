@@ -29,7 +29,7 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
 // Purpose: Used to load loading screen elements, sounds and
 // prepare the map for play
 //-----------------------------------------------------------
-void Game::loadElements(bool usingLiveAPI) {
+void Game::loadElements() {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
     sf::Text randomFact{"Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)],

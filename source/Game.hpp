@@ -29,6 +29,7 @@ private:
 
     void loadElements();
     void loadWaypoints();
+    void setLoadingScreen();
 
     void addNewEntities();
 

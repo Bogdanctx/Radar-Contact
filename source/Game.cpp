@@ -51,28 +51,46 @@ void Game::loadElements() {
     m_atcSound.setLoop(true);
     m_atcSound.setVolume(50);
 
-    // an initial draw of loading screen
-    m_window.draw(loadingScreen);
-    m_window.draw(randomFact);
-    m_window.display();
-    ////////////////////////////////////
-
     auto future = std::async(std::launch::async, [this]()
     {
         m_api->downloadWeatherTextures();
         weather.updateImages(m_api->getWeatherTextures(), m_region.getBounds(), m_region.getWeatherTiles());
         addNewEntities();
+        initAirports();
     });
-
-    initAirports();
 
     // if offline mode is enabled I would like the loading screen to be active for 2 seconds
     // because offline mode loads things much faster
     Utility::Timer m_loadingScreenDelay(2000);
-
     while(true)
     {
-        handleEvent();
+        sf::Event event{};
+        while(m_window.pollEvent(event))
+        {
+            switch (event.type)
+            {
+                case sf::Event::KeyPressed:
+                {
+                    if(event.key.code == sf::Keyboard::Escape)
+                    {
+                        m_window.close();
+                    }
+                    break;
+                }
+                case sf::Event::Closed:
+                {
+                    m_window.close();
+                    break;
+                }
+                case sf::Event::Resized:
+                {
+                    updateWindowView(event.size.width, event.size.height);
+
+                    break;
+                }
+                default: break;
+            }
+        }
 
         m_window.clear();
 

@@ -19,7 +19,7 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
         m_api = std::make_shared<MockAPI>(m_region);
     }
 
-    loadElements(usingLiveAPI);
+    loadElements();
     loadWaypoints();
 
     flightsTable.update(m_flyingEntities); // update flightsTable on the first run of game

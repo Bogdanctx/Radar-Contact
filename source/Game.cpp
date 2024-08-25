@@ -19,7 +19,7 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
         m_api = std::make_shared<MockAPI>(m_region);
     }
 
-    loadElements();
+    loadElements(usingLiveAPI);
     loadWaypoints();
 
     flightsTable.update(m_flyingEntities); // update flightsTable on the first run of game
@@ -29,7 +29,7 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
 // Purpose: Used to load loading screen elements, sounds and
 // prepare the map for play
 //-----------------------------------------------------------
-void Game::loadElements() {
+void Game::loadElements(bool usingLiveAPI) {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
 
     sf::Text randomFact{"Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)],
@@ -69,14 +69,27 @@ void Game::loadElements() {
     // if offline mode is enabled I would like the loading screen to be active for 2 seconds
     // because offline mode loads things much faster
     Utility::Timer m_loadingScreenDelay(2000);
-    while(!m_loadingScreenDelay.passedDelay() || future.wait_for(std::chrono::milliseconds(1)) != std::future_status::ready) {
+
+    while(true)
+    {
+        handleEvent();
+
         m_window.clear();
 
         m_window.draw(loadingScreen);
         m_window.draw(randomFact);
 
         m_window.display();
+
+        if(future.wait_for(std::chrono::microseconds(500)) == std::future_status::ready)
+        {
+            if (m_loadingScreenDelay.passedDelay())
+            {
+                break;
+            }
+        }
     }
+
 }
 
 void Game::update() {

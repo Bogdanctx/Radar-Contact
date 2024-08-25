@@ -132,7 +132,7 @@ void Menu::handleEvent() {
                     {
                         m_window.close();
 
-                        StateMachine::Instance().pushState(std::make_shared<Game>(m_regionsButtons[Utility::randomNumber(0, 10)].second,
+                        StateMachine::Instance().pushState(std::make_shared<Game>(m_regionsButtons[Utility::randomNumber(0, 9)].second,
                                         m_liveApi));
                         break;
                     }

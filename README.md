@@ -1,7 +1,7 @@
 ## Download
 
 Click on the [latest version](https://github.com/Bogdanctx/Radar-Contact/releases/tag/v3.2) available in the [Releases](https://github.com/Bogdanctx/Radar-Contact/releases) tab and 
-download either [Windows](https://github.com/Bogdanctx/Radar-Contact/releases/download/v3.2/Radar-Contact_windows.zip) or [Ubuntu](https://github.com/Bogdanctx/Radar-Contact/releases/download/v3.2/Radar-Contact_ubuntu-22.04.zip) version.
+download either [Windows](https://github.com/Bogdanctx/Radar-Contact/releases/download/v3.6/Radar-Contact_windows.zip) or [Ubuntu](https://github.com/Bogdanctx/Radar-Contact/releases/download/v3.6/Radar-Contact_ubuntu-22.04.zip) version.
 
 #### => Playing on Ubuntu-22.04 requires GCC 12. Please read the <i>[Common errors on Linux](https://github.com/Bogdanctx/Radar-Contact/blob/main/INSTALLATION.md#common-errors-on-linux)</i> section of the [installation guide](./INSTALLATION.md).
 #### => Playing on Windows requires [Microsoft Visual C++](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version).

@@ -8,6 +8,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(APPLE)
+    set(CMAKE_INSTALL_RPATH "${PROJECT_BINARY_DIR}/_deps/sfml-src/extlibs/libs-osx/Frameworks")
+endif()
+
 include(cmake/Options.cmake)
 
 ###############################################################################

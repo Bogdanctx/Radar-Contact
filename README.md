@@ -8,6 +8,11 @@ download either [Windows](https://github.com/Bogdanctx/Radar-Contact/releases/do
 
 #### If you're playing on an unsupported OS (e.g. macOS) you have to build the project on your PC. To do this follow [this tutorial](./INSTALLATION.md).
 
+---
+#### N.B.: Windows Defender or other antivirus might detect the Windows version from Release as virus. Please read [this](https://github.com/Bogdanctx/Radar-Contact/issues/10).
+
+---
+
 ## Updates
 #### Check [changelog](./CHANGELOG.md) for the latest updates.
 

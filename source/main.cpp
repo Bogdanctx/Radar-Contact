@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main()
 {
@@ -13,6 +14,11 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+        }
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            std::cout << "space\n";
         }
 
         window.clear();

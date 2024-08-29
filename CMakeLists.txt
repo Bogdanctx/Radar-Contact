@@ -71,41 +71,6 @@ endif()
 
 set(SOURCES
         source/main.cpp
-        source/env_fixes.h
-        source/Math.hpp
-        source/ResourcesManager.hpp
-        source/ResourcesManager.cpp
-        source/LiveAPI.hpp
-        source/LiveAPI.cpp
-        source/utils.hpp
-        source/MockAPI.hpp
-        source/MockAPI.cpp
-        source/Game.hpp
-        source/Game.cpp
-        source/Airplane.hpp
-        source/Airplane.cpp
-        source/Airport.hpp
-        source/Airport.cpp
-        source/FlightInfo.hpp
-        source/FlightInfo.cpp
-        source/FlightsTable.hpp
-        source/FlightsTable.cpp
-        source/FlyingEntity.hpp
-        source/FlyingEntity.cpp
-        source/Helicopter.hpp
-        source/Helicopter.cpp
-        source/Menu.hpp
-        source/Menu.cpp
-        source/StateMachine.hpp
-        source/StateMachine.cpp
-        source/Waypoint.hpp
-        source/Waypoint.cpp
-        source/Weather.hpp
-        source/Weather.cpp
-        source/AppWindow.hpp
-        source/AppWindow.cpp
-        source/Region.cpp
-        source/Region.hpp
 )
 
 if(MSVC)

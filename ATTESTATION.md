@@ -10,4 +10,4 @@
 
 #### Example: ``C:\Users\username\Downloads> gh attestation verify Radar-Contact_windows.zip -R Bogdanctx/Radar-Contact`` (Radar-Contact_windows.zip was located in Downloads directory)
 
-### After the verification is complete you should see in terminal <span style="color: green">Verification succeded!</span>. This means the downloaded archive matches the release commit and has not been tampered.
+### After the verification is complete you should see in terminal <code style="color: green">Verification succeded!</code>. This means the downloaded archive matches the release commit and has not been tampered.

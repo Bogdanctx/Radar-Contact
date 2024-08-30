@@ -10,8 +10,7 @@ download either [Windows](https://github.com/Bogdanctx/Radar-Contact/releases/do
 
 ## Important!
 #### Windows Defender or other antivirus might detect the Windows version of Radar Contact as a virus. Please read [this](https://github.com/Bogdanctx/Radar-Contact/issues/10).
-#### To check the authenticity of a release archive, read the [Attestation guide](./ATTESTATION.md).
-
+#### Radar Contact release binaries are SAFE to run. If you're unsure about this, check the authenticity of binaries by reading the [attestation guide](./ATTESTATION.md).
 
 ## Updates
 #### Check [changelog](./CHANGELOG.md) for the latest updates.
@@ -83,3 +82,5 @@ As a result, <b>the airplane's current data will adjust according to these modif
 - [RainViewer](https://www.rainviewer.com/api.html) (Weather API)
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC voice sound)
 - [Pixabay](https://pixabay.com/sound-effects/search/landing/) (Loading screen landing sound)
+
+## [Terms and Privacy Policy](./TERMS.md)

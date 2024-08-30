@@ -9,7 +9,9 @@ download either [Windows](https://github.com/Bogdanctx/Radar-Contact/releases/do
 #### If you're playing on an unsupported OS (e.g. macOS) you have to build the project on your PC. To do this follow [this tutorial](./INSTALLATION.md).
 
 ## Important!
-#### Windows Defender or other antivirus might detect the Windows version from Release as virus. Please read [this](https://github.com/Bogdanctx/Radar-Contact/issues/10).
+#### Windows Defender or other antivirus might detect the Windows version of Radar Contact as a virus. Please read [this](https://github.com/Bogdanctx/Radar-Contact/issues/10).
+#### To check the authenticity of a release archive, read the [Attestation guide](./ATTESTATION.md).
+
 
 ## Updates
 #### Check [changelog](./CHANGELOG.md) for the latest updates.

@@ -2,7 +2,7 @@
 
 ---
 
-#### Radar Contact uses SFML. Please read [SFML]([SFML](https://www.sfml-dev.org/license.php)) terms.
+#### Radar Contact uses SFML. Please read [SFML]((https://www.sfml-dev.org/license.php)) terms.
 #### Radar Contact uses public APIs for live mode, please read the terms and conditions of the following services: 
 => [AIRPLANES.LIVE Terms of Use](https://airplanes.live/terms-of-use/)
 

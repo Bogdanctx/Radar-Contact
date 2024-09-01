@@ -14,7 +14,8 @@ Menu::Menu() : AppWindow(512, 512)
         float positionX = 50 + 95 * (i % 5);
         float positionY = 140;
 
-        if (5 <= i && i <= 9) {
+        // if(5 <= i && i <= 9) {}
+        if (5 <= i) {
             positionY = 220;
         }
         // if(10 <= i && i <= 14) {} -> if more regions will be added

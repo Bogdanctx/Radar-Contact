@@ -12,18 +12,21 @@ public:
 
 protected:
     sf::RenderWindow m_window;
-    sf::View m_view;
 
     sf::Vector2f positionRelativeToView(sf::Vector2f position) const;
     sf::Vector2f positionRelativeToView(sf::Vector2i position) const;
 
-    void updateWindowView(unsigned int width, unsigned int height);
-
-    virtual void handleEvent() = 0;
-    virtual void update() = 0;
-    virtual void render() = 0;
+    virtual void internalHandleEvent(const sf::Event& event) = 0;
+    virtual void internalRender() = 0;
+    virtual void internalUpdate() = 0;
 
 private:
+    void handleEvent();
+    void update();
+    void render();
+    void updateWindowView(unsigned int width, unsigned int height);
 
     sf::Image m_appIcon;
+    sf::View m_view;
+
 };

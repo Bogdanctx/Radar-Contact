@@ -65,23 +65,49 @@ void AppWindow::run() {
 
 }
 
+void AppWindow::update()
+{
+    internalUpdate();
+}
+
 void AppWindow::render() {
     m_window.clear();
+
+    internalRender();
 
     m_window.display();
 }
 
 void AppWindow::handleEvent() {
-    sf::Event window_event{};
+    sf::Event event{};
 
-    while(m_window.pollEvent(window_event)) {
-        switch(window_event.type) {
+    while(m_window.pollEvent(event)) {
+        switch(event.type) {
             case sf::Event::Closed: {
                 m_window.close();
+                break;
+            }
+            case sf::Event::KeyPressed:
+            {
+                sf::Keyboard::Key key = event.key.code;
+
+                if(key == sf::Keyboard::Escape)
+                {
+                    m_window.close();
+                }
+
+                break;
+            }
+            case sf::Event::Resized:
+            {
+                updateWindowView(event.size.width, event.size.height);
+
                 break;
             }
             default:
                 break;
         }
+
+        internalHandleEvent(event);
     }
 }

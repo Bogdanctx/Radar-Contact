@@ -23,13 +23,13 @@ public:
     Game(const std::string &selectedRegion, bool usingLiveAPI);
 
 private:
-    void render() override;
-    void handleEvent() override;
-    void update() override;
+    void internalRender() override;
+    void internalHandleEvent(const sf::Event& event) override;
+    void internalUpdate() override;
 
     void loadElements();
     void loadWaypoints();
-    void setLoadingScreen();
+    void setLoadingScreen(std::future<void>& future);
 
     void addNewEntities();
 

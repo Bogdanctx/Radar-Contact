@@ -17,6 +17,7 @@ Menu::Menu() : AppWindow(512, 512)
         if (5 <= i && i <= 9) {
             positionY = 220;
         }
+        // if(10 <= i && i <= 14) {} -> if more regions will be added
 
         m_buttons[i].init(flags[i], positionX, positionY);
     }

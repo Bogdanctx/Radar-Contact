@@ -30,6 +30,17 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
 // prepare the map for play
 //-----------------------------------------------------------
 void Game::loadElements() {
+    std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
+
+    sf::Text randomFact{"Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)],
+                        ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
+
+    sf::FloatRect factBounds = randomFact.getLocalBounds();
+    randomFact.setOrigin(factBounds.width / 2, factBounds.height / 2);
+    randomFact.setPosition(640, 680);
+
+    sf::Sprite loadingScreen{ResourcesManager::Instance().getTexture("loading_screen.png")};
+
     sf::Sound loadingSound;
     loadingSound.setBuffer(ResourcesManager::Instance().getSound("plane_landing.wav"));
     loadingSound.setPlayingOffset(sf::seconds(4));
@@ -40,7 +51,7 @@ void Game::loadElements() {
     m_atcSound.setLoop(true);
     m_atcSound.setVolume(50);
 
-    std::future<void> future = std::async(std::launch::async, [this]()
+    auto future = std::async(std::launch::async, [this]()
     {
         m_api->downloadWeatherTextures();
         weather.updateImages(m_api->getWeatherTextures(), m_region.getBounds(), m_region.getWeatherTiles());
@@ -48,36 +59,58 @@ void Game::loadElements() {
         initAirports();
     });
 
-    setLoadingScreen(future);
-}
-
-void Game::setLoadingScreen(std::future<void>& future)
-{
-    std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
-    sf::Text randomFact{"Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)],
-                        ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
-
-    sf::FloatRect factBounds = randomFact.getLocalBounds();
-    randomFact.setOrigin(factBounds.width / 2, factBounds.height / 2);
-    randomFact.setPosition(640, 680);
-
-    sf::Sprite loadingScreen{ResourcesManager::Instance().getTexture("loading_screen.png")};
-
-    sf::Event event{};
-    Utility::Timer m_loadingScreenDelay{2000};
-
-    while(future.wait_for(std::chrono::microseconds(200)) != std::future_status::ready || !m_loadingScreenDelay.passedDelay())
+    // if offline mode is enabled I would like the loading screen to be active for 2 seconds
+    // because offline mode loads things much faster
+    Utility::Timer m_loadingScreenDelay(2000);
+    while(true)
     {
-        while(m_window.pollEvent(event)) {} // poll events to prevent crashes
+        sf::Event event{};
+        while(m_window.pollEvent(event))
+        {
+            switch (event.type)
+            {
+                case sf::Event::KeyPressed:
+                {
+                    if(event.key.code == sf::Keyboard::Escape)
+                    {
+                        m_window.close();
+                    }
+                    break;
+                }
+                case sf::Event::Closed:
+                {
+                    m_window.close();
+                    break;
+                }
+                case sf::Event::Resized:
+                {
+                    updateWindowView(event.size.width, event.size.height);
+
+                    break;
+                }
+                default: break;
+            }
+        }
+
         m_window.clear();
+
         m_window.draw(loadingScreen);
         m_window.draw(randomFact);
+
         m_window.display();
+
+        if(future.wait_for(std::chrono::microseconds(500)) == std::future_status::ready)
+        {
+            if (m_loadingScreenDelay.passedDelay())
+            {
+                break;
+            }
+        }
     }
+
 }
 
-
-void Game::internalUpdate() {
+void Game::update() {
     checkForEntitiesCollisions();
     checkInsideWeather();
     checkInsideAirspace();
@@ -146,15 +179,17 @@ void Game::internalUpdate() {
 
 
 void Game::removeCrashedEntities() {
-    auto [ret, last] = std::ranges::remove_if(m_flyingEntities, [&](auto &flyingEntity)
+    auto last = std::remove_if(m_flyingEntities.begin(), m_flyingEntities.end(), [&](auto &flyingEntity)
     {
         return flyingEntity->getCrashed();
     });
 
-    m_flyingEntities.erase(ret, last);
+    m_flyingEntities.erase(last, m_flyingEntities.end());
 }
 
-void Game::internalRender() {
+void Game::render() {
+    m_window.clear();
+
     m_region.render(&m_window);
 
     weather.render(&m_window);
@@ -176,6 +211,8 @@ void Game::internalRender() {
     if (m_renderFlightsTable) {
         flightsTable.render(&m_window);
     }
+
+    m_window.display();
 }
 
 
@@ -277,82 +314,105 @@ void Game::checkInsideAirspace()
     }
 }
 
-void Game::internalHandleEvent(const sf::Event& event)
+void Game::handleEvent()
 {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
+    sf::Event event{};
 
-    for(auto &flyingEntity: m_flyingEntities) {
-        flyingEntity->handleEvent(event, positionRelativeToView(mousePosition));
-    }
-
-    if(m_renderFlightsTable) {
-        flightsTable.handleEvent(event, positionRelativeToView(mousePosition));
-    }
-
-    switch(event.type)
+    while(m_window.pollEvent(event))
     {
-        case sf::Event::KeyPressed: {
-            sf::Keyboard::Key key = event.key.code;
+        for(auto &flyingEntity: m_flyingEntities)
+        {
+            flyingEntity->handleEvent(event, positionRelativeToView(mousePosition));
+        }
 
-            switch(key)
+        if(m_renderFlightsTable)
+        {
+            flightsTable.handleEvent(event, positionRelativeToView(mousePosition));
+        }
+
+        switch(event.type)
+        {
+            case sf::Event::KeyPressed:
             {
-                case sf::Keyboard::Enter:
+
+                switch(event.key.code)
                 {
-                    std::shared_ptr<AppWindow> menu = std::make_shared<Menu>();
-                    StateMachine::Instance().pushState(menu);
-                    m_window.close();
-
-                    break;
-                }
-
-                case sf::Keyboard::R:
-                {
-                    m_renderFlightsTable = !m_renderFlightsTable;
-                    break;
-                }
-
-                case sf::Keyboard::T:
-                {
-                    m_renderWaypoints = !m_renderWaypoints;
-                    break;
-                }
-
-                case sf::Keyboard::Space:
-                { // add a waypoint to a flying entity's route
-                    if (m_renderWaypoints)
+                    case sf::Keyboard::Escape:
                     {
-                        for (const Waypoint &wp: m_waypoints)
-                        {
-                            if (wp.getBounds().contains(positionRelativeToView(mousePosition)))
-                            {
-                                auto ret = std::ranges::find_if(m_flyingEntities.begin(), m_flyingEntities.end(),
-                                    [&wp](const std::shared_ptr<FlyingEntity>& flyingEntity)
-                                {
-                                    return flyingEntity->getIsEntitySelected() &&
-                                        flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName();
-                                });
+                        m_window.close();
+                        break;
+                    }
 
-                                if(ret != m_flyingEntities.end())
+                    case sf::Keyboard::Enter:
+                    {
+                        std::shared_ptr<AppWindow> menu = std::make_shared<Menu>();
+                        StateMachine::Instance().pushState(menu);
+                        m_window.close();
+
+                        break;
+                    }
+
+                    case sf::Keyboard::R:
+                    {
+                        m_renderFlightsTable = !m_renderFlightsTable;
+                        break;
+                    }
+
+                    case sf::Keyboard::T:
+                    {
+                        m_renderWaypoints = !m_renderWaypoints;
+                        break;
+                    }
+
+                    case sf::Keyboard::Space:
+                    { // add a waypoint to a flying entity's route
+                        if (m_renderWaypoints)
+                        {
+                            for (const Waypoint &wp: m_waypoints)
+                            {
+                                if (wp.getBounds().contains(positionRelativeToView(mousePosition)))
                                 {
-                                    (*ret)->addWaypointToRoute(wp);
+                                    auto ret = std::find_if(m_flyingEntities.begin(), m_flyingEntities.end(),
+                                        [&wp](const std::shared_ptr<FlyingEntity>& flyingEntity)
+                                    {
+                                        return flyingEntity->getIsEntitySelected() &&
+                                            flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName();
+                                    });
+
+                                    if(ret != m_flyingEntities.end())
+                                    {
+                                        (*ret)->addWaypointToRoute(wp);
+                                    }
                                 }
                             }
                         }
+
+                        break;
                     }
 
-                    break;
+                    default:
+                        break;
                 }
 
-                default:
-                    break;
+                break;
             }
+            case sf::Event::Resized:
+            {
+                updateWindowView(event.size.width, event.size.height);
 
-            break;
+                break;
+            }
+            case sf::Event::Closed:
+            {
+                m_window.close();
+
+                break;
+            }
+            default:
+                break;
         }
-        default:
-            break;
     }
-
 }
 
 //-----------------------------------------------------------

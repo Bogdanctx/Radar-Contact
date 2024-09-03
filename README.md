@@ -67,7 +67,7 @@ As a result, <b>the airplane's current data will adjust according to these modif
 
 => Change **airspeed** by pressing **LCTRL** and **UP / DOWN arrow** or **scroll down**.
 
-=> Add a waypoint to an aircraft route by pressing the **SPACE** key.
+=> Add a waypoint to an aircraft route by putting your cursor on a specific point and press the **SPACE** key.
 
 => Hide / show **flights table** by pressing **R**.
 

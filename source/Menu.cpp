@@ -6,11 +6,11 @@
 
 Menu::Menu() : AppWindow(512, 512)
 {
-    const std::array<std::string, 10> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
+    const std::array<std::string, NUMBER_OF_REGIONS> flags = {"Poland", "Iceland", "Cyprus", "Austria", "Turkey",
                                             "UK", "Denmark", "France", "Spain", "Greece"};
 
 
-    for(int i = 0; i < 10; i++) { // 10 regions
+    for(int i = 0; i < NUMBER_OF_REGIONS; i++) { // 10 regions
         float positionX = 50 + 95 * (i % 5);
         float positionY = 140;
 
@@ -41,7 +41,7 @@ Menu::Menu() : AppWindow(512, 512)
 void Menu::internalRender() {
     m_window.draw(m_background);
 
-    for(Button& button: m_buttons) {
+    for(const RegionButton& button: m_buttons) {
         m_window.draw(button.getButton());
         m_window.draw(button.getLabel());
     }
@@ -69,12 +69,12 @@ void Menu::internalUpdate() {
 void Menu::checkHovers() {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
 
-    for(Button& button: m_buttons) {
+    for(RegionButton& button: m_buttons) {
         if(button.getButton().getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
-            button.getButton().setOutlineColor(sf::Color::White);
+            button.setOutlineColor(sf::Color::White);
         }
         else {
-            button.getButton().setOutlineColor(sf::Color::Transparent);
+            button.setOutlineColor(sf::Color::Transparent);
         }
     }
 }
@@ -102,7 +102,7 @@ void Menu::internalHandleEvent(const sf::Event& event)
             break;
         }
         case sf::Event::MouseButtonPressed: {
-            for(Button& button: m_buttons) {
+            for(const RegionButton &button: m_buttons) {
                 if(button.getButton().getGlobalBounds().contains(positionRelativeToView(mousePosition))) {
                     m_window.close();
 
@@ -123,49 +123,4 @@ void Menu::internalHandleEvent(const sf::Event& event)
         default:
             break;
     }
-}
-
-void Menu::Button::init(const std::string& regionName, float x, float y)
-{
-    m_regionName = regionName;
-    m_rectangle.setSize(sf::Vector2f(50, 30));
-    m_rectangle.setOutlineThickness(2.3f);
-
-    m_texture.loadFromFile("./resources/flags/" + regionName + ".png");
-
-    m_label.setFont(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"));
-    m_label.setCharacterSize(12);
-
-    m_rectangle.setTexture(&m_texture);
-    m_rectangle.setPosition(x, y);
-
-    if(regionName == "UK") {
-        m_label.setString("UK & Ireland");
-        x = x - 10;
-    }
-    else if(regionName == "Spain") {
-        m_label.setString("Spain & Portugal");
-        x = x - 25;
-    }
-    else {
-        m_label.setString(regionName);
-    }
-
-    m_label.setPosition(x, y + 30);
-}
-
-
-const std::string& Menu::Button::getName() const
-{
-    return m_regionName;
-}
-
-sf::RectangleShape& Menu::Button::getButton()
-{
-    return m_rectangle;
-}
-
-const sf::Text& Menu::Button::getLabel() const
-{
-    return m_label;
 }

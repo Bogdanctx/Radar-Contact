@@ -83,7 +83,7 @@ void Game::internalUpdate() {
     checkInsideAirspace();
 
     // removed out of screen flying entities
-    for(auto& flyingEntity: m_flyingEntities) {
+    for(std::shared_ptr<FlyingEntity> &flyingEntity: m_flyingEntities) {
         const sf::Vector2f position = flyingEntity->getEntityPosition();
         const bool insideScreen = 0 <= position.x && position.x <= 1280 && 0 <= position.y && position.y <= 720;
 
@@ -139,19 +139,17 @@ void Game::internalUpdate() {
 
     m_window.draw(m_backgroundRegion);
 
-    for(auto& flyingEntity: m_flyingEntities) {
+    for(std::shared_ptr<FlyingEntity> &flyingEntity: m_flyingEntities) {
         flyingEntity->update(positionRelativeToView(sf::Mouse::getPosition(m_window)));
     }
 }
 
 
 void Game::removeCrashedEntities() {
-    auto [ret, last] = std::ranges::remove_if(m_flyingEntities, [&](auto &flyingEntity)
+    m_flyingEntities.remove_if([](const std::shared_ptr<FlyingEntity> &flyingEntity)
     {
         return flyingEntity->getCrashed();
     });
-
-    m_flyingEntities.erase(ret, last);
 }
 
 void Game::internalRender() {
@@ -184,7 +182,7 @@ void Game::internalRender() {
 // and to toggle specific flags
 //-----------------------------------------------------------
 void Game::checkForEntitiesCollisions() {
-    for(auto& flyingEntity: m_flyingEntities) {
+    for(std::shared_ptr<FlyingEntity> &flyingEntity: m_flyingEntities) {
         FlyingEntity::Flags flag = FlyingEntity::Flags::CLEAR;
         const std::string callsign = flyingEntity->getCallsign();
         const int altitude = flyingEntity->getAltitude();
@@ -231,7 +229,7 @@ void Game::checkForEntitiesCollisions() {
 void Game::checkInsideWeather() {
     std::vector<sf::Sprite> weatherSprites = weather.getSprites();
 
-    for (auto& flyingEntity : m_flyingEntities) {
+    for (std::shared_ptr<FlyingEntity> &flyingEntity : m_flyingEntities) {
         if(!flyingEntity->canUpdate()) {
             continue;
         }
@@ -292,9 +290,8 @@ void Game::internalHandleEvent(const sf::Event& event)
     switch(event.type)
     {
         case sf::Event::KeyPressed: {
-            sf::Keyboard::Key key = event.key.code;
 
-            switch(key)
+            switch(event.key.code)
             {
                 case sf::Keyboard::Enter:
                 {
@@ -507,7 +504,7 @@ void Game::initAirports()
 {
     const std::unordered_map<std::string, std::pair<int, int>> airports = m_region.getAirports();
 
-    for(const auto& [airportIcao, position]: airports)
+    for(const auto &[airportIcao, position]: airports)
     {
         const std::string icao = airportIcao;
         const int x = position.first;

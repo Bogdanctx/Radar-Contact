@@ -12,20 +12,20 @@ void FlightsTable::render(sf::RenderWindow *window) const {
 //-----------------------------------------------------------
 // Purpose: Update the top-left table with flying entities
 //-----------------------------------------------------------
-void FlightsTable::update(const std::vector<std::shared_ptr<FlyingEntity>> &flyingEntities) {
+void FlightsTable::update(const std::list<std::shared_ptr<FlyingEntity>> &flyingEntities) {
     m_airplanesInfo.clear();
 
-    for(const auto &flyingEntity: flyingEntities) {
+    for(const std::shared_ptr<FlyingEntity> &flyingEntity: flyingEntities) {
         FlightInfo info(FlyingEntity_Decorator::toText(flyingEntity), flyingEntity, static_cast<int>(m_airplanesInfo.size()));
 
-        m_airplanesInfo.emplace_back(info);
+        m_airplanesInfo.push_back(info);
     }
 }
 
-void FlightsTable::handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition) {
+void FlightsTable::handleEvent(const sf::Event& gameEvent, const sf::Vector2f mousePosition) {
     switch(gameEvent.type) {
         case sf::Event::MouseButtonPressed: {
-            for(const auto &airplaneInfo: m_airplanesInfo) {
+            for(const FlightInfo &airplaneInfo: m_airplanesInfo) {
                 if(airplaneInfo.getBody().getGlobalBounds().contains(mousePosition)) {
                     airplaneInfo.getFlyingEntityPtr()->setEntitySelected();
                 }

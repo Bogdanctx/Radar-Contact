@@ -106,6 +106,9 @@ set(SOURCES
         source/AppWindow.cpp
         source/Region.cpp
         source/Region.hpp
+        source/RegionButton.cpp
+        source/RegionButton.hpp
+        source/RegionButton.cpp
 )
 
 if(MSVC)

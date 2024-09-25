@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include <vector>
+#include <list>
 #include <memory>
 
 #include <cpr/cpr.h>
@@ -47,8 +47,9 @@ private:
     nlohmann::json m_incomingFlyingEntities;
     int m_usedDownloadedData = 0;
 
-    std::vector<Airport> m_airports;
-    std::vector<std::shared_ptr<FlyingEntity>> m_flyingEntities;
+    std::list<Waypoint> m_waypoints;
+    std::list<Airport> m_airports;
+    std::list<std::shared_ptr<FlyingEntity>> m_flyingEntities;
     std::unordered_set<std::string> m_fetchedFlyingEntities;
 
     bool weatherThreadLaunched = false;
@@ -65,8 +66,6 @@ private:
     FlightsTable flightsTable;
     Region m_region;
     std::shared_ptr<LiveAPI> m_api;
-
-    std::vector<Waypoint> m_waypoints;
 
     bool m_renderFlightsTable = true;
     bool m_renderWaypoints = true;

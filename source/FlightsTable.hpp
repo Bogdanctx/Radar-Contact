@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <vector>
+#include <list>
 
 #include "FlyingEntity.hpp"
 #include "FlightInfo.hpp"
@@ -11,11 +11,11 @@ public:
     FlightsTable();
 
     void render(sf::RenderWindow *window) const;
-    void update(const std::vector<std::shared_ptr<FlyingEntity>> &flyingEntities);
+    void update(const std::list<std::shared_ptr<FlyingEntity>> &flyingEntities);
     void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
 
 private:
     sf::Font m_poppins{};
 
-    std::vector<FlightInfo> m_airplanesInfo{};
+    std::list<FlightInfo> m_airplanesInfo{};
 };

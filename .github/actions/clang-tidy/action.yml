@@ -25,12 +25,13 @@ runs:
     - name: Install clang-tidy
       shell: bash
       run: |
-        sudo apt-get install --no-install-recommends clang-tidy-${{ env.CLANG_VER }} libc++-${{ env.CLANG_VER }}-dev libc++abi-${{ env.CLANG_VER }}-dev
+        sudo apt-get install --no-install-recommends clang-tidy-${{ env.CLANG_VER }} libc++-${{ env.CLANG_VER }}-dev libc++abi-${{ env.CLANG_VER }}-dev ninja-build
 
     - name: Configure CMake
       uses: ./.github/actions/configure-cmake
       with:
-        custom_flags: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
+        custom_flags: '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON -GNinja'
+        cache_key: 'cache-clang-tidy'
 
     - name: Clang-Tidy
       continue-on-error: true

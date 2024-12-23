@@ -16,18 +16,12 @@ runs:
       run: |
         mv ${{ env.ZIP_NAME }} ${{ env.ZIP_NAME }}_${{ env.TAG_NAME }}
 
-    - name: Rename folder inside ZIP
-      shell: bash
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        mv ${{ env.ZIP_NAME }}_${{ env.TAG_NAME }} ${{ env.CUSTOM_NAME }}
-
     - name: Archive Release
       uses: thedoctor0/zip-release@master
       if: startsWith(github.ref, 'refs/tags/')
       with:
         type: 'zip'
-        path: ${{ env.CUSTOM_NAME }}
+        path: ${{ env.ZIP_NAME }}_${{ env.TAG_NAME }}
         filename: ${{ env.ZIP_NAME }}_${{ env.TAG_NAME }}.zip
 
     - name: Generate artifact attestation

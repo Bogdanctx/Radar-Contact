@@ -2,10 +2,10 @@ name: C++ CI
 
 on:
   push:
-    branches: ['*'] # NOTE: replace/update with appropriate branch name(s)
-    tags: ['*']
-  pull_request:
-    branches: ['*'] # NOTE: replace/update with appropriate branch name(s)
+    branches: ['**'] # NOTE: replace/update with appropriate branch name(s)
+    tags: ['**']
+  # pull_request:
+  #   branches: ['**'] # NOTE: replace/update with appropriate branch name(s)
   workflow_dispatch:
     inputs:
       build_type:
@@ -26,6 +26,7 @@ env:
   BIN_DIR: "bin"       # update in cmake/Options.cmake:6 if changing name here
   BUILD_DIR: "build"
   EXT_DIR: "ext"
+  GEN_DIR: "generated"
   APP_WINDOW: "Radar Contact"
 
 defaults:
@@ -38,6 +39,8 @@ defaults:
 jobs:
   cppcheck:
     name: "Cppcheck"
+    # concurrency:
+    #   group: "Cppcheck"
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     env:
@@ -53,6 +56,8 @@ jobs:
 
   clang-tidy:
     name: "Clang-Tidy"
+    # concurrency:
+    #   group: "Clang-Tidy"
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     env:
@@ -67,6 +72,8 @@ jobs:
 
   build:
     name: ${{ matrix.name }}
+    # concurrency:
+    #   group: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 8
     permissions:
@@ -80,7 +87,7 @@ jobs:
       VSCMD_SKIP_SENDTELEMETRY: 1
 
       # NOTE: also update in CMakeLists FetchContent
-      SFML_VERSION: "3.0.0"
+      SFML_VERSION: "2023-11-04-2.6.1"
 
       # NOTE: replace with another version if this one does not work
       # For more versions, see https://winlibs.com or
@@ -130,11 +137,11 @@ jobs:
           - os: macos-14
             c: clang
             cxx: clang++
-            name: "ASan: macOS 14 Apple Clang 15"
-            cmake_flags: "-DUSE_ASAN=ON -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
+            name: "macOS 14 Apple Clang 15"
+            cmake_flags: "-DUSE_ASAN=OFF -DSFML_BUILD_FRAMEWORKS=FALSE -DSFML_DEPENDENCIES_INSTALL_PREFIX=$GITHUB_WORKSPACE/artifacts -DBUILD_SHARED_LIBS=FALSE"
             # cmake_generator:
             # This env runs address sanitizers
-            # runs_asan: true
+            # runs_asan: false
 
           # - os: macos-14
           #   c: gcc-13
@@ -146,7 +153,7 @@ jobs:
           - os: windows-2022
             c: cl
             cxx: cl
-            name: "ASan: Windows 2022 MSVC 19.40"
+            name: "ASan: Windows 2022 MSVC 19.41"
             cmake_flags: "-DUSE_ASAN=ON -DBUILD_SHARED_LIBS=TRUE"
             # Ninja is not faster on MSVC because... MSVC
             # cmake_generator: "Ninja"
@@ -170,12 +177,11 @@ jobs:
           echo "TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)" >> ${GITHUB_ENV}
 
           # use the full name as prefix: {user_name}_{repo_name} (replace / with _)
-          # echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed 's|/|_|')" >> ${GITHUB_ENV}
+          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed 's|/|_|')" >> ${GITHUB_ENV}
 
           # or use only the repo name (github does not have a predefined environment variable for this)
           # the regex splits by / and keeps everything after / without the / character
-          echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
-          echo "CUSTOM_NAME=$(echo "Radar-Contact")" >> ${GITHUB_ENV}      
+          # echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
 
       - name: Install packages
         uses: ./.github/actions/install-packages
@@ -187,12 +193,13 @@ jobs:
           warnings_as_errors: 'OFF'
 
       - name: Build
-        run: bash ./scripts/cmake.sh build
+        run: |
+          bash ./scripts/cmake.sh build -c ${{ env.BUILD_TYPE }}
 
       - name: Install
         # Use CMake to "install" build artifacts (only interested in CMake registered targets) to our custom artifacts directory
         run: |
-          bash ./scripts/cmake.sh install -i artifacts
+          bash ./scripts/cmake.sh install -c ${{ env.BUILD_TYPE }} -i artifacts
 
       - name: Move artifacts
         run: |

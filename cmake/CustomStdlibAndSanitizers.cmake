@@ -24,8 +24,17 @@ function(set_custom_stdlib_and_sanitizers target add_apple_asan)
         endif()
     endif()
 
-    if(UNIX)
+    if(APPLE)
+        # first check Apple since Apple is also a kind of Unix
+        if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND add_apple_asan MATCHES true)
+            if(USE_ASAN)
+                target_compile_options(${target} PRIVATE "$<${debug_mode}:-fsanitize=address,undefined>")
+                target_link_options(${target} PRIVATE "$<${debug_mode}:-fsanitize=address,undefined>")
+            endif()
+        endif()
+    elseif(UNIX)
         if(USE_ASAN)
+            # check leaks on Linux since macOS does not support the leaks sanitizer yet
             # leaks sanitizer is enabled by default on Linux, so we do not need to enable it explicitly
             target_compile_options(${target} PRIVATE "$<${debug_mode}:-fsanitize=address,undefined>")
             target_link_options(${target} PRIVATE "$<${debug_mode}:-fsanitize=address,undefined>")

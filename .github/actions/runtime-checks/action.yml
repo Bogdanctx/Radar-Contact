@@ -4,8 +4,8 @@ description: 'Run dynamic analysis tools'
 runs:
   using: "composite"
   steps:
-    # - name: Cache tools
-    #   uses: actions/cache@v4
+    # - name: Cache restore tools
+    #   uses: actions/cache/restore@v4
     #   if: runner.os == 'Linux' && matrix.runs_msan == true
     #   id: cache-tools
     #   with:
@@ -33,6 +33,13 @@ runs:
     #       -DLLVM_USE_SANITIZER=MemoryWithOrigins \
     #       -DCMAKE_BUILD_WITH_INSTALL_RPATH=true
     #     cmake --build build -j6 -- cxx cxxabi
+
+    # - name: Cache save tools
+    #   uses: actions/cache/save@v4
+    #   if: runner.os == 'Linux' && matrix.runs_msan == true && steps.cache-tools.outputs.cache-hit != 'true'
+    #   with:
+    #     path: tools
+    #     key: tools-clang-${{ matrix.clang_ver }}-stdlib-msan
 
     - name: Make scripts executable
       shell: bash

@@ -8,6 +8,10 @@ inputs:
   custom_flags:
     description: 'Custom CMake configuration flags'
     required: false
+  cache_key:
+    description: 'Deps cache key'
+    required: false
+    default: 'cache-deps'
 
 runs:
   using: "composite"
@@ -20,7 +24,7 @@ runs:
       with:
         path: |
           ${{ env.BUILD_DIR }}/_deps
-        key: cache-${{ matrix.cmake_generator }}-${{ matrix.os }}-${{ matrix.cxx }}-${{ env.BUILD_TYPE }}-${{ env.SFML_VERSION }}
+        key: ${{ inputs.cache_key }}-${{ matrix.cmake_generator }}-${{ matrix.os }}-${{ matrix.cxx }}-${{ matrix.asan_name }}-${{ env.BUILD_TYPE }}-${{ env.SFML_VERSION }}
 
     # NOTE: GH Actions does not allow updating the cache yet
     # Using the workaround found here: https://github.com/actions/cache/issues/171
@@ -33,8 +37,8 @@ runs:
         path: |
           ${{ env.BUILD_DIR }}/.ninja_deps
           ${{ env.BUILD_DIR }}/.ninja_log
-        key: ${{ matrix.os }}-${{ matrix.cxx }}-ninja-cache-${{ hashFiles('CMakeLists.txt') }}
-        restore-keys: ${{ matrix.os }}-${{ matrix.cxx }}-ninja-cache-
+        key: ${{ matrix.os }}-${{ matrix.cxx }}-${{ matrix.asan_name }}-ninja-cache-${{ hashFiles('CMakeLists.txt') }}
+        restore-keys: ${{ matrix.os }}-${{ matrix.cxx }}-${{ matrix.asan_name }}-ninja-cache-
 
     - name: Cache MinGW
       uses: actions/cache@v4
@@ -64,21 +68,26 @@ runs:
       run: |
         PATH="$(pwd)/gcc/mingw64/bin:${PATH}"
         # because GH Actions does not properly prepend to $PATH and still chooses VM gcc
+        # CMake generator not passed as option to script since it might not be defined
         export CMAKE_GENERATOR=${{ matrix.cmake_generator }}
-        bash ./scripts/cmake.sh configure -s ${GITHUB_WORKSPACE} -b ${{ env.BUILD_DIR }} \
-          -t ${{ env.BUILD_TYPE }} \
+        bash ./scripts/cmake.sh configure \
+          -b ${{ env.BUILD_DIR }} \
+          -c ${{ env.BUILD_TYPE }} \
+          -e "-DPROJECT_WARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}" \
           -i ${GITHUB_WORKSPACE}/artifacts \
-          -c "-DPROJECT_WARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}"
+          -s ${GITHUB_WORKSPACE}
 
     - name: Configure CMake
       shell: bash
       if: ${{ !(runner.os == 'Windows' && matrix.cxx == 'g++') }}
       run: |
         export CMAKE_GENERATOR=${{ matrix.cmake_generator }}
-        bash ./scripts/cmake.sh configure -s ${GITHUB_WORKSPACE} -b ${{ env.BUILD_DIR }} \
-          -t ${{ env.BUILD_TYPE }} \
+        bash ./scripts/cmake.sh configure \
+          -b ${{ env.BUILD_DIR }} \
+          -c ${{ env.BUILD_TYPE }} \
+          -e "-DPROJECT_WARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}" \
           -i ${GITHUB_WORKSPACE}/artifacts \
-          -c "-DPROJECT_WARNINGS_AS_ERRORS=${{ inputs.warnings_as_errors }} -DGITHUB_ACTIONS=${GITHUB_ACTIONS} ${{ inputs.custom_flags }}"
+          -s ${GITHUB_WORKSPACE}
 
 # https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
 # https://github.com/GuillaumeFalourd/poc-github-actions/blob/main/.github/workflows/36-local-action.yml

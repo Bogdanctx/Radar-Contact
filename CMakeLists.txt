@@ -151,3 +151,5 @@ endif()
 include(cmake/CopyHelper.cmake)
 
 copy_files(DIRECTORY resources)
+
+message("AICIIIIIIIIIIIIIIIIII" ${PROJECT_NAME})

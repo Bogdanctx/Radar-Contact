@@ -80,7 +80,7 @@ jobs:
       VSCMD_SKIP_SENDTELEMETRY: 1
 
       # NOTE: also update in CMakeLists FetchContent
-      SFML_VERSION: "2024-12-21-3.0.0"
+      SFML_VERSION: "3.0.0"
 
       # NOTE: replace with another version if this one does not work
       # For more versions, see https://winlibs.com or

@@ -30,8 +30,6 @@ FetchContent_Declare(
         SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
         GIT_TAG        3.0.0
-        # GIT_TAG        69ea0cd863aed1d4092b970b676924a716ff718b # 2.6.1
-        # GIT_TAG        origin/master
         GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
 )
 
@@ -62,6 +60,9 @@ FetchContent_MakeAvailable(json)
 # external dependencies with find_package
 
 find_package(Threads REQUIRED)
+if(UNIX)
+    find_package(X11)
+endif()
 
 ###############################################################################
 
@@ -132,6 +133,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
 if(MSVC)
     target_link_libraries(${PROJECT_NAME} PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio SFML::Main Threads::Threads)
+elseif(LINUX)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio Threads::Threads X11)
 else()
     target_link_libraries(${PROJECT_NAME} PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio Threads::Threads)
 endif()

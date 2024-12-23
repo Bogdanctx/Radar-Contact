@@ -1,6 +1,7 @@
 #include "Region.hpp"
 
 #include <fstream>
+#include <algorithm>
 
 Region::Region(const std::string& region) : m_regionName(region),
                                             path(std::filesystem::path("resources") / "regions" / region),

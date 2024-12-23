@@ -3,8 +3,8 @@
 
 FlightInfo::FlightInfo(const std::string& strFormat, const std::shared_ptr<FlyingEntity>& flyingEntity, int offset) :
                             m_body(sf::Vector2f(235, 20)),
-                            flyingEntityPtr(flyingEntity),
-                            m_text(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), strFormat, 10)
+                            m_text(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), strFormat, 10),
+                            flyingEntityPtr(flyingEntity)
 
 {
     m_body.setFillColor(sf::Color(27, 28, 27, 110));

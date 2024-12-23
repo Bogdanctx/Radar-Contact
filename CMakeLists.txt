@@ -29,9 +29,7 @@ set(WARNINGS_AS_ERRORS OFF)
 FetchContent_Declare(
         SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
-        GIT_TAG        2.6.1
-        # GIT_TAG        69ea0cd863aed1d4092b970b676924a716ff718b # 2.6.1
-        # GIT_TAG        origin/master
+        GIT_TAG        3.0.0
         GIT_SHALLOW    1  # works only with branches or tags, not with arbitrary commit hashes
 )
 
@@ -135,11 +133,11 @@ target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${json_SOURCE_DIR}/inc
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
 
 if(MSVC)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-main sfml-graphics sfml-window sfml-audio sfml-system Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio SFML::Main Threads::Threads)
 elseif(LINUX)
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-system Threads::Threads X11)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio Threads::Threads X11)
 else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-audio sfml-system Threads::Threads)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SFML::System SFML::Window SFML::Graphics SFML::Audio Threads::Threads)
 endif()
 
 ###############################################################################
@@ -149,17 +147,6 @@ endif()
 install(TARGETS ${PROJECT_NAME} DESTINATION ${DESTINATION_DIR})
 if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
-endif()
-
-# copy dependent DLLs to build dir
-# see https://en.sfml-dev.org/forums/index.php?topic=28580.0
-# remove this if not using audio or if using SFML 3
-if (WIN32 AND SFML_BUILD_AUDIO)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${SFML_SOURCE_DIR}/extlibs/bin/x64/openal32.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    )
 endif()
 
 include(cmake/CopyHelper.cmake)

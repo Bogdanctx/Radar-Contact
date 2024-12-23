@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <array>
+#include <vector>
 
 #include "AppWindow.hpp"
 #include "RegionButton.hpp"
@@ -15,7 +15,7 @@ public:
 
 private:
     void checkHovers();
-    void internalHandleEvent(const sf::Event& event) override;
+    void internalHandleEvent(const std::optional<sf::Event>& event) override;
     void internalRender() override;
     void internalUpdate() override;
 
@@ -26,7 +26,8 @@ private:
     sf::Text liveData;
     sf::Text localData;
 
-    std::array<RegionButton, NUMBER_OF_REGIONS> m_buttons;
+    std::vector<RegionButton> m_buttons;
+    std::vector<sf::Texture> m_flagTextures;
 
     bool m_liveApi = true;
 };

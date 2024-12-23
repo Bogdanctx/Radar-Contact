@@ -12,7 +12,7 @@ public:
 
     void render(sf::RenderWindow *window) const;
     void update(const std::list<std::shared_ptr<FlyingEntity>> &flyingEntities);
-    void handleEvent(const sf::Event& gameEvent, sf::Vector2f mousePosition);
+    void handleEvent(const std::optional<sf::Event>& event, sf::Vector2f mousePosition);
 
 private:
     sf::Font m_poppins{};

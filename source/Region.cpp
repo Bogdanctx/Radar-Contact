@@ -2,14 +2,14 @@
 
 #include <fstream>
 
-Region::Region(const std::string& region) : m_regionName(region), path(std::filesystem::path("resources") / "regions" / region)
+Region::Region(const std::string& region) : m_regionName(region),
+                                            path(std::filesystem::path("resources") / "regions" / region),
+                                            m_regionTexture(path / (region + ".png")),
+                                            m_regionSprite(m_regionTexture)
 {
     loadBoundary();
     loadAirports();
     loadWeatherTiles();
-
-    m_regionTexture.loadFromFile((path / (region + ".png")).string());
-    m_regionSprite.setTexture(m_regionTexture);
 }
 
 void Region::render(sf::RenderWindow* window) const

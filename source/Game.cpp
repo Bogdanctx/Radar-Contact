@@ -9,7 +9,9 @@
 #include "OneDecimalFloatingPoint.h"
 
 Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(1280, 720),
-                                                m_region(selectedRegion)
+    m_atcSound(ResourcesManager::Instance().getSound("atc.wav")),
+    m_region(selectedRegion)
+
 {
     if(usingLiveAPI)
     {
@@ -30,14 +32,12 @@ Game::Game(const std::string& selectedRegion, bool usingLiveAPI) : AppWindow(128
 // prepare the map for play
 //-----------------------------------------------------------
 void Game::loadElements() {
-    sf::Sound loadingSound;
-    loadingSound.setBuffer(ResourcesManager::Instance().getSound("plane_landing.wav"));
+    sf::Sound loadingSound(ResourcesManager::Instance().getSound("plane_landing.wav"));
     loadingSound.setPlayingOffset(sf::seconds(4));
     loadingSound.setVolume(30);
     loadingSound.play();
 
-    m_atcSound.setBuffer(ResourcesManager::Instance().getSound("atc.wav"));
-    m_atcSound.setLoop(true);
+    m_atcSound.setLooping(true);
     m_atcSound.setVolume(50);
 
     std::future<void> future = std::async(std::launch::async, [this]()
@@ -51,24 +51,24 @@ void Game::loadElements() {
     setLoadingScreen(future);
 }
 
-void Game::setLoadingScreen(std::future<void>& future)
+void Game::setLoadingScreen(const std::future<void>& future)
 {
     std::vector<std::string> facts = ResourcesManager::Instance().getFacts();
-    sf::Text randomFact{"Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)],
-                        ResourcesManager::Instance().getFont("Poppins-Regular.ttf")};
+    sf::Text randomFact(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"),
+                        "Fact: " + facts[Utility::randomNumber(0, static_cast<int>(facts.size()) - 1)]);
 
     sf::FloatRect factBounds = randomFact.getLocalBounds();
-    randomFact.setOrigin(factBounds.width / 2, factBounds.height / 2);
-    randomFact.setPosition(640, 680);
+    randomFact.setOrigin(factBounds.position + factBounds.size / 2.f);
+    randomFact.setPosition(sf::Vector2f(640, 680));
 
     sf::Sprite loadingScreen{ResourcesManager::Instance().getTexture("loading_screen.png")};
 
-    sf::Event event{};
     Utility::Timer m_loadingScreenDelay{2000};
 
     while(future.wait_for(std::chrono::microseconds(200)) != std::future_status::ready || !m_loadingScreenDelay.passedDelay())
     {
-        while(m_window.pollEvent(event)) {} // poll events to prevent crashes
+        while(m_window.pollEvent()) {} // poll events to prevent crashes
+
         m_window.clear();
         m_window.draw(loadingScreen);
         m_window.draw(randomFact);
@@ -98,7 +98,7 @@ void Game::internalUpdate() {
         m_atcSound.stop();
     }
     else {
-        if(m_atcSound.getStatus() == sf::SoundSource::Stopped) {
+        if(m_atcSound.getStatus() == sf::SoundSource::Status::Stopped) {
             m_atcSound.play();
         }
     }
@@ -136,8 +136,6 @@ void Game::internalUpdate() {
 
         m_newEntitiesInterval.restart();
     }
-
-    m_window.draw(m_backgroundRegion);
 
     for(std::shared_ptr<FlyingEntity> &flyingEntity: m_flyingEntities) {
         flyingEntity->update(positionRelativeToView(sf::Mouse::getPosition(m_window)));
@@ -253,7 +251,7 @@ void Game::checkInsideWeather() {
 // Purpose: Used to check if a flying entity is inside its
 // airport destination coverage area
 //-----------------------------------------------------------
-void Game::checkInsideAirspace()
+void Game::checkInsideAirspace() const
 {
     // flying entity altitude must be <= 10000 ft and speed <= 250kts
     for(const std::shared_ptr<FlyingEntity> &flyingEntity: m_flyingEntities)
@@ -275,7 +273,7 @@ void Game::checkInsideAirspace()
     }
 }
 
-void Game::internalHandleEvent(const sf::Event& event)
+void Game::internalHandleEvent(const std::optional<sf::Event>& event)
 {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
 
@@ -287,67 +285,61 @@ void Game::internalHandleEvent(const sf::Event& event)
         flightsTable.handleEvent(event, positionRelativeToView(mousePosition));
     }
 
-    switch(event.type)
+    if(event->is<sf::Event::KeyPressed>())
     {
-        case sf::Event::KeyPressed: {
-
-            switch(event.key.code)
+        sf::Keyboard::Key keyCode = event->getIf<sf::Event::KeyPressed>()->code;
+        switch(keyCode)
+        {
+            case sf::Keyboard::Key::Enter:
             {
-                case sf::Keyboard::Enter:
+                std::shared_ptr<AppWindow> menu = std::make_shared<Menu>();
+                StateMachine::Instance().pushState(menu);
+                m_window.close();
+
+                break;
+            }
+
+            case sf::Keyboard::Key::R:
+            {
+                m_renderFlightsTable = !m_renderFlightsTable;
+                break;
+            }
+
+            case sf::Keyboard::Key::T:
+            {
+                m_renderWaypoints = !m_renderWaypoints;
+                break;
+            }
+
+            case sf::Keyboard::Key::Space:
+            { // add a waypoint to a flying entity's route
+                if (m_renderWaypoints)
                 {
-                    std::shared_ptr<AppWindow> menu = std::make_shared<Menu>();
-                    StateMachine::Instance().pushState(menu);
-                    m_window.close();
-
-                    break;
-                }
-
-                case sf::Keyboard::R:
-                {
-                    m_renderFlightsTable = !m_renderFlightsTable;
-                    break;
-                }
-
-                case sf::Keyboard::T:
-                {
-                    m_renderWaypoints = !m_renderWaypoints;
-                    break;
-                }
-
-                case sf::Keyboard::Space:
-                { // add a waypoint to a flying entity's route
-                    if (m_renderWaypoints)
+                    for (const Waypoint &wp: m_waypoints)
                     {
-                        for (const Waypoint &wp: m_waypoints)
+                        if (wp.getBounds().contains(positionRelativeToView(mousePosition)))
                         {
-                            if (wp.getBounds().contains(positionRelativeToView(mousePosition)))
+                            auto ret = std::ranges::find_if(m_flyingEntities.begin(), m_flyingEntities.end(),
+                                [&wp](const std::shared_ptr<FlyingEntity>& flyingEntity)
                             {
-                                auto ret = std::ranges::find_if(m_flyingEntities.begin(), m_flyingEntities.end(),
-                                    [&wp](const std::shared_ptr<FlyingEntity>& flyingEntity)
-                                {
-                                    return flyingEntity->getIsEntitySelected() &&
-                                        flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName();
-                                });
+                                return flyingEntity->getIsEntitySelected() &&
+                                    flyingEntity->getRouteCurrentWaypoint().getName() != wp.getName();
+                            });
 
-                                if(ret != m_flyingEntities.end())
-                                {
-                                    (*ret)->addWaypointToRoute(wp);
-                                }
+                            if(ret != m_flyingEntities.end())
+                            {
+                                (*ret)->addWaypointToRoute(wp);
                             }
                         }
                     }
-
-                    break;
                 }
 
-                default:
-                    break;
+                break;
             }
 
-            break;
+            default:
+                break;
         }
-        default:
-            break;
     }
 
 }
@@ -489,8 +481,7 @@ nlohmann::json Game::fetchNewFlyingEntities()
 
         m_incomingFlyingEntities.push_back(flyingEntity);
 
-        sf::Event tempEvent{};
-        while(m_window.pollEvent(tempEvent)) {} // poll through window events to prevent crashes
+        while(m_window.pollEvent()) {} // poll through window events to prevent crashes
     }
 
     return m_incomingFlyingEntities;

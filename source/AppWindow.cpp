@@ -1,14 +1,14 @@
 #include "AppWindow.hpp"
 
-AppWindow::AppWindow(int width, int height) :
-                m_window(sf::VideoMode(width, height), "Radar Contact")
+AppWindow::AppWindow(unsigned int width, unsigned int height) :
+                m_window(sf::VideoMode({width, height}), "Radar Contact")
 {
     m_window.setFramerateLimit(60);
     m_appIcon.loadFromFile("./resources/general_textures/icon.png");
-    m_window.setIcon(32, 32, m_appIcon.getPixelsPtr());
+    m_window.setIcon(sf::Vector2u(32, 32), m_appIcon.getPixelsPtr());
 
-    m_view.setSize(width, height);
-    m_view.setCenter( m_view.getSize().x / 2, m_view.getSize().y / 2);
+    m_view.setSize(sf::Vector2f(width, height));
+    m_view.setCenter(sf::Vector2f(width / 2.f, height / 2.f));
     updateWindowView(width, height);
 }
 
@@ -50,7 +50,7 @@ void AppWindow::updateWindowView(unsigned int width, unsigned int height)
         posY = (1 - sizeY) / 2.f;
     }
 
-    m_view.setViewport(sf::FloatRect(posX, posY, sizeX, sizeY));
+    m_view.setViewport(sf::FloatRect(sf::Vector2f(posX, posY), sf::Vector2f(sizeX, sizeY)));
     m_window.setView(m_view);
 }
 
@@ -78,34 +78,31 @@ void AppWindow::render() {
     m_window.display();
 }
 
-void AppWindow::handleEvent() {
-    sf::Event event{};
+void AppWindow::handleEvent()
+{
+    while(const std::optional<sf::Event> event = m_window.pollEvent())
+    {
+        if(event->is<sf::Event::Closed>())
+        {
+            m_window.close();
+        }
+        else if (event->is<sf::Event::KeyPressed>())
+        {
+            sf::Keyboard::Key key = event->getIf<sf::Event::KeyPressed>()->code;
 
-    while(m_window.pollEvent(event)) {
-        switch(event.type) {
-            case sf::Event::Closed: {
+            if(key == sf::Keyboard::Key::Escape)
+            {
                 m_window.close();
-                break;
             }
-            case sf::Event::KeyPressed:
-            {
-                sf::Keyboard::Key key = event.key.code;
+        }
+        else if(event->is<sf::Event::Resized>())
+        {
+            unsigned int width = event->getIf<sf::Event::Resized>()->size.x;
+            unsigned int height = event->getIf<sf::Event::Resized>()->size.y;
 
-                if(key == sf::Keyboard::Escape)
-                {
-                    m_window.close();
-                }
+            updateWindowView(width, height);
 
-                break;
-            }
-            case sf::Event::Resized:
-            {
-                updateWindowView(event.size.width, event.size.height);
-
-                break;
-            }
-            default:
-                break;
+            break;
         }
 
         internalHandleEvent(event);

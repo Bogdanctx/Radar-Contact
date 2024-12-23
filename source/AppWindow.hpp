@@ -5,7 +5,7 @@
 class AppWindow {
 public:
     AppWindow() = delete;
-    AppWindow(int width, int height);
+    AppWindow(unsigned int width, unsigned int height);
     virtual ~AppWindow() = default;
 
     virtual void run();
@@ -16,7 +16,7 @@ protected:
     sf::Vector2f positionRelativeToView(sf::Vector2f position) const;
     sf::Vector2f positionRelativeToView(sf::Vector2i position) const;
 
-    virtual void internalHandleEvent(const sf::Event& event) = 0;
+    virtual void internalHandleEvent(const std::optional<sf::Event>& event) = 0;
     virtual void internalRender() = 0;
     virtual void internalUpdate() = 0;
 

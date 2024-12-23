@@ -34,7 +34,7 @@ public:
     void updateText();
 
     virtual void render(sf::RenderWindow *gameWindow);
-    virtual void handleEvent(const sf::Event& event, sf::Vector2f mousePosition);
+    virtual void handleEvent(const std::optional<sf::Event>& event, sf::Vector2f mousePosition);
 
     sf::Vector2f getEntityPosition() const;
     int getAltitude() const;
@@ -114,9 +114,9 @@ private:
     void handleSpecialFlightConditions();
 
 private:
-    sf::Keyboard::Key m_altitudeButton = sf::Keyboard::LAlt;
-    sf::Keyboard::Key m_speedButton = sf::Keyboard::LControl;
-    sf::Keyboard::Key m_headingButton = sf::Keyboard::LShift;
+    sf::Keyboard::Key m_altitudeButton = sf::Keyboard::Key::LAlt;
+    sf::Keyboard::Key m_speedButton = sf::Keyboard::Key::LControl;
+    sf::Keyboard::Key m_headingButton = sf::Keyboard::Key::LShift;
 
     friend class FlyingEntity_Decorator;
 

@@ -52,7 +52,7 @@ void ResourcesManager::loadFonts(const std::string &fontName) {
     const std::filesystem::path path = std::filesystem::path("resources") / "fonts" / fontName;
     sf::Font font;
 
-    if(!font.loadFromFile(path.string())) {
+    if(!font.openFromFile(path.string())) {
         throw std::runtime_error(fontName + " missing or corrupted.\n");
     }
 

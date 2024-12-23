@@ -4,22 +4,24 @@
 
 FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::string &squawk, const std::string &callsign,
                            sf::Vector2f position, const std::string &arrival) :
-        m_callsignText{callsign, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_callsignText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), callsign, 10},
         m_heading{heading}, m_speed{speed},
         m_altitude{altitude},
         m_newHeading{heading},
         m_newAltitude{altitude},
         m_newSpeed{speed},
-        m_arrival{arrival}, m_arrivalText{arrival, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_arrival{arrival},
+        m_arrivalText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), arrival, 10},
         m_squawk{squawk},
-        m_squawkText(squawk, ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10),
-        m_routeWaypointsText{"", ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_headingText{std::to_string(heading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_speedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_altitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_fuelText{m_fuel.asString(), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_newHeadingText{std::to_string(m_newHeading), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
-        m_newSpeedText{std::to_string(speed), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10}, m_newAltitudeText{std::to_string(altitude), ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), 10},
+        m_squawkText(ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), squawk, 10),
+        m_routeWaypointsText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), "", 10},
+        m_headingText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), std::to_string(heading), 10},
+        m_speedText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), std::to_string(speed), 10},
+        m_altitudeText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), std::to_string(altitude), 10},
+        m_fuelText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), m_fuel.asString(), 10},
+        m_newHeadingText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), std::to_string(m_newHeading), 10},
+        m_newSpeedText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), std::to_string(speed), 10},
+        m_newAltitudeText{ResourcesManager::Instance().getFont("Poppins-Regular.ttf"), std::to_string(altitude), 10},
         m_callsign{callsign},
         m_headingStick{sf::Vector2f(26, 1.2f)}
 {
@@ -35,7 +37,7 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
     m_headingStick.setFillColor(sf::Color::Cyan);
     m_headingStick.setPosition(position);
     m_headingStick.setSize(sf::Vector2f(26.f, 1.2f));
-    m_headingStick.setRotation(heading - 90);
+    m_headingStick.setRotation(sf::Angle(sf::degrees(heading - 90)));
 
     if(squawk == "7700") {
         setFlag(Flags::GENERAL_EMERGENCY);
@@ -57,44 +59,44 @@ FlyingEntity::FlyingEntity(int altitude, int speed, int heading, const std::stri
 void FlyingEntity::updateText() {
     if(!m_isEntitySelected) {
         const sf::Vector2f position = m_entity.getPosition();
-        m_callsignText.setPosition(position.x - 5, position.y - 20);
+        m_callsignText.setPosition(sf::Vector2f(position.x - 5, position.y - 20));
         return;
     }
 
     const sf::Vector2f position = m_entity.getPosition();
 
-    m_callsignText.setPosition(position.x - 8, position.y - 30);
+    m_callsignText.setPosition(sf::Vector2f(position.x - 8, position.y - 30));
 
-    float xOffset = position.x - 8 + m_callsignText.getLocalBounds().width + 5;
-    m_squawkText.setPosition(xOffset, position.y - 30);
-    xOffset += m_squawkText.getLocalBounds().width + 5;
-    m_arrivalText.setPosition(xOffset, position.y - 30);
+    float xOffset = position.x - 8 + m_callsignText.getLocalBounds().size.x + 5;
+    m_squawkText.setPosition(sf::Vector2f(xOffset, position.y - 30));
+    xOffset += m_squawkText.getLocalBounds().size.x + 5;
+    m_arrivalText.setPosition(sf::Vector2f(xOffset, position.y - 30));
 
-    xOffset += m_arrivalText.getLocalBounds().width + 5;
-    m_routeWaypointsText.setPosition(xOffset, position.y - 30);
+    xOffset += m_arrivalText.getLocalBounds().size.x + 5;
+    m_routeWaypointsText.setPosition(sf::Vector2f(xOffset, position.y - 30));
 
     xOffset = position.x - 8;
-    m_fuelText.setPosition(xOffset, position.y - 20);
+    m_fuelText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    xOffset += m_fuelText.getLocalBounds().width + 5;
-    m_speedText.setPosition(xOffset, position.y - 20);
+    xOffset += m_fuelText.getLocalBounds().size.x + 5;
+    m_speedText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    xOffset += m_speedText.getLocalBounds().width + 5;
-    m_headingText.setPosition(xOffset, position.y - 20);
+    xOffset += m_speedText.getLocalBounds().size.x + 5;
+    m_headingText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    xOffset += m_headingText.getLocalBounds().width + 5;
-    m_altitudeText.setPosition(xOffset, position.y - 20);
+    xOffset += m_headingText.getLocalBounds().size.x + 5;
+    m_altitudeText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    xOffset += m_altitudeText.getLocalBounds().width + 5;
-    m_newSpeedText.setPosition(xOffset, position.y - 20);
+    xOffset += m_altitudeText.getLocalBounds().size.x + 5;
+    m_newSpeedText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    xOffset += m_newSpeedText.getLocalBounds().width + 5;
-    m_newHeadingText.setPosition(xOffset, position.y - 20);
+    xOffset += m_newSpeedText.getLocalBounds().size.x + 5;
+    m_newHeadingText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    xOffset += m_newHeadingText.getLocalBounds().width + 5;
-    m_newAltitudeText.setPosition(xOffset, position.y - 20);
+    xOffset += m_newHeadingText.getLocalBounds().size.x + 5;
+    m_newAltitudeText.setPosition(sf::Vector2f(xOffset, position.y - 20));
 
-    m_headingStick.setPosition(position.x, position.y);
+    m_headingStick.setPosition(sf::Vector2f(position.x, position.y));
 }
 
 //-----------------------------------------------------------
@@ -120,33 +122,29 @@ void FlyingEntity::render(sf::RenderWindow* gameWindow) {
     }
 }
 
-void FlyingEntity::handleEvent(const sf::Event& event, const sf::Vector2f mousePosition) {
-    switch(event.type) {
-        case sf::Event::MouseButtonPressed: {
-            sf::FloatRect entityBounds = m_entity.getGlobalBounds();
+void FlyingEntity::handleEvent(const std::optional<sf::Event>& event, const sf::Vector2f mousePosition) {
+    if(event->is<sf::Event::MouseButtonPressed>())
+    {
+        sf::FloatRect entityBounds = m_entity.getGlobalBounds();
 
-            // if an entity has been selected by user
-            if(entityBounds.contains(mousePosition)) {
-                m_isEntitySelected = true;
-                updateText();
-            }
-            else {
-                m_isEntitySelected = false;
-                updateText();
-            }
-            break;
+        // if an entity has been selected by user
+        if(entityBounds.contains(mousePosition)) {
+            m_isEntitySelected = true;
+            updateText();
         }
-        case sf::Event::MouseWheelMoved: {
-            if(m_isEntitySelected) {
-                checkAltitudeChange(event.mouseWheel.delta);
-                checkSpeedChange(event.mouseWheel.delta);
-            }
-
-            break;
+        else {
+            m_isEntitySelected = false;
+            updateText();
         }
+    }
+    else if(event->is<sf::Event::MouseWheelScrolled>())
+    {
+        if(m_isEntitySelected) {
+            float delta = event->getIf<sf::Event::MouseWheelScrolled>()->delta;
 
-        default:
-            break;
+            checkAltitudeChange(delta);
+            checkSpeedChange(delta);
+        }
     }
 }
 
@@ -167,11 +165,11 @@ void FlyingEntity::checkAltitudeChange(int scrollUsed) {
     }
 
     if(sf::Keyboard::isKeyPressed(m_altitudeButton)) {
-        if(m_newAltitude + 100 <= m_maxAltitude && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_buttonDelayTimer.passedDelay()) || scrollUsed > 0)) {
+        if(m_newAltitude + 100 <= m_maxAltitude && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && m_buttonDelayTimer.passedDelay()) || scrollUsed > 0)) {
             setNewAltitude(m_newAltitude + 100);
             m_buttonDelayTimer.restart();
         }
-        if(m_newAltitude - 100 >= m_minAltitude && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_buttonDelayTimer.passedDelay()) || scrollUsed < 0)) {
+        if(m_newAltitude - 100 >= m_minAltitude && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && m_buttonDelayTimer.passedDelay()) || scrollUsed < 0)) {
             setNewAltitude(m_newAltitude - 100);
             m_buttonDelayTimer.restart();
         }
@@ -194,11 +192,11 @@ void FlyingEntity::checkSpeedChange(int scrollUsed) {
     }
 
     if(sf::Keyboard::isKeyPressed((m_speedButton))) {
-        if(m_newSpeed + 1 <= m_maxSpeed && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_buttonDelayTimer.passedDelay()) || scrollUsed > 0)) {
+        if(m_newSpeed + 1 <= m_maxSpeed && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && m_buttonDelayTimer.passedDelay()) || scrollUsed > 0)) {
             setNewSpeed(m_newSpeed + 1);
             m_buttonDelayTimer.restart();
         }
-        if(m_newSpeed - 1 >= m_minSpeed && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_buttonDelayTimer.passedDelay()) || scrollUsed < 0)) {
+        if(m_newSpeed - 1 >= m_minSpeed && ((sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && m_buttonDelayTimer.passedDelay()) || scrollUsed < 0)) {
             setNewSpeed(m_newSpeed - 1);
             m_buttonDelayTimer.restart();
         }
@@ -248,7 +246,7 @@ void FlyingEntity::update(sf::Vector2f mousePosition) {
 
         // if no direction is choosen, then heading stick might be updated
         if(!sf::Keyboard::isKeyPressed(m_headingButton)) {
-            m_headingStick.setRotation(m_heading - 90);
+            m_headingStick.setRotation(sf::Angle(sf::degrees(m_heading - 90)));
         }
 
         if(!route.empty()) {
@@ -484,7 +482,7 @@ void FlyingEntity::checkHeadingChange() {
 
     if(sf::Keyboard::isKeyPressed((m_headingButton))) {
         int dir = Math::DirectionToPoint(m_entity.getPosition(), m_mousePosition);
-        m_headingStick.setRotation(dir - 90);
+        m_headingStick.setRotation(sf::Angle(sf::degrees(dir - 90)));
         setNewHeading(dir);
 
         while(!route.empty()) {

@@ -24,18 +24,18 @@ public:
 
 private:
     void internalRender() override;
-    void internalHandleEvent(const sf::Event& event) override;
+    void internalHandleEvent(const std::optional<sf::Event>& event) override;
     void internalUpdate() override;
 
     void loadElements();
     void loadWaypoints();
-    void setLoadingScreen(std::future<void>& future);
+    void setLoadingScreen(const std::future<void>& future);
 
     void addNewEntities();
 
     void initAirports();
     void checkForEntitiesCollisions();
-    void checkInsideAirspace();
+    void checkInsideAirspace() const;
     void checkInsideWeather();
 
     nlohmann::json fetchNewFlyingEntities();
@@ -59,8 +59,8 @@ private:
     Utility::Timer m_newEntitiesInterval{6 * 60 * 1000}; // 6 minutes
     Utility::Timer m_flightTableClock{3000};
 
-    sf::Sprite m_backgroundRegion;
     sf::Sound m_atcSound;
+    sf::SoundBuffer m_atcSoundBuffer;
 
     Weather weather;
     FlightsTable flightsTable;

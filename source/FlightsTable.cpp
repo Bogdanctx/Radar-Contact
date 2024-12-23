@@ -22,20 +22,21 @@ void FlightsTable::update(const std::list<std::shared_ptr<FlyingEntity>> &flying
     }
 }
 
-void FlightsTable::handleEvent(const sf::Event& gameEvent, const sf::Vector2f mousePosition) {
-    switch(gameEvent.type) {
-        case sf::Event::MouseButtonPressed: {
-            for(const FlightInfo &airplaneInfo: m_airplanesInfo) {
-                if(airplaneInfo.getBody().getGlobalBounds().contains(mousePosition)) {
-                    airplaneInfo.getFlyingEntityPtr()->setEntitySelected();
-                }
-            }
+void FlightsTable::handleEvent(const std::optional<sf::Event>& event, const sf::Vector2f mousePosition)
+{
 
-            break;
+    if(event->is<sf::Event::MouseButtonPressed>())
+    {
+        for(const FlightInfo &airplaneInfo: m_airplanesInfo)
+        {
+            if(airplaneInfo.getBody().getGlobalBounds().contains(mousePosition))
+            {
+                airplaneInfo.getFlyingEntityPtr()->setEntitySelected();
+            }
         }
-        default:
-            break;
     }
+
+
 }
 
 

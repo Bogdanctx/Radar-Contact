@@ -77,7 +77,7 @@ As a result, <b>the airplane's current data will adjust according to these modif
 
 ## Resources
 
-- [SFML](https://github.com/SFML/SFML/tree/2.6.1)
+- [SFML](https://www.sfml-dev.org/)
 - [AIRPLANES.LIVE](https://airplanes.live/get-started/) (Live air traffic)
 - [RainViewer](https://www.rainviewer.com/api.html) (Weather API)
 - [Pixabay](https://pixabay.com/sound-effects/search/air-traffic-control/) (ATC voice sound)

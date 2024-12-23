@@ -4,18 +4,6 @@ description: 'Process artifact files'
 runs:
   using: "composite"
   steps:
-    - name: AAAA
-      shell: bash
-      if: runner.os == 'macOS'
-      run: |
-        ls
-
-    - name: AA
-      shell: bash
-      if: runner.os == 'macOS'
-      run: |
-        ls s/
-
     - name: Patch macOS launcher
       shell: bash
       if: runner.os == 'macOS'

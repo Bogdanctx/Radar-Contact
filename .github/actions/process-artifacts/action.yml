@@ -4,11 +4,23 @@ description: 'Process artifact files'
 runs:
   using: "composite"
   steps:
+    - name: AAAA
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        ls
+
+    - name: AA
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        ls s/
+
     - name: Patch macOS launcher
       shell: bash
       if: runner.os == 'macOS'
       run: |
-        sed -i '' -e "s/oop/${EXECUTABLE_NAME}/" "${{ env.ZIP_NAME }}/launcher.command"
+        sed -i '' -e "s/radar-contact/${EXECUTABLE_NAME}/" "${{ env.ZIP_NAME }}/launcher.command"
         chmod +x "${{ env.ZIP_NAME }}/launcher.command"
 
     - name: Copy missing dylibs

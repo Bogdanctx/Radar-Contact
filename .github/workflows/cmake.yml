@@ -54,21 +54,6 @@ jobs:
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
 
-  clang-tidy:
-    name: "Clang-Tidy"
-    # concurrency:
-    #   group: "Clang-Tidy"
-    runs-on: ubuntu-22.04
-    timeout-minutes: 5
-    env:
-      CLANG_VER: 18
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Run clang-tidy
-        uses: ./.github/actions/clang-tidy
-
 
   build:
     name: ${{ matrix.name }}

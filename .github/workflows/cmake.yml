@@ -36,6 +36,40 @@ defaults:
     # https://github.com/saxbophone/CPP20-Cross-Platform-Template
     shell: bash
 
+jobs:
+  cppcheck:
+    name: "Cppcheck"
+    # concurrency:
+    #   group: "Cppcheck"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    env:
+      # check https://github.com/danmar/cppcheck/releases for latest version
+      # NOTE: consider updating this value in scripts/build_cppcheck.sh:4 when changing this value
+      CPPCHECK_VER: "2.14.2"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run cppcheck
+        uses: ./.github/actions/cppcheck
+
+  clang-tidy:
+    name: "Clang-Tidy"
+    # concurrency:
+    #   group: "Clang-Tidy"
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    env:
+      CLANG_VER: 18
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run clang-tidy
+        uses: ./.github/actions/clang-tidy
+
+
   build:
     name: ${{ matrix.name }}
     # concurrency:
@@ -95,6 +129,7 @@ defaults:
           #   name: "macOS 14 GCC 13"
           #   cmake_flags:
           #   cmake_generator: Ninja
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

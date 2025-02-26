@@ -172,16 +172,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: build/_deps
-          key: cache-deps--${{ runner.os }}-${{ matrix.cxx }}--${{ env.BUILD_TYPE }}-${{ env.SFML_VERSION }}
-          restore-keys: |
-            cache-deps--${{ runner.os }}-${{ matrix.cxx }}--${{ env.BUILD_TYPE }}-
-            cache-deps--${{ runner.os }}-${{ matrix.cxx }}--
-            cache-deps--
-
       - name: Set timestamp and zip name
         run: |
           echo "TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)" >> ${GITHUB_ENV}

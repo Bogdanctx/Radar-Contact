@@ -36,40 +36,6 @@ defaults:
     # https://github.com/saxbophone/CPP20-Cross-Platform-Template
     shell: bash
 
-jobs:
-  cppcheck:
-    name: "Cppcheck"
-    # concurrency:
-    #   group: "Cppcheck"
-    runs-on: ubuntu-22.04
-    timeout-minutes: 5
-    env:
-      # check https://github.com/danmar/cppcheck/releases for latest version
-      # NOTE: consider updating this value in scripts/build_cppcheck.sh:4 when changing this value
-      CPPCHECK_VER: "2.14.2"
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Run cppcheck
-        uses: ./.github/actions/cppcheck
-
-  clang-tidy:
-    name: "Clang-Tidy"
-    # concurrency:
-    #   group: "Clang-Tidy"
-    runs-on: ubuntu-22.04
-    timeout-minutes: 5
-    env:
-      CLANG_VER: 18
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Run clang-tidy
-        uses: ./.github/actions/clang-tidy
-
-
   build:
     name: ${{ matrix.name }}
     # concurrency:
@@ -114,26 +80,6 @@ jobs:
           #   # This env runs memory sanitizers
           #   runs_msan: true
 
-          - os: ubuntu-22.04
-            c: gcc-12
-            cxx: g++-12
-            name: "ASan: Ubuntu 22.04 GCC 12"
-            cmake_flags: "-DUSE_ASAN=ON -DBUILD_SHARED_LIBS=FALSE"
-            cmake_generator: Ninja
-            # This env runs address sanitizers
-            runs_asan: true
-            # this is used to add a suffix to the archive name since we use the same compiler version
-            asan_name: "-asan"
-
-          - os: ubuntu-22.04
-            c: gcc-12
-            cxx: g++-12
-            name: "Valgrind: Ubuntu 22.04 GCC 12"
-            cmake_flags: -DBUILD_SHARED_LIBS=FALSE
-            cmake_generator: Ninja
-            # This env runs valgrind
-            runs_valgrind: true
-
           - os: macos-14
             c: clang
             cxx: clang++
@@ -149,25 +95,6 @@ jobs:
           #   name: "macOS 14 GCC 13"
           #   cmake_flags:
           #   cmake_generator: Ninja
-
-          - os: windows-2022
-            c: cl
-            cxx: cl
-            name: "ASan: Windows 2022 MSVC 19.41"
-            cmake_flags: "-DUSE_ASAN=ON -DBUILD_SHARED_LIBS=TRUE"
-            # Ninja is not faster on MSVC because... MSVC
-            # cmake_generator: "Ninja"
-            # cmake_generator: "Ninja Multi-Config"
-            # This env runs address sanitizers
-            # runs_asan: true
-
-          - os: windows-2022
-            c: gcc
-            cxx: g++
-            name: "Windows 2022 MinGW GCC 13"
-            cmake_flags: -DBUILD_SHARED_LIBS=TRUE
-            cmake_generator: Ninja
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

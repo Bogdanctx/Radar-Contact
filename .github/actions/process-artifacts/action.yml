@@ -8,6 +8,7 @@ runs:
       shell: bash
       if: runner.os == 'macOS'
       run: |
+        ls
         sed -i '' -e "s/radar_contact/${EXECUTABLE_NAME}/" "${{ env.ZIP_NAME }}/launcher.command"
         chmod +x "${{ env.ZIP_NAME }}/launcher.command"
 

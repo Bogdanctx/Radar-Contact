@@ -1,3 +1,5 @@
+# Radar Contact
+
 ## Download
 
 Click on the [latest version](https://github.com/Bogdanctx/Radar-Contact/releases/tag/v3.2) available in the [Releases](https://github.com/Bogdanctx/Radar-Contact/releases) tab and 
@@ -47,7 +49,7 @@ As a result, <b>the airplane's current data will adjust according to these modif
 
 ![Alt Text](./preview/data_meaning.png)
 
-# Keybinds
+### Keybinds
 
 => Press **Escape** to exit from **menu** or **game**.
 
